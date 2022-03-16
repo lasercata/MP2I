@@ -1,0 +1,1506 @@
+\documentclass[a4paper, 12pt, twoside]{article}
+
+
+%------------------------------------------------------------------------
+%
+% Author                :   Lasercata
+% Last modification     :   2021.11.26
+%
+%------------------------------------------------------------------------
+
+
+%------ini
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+%\usepackage[english]{babel}
+
+
+%------geometry
+\usepackage[textheight=700pt, textwidth=500pt]{geometry}
+
+
+%------color
+\usepackage{xcolor}
+\definecolor{ff4500}{HTML}{ff4500}
+\definecolor{00f}{HTML}{0000ff}
+\definecolor{0ff}{HTML}{00ffff}
+\definecolor{656565}{HTML}{656565}
+
+\renewcommand{\emph}{\textcolor{ff4500}}
+\renewcommand{\em}{\color{ff4500}}
+
+\newcommand{\strong}[1]{\textcolor{ff4500}{\bf #1}}
+\newcommand{\st}{\color{ff4500}\bf}
+
+
+%------Code highlighting
+\usepackage{listings}
+
+\definecolor{cbg}{HTML}{272822}
+\definecolor{cfg}{HTML}{ececec}
+\definecolor{ccomment}{HTML}{686c58}
+\definecolor{ckw}{HTML}{f92672}
+\definecolor{cstring}{HTML}{e6db72}
+\definecolor{cstringlight}{HTML}{98980f}
+\definecolor{lightwhite}{HTML}{fafafa}
+
+\lstdefinestyle{DarkCodeStyle}{
+    backgroundcolor=\color{cbg},
+    commentstyle=\itshape\color{ccomment},
+    keywordstyle=\color{ckw},
+    numberstyle=\tiny\color{cbg},
+    stringstyle=\color{cstring},
+    basicstyle=\ttfamily\footnotesize\color{cfg},
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=4,
+    xleftmargin=\leftskip
+}
+
+\lstdefinestyle{LightCodeStyle}{
+    backgroundcolor=\color{lightwhite},
+    commentstyle=\itshape\color{ccomment},
+    keywordstyle=\color{ckw},
+    numberstyle=\tiny\color{cbg},
+    stringstyle=\color{cstringlight},
+    basicstyle=\ttfamily\footnotesize\color{cbg},
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=10pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=4,
+    frame=L,
+    xleftmargin=\leftskip
+}
+
+%\lstset{style=DarkCodeStyle}
+\lstset{style=LightCodeStyle}
+
+%Usage : \begin{lstlisting}[language=Caml] ... \end{lstlisting}
+
+
+
+%-make the table of content clickable
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=black
+}
+
+
+%------pictures
+\usepackage{graphicx}
+%\usepackage{wrapfig}
+
+
+%------tabular
+%\usepackage{color}
+%\usepackage{colortbl}
+%\usepackage{multirow}
+
+
+%------Physics
+%---Packages
+%\usepackage[version=4]{mhchem} %$\ce{NO4^2-}$
+
+%---Commands
+\newcommand{\link}[2]{\mathrm{#1} \! - \! \mathrm{#2}}
+\newcommand{\pt}[1]{\cdot 10^{#1}} % Power of ten
+\newcommand{\dt}[2][t]{\dfrac{d#2}{d#1}} % Derivative
+
+
+%------math
+%---Packages
+%\usepackage{textcomp}
+%\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools} % For abs
+\usepackage{stmaryrd} %for \llbracket and \rrbracket
+\usepackage{mathrsfs} %for \mathscr{x} (different from \mathcal{x})
+
+%---Commands
+%-Sets
+\newcommand{\N}{\mathbb{N}} %set N
+\newcommand{\R}{\mathbb{R}} %set R
+\newcommand{\C}{\mathbb{C}} %set C
+\newcommand{\U}{\mathbb{U}} %set U
+\newcommand{\set}[2]{\left[ #1\ ;\ #2 \right]}
+\newcommand{\nset}[2]{\left\llbracket #1\ ;\ #2 \right\rrbracket}
+
+%-Exponantial / complexs
+\newcommand{\e}[1]{\mathrm{e}^{#1}}
+\newcommand{\ex}{\e{x}}
+\newcommand{\eit}{\e{i\theta}}
+\newcommand{\cj}[1]{\overline{#1}} %overline for the conjugate.
+\newcommand{\cjz}{\cj{z}} %conjugate of z
+
+%-Vectors
+\newcommand{\vect}{\overrightarrow}
+\newcommand{\veco}[3]{\displaystyle \vect{#1}\binom{#2}{#3}} %vector + coord
+
+%-Limits
+\newcommand{\lm}[2][{}]{\lim\limits_{\substack{#2 \\ #1}}} %$\lm{x \to a} f$ or $\lm[x < a]{x \to a} f$
+\newcommand{\Lm}[3][{}]{\lm[#1]{#2} \left( #3 \right)} %$\Lm{x \to a}{f}$ or $\Lm[x < a]{x \to a}{f}$
+
+%-Integral
+\newcommand{\dint}[4][x]{\displaystyle \int_{#2}^{#3} #4 \mathrm{d} #1} %$\dint{a}{b}{f(x)}$ or $\dint[t]{a}{b}{f(t)}$
+
+%-Others
+\newcommand{\trig}[2]{#1 \left( #2 \right)} %$\trig{\sin}{\dfrac a b}$
+\newcommand{\para}{\ /\!/\ } %//
+\newcommand{\ssi}{\ \Leftrightarrow \ }
+\newcommand{\abs}[1]{\left\lvert #1 \right\rvert} % abs{x} -> |x|
+\newcommand{\eqsys}[2]{\begin{cases} #1 \\ #2 \end{cases}}
+
+\newcommand{\med}[2]{\mathrm{med} \left[ #1\ ;\ #2 \right]}  %$\med{A}{B} -> med[A ; B]$
+\newcommand{\Circ}[2]{\mathscr{C}_{#1, #2}}
+
+\newcommand{\lr}[1]{\left( #1 \right)}
+\newcommand{\lrb}[1]{\left[ #1 \right]}
+
+
+
+
+%------commands
+%---to quote french text
+\newcommand{\simplecit}[1]{\guillemotleft$\;$#1$\;$\guillemotright}
+\newcommand{\cit}[1]{\simplecit{\textcolor{656565}{#1}}}
+\newcommand{\quo}[1]{\cit{\it #1}}
+
+%---to indent
+\newcommand{\ind}[1][20pt]{\advance\leftskip + #1}
+%\newcommand{\ind}[1][20pt]{\advance\leftskip + 0pt}
+\newcommand{\deind}[1][20pt]{\advance\leftskip - #1}
+%\newcommand{\deind}[1][20pt]{\advance\leftskip - 0pt}
+
+%---to indent a text
+\newcommand{\indented}[2][20pt]{\par \ind[#1] #2 \par \deind[#1]}
+\newenvironment{indentedenv}[1][20pt]{\par \ind[#1]}{\par \deind}
+\newenvironment{indt}[2][20pt]{#2 \begin{indentedenv}[#1]}{\end{indentedenv}} %Titled indented env
+
+%---title
+\newcommand{\thetitle}[2]{\begin{center}\textbf{{\LARGE \underline{\emph{#1} :}} {\Large #2}}\end{center}}
+
+%---parts
+%-I
+\newcommand{\mainpart}[2][$\!\!$]{\underline{\large \textbf{\emph{\textit{#1} #2}}}}
+\newcommand{\bmainpart}[2][$\!\!$]{\underline{\large \textbf{\textit{#1} #2}}}
+%-A
+\newcommand{\subpart}[2][$\!\!$]{\underline{\bf \textsl{#1} #2}}
+%-1
+\newcommand{\subsubpart}[2][$\!\!$]{.\underline{\textsl{#1} #2}}
+%-a
+\newcommand{\subsubsubpart}[2][$\!\!$]{.\underline{\it #1 #2}}
+
+%math part
+\newcommand{\secpart}[1]{.\underline{\it #1 :}}
+
+\newenvironment{mathdef}[2][20pt]{
+    \secpart{#2} \begin{indentedenv}[#1]}
+    {\end{indentedenv}}
+
+
+%------page style
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+
+\setlength{\headheight}{18pt}
+\setlength{\footskip}{50pt}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE, RO]{\textit{\today}}
+\fancyhead[RE, LO]{\large{\textsl{\emph{\texttt{\jobname}}}}}
+
+\fancyfoot[RO, LE]{\textit{\texttt{Page \thepage /\pageref{LastPage}}}}
+\fancyfoot[LO, RE]{\includegraphics[scale=0.12]{/home/lasercata/Pictures/1.images_profil/logo/mieux/lasercata_logo_fly_fond_blanc.png}}
+
+
+%------init lengths
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{3pt}
+
+
+%-----------------------------------Begin Document
+\begin{document}
+
+    \thetitle{Info}{Bases de la programmation}
+    
+    \tableofcontents
+    \newpage
+    
+    \begin{indt}{\section{Intro}}
+        
+        \begin{indt}{Principaux paradigmes :}
+            $-$ Impératif (C, Python) ;
+            
+            \begin{indt}{$-$ Déclaratif :}
+                $-$ Fonctionnel (OCaml) ;
+                
+                $-$ Logique ;
+            \end{indt}
+            
+            \vspace{6pt}
+            
+            $-$ Orienté objet.
+        \end{indt}
+        
+    \end{indt}
+    
+    \vspace{12pt}
+    
+    \begin{indt}{\section{Programmation fonctionnelle}}
+        
+        \begin{indt}{\subsection{Bases du langague OCaml}}
+            
+            \begin{indt}{\subsubsection{Déclarations}}
+                Syntaxe :
+                
+                \begin{lstlisting}[language=Caml, xleftmargin=90pt]
+let <name> = <expression>
+let a = 5
+let n = 5 in n*n (*-> 25*)
+
+let a = 3 and b = 2 in a + b
+                \end{lstlisting}
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Expression}}
+                \begin{indt}{Types de bases :}
+                    $-$ \texttt{unit} : associé à une unique valeur, \texttt{void}, notée \texttt{()} ;
+                    
+                    $-$ \texttt{int} : les entiers (bornés, signés). On peut utiliser \texttt{min\_int} et \texttt{max\_int}. Fonctions : \texttt{+, -, *, /, mod} (\texttt{/} donne le quotient) ;
+                    
+                    $-$ \texttt{float} : les flotants. Fonctions : \texttt{+., *, -., /., **, sqrt, log, exp, sin, asin}, ... On peut utiliser \texttt{1.789e3} ;
+                    
+                    $-$ \texttt{char} : les caractères, notés entre \texttt{'} ;
+                    
+                    $-$ \texttt{string} : chaines de caractères, notés entre \texttt{"}. Fonctions utiles : \texttt{"bon" $\wedge$ "jour"} (concaténation), \texttt{String.length} ;
+                    
+                    $-$ Les couples : \texttt{t1 * t2} est un couple avec \texttt{t1} et \texttt{t2} des types. Fonctions : \texttt{fst}, \texttt{snd} ;
+                    
+                    $-$ \texttt{bool} : \texttt{true, false}. Fonctions : \texttt{not}, \texttt{\&\&}, \texttt{||} (évaluation paresseuse). Comparaisons : \texttt{=, <>, <, >, <=, >=}
+                \end{indt}
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Filtrage par motif}}
+                
+                Exemples :
+                \begin{lstlisting}[language=Caml, xleftmargin=80pt]
+match x with
+    | y when y = < 0 -> -y
+    | _ -> x
+    
+match (a, b) with
+    | (x, 0) | (0, x) -> 0
+    | (x, y) -> x + y
+
+match (a, b) with
+    | (x, 0) | (0, x) -> begin match x with
+                                | 0 -> -1
+                                | _ -> 0
+                        end
+    | (x, y) -> x + y
+                \end{lstlisting}
+                
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Les fonctions}}
+                
+                Exemples :
+                
+                \begin{lstlisting}[language=Caml, xleftmargin=80pt]
+let f x = x*x
+let g (x:int) (y:int) : int = x + y (*version curryfiee*)
+let g2 ((x, y):int*int) : int = x + y (*version decuryfiee*)
+f 2
+g 5 7
+
+let h = g 1
+
+f2 = function x -> x + y
+f3 = fun x y -> x + y
+
+let test0 : int -> bool = function n -> n = 0
+                \end{lstlisting}
+                
+            \end{indt}
+            
+        \end{indt}
+        
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Récursivité}}
+            
+            \begin{indt}{\subsubsection{Fonctions récursives en OCaml}}
+                
+                Exemple :
+                
+                \begin{lstlisting}[language=Caml, xleftmargin=80pt]
+let rec fact (n:int):int = n * fact(n - 1)
+(*fact 10
+will return :
+Stack overflow during evaluation (looping recursion?).*)
+
+let rec fact (n:int):int =
+    match n with
+        | 0 | 1 -> 1
+        | _ -> n * fact(n - 1)
+                \end{lstlisting}
+                
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Les listes}}
+                
+                \begin{indt}{Les listes en OCaml sont :}
+                    $-$ homogènes ;
+                    
+                    $-$ On ne peut accéder qu'à la tête directement ;
+                    
+                    $-$ On ne peut pas modifier une liste, seulement en créer de nouvelles.
+                \end{indt}
+                
+                \vspace{6pt}
+                
+                $\boxed{a_1} \longrightarrow \boxed{a_2} \longrightarrow \ldots \longrightarrow \boxed{a_n} \longrightarrow$ \texttt{nil}
+                
+                \vspace{6pt}
+                
+                Exemples :
+                
+                \begin{lstlisting}[language=Caml, xleftmargin=80pt]
+let l = x1::x2::xn::[]
+(*l est de type 'a list*)
+
+let l2 = [0 ; 1 ; 2 ; 3]
+
+List.hd l2 (*return 0*)
+List.tl l2 (*return [1 ; 2 ; 3]*)
+
+let rec len (l:'a list):int =
+    match l with
+        | [] -> 0
+        | _::q -> 1 + len q
+
+let l3 = [1 ; 2] @ [3 ; 4] (*return l3 = [1 ; 2 ; 3 ; 4]*)
+            \end{lstlisting}
+            
+            \vspace{6pt}
+            
+            Gammes :
+            
+            \begin{lstlisting}[language=Caml, xleftmargin=80pt]
+let rec mem (x:'a) (l:'a list):bool =
+    (*Test d'appartenance*)
+    match l with
+        | [] -> false
+        | t::q -> x = t || mem x q
+
+let rec concat (l1:'a list) (l2:'a list) : 'a list =
+    (*Concatenation*)
+    match l1 with
+        | [] -> l2
+        | t::q -> t::(concat q l2)
+
+let rec exist (f:'a -> bool) (l:'a list) : bool =
+    (*Teste si il existe un el x tq f x = true*)
+    match l with
+        | [] -> false
+        | t::q -> f t || exist f q\end{lstlisting}
+                
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Cas particuliers de récursivité}}
+                
+                Récursivité croisée :
+                
+                \begin{lstlisting}[language=Caml, xleftmargin=80pt]
+let rec f_1 args_1 = code_1
+and f_2 args_2 = code_2
+...
+and f_n args_n = code_n
+                \end{lstlisting}
+                
+                \vspace{6pt}
+                
+                \begin{indt}{\underline{Récursivité terminale}}
+                    Une fonction est récursive terminale si son résultat est le résultat d’un appel récursif sans calcul supplémentaire. Cela permet des optimisations dans la gestion des appels de fonction.
+                    
+                    Ex : calc $\displaystyle S = \sum_{k = 0}^n k$ :
+                    
+                    \begin{lstlisting}[language=Caml, xleftmargin=100pt]
+let sum (n:int):int =
+    let rec aux (n:int) (acc:int) : int =
+        (*Calc de acc + S*)
+        match n with
+            | 0 -> acc
+            | _ -> aux (n - 1) (acc + n)
+    in aux n 0
+                    \end{lstlisting}
+                    
+                    Ici, l’accumulation est calculée avant l’appel récursif (passage par valeur) : on économise l’espace mémoire.
+                \end{indt}
+                
+            \end{indt}
+            
+        \end{indt}
+        
+    \end{indt}
+    
+    \begin{indt}{\section{Efficacité et sûreté des algo}}
+        
+        \begin{indt}{\subsection{Complexité}}
+            
+            \begin{indt}{\subsubsection{Intro}}
+                
+                On distingue complexité temporelle (mesure du temps de calcul) et complexité spatiale (mesure espace mémoire utilisé). Notions floues. On s'intéresse en général à l'ordre de grandeur des quantités (spatiale) et au nombre d'opérations (complexité temporelle).
+                
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Notations de Bachmann-Landau}}
+                
+                Soient $(u_n)_{n \in \N}$ et $(v_n)_{n \in \N}$ des suites d'entiers positifs.
+                
+                \vspace{6pt}
+                
+                $u$ est dominée par $v$ se note $u_n = \mathcal{O}(v_n)$.
+                
+                $u_n = \mathcal{O}(v_n) \ssi \exists (c, N) \in \R_+^* \times \N \ |\ \forall n \ge N,\ u_n \le v_n$
+                
+                \vspace{6pt}
+                
+                $u$ domine $v$ se note $u_n = \Omega(v_n)$.
+                
+                $u_n = \Omega(v_n) \ssi \exists (c, N) \in \R^*_+ \times \N \ |\ \forall n \ge N,\ u_n \ge v_n$
+                
+                \vspace{6pt}
+                
+                $u$ est de l'ordre de $v$ se note $u_n = \Theta(v_n)$.
+                
+                $u_n = \Theta(v_n) \ssi u_n = \mathcal{O}(v_n) \ \wedge\ u_n = \Omega(v_n)$
+                
+                \vspace{12pt}
+                
+                Propriétés :
+                
+                $\forall \alpha, \beta > 0,\ (\log n)^\alpha = \mathcal{O}(n^\beta)$
+                
+                $\forall \alpha \in \R, \forall \beta > 0,\ n^\alpha = \mathcal{O}(\beta^n)$
+                
+                $
+                    \forall \alpha \ge \beta > 0,\
+                    \begin{cases}
+                        n^\beta = \mathcal{O}(n^\alpha)
+                        \\
+                        (\log n)^\beta = \mathcal{O}((\log n)^\alpha)
+                        \\
+                        \beta^n = \mathcal{O}(\alpha^n)
+                    \end{cases}
+                $
+                
+                $u_n = \mathcal{O}(w_n)\ \wedge\ v_n = \mathcal{O}(w_n) \Rightarrow u_n + v_n = \mathcal{O}(w_n)$
+                
+                $u_n = \mathcal{O}(v_n) \Rightarrow u_n \cdot w_n = \mathcal{O}(v_n \cdot w_n)$
+                
+                \vspace{6pt}
+                
+                Ex :
+                $3u_n = \mathcal{O}(u_n)$
+                
+                $n \cdot \mathcal{O}(1) = \mathcal{O}(n)$ (abus de notation).
+                
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Complexité dans le pire cas}}
+                
+                Voc : Si la complexité est en :
+                
+                $\mathcal{O}(1)$ : temps constant ;
+                
+                $\mathcal{O}(n)$ : complexité linéaire (ex : factorielle, chercher un élément dans une liste) ;
+                
+                $\mathcal{O}(n^2)$ : complexité quadratique (ex : supression des doublons d'une liste) ;
+                
+                $\mathcal{O}(\log n)$ : complexité logarithmique (ex : recherche dichotomique) ;
+                
+                $\mathcal{O}(n\log n)$ : complexité quasi-linéaire ;
+                
+                $\mathcal{O}(a^n)$ : complexité exponentielle.
+                
+                On utilise le même voc pour $\Theta$.
+                
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Relation de récurence}}
+                
+                Relation de la forme $C(n) = C(n - 1) + an$
+                
+                On résout directement :
+                
+                $\displaystyle C(n) = C(n - 2) + a(n - 1) + an = ... = C(1) + a \sum_{k = 2}^n k = C(1) + \dfrac{(n - 1)(n + 1)}{2} = \Theta(n^2)$
+                
+                Ex : tri par insertion :
+                
+                \begin{lstlisting}[language=Caml, xleftmargin=80pt]
+let rec insert (x:'a) (l:'a list) : 'a list =
+    (*Liste triee par ordre croissant*)
+    match l with
+    | [] -> [x]
+    | t::q when t > x -> t::insert x q
+    | _ -> t::l
+
+let rec i_sort (l:'a list) : 'a list =
+    match l with
+    | [] -> []
+    | t::q -> insert t (i_sort q)
+                \end{lstlisting}
+                
+                \vspace{12pt}
+                
+                Tri fusion :
+                
+                \begin{lstlisting}[language=Caml, xleftmargin=80pt]
+let rec partition (l:'a list) : 'a list * 'a list =
+    match l with
+    | [] -> [], []
+    | [a] -> [a], []
+    | a::b::q -> let (l1, l2) = partition q in (a::l1, b::l2)
+
+                \end{lstlisting}
+                
+                \newpage
+                
+                \begin{lstlisting}[language=Caml, xleftmargin=80pt]
+let rec fusion (l1:'a list) (l2:'a list) : 'a list =
+    (*Fusionne 2 listes triees pour return une liste triee par ordre croissant.*)
+    match l1, l2 with
+    | [], _ -> l2
+    | _, [] -> l1
+    | t1::q1, t2::q2 when t1 <= t2 -> t1::fusion q1 l2
+    | t1::q1, t2::q2 -> t2::fusion l1 q2
+
+let rec tri_fusion (l:'a list) : 'a list =
+    match l with
+    | [] | [_] -> l
+    | _ -> let (l1, l2) = partition l in fusion (tri fusion l1) (tri_fusion l2)
+                \end{lstlisting}
+                
+            \end{indt}
+            
+        \end{indt}
+        
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Spécifications et tests}}
+            
+            \begin{indt}{\subsubsection{Rappels}}
+                $-$ Lors de la déclaration d'une fonction, il est possible de préciser la \emph{signature}, \textit{i.e} le type de ses param et de son résultat.
+                
+                $-$ Lorsque le code d'une fonction s'appuie sur des hypothèses concernant ses param (qui ne st pas garanties par la signature), il est recommandé de les préciser en comment.
+                
+                Ex :
+                \begin{lstlisting}[language=Caml, xleftmargin=80pt]
+let rec sum (n:int):int =
+    (*On suppose n positif*)
+    match n with
+    | 0 -> 0
+    | _ -> n + sum(n - 1)
+                \end{lstlisting}
+            \end{indt}
+            
+            \begin{indt}{\subsubsection{Spécification d'une fonction}}
+                Fournir la spécification d'une fonction, c'est préciser quelles st les données attendues en param (type et hypothèses), et expliquer ce qu'elle calcule (type et nature du résultat vis-à-vis des param d'entrée).
+                
+                Rq : Il n'y a pas vraiment de standard pr l'écriture d'une spécification, le plus important est d'être précis.
+                
+                Ex :
+                \begin{lstlisting}[language=Caml, xleftmargin=80pt]
+(*Fonction insert :
+    - Parametres :
+        + element x de type 'a
+        + liste l triee de type 'a list
+    
+    - Resultat :
+        Liste triee, contenant x et tous les elements de l
+*)
+let rec insert (x:'a) (l:'a list):'a list = ...
+                \end{lstlisting}
+
+            \end{indt}
+            
+            \vspace{6pt}
+            
+            \begin{indt}{\subsubsection{Motivation des tests}}
+                $-$ Le typage en OCaml permet de vérifier statiquement la cohérence de l'écriture des expressions.
+                
+                $-$ Les tests sont une manière \emph{dynamique} de vérifier que l'éxécution d'un programme passe bien.
+                
+                $-$ Faire des tests permet de détecter les erreurs du programmeur, mais aussi de l'utilisateur.
+                
+                Exemple d'erreur de l'utilisateur : l'utilisateur ne fournit pas un param qui vérifie la spécification (contrainte de type ou de valeur).
+                
+                \vspace{6pt}
+                
+                Il y a des fonctions de lecture permettant d'interrompre le programme pr ask des valeurs à l'utilisateur :
+                
+                $-$ \texttt{read\_int: unit -> int}
+                
+                $-$ \texttt{read\_float: unit -> float}
+                
+                $-$ \texttt{read\_line: unit -> string}
+                
+                \vspace{6pt}
+                
+                Usage : \texttt{read\_int()}
+                
+                \vspace{6pt}
+                
+                \begin{indt}{Erreur : on a éxécuté \texttt{sum(read\_int())} et l'utilisateur entre :}
+                    $-2$ : \texttt{Stackoverflow} ...
+                    
+                    $2.3$ : \texttt{Failure of ``int\_to\_string''}
+                \end{indt}
+                
+                \vspace{6pt}
+                
+                Exemple d'erreur par le programmeur : faute de frappe ($+1$ au lieu de $+2$) ou alors une icompréhension sur le résultat d'une fonction.
+                
+                Ex : Que calcule \texttt{x mod 3} ? Le reste de la division euclidienne de $x$ par $3$ si $x \ge 0$.
+                Si $x < 0$, le résultat est négatif : le reste moins $3$.
+                
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Détecter une erreur}}
+                
+                \begin{indt}{Pour détecter une erreur, il faut pouvoir :}
+                    (1) : exprimer des contraintes : exprimer des booléens ;
+                    
+                    (2) : vérifier que les contraintes sont satisfaites, i.e qu'elles s'évaluent en \texttt{true}.
+                \end{indt}
+                
+                \vspace{6pt}
+                
+                Possibilité : expression conditionnelles $-$ Syntaxe :
+                \texttt{if <exp> then <exp> else <exp>}
+                
+                La première exp doit être de type bool. L'expression conditionnelle s'évalue en la valeur de l'expression après \texttt{then} si ce booléen s'évalue en \texttt{true}, et en celle de la dernière expression sinon -> les 2 expression (branches \texttt{then} et \texttt{else} doivent être de mm type)
+                
+                Si la branche \texttt{then} est de type unit, la branche \texttt{else} est facultative.
+                
+                \texttt{if b then e} $\ssi$ \texttt{if b then e else ()}
+                
+                
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Signaler une erreur}}
+                
+                Por signaler une erreur, on peut interroger l'éxécution du programme qui ?détecte? l'erreur ou bien la poursuivre en renvoyant une valeur par défaut rpz l'absurde résultat.
+                
+                Ex :
+                \texttt{List.hd []} -> \texttt{Exception Failure ``hd''}
+                
+                On peut réécrire hd :
+                \begin{lstlisting}[language=Caml, xleftmargin=80pt]
+let hd (l:'a) (default:'a) =
+    match l with
+    | [] -> default
+    | t::_ -> t
+                \end{lstlisting}
+                
+                Pb : change le type de la fonction. Il n'y a pas tj une valeur par défaut à fournir : ex inverse nb et div par 0.
+                
+                Type option : on peut  signaler l'absence de résultat grâce au type \texttt{'a option} (polymorphe) qui a 2 contructeurs :
+                
+                \indented{$-$ \texttt{None}, qui rpz l'absence de valeur}
+                \indented{$-$ \texttt{Some : 'a -> 'a option} (Some $x$ rpz la valeur $x$)}
+                
+                Ex :
+                
+                \begin{lstlisting}[language=Caml, xleftmargin=80pt]
+let rec quotient (a:int) (b:int) : int option =
+    (*On suppose a>=0 et b >= 0*)
+    
+    if b = 0 then None
+    else if a < b then Some 0
+    else match quotient (a - b) b with
+        | None -> None
+        | Some q -> Some (1 + q);;
+                \end{lstlisting}
+                
+                
+                Exception : on a vu le msg \texttt{Exception Failure ...}
+                
+                C'est le résultat de l'application de la fonction \texttt{failwith}, qui prend une chaîne de caractères en entrée et qui interrompt le programme.
+                
+                Ex :
+                
+                \begin{lstlisting}[language=Caml, xleftmargin=80pt]
+let rec quotient (a:int) (b:int) : int =
+    if b = 0 then failwith "Division par 0"
+    else if a < b then 0
+    else 1 + quotient (a - b) b
+                \end{lstlisting}
+                
+                Rq : le résultat de la fonction \texttt{failwith} est de type \texttt{int}.
+                
+                En fait, \texttt{failwith} est de type \texttt{string -> 'a}
+                
+                \vspace{6pt}
+                
+                \texttt{Failure} est cas particulier d'exception.
+                
+                $\bullet$ On déclare une exception grâce à la syntaxe \texttt{exception <Nom>} (le nom commence par une maj)
+                
+                $\bullet$ Une exception est de type \texttt{exn}
+                
+                $\bullet$ On soulève une exception grâce à \texttt{raise <Nom>}, ce qui interrompt le programme et affiche \texttt{Exception: <Nom>}.
+                
+                \texttt{raise} est de type \texttt{exn -> 'a}
+                
+                \texttt{failwith s}  est équivlent à \texttt{raise(Failure s)}
+                
+                \vspace{6pt}
+                
+                Rq: les expressions conditionnelles, les types option et les exceptions ne sont pas spécifiques à la gestion d'erreur.
+                
+                En particulier, on peut rattraper une exception pour continuer l'éxécution autrement.
+                
+                Syntaxe :
+                \begin{lstlisting}[language=Caml, xleftmargin=80pt]
+try <exp> with
+| <nom> -> <exp>
+| <nom> -> <exp>
+...
+                \end{lstlisting}
+                
+                Les exceptions non stoppées remontent jusqu'à l'utilisateur.
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Un cas particulier : les assertions}}
+                
+                Une assertion s'écrit \texttt{assert <exp>} où l'expression est de type \texttt{bool}.
+                
+                Si l'expression s'évalue à \texttt{false}, l'exception \texttt{Assert\_failure} est levée.
+                Sinon, le résultat est \texttt{()}, donc de type \texttt{unit}.
+                
+                Usage : on évalue l'assertion \textit{puis} on éxécute le reste du code, ie. on éxécute des instructions l'une après l'autre.
+                
+                On utilise une nouvelle construction syntaxique. La séquence
+                
+                Syntaxe : \texttt{<exp\_1> ; <exp\_2> ; ... ; <exp\_n>}
+                
+                \texttt{<exp\_1> ; <exp\_2> ; ... ; <exp\_(n-1)>} sont de type \texttt{unit}.
+                
+                Le type de la séquence est le type de l'expression \texttt{<exp\_n>}
+                
+                Ex :
+                \begin{lstlisting}[language=Caml, xleftmargin=80pt]
+let rec sum (n:int):int =
+    assert (n >= 0);
+    if n = 0 then 0 else n + sum (n - 1);;
+                \end{lstlisting}
+                
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Corriger des erreurs}}
+                
+                \'Exécuter des tests permet de détecter une erreur, mais aussi la partie du code qui est fautive.
+                
+                L'outil le plus simple pour déterminer d'où vient la faute est de savoir comment la corriger est l'usage d'affichages localisés en combinaison d'un jeu de test (concernant l'ensemble des possibilités pour l'éxécution d'un programme).
+                
+                \vspace{6pt}
+                
+                \begin{indt}{Fonction d'affichage :}
+                    $-$ \texttt{print\_int : int -> unit}
+                    
+                    $-$ \texttt{print\_float : float -> unit}
+                    
+                    $-$ \texttt{print\_string : string -> unit}
+                    
+                    $-$ \texttt{print\_newline : unit -> unit}
+                \end{indt}
+                
+                $\rightarrow$ ce sont des \emph{instructions} à utiliser au sein de séquences
+                
+                $\rightarrow$ On aborde la programmation impérative.
+                
+                \vspace{6pt}
+                
+                Rq : les instructions en OCaml sont des expressions de type \texttt{unit} et affectent l'état de la machine.
+                On dit qu'elles produisent des effets de bord et elles st par conséquent appelées expressions impures (par oppo à purement fonctionnelles)
+                
+            \end{indt}
+        
+        \end{indt}
+        
+    \end{indt}
+    
+    \vspace{24pt}
+    
+    \begin{indt}{\section{Programmation impérative}}
+        
+        \begin{indt}{\subsection{Bases du language C}}
+            
+            \begin{indt}{\subsubsection{Expressions}}
+                Comme en OCaml, les expression st de type construit par combinaison de variables, de constantes, de fonctions et de différentes constructions syntaxiques pouvant renvoyer une valeur. Les expression sont également associées à des types.
+                
+                \begin{indt}{Les types de base sont :}
+                    $-$ \texttt{void} : un type vide qui joue un rôle similaire à \texttt{unit} en OCaml ;
+                    
+                    \vspace{6pt}
+                    
+                    $-$ \texttt{int} : les entiers, constructibles via des constantes ($0$, $1$, ...), des fonctions ($+$, $*$, $+$, $/$ (quotient div eucl), \% (mod)) ;
+                    
+                    \vspace{6pt}
+                    
+                    $-$ \texttt{double} : les nombres flottants (même si \texttt{float} existe également). On peut utiliser des constantes ($3.14159$, $1.789\mathrm e3$), des fonctions ($+$, $-$, $*$, $/$) ;
+                    
+                    \vspace{6pt}
+                    
+                    $-$ \texttt{char} : les caractères entre \texttt{''} (ex : \texttt{'test'}) ;
+                    
+                    \vspace{6pt}
+                    
+                    $-$ \texttt{bool} : les valeurs de vérité. Les constantes booléennes sont \texttt{true} et \texttt{false}.
+                    \begin{indt}{Les fonctions booléennes sont :}
+                    
+                        $*$ la négation : \texttt{! <exp>} ;
+                        
+                        $*$ la disjonction : \texttt{<exp> || <exp>} ;
+                        
+                        $*$ la conjonction : \texttt{<exp> \&\& <exp>}
+                        
+                        $*$ les comparaisons : \texttt{==, !=, <, >, <=, >=}
+                        
+                    \end{indt}
+                    
+                \end{indt}
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Instructions}}
+                Elles désignent des ordres à éxécuter, qui ont un effet sur l'état de la machine (la mémoire). On dit qu'elles produisent des effet de bord.
+                
+                \begin{indt}{Exemples d'instructions :}
+                    
+                    $-$ La déclaration : on déclare une variable en précisant son type , son nom et facultativement sa valeur :
+                    \indented{\texttt{<type> <nom> [=<exp>];}}
+                    
+                    Ex :
+                    \begin{lstlisting}[language=C, xleftmargin=100pt]
+int x = 42;
+double z;
+                    \end{lstlisting}
+                    
+                    $-$ Déclaration simultanée ; on peut déclarer plusieurs variables de \textit{même type} en les séparant par des virgules. Ex :
+                    
+                    \begin{lstlisting}[language=C, xleftmargin=100pt]
+int x, y;
+int i = 0, j;
+                    \end{lstlisting}
+                    
+                    \vspace{6pt}
+                    
+                    $-$ Constantes : par défaut, on peut modifier la valeur des variables. Pour interdire la modification d'une variable, on utilise le mot-clé \texttt{const}. La valeur est obligatoire.
+                    
+                    Ex : \texttt{const double x = 3.4;}
+                    
+                    \vspace{6pt}
+                    
+                    $-$ Affectation : pour modifier la valeur d'une variable, on utilise l'instruction affectation.
+                    
+                    Syntaxe : \texttt{<nom> = <exp>;}
+                    
+                    \vspace{6pt}
+                    
+                    $-$ L'incrémentation : (hors programme) on peut ajouter $1$ à la valeur d'une variable entière grâce à l'opérateur d'incrémentation : \texttt{<nom>++;}. Les propriétés sont H.P. Rq : décrémentation \texttt{<nom>-$\vphantom a$-;}
+                    Avec nos restrctions, c'est équivalent d'écrire \texttt{i++} ou \texttt{i = i + 1} ou \texttt{i += 1} ;
+                    
+                    \vspace{6pt}
+                    
+                    $-$ L'assertion : on écrit \texttt{assert(<exp>);} ;
+                    
+                    \vspace{6pt}
+                    
+                    $-$ Entrées / sorties : On peut afficher une chaîne de char grâce à la fonction \texttt{printf}.
+                    Ex :
+                    
+                    \begin{lstlisting}[language=C, xleftmargin=100pt]
+printf("Bonjour\n");\end{lstlisting}
+                    
+                    \begin{indt}{On peut afficher la valeur d'une expression grâce à une chaîne de format contenant les codes :}
+                        $-$ \texttt{\%d} pour les entiers ;
+                        
+                        $-$ \texttt{\%f} pour les flottants ;
+                        
+                        $-$ \texttt{\%lf} pour les \texttt{double} (long float) ;
+                        
+                        $-$ \texttt{\%c} pour les caractères ;
+                        
+                        $-$ \texttt{\%s} pour les chaînes.
+                    \end{indt}
+                    
+                    Ex :
+                    
+                    \begin{lstlisting}[language=C, xleftmargin=100pt]
+printf("%d et %f", x + 1, 4.5);\end{lstlisting}
+                    
+                    Pour demander une valeur à l'utilisateur, on utilise la fonction \texttt{scanf} avec la chaîne de format adaptée.
+                    Ex :
+                    
+                    \begin{lstlisting}[language=C, xleftmargin=100pt]
+scanf("%d", &x);
+//%d : We want an int
+//& : Operator to get the variable memory acces
+//x : Variable in which we want to store the value (declared before)
+                    \end{lstlisting}
+                    
+                \end{indt}
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Structures de contrôle}}
+                $-$ Instruction conditionnelle :
+                \indented{\texttt{if (<exp>) <instr> [else <instr>]}}
+                
+                Ex :
+                    
+                    \begin{lstlisting}[language=C, xleftmargin=80pt]
+if (b) x = x + 2;
+
+if (a && !b)
+    x = x + 2;
+else
+    y = 2 * x;
+                    \end{lstlisting}
+                
+                Pour éxécuter plusieurs instructions dans une branche d'une instruction conditionnelle, on délimite un bloc par des accolades.
+                Ex :
+                    
+                    \begin{lstlisting}[language=C, xleftmargin=80pt]
+if (b) {
+    x = x + 2;
+    y = 2 * y;
+}\end{lstlisting}
+                
+                \vspace{6pt}
+                
+                \begin{indt}{$-$ Itérations : la programmation itérative est un cas particulier de la programmation impératve.
+                
+                Principe : on répète le même bloc d'instruction un certain nombre de fois.}
+                    
+                    $*$ Boucles conditionnelles : on répète les instructions tant qu'une condition est satisfaite. Syntaxe :
+                    
+                    \begin{lstlisting}[language=C, xleftmargin=100pt]
+while (x % 7 != 0)
+    x--;\end{lstlisting}
+                    
+                    \vspace{6pt}
+                    
+                    $*$ Boucles inconditionnelles / boucles for : on répète les instructions un nombre déterminé de fois. En C, le nombre d'itérations est conditionné par trois expression. Syntaxe :
+                    
+                    \begin{lstlisting}[language=C, xleftmargin=100pt]
+for (<exp1> ; <exp2> ; <exp3>) <instr/bloc>\end{lstlisting}
+                    
+                    \texttt{<exp1>} est l'initialisation, éxécutée avant la boucle ;
+                    
+                    \texttt{<exp2>} est une condition. Les itérations s'arrêtent lorsqu'elle n'est plus satisfaite ;
+
+                    \texttt{<exp3>} est une instruction éxécutée entre chaque itération (souvent l'incrémentation d'un compteur).
+                    
+                    \vspace{6pt}
+                    
+                    Ex :
+                    
+                    \begin{lstlisting}[language=C, xleftmargin=100pt]
+for (i=0 ; i < 10 ; i++) { //Rq : i doit etre declare avant, et vaudra 10 a la fin de l execution
+    x = x * 2;
+    y = y / 2 * i
+}\end{lstlisting}
+                    
+                    On peut également déclarer un compteur de boucle qui sera supprimé à la fin de l'éxécution :
+                    
+                    \begin{lstlisting}[language=C, xleftmargin=100pt]
+for (int i = 0 ; i < 10 ; i++) {
+    ...
+}\end{lstlisting}
+                    
+                    \vspace{6pt}
+                    
+                    $*$ Interruption des itérateurs : on peut interrompre une boucle avec l'instruction \texttt{break}
+                    
+                \end{indt}
+                
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Fonctions}}
+                $-$ Déclaration : Syntaxe : \texttt{<type\_ret> <func\_name> (<type\_arg1> <arg1>, ..., <type\_argn> <argn>) <bloc>}
+                
+                Exemple :
+                    
+                \begin{lstlisting}[language=C, xleftmargin=80pt]
+double moyenne (double x, double y, double z) {
+    return (x + y + z) / 3;
+}\end{lstlisting}
+                
+                L'instruction \texttt{return [<exp>];} permet de sortir de la fonction en renvoyant la valeur de l'expression. i le type de la fonction est \texttt{void}, on utilise pas d'expression et le \texttt{return} est facultatif.
+                
+                \vspace{12pt}
+                
+                $-$ Utilisation : pour applique une fonction, à des arguments, on utilise la syntaxe \texttt{<nom>(<exp1>, ..., <expn>)}.
+                
+                Les arguments sont passés par valeur.
+                
+                Si le type de retour est \texttt{void}, on peut voir l'appel de la fonction comme une instruction.
+                
+                Ex : \texttt{f(x ,y);}
+                
+                \vspace{12pt}
+                
+                $-$ Fonction \texttt{main} : c'est la fonction principale d'un programme C. Elle est obligatoire si on veut éxécuter du code.
+                
+                Elle est sans paramètres (pour l'instant), et son type de retour est \texttt{int}. Par défaut, la valeur de retour est $0$. On écrit donc :
+                    
+                \begin{lstlisting}[language=C, xleftmargin=80pt]
+int main() {
+    <block>
+    return 0;
+}
+                \end{lstlisting}
+                
+                \vspace{12pt}
+                
+                $-$ Variables locales : les variables déclarées ds un bloc sont limitées à ce bloc.
+                Pour déclarer une var globale, on la déclare en dehors de toute fonction.
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Tableaux}}
+                On se limite pour l'instant aux tableaux statiques i.e. dont la taille est fixée d'avance par une expression littérale.
+                
+                \vspace{12pt}
+                
+                $-$ Déclaration : \texttt{<type> <name>[<size>];}
+                
+                \vspace{6pt}
+                
+                $-$ Initialisation : On peut initialiser le contenu du tableau à l'aide d'une boucle, ou bien au moment de la déclaration à l'aide de la syntaxe \texttt{<type> <name>[<size>] = {<exp1>, ..., <expn>}}
+                
+                Ex :
+                \begin{lstlisting}[language=C, xleftmargin=80pt]
+int tab[2];
+int t[3] = {0, 1, 2};
+                \end{lstlisting}
+                
+                \vspace{12pt}
+                
+                $-$ Accès et écriture : on accède à une case d'un tableau par un indice.
+                
+                Syntaxe : \texttt{<name>[<index>];}
+                
+                Pour écrire dans une case, on utilise l'instruction d'affectation.
+                Ex : \texttt{t[0] = 2;}
+                    
+                \begin{lstlisting}[language=C, xleftmargin=80pt]
+for (int i=0 ; i < n ; i++){
+    t[i] = 2*i
+}
+                \end{lstlisting}
+                
+                \vspace{12pt}
+                
+                $-$ Tableaux multidimentionnels : ce sont des tableaux de tableaux.
+                
+                Ex :
+                    
+                \begin{lstlisting}[language=C, xleftmargin=80pt]
+int const a = 20, b = 10;
+int t[a][b];
+
+for (int i=0 ; i < a ; i++) {
+    for (int j=0 ; j < b ; j++) {
+        t[i][j] = i + j;
+    }
+}
+                \end{lstlisting}
+                
+                \vspace{12pt}
+                
+                $-$ Chaînes de caractères : ce sont des tableaux de \texttt{char} qui contiennent obligatoirement le caractère spécial \texttt{'\textbackslash 0'}
+                
+                Entrées : on écrit \texttt{scanf("\%f", name);}
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Transtypage}}
+                Les conversions de type sont implicites.
+                
+                Ex : \texttt{1 + 2.5} est correct.
+                
+                On peut écrire une conversion explicite grâce à la syntaxe \texttt{(<type>)<exp>}
+                
+                Cas particulier pr les chaînes : fonctions \texttt{atoi} pr les entiers et \texttt{atof} pr les flottants.
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Commentaires}}
+                \begin{lstlisting}[language=C, xleftmargin=80pt]
+//This is a comment.
+
+/*This is a comment
+on 
+multiple
+lines*/
+                \end{lstlisting}
+            \end{indt}
+            
+        \end{indt}
+        
+        \begin{indt}{\subsection{Programmation impérative en OCaml}}
+            
+            \begin{indt}{\subsubsection{Rappel : les instructions en OCaml}}
+                Les instruction en OCaml sont des expressions de type \texttt{unit}, dites \textit{impures} car elles produisent des effet de bord.
+                
+                Tous les objets vus jusqu'ici sont immuables, i.e. on ne peut pas changer leur valeur.
+                
+                Il existe toutefois des objets mutables en OCaml.
+            \end{indt}
+            
+            \vspace{6pt}
+            
+            \begin{indt}{\subsubsection{Références}}
+                Les instructions affectent la mémoire de la machine, mais on ne souhaite pas manipuler directement les adresses mémoire. On préfère pour cela associer un identifiant à un emplacement mémoire, d'où la déclaration d'une référence.
+                
+                Syntaxe :
+                \texttt{ref <exp>}
+                est une référence à un emplacement mémoire qui contient la valeur de l'expression. Pour la manipuler, on lui donne un nom à l'aide d'une déclaration globale.
+                
+                Ex :
+                \texttt{let x = ref [1; 2; 3; 4]}
+                
+                Le type des références est \texttt{'a ref} où \texttt{'a} désigne le type de la valeur stockée.
+                
+                Il faut distinguer le contenant (la ref) du contenu (la valeur), qui l'on obtient à l'aide de l'opérateur de déréférencement : si \texttt{<nom>} est une ref, \texttt{!<nom>} est la valeur contenue dans la ref.
+                
+                On peut modifier le contenu d'une ref grâce à une affectation
+                
+                Syntaxe : \texttt{<nom> := <exp>}
+                
+                Ne pas comfondre
+                
+                \begin{tabular}{|c|c|c|c|c|}
+                    \hline
+                    & Affectation
+                    & Test d'égalité
+                    & Négation
+                    & Déréférencement
+                    \\
+                    \hline
+                    OCaml
+                    & \texttt{:=}
+                    & \texttt{=} (ou \texttt{==})
+                    & \texttt{not}
+                    & \texttt{!}
+                    \\
+                    \hline
+                    C
+                    & \texttt{=}
+                    & \texttt{==}
+                    & \texttt{!}
+                    & plus tard
+                    \\
+                    \hline
+                \end{tabular}
+                
+                \vspace{6pt}
+                
+                \begin{lstlisting}[language=Caml, xleftmargin=80pt]
+let x = ref 0 in
+    x := 2;
+    x := !x + 3
+    !x
+                \end{lstlisting}
+                
+                \vspace{6pt}
+                
+                Comme en C, on dispose d'opérateurs d'incrémentation et de décrémentation (pour les \texttt{int ref})
+                
+                \vspace{6pt}
+                
+                \begin{lstlisting}[language=Caml, xleftmargin=80pt]
+let x = ref 0 in
+    incr x;
+    !x
+
+(*- int x = 1*)
+
+let x = ref 2 in
+    decr x;
+    !x
+
+(*- int x = 1*)
+                \end{lstlisting}
+
+            \end{indt}
+            
+            \vspace{6pt}
+            
+            \begin{indt}{\subsubsection{Boucles}}
+                Ce sont des instructions, donc des expressions de type \texttt{unit}.
+                
+                Ex : \texttt{incr} et \texttt{decr} sont de type \texttt{int ref -> unit}.
+                
+                $-$ Boucles conditionnelles :
+                
+                \vspace{6pt}
+                
+                \begin{lstlisting}[language=Caml, xleftmargin=80pt]
+while <exp1> do <exp2> done\end{lstlisting}
+
+                \vspace{6pt}
+                
+                où \texttt{<exp1>} est de type \texttt{bool} (la condition) et \texttt{<exp2>} est de type \texttt{unit} (le corps de la boucle).
+                
+                \vspace{6pt}
+                
+                $-$ Boucles inconditionnelles :
+                
+                Beaucoup plus contraintes qu'en C, une boucle \texttt{for} en OCaml déclare un indice de boucle (de type \texttt{int}) qui varie par pas de 1 entre une valeur initiale et une valeur finale (incluses).
+                
+                Syntaxe :
+                
+                \vspace{6pt}
+                
+                \begin{lstlisting}[language=Caml, xleftmargin=80pt]
+for <nom> = <exp1> to <exp2> do <exp3> done\end{lstlisting}
+                
+                où \texttt{<exp1>} et \texttt{<exp2>} sont de type \texttt{int} et \texttt{<exp3>} est de type \texttt{unit}.
+                
+                \texttt{<nom>} est un identifiant \textit{uniquement} dans \texttt{<exp3>}
+                
+                ``équivalent en C'' :
+                
+                \vspace{6pt}
+                
+                \begin{lstlisting}[language=C, xleftmargin=80pt]
+for (int <nom>=<exp1> ; <nom> <= <exp2> ; <nom>++) {
+    <exp3>
+}\end{lstlisting}
+                
+                On peut écrire des boucles descendantes :
+                
+                \vspace{6pt}
+                
+                \begin{lstlisting}[language=Caml, xleftmargin=80pt]
+for <name>=<exp1> downto <exp2> do <exp3> done\end{lstlisting}
+            \end{indt}
+            
+            \vspace{6pt}
+            
+            \begin{indt}{\subsubsection{Tableaux}}
+                Le type des tableaux dont les éléments sont de type \texttt{'a} est \texttt{'a array}.
+                
+                Tableaux homogènes.
+                
+                \vspace{6pt}
+                
+                \begin{indt}{$\bullet$ Création de tableau :}
+                    
+                    $-$ Directement : \texttt{[|<exp1>; <exp2>; ...; <expn>|]}
+                    
+                    Tableau vide : \texttt{[||]}
+                    
+                    \vspace{6pt}
+                    
+                    $-$ \`A l'aide de la fonction \texttt{Array.make : int -> 'a -> 'a array}
+                    
+                    Ex : \texttt{Array.make 5 0.} est \texttt{[|0.; 0.; 0.; 0.; 0.|]}
+                    
+                    \vspace{6pt}
+                    
+                    Pour les matrices, (les tableaux de tableaux), on utilise \texttt{Array.make\_matrix : int -> int -> 'a -> 'a array array}
+                    
+                    Ex : \texttt{Array.make\_matrix 2 3 0} vaut \texttt{[| [|0; 0; 0|]; [|0; 0; 0|] |]}
+                    
+                    \vspace{6pt}
+                    
+                    $-$ \`A l'aide de la fonction \texttt{Array.init : int -> (int -> 'a) -> 'a array}
+                    
+                    Ex : \texttt{Array.init n f} crée le tableau \texttt{[|f 0; f 1; ...; f (n - 1)|]}
+                \end{indt}
+                
+                \vspace{12pt}
+                
+                \begin{indt}{$\bullet$ Lectures / écritures}
+                    On accède aux éléments par indice (entre 0 et length $- 1$)
+                    
+                    Syntaxe : \texttt{<nom>.(<exp>)}
+                    
+                    Où \texttt{<nom>} est le nom du tableau et \texttt{<exp>} représente l'indice (type \texttt{int}).
+                    
+                    Pour modifier une case d'un tableau, on écrit \texttt{<nom>.(<exp1>) <- <exp2>}
+                    
+                    Où \texttt{<exp1>} est l'indice de la case de \texttt{<exp2>} la valeur à stocker.
+                    
+                    Accès dans une matrice par accès succesifs : \texttt{<nom>.(<exp1>).(<exp2>)}.
+                \end{indt}
+                
+                \vspace{12pt}
+                
+                \begin{indt}{$\bullet$ Longueur}
+                    On utiliser la fonction \texttt{Array.length : 'a array -> int}
+                    
+                    Pr les matrices,
+                    
+                    \texttt{Array.length m} est le nombre de lignes ;
+                    
+                    \texttt{Array.length m.(0)} est le nombre de colones.
+                \end{indt}
+                
+                \vspace{12pt}
+                
+                \begin{indt}{$\bullet$ Copie}
+                    On copie un tableau existant grâce à \texttt{Array.copy : 'a array -> 'a array}
+                    
+                    Ex : \texttt{Array.copy [|0; 0; 0|]} renvoie \texttt{[|0; 0; 0|]} (nouveau tableau).
+                    
+                    Attention, la copie est superficielle.
+                    
+                    Ex :
+                
+                    \vspace{6pt}
+                    
+                    \begin{lstlisting}[language=Caml, xleftmargin=100pt]
+let t = Array.make_matrix 2 3 0;;
+let t' = Array.copy t;;
+t'.(0).(1) <- 2;;
+t;;\end{lstlisting}
+                    
+                    Revoit \texttt{[| [|0; 2; 0|]; [|0; 0; 0|] |]}
+                    
+                    Pour créer une copie indépendante (deep copy), il faut appliquer \texttt{Array.copy} à chaque élément.
+                    
+                    Ex :
+                
+                    \vspace{6pt}
+                    
+                    \begin{lstlisting}[language=Caml, xleftmargin=100pt]
+let t' = Array.copy t;;
+for i=0 to Array.length t - 1 do
+    t'.(i) <- Array.copy t.(i)
+done;;\end{lstlisting}
+                    
+                    Ou bien
+                
+                    \vspace{6pt}
+                    
+                    \begin{lstlisting}[language=Caml, xleftmargin=100pt]
+let t' = Array.init (Array.length t) (function i -> Array.copy t.(i));\end{lstlisting}
+                \end{indt}
+                
+                \vspace{12pt}
+                
+                \begin{indt}{$\bullet$ Fonctions à savoir coder}
+                    $-$ \texttt{Array.mem : 'a -> 'a array -> bool} (test d'appartenance) ;
+                    
+                    $-$ \texttt{Array.exists : ('a -> bool) -> 'a array -> bool} (existance d'un élément satisfaisant une propriété) ;
+                    
+                    $-$ \texttt{Array.for\_all : ('a -> bool) -> 'a array -> bool} (universalité d'une propriété sur les éléments du tableau) ;
+                    
+                    $-$ \texttt{Array.map : ('a -> 'b) -> 'a array -> 'b array} (image point à point par une fonction)
+                    
+                    $-$ \texttt{Array.iter : ('a -> unit) -> 'a array -> unit} (pour appliquer successivement une instruction à chaque élément du tableau (dans l'ordre))
+                    
+                    Ex : \texttt{Array.iter (function x -> print\_int x ; print\_newline()) t} affiche les éléments du tableau d'entiers \texttt t (un par ligne)
+                    
+                    Rq : la fonction \texttt{List.iter} existe.
+                \end{indt}
+            \end{indt}
+            
+            \vspace{6pt}
+            
+            \begin{indt}{\subsubsection{Chaînes de caractères}}
+                Comme en C, on peut accéder aux caractères d'une chaîne par indice.
+                
+                Syntaxe : \texttt{<nom>.[<exp>]}
+                
+                Rq : il existe une fonction \texttt{String.make : int -> char -> string}
+                
+                Attention, les chaînes de caractères ne sont pas des tableaux de caractères, i.e. les types \texttt{string} et \texttt{char array} sont distints.
+                
+                En particulier, depuis OCaml 4.06, les chaînes de caractères sont immuables.
+                
+                \vspace{6pt}
+                
+                Autre différence essentielle entre OCaml et C : le typage.
+                
+                On dit que le typage d'OCaml est \textit{fort}, et que celui de C est \textit{faible}.
+                
+                Il n'y a pas de définition universellement reconnue des typages fort/faible.
+                
+                Intuition : un typage fort apporte des garanties de sécurité vis à vis du programme en imposant des conditions plus strictes.
+                
+                Ex : conversions de types implicites (impossible en OCaml, possible en C)
+                
+                Autre ex : accès aux cases d'un tableau non vérifiées en C.
+            \end{indt}
+            
+        \end{indt}
+        
+    \end{indt}
+
+
+    
+
+    
+    
+\end{document}
+%--------------------------------------------End
+

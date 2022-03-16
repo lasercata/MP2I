@@ -1,0 +1,507 @@
+\documentclass[a4paper, 12pt, twoside]{article}
+
+
+%------------------------------------------------------------------------
+%
+% Author                :   Lasercata
+% Last modification     :   2022.01.21
+%
+%------------------------------------------------------------------------
+
+
+%------ini
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+%\usepackage[french]{babel}
+%\usepackage[english]{babel}
+
+
+%------geometry
+\usepackage[textheight=700pt, textwidth=500pt]{geometry}
+
+
+%------color
+\usepackage{xcolor}
+\definecolor{ff4500}{HTML}{ff4500}
+\definecolor{00f}{HTML}{0000ff}
+\definecolor{0ff}{HTML}{00ffff}
+\definecolor{656565}{HTML}{656565}
+
+\renewcommand{\emph}{\textcolor{ff4500}}
+\renewcommand{\em}{\color{ff4500}}
+
+\newcommand{\strong}[1]{\textcolor{ff4500}{\bf #1}}
+\newcommand{\st}{\color{ff4500}\bf}
+
+
+%------Code highlighting
+\usepackage{listings}
+
+\definecolor{cbg}{HTML}{272822}
+\definecolor{cfg}{HTML}{ececec}
+\definecolor{ccomment}{HTML}{686c58}
+\definecolor{ckw}{HTML}{f92672}
+\definecolor{cstring}{HTML}{e6db72}
+\definecolor{cstringlight}{HTML}{98980f}
+\definecolor{lightwhite}{HTML}{fafafa}
+
+\lstdefinestyle{DarkCodeStyle}{
+    backgroundcolor=\color{cbg},
+    commentstyle=\itshape\color{ccomment},
+    keywordstyle=\color{ckw},
+    numberstyle=\tiny\color{cbg},
+    stringstyle=\color{cstring},
+    basicstyle=\ttfamily\footnotesize\color{cfg},
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=4,
+    xleftmargin=\leftskip
+}
+
+\lstdefinestyle{LightCodeStyle}{
+    backgroundcolor=\color{lightwhite},
+    commentstyle=\itshape\color{ccomment},
+    keywordstyle=\color{ckw},
+    numberstyle=\tiny\color{cbg},
+    stringstyle=\color{cstringlight},
+    basicstyle=\ttfamily\footnotesize\color{cbg},
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=10pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=4,
+    frame=L,
+    xleftmargin=\leftskip
+}
+
+%\lstset{style=DarkCodeStyle}
+\lstset{style=LightCodeStyle}
+
+%Usage : \begin{lstlisting}[language=Caml] ... \end{lstlisting}
+
+
+%-------make the table of content clickable
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=black
+}
+
+
+%------pictures
+\usepackage{graphicx}
+%\usepackage{wrapfig}
+
+
+%------tabular
+%\usepackage{color}
+%\usepackage{colortbl}
+%\usepackage{multirow}
+
+
+%------Physics
+%---Packages
+%\usepackage[version=4]{mhchem} %$\ce{NO4^2-}$
+
+%---Commands
+\newcommand{\link}[2]{\mathrm{#1} \! - \! \mathrm{#2}}
+\newcommand{\pt}[1]{\cdot 10^{#1}} % Power of ten
+\newcommand{\dt}[2][t]{\dfrac{d#2}{d#1}} % Derivative
+
+
+%------math
+%---Packages
+%\usepackage{textcomp}
+%\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools} % For abs
+\usepackage{stmaryrd} %for \llbracket and \rrbracket
+\usepackage{mathrsfs} %for \mathscr{x} (different from \mathcal{x})
+
+%---Commands
+%-Sets
+\newcommand{\N}{\mathbb{N}} %set N
+\newcommand{\Z}{\mathbb{Z}} %set Z
+\newcommand{\Q}{\mathbb{Q}} %set Q
+\newcommand{\R}{\mathbb{R}} %set R
+\newcommand{\C}{\mathbb{C}} %set C
+\newcommand{\U}{\mathbb{U}} %set U
+\newcommand{\set}[2]{\left[ #1\ ;\ #2 \right]}
+\newcommand{\nset}[2]{\left\llbracket #1\ ;\ #2 \right\rrbracket}
+
+%-Exponantial / complexs
+\newcommand{\e}{\mathrm{e}}
+\newcommand{\cj}[1]{\overline{#1}} %overline for the conjugate.
+
+%-Vectors
+\newcommand{\vect}{\overrightarrow}
+\newcommand{\veco}[3]{\displaystyle \vect{#1}\binom{#2}{#3}} %vector + coord
+
+%-Limits
+\newcommand{\lm}[2][{}]{\lim\limits_{\substack{#2 \\ #1}}} %$\lm{x \to a} f$ or $\lm[x < a]{x \to a} f$
+\newcommand{\Lm}[3][{}]{\lm[#1]{#2} \left( #3 \right)} %$\Lm{x \to a}{f}$ or $\Lm[x < a]{x \to a}{f}$
+\newcommand{\tendsto}[1]{\xrightarrow[#1]{}}
+
+%-Integral
+\newcommand{\dint}[4][x]{\displaystyle \int_{#2}^{#3} #4 \mathrm{d} #1} %$\dint{a}{b}{f(x)}$ or $\dint[t]{a}{b}{f(t)}$
+
+%-Others
+\newcommand{\para}{\ /\!/\ } %//
+\newcommand{\ssi}{\ \Leftrightarrow \ }
+\newcommand{\abs}[1]{\left\lvert #1 \right\rvert} % abs{x} -> |x|
+\newcommand{\eqsys}[2]{\begin{cases} #1 \\ #2 \end{cases}}
+
+\newcommand{\med}[2]{\mathrm{med} \left[ #1\ ;\ #2 \right]}  %$\med{A}{B} -> med[A ; B]$
+\newcommand{\Circ}[2]{\mathscr{C}_{#1, #2}}
+
+\newcommand{\lr}[1]{\left( #1 \right)}
+\newcommand{\lrb}[1]{\left[ #1 \right]}
+
+\newcommand{\lrangle}[1]{\left\langle #1 \right\rangle}
+
+\renewcommand{\le}{\leqslant}
+\renewcommand{\ge}{\geqslant}
+
+
+%------commands
+%---to quote french text
+\newcommand{\simplecit}[1]{\guillemotleft$\;$#1$\;$\guillemotright}
+\newcommand{\cit}[1]{\simplecit{\textcolor{656565}{#1}}}
+\newcommand{\quo}[1]{\cit{\it #1}}
+
+%---to indent
+\newcommand{\ind}[1][20pt]{\advance\leftskip + #1}
+\newcommand{\deind}[1][20pt]{\advance\leftskip - #1}
+
+%---to indent a text
+\newcommand{\indented}[2][20pt]{\par \ind[#1] #2 \par \deind[#1]}
+\newenvironment{indt}[2][20pt]{#2 \par \ind[#1]}{\par \deind} %Titled indented env
+
+%---title
+\newcommand{\thetitle}[2]{\begin{center}\textbf{{\LARGE \underline{\emph{#1} :}} {\Large #2}}\end{center}}
+
+%---parts
+%-I
+\newcommand{\mainpart}[2][$\!\!$]{\underline{\large \textbf{\emph{\textit{#1} #2}}}}
+\newcommand{\bmainpart}[2][$\!\!$]{\underline{\large \textbf{\textit{#1} #2}}}
+%-A
+\newcommand{\subpart}[2][$\!\!$]{\underline{\bf \textit{#1} #2}}
+%-1
+\newcommand{\subsubpart}[2][$\!\!$]{\underline{\textsl{#1} #2}}
+%-a
+\newcommand{\subsubsubpart}[2][$\!\!$]{\underline{\it #1 #2}}
+
+
+%------page style
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+
+\setlength{\headheight}{18pt}
+\setlength{\footskip}{50pt}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE, RO]{\textit{\today}}
+\fancyhead[RE, LO]{\large{\textsl{\emph{\texttt{\jobname}}}}}
+
+\fancyfoot[RO, LE]{\textit{\texttt{Page \thepage /\pageref{LastPage}}}}
+\fancyfoot[LO, RE]{\includegraphics[scale=0.12]{/home/lasercata/Pictures/1.images_profil/logo/mieux/lasercata_logo_fly_fond_blanc.png}}
+
+
+%------init lengths
+\setlength{\parindent}{0pt} %To avoid using \noindent everywhere.
+\setlength{\parskip}{3pt}
+
+
+%---------------------------------Begin Document
+\begin{document}
+
+    \thetitle{Maths}{Arithmetic}
+    
+    
+    \tableofcontents
+    \newpage
+    
+    
+    \begin{indt}{\section{Divisibilité}}
+        
+        \begin{indt}{\subsection{Définitions}}
+            Divisibilité : $\forall a, b \in \Z,\ a|b \ssi \exists k \in \Z\ |\ b = ak$
+            
+            \vspace{6pt}
+            
+            Ensemble des diviseurs : $\forall a \in \Z,\ \mathcal D(a) = \{ x \in \Z,\ x|a \} = \{ x \in \Z\ |\ \exists k \in \Z\ |\ a = kx \}$
+            
+            \vspace{6pt}
+            
+            Multiples : $\forall a \in \Z,\ a\Z = \{ na, n \in \Z \}$
+        \end{indt}
+        
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Propriétés}}
+            $
+                \forall (a, b) \in \Z^2,\
+                \eqsys{a|b}{b|a}
+                \ssi \abs a = \abs b
+            $
+            
+            \vspace{6pt}
+            
+            $
+                \forall (a, b, c) \in \Z^3,\
+                \eqsys{c|a}{c|b}
+                \Rightarrow \forall (u, v) \in \Z,\ c|(au + bv)
+            $
+            
+            \vspace{6pt}
+            
+            $
+                \forall (a, b, c) \in \Z^3,\
+                \eqsys{c \neq 0}{ac|bc}
+                \Rightarrow a|b
+            $
+        \end{indt}
+        
+        \vspace{6pt}
+        
+        \begin{indt}{\subsection{Division euclidienne}}
+            $
+                \forall (a, b) \in \Z \times \Z^*,\
+                \exists! (q, r) \in \Z \times \N\
+                \left|
+                \begin{array}{l}
+                    a = bq + r
+                    \\
+                    0 \le r < b
+                \end{array}
+                \right.
+            $
+        \end{indt}
+        
+    \end{indt}
+    
+    \vspace{12pt}
+    
+    \begin{indt}{\section{Congruences}}
+        
+        \begin{indt}{\subsection{Définition}}
+            $\forall (a, b, n) \in \Z^3,\ a \equiv b\ [n] \ssi \exists k \in \Z\ |\ a - b = kn$
+        \end{indt}
+        
+        \vspace{6pt}
+        
+        \begin{indt}{\subsection{Propriétés}}
+            $\forall a, a', b, b', \alpha \in \Z\ |\ \eqsys{a \equiv b\ [\alpha]}{a' \equiv b'\ [\alpha]}$, on a :
+            
+            \[ a + a' \equiv b + b'\ [\alpha] \]
+            \[ aa' \equiv bb'\ [\alpha] \]
+        \end{indt}
+        
+    \end{indt}
+    
+    \vspace{12pt}
+    
+    \begin{indt}{\section{PGCD}}
+        \begin{indt}{\subsection{Définition}}
+            $\forall (a, b) \in \N^2,\ \text{avec}\ a \neq 0\ \text{ou}\ b \neq 0,\quad a \wedge b = \max(\mathcal D(a) \cap \mathcal D(b))$
+            
+            $\forall (a, b) \in \Z^2,\ a \wedge b = \abs a \wedge \abs b$
+        \end{indt}
+        
+        \vspace{6pt}
+        
+        \begin{indt}{\subsection{Propriétés}}
+            $\forall (a, b) \in \N^* \times \N,\ a|b \ssi a \wedge b = a$
+            
+            \vspace{6pt}
+            
+            $\forall (a, b, q, r) \in \N^4\ |\ a = bq + r$, on a :
+                \[ \mathcal D(a) \cap \mathcal D(b) = \mathcal D(b) \cap \mathcal D(r) \]
+                \[ \text{si}\ a \neq 0\ \text{ou}\ b \neq 0,\quad a \wedge b = b \wedge r \]
+            
+            \vspace{6pt}
+            
+            $\forall (a, b, d) \in \N^2 \times \N^*\ |\ a \neq 0$ ou $b \neq 0$, on a :
+                \[\begin{array}{rcl}
+                    d = a \wedge b
+                    &\ssi& \mathcal D(d) = \mathcal D(a) \cap \mathcal D(b)
+                    \\
+                    \\
+                    &\ssi&
+                    \begin{cases}
+                        d|a
+                        \\
+                        d|b
+                        \\
+                        \forall n \in \N,\ \eqsys{n|a}{n|b} \Rightarrow n|d
+                    \end{cases}
+                \end{array}\]
+            
+            \vspace{6pt}
+            
+            $
+                \forall (a, b) \in \Z^2,\
+                \exists (a_1, b_1) \in \Z^2,\
+                \begin{cases}
+                    a_1 \wedge b_1 = 1
+                    \\
+                    a = a_1(a \wedge b)
+                    \\
+                    b = b_1(a \wedge b)
+                \end{cases}
+            $
+        \end{indt}
+        
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Algorithme d'Euclide}}
+            \begin{indt}{Soient $a, b \in \N^*$. On construit tant que possible une suite $(r_n)_{n \ge -1} \subset \N$ par récurrence :}
+                $-$ On pose $r_{-1} = a$ et $r_0 = b$ ;
+                
+                $-$ Si $r_n \neq 0$, on pose $r_{n + 1} \equiv r_{n - 1}\ [r_n]$, avec $0 \le r_{n + 1} < r_n$ ;
+                
+                $-$ Sinon, $r_{n + 1}$ n'est pas défini.
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{Alors :}
+                $-$ $\exists p \in \N\ |\ \forall n \le p,\ r_n \neq 0$ et est bien défini, et $r_{p + 1} = 0$ ;
+                
+                $-$ $r_p = a \wedge b$.
+            \end{indt}
+        \end{indt}
+    \end{indt}
+    
+    \vspace{12pt}
+    
+    \begin{indt}{\section{PPCM}}
+        
+        \begin{indt}{\subsection{Définition}}
+            $\forall (a, b) \in \N^*,\ a \vee b = \min(a\Z \cap b\Z \cap \N^*)$
+            
+            $\forall (a, b) \in (\Z^*)^2,\ a \vee b = \abs a \vee \abs b$
+        \end{indt}
+        
+        \vspace{6pt}
+        
+        \begin{indt}{\subsection{Propriétés}}
+            $\forall a, b, m \in \N^*$, on a :
+                \[
+                    \begin{array}{rcl}
+                        m = a \vee b
+                        &\ssi& m\Z = a\Z \cap b\Z
+                        \\
+                        &\ssi&
+                        \begin{cases}
+                            a|m
+                            \\
+                            b|m
+                            \\
+                            \forall n \in \N, \eqsys{a|n}{b|n} \Rightarrow m|n
+                        \end{cases}
+                    \end{array}
+                \]
+            
+            \vspace{6pt}
+            
+            $\forall (a, b) \in \Z^2\ |\ a \wedge b = 1,\ a \vee b = \abs{ab}$
+            
+            \vspace{6pt}
+            
+            $\forall (a, b) \in \Z,\ \abs{ab} = (a \wedge b)(a \vee b)$
+        \end{indt}
+        
+    \end{indt}
+
+    
+    \vspace{12pt}
+    
+    \begin{indt}{\section{Bézout, Gauss}}
+        
+        \begin{indt}{\subsection{Relation de Bézout}}
+            $\forall (a, b) \in \Z^2,\ \exists (u, v) \in \Z^2\ |\ au + bv = a \wedge b$
+        \end{indt}
+        
+        \vspace{6pt}
+        
+        \begin{indt}{\subsection{Théorème de Bézout}}
+            $\forall (a, b) \in \Z^2,\ a \wedge b = 1 \ssi \exists (u, v) \in \Z^2\ |\ au + bv = 1$
+        \end{indt}
+        
+        \vspace{6pt}
+        
+        \begin{indt}{\subsection{Lemme de Gauss}}
+            $\forall (a, b, c) \in \Z^3,\ \eqsys{a|bc}{a \wedge b = 1} \Rightarrow a|c$
+        \end{indt}
+        
+    \end{indt}
+    
+    \vspace{12pt}
+    
+    \begin{indt}{\section{Nombres premiers}}
+        
+        \begin{indt}{\subsection{Définition}}
+            $\forall p \in \N^*,\ p \in \mathbb{P} \ssi \exists! (a, b) \in \N^2,\ a \neq b\ |\ p = ab\ \text{ou}\ p = ba$.
+            
+            Un entier naturel est premier si et seulement si il admet exactement deux diviseurs entiers distincts (qui sont alors 1 et lui même).
+        \end{indt}
+        
+        \vspace{6pt}
+        
+        \begin{indt}{\subsection{Propriétés}}
+            $\forall p \in \mathbb P$, on a :
+                \[ \forall k \in \nset{1}{p - 1},\ p \left| \binom{p}{k} \right. \]
+                \[ \forall (a, b, n) \in \Z^2 \times \N,\ (a + b)^n \equiv a + b\ [p] \]
+            
+            \vspace{6pt}
+            
+            $\forall (a, b, c) \in \Z^3$, on a :
+                \[ a \wedge bc = 1 \ssi \eqsys{a \wedge b = 1}{a \wedge c = 1} \]
+                \[
+                    \begin{cases}
+                        a|c
+                        \\
+                        b|c
+                        \\
+                        a \wedge b = 1
+                    \end{cases}
+                    \Rightarrow ab|c
+                \]
+        \end{indt}
+        
+        \vspace{6pt}
+        
+        \begin{indt}{\subsection{Petit théorème de Fermat}}
+            $\forall (p, a) \in \mathbb P \times \Z,\ a^p \equiv a\ [p]$
+            
+            Et si $a \wedge p = 1$, alors $a^{p - 1} \equiv 1\ [p]$
+        \end{indt}
+        
+    \end{indt}
+
+
+
+
+    
+
+    
+    
+\end{document}
+%--------------------------------------------End

@@ -1,0 +1,1129 @@
+\documentclass[a4paper, 12pt, twoside]{article}
+
+
+%------------------------------------------------------------------------
+%
+% Author                :   Lasercata
+% Last modification     :   2022.02.07
+%
+%------------------------------------------------------------------------
+
+
+%------ini
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+%\usepackage[english]{babel}
+
+
+%------geometry
+\usepackage[textheight=700pt, textwidth=500pt]{geometry}
+
+
+%------color
+\usepackage{xcolor}
+\definecolor{ff4500}{HTML}{ff4500}
+\definecolor{00f}{HTML}{0000ff}
+\definecolor{0ff}{HTML}{00ffff}
+\definecolor{656565}{HTML}{656565}
+
+\renewcommand{\emph}{\textcolor{ff4500}}
+\renewcommand{\em}{\color{ff4500}}
+
+\newcommand{\strong}[1]{\textcolor{ff4500}{\bf #1}}
+\newcommand{\st}{\color{ff4500}\bf}
+
+
+%------Code highlighting
+\usepackage{listings}
+
+\definecolor{cbg}{HTML}{272822}
+\definecolor{cfg}{HTML}{ececec}
+\definecolor{ccomment}{HTML}{686c58}
+\definecolor{ckw}{HTML}{f92672}
+\definecolor{cstring}{HTML}{e6db72}
+\definecolor{cstringlight}{HTML}{98980f}
+\definecolor{lightwhite}{HTML}{fafafa}
+
+\lstdefinestyle{DarkCodeStyle}{
+    backgroundcolor=\color{cbg},
+    commentstyle=\itshape\color{ccomment},
+    keywordstyle=\color{ckw},
+    numberstyle=\tiny\color{cbg},
+    stringstyle=\color{cstring},
+    basicstyle=\ttfamily\footnotesize\color{cfg},
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=4,
+    xleftmargin=\leftskip
+}
+
+\lstdefinestyle{LightCodeStyle}{
+    backgroundcolor=\color{lightwhite},
+    commentstyle=\itshape\color{ccomment},
+    keywordstyle=\color{ckw},
+    numberstyle=\tiny\color{cbg},
+    stringstyle=\color{cstringlight},
+    basicstyle=\ttfamily\footnotesize\color{cbg},
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=10pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=4,
+    frame=L,
+    xleftmargin=\leftskip
+}
+
+%\lstset{style=DarkCodeStyle}
+\lstset{style=LightCodeStyle}
+
+%Usage : \begin{lstlisting}[language=Caml] ... \end{lstlisting}
+
+
+%-------make the table of content clickable
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=black
+}
+
+
+%------pictures
+\usepackage{graphicx}
+%\usepackage{wrapfig}
+
+
+%------tabular
+%\usepackage{color}
+%\usepackage{colortbl}
+%\usepackage{multirow}
+
+
+%------Physics
+%---Packages
+%\usepackage[version=4]{mhchem} %$\ce{NO4^2-}$
+
+%---Commands
+\newcommand{\link}[2]{\mathrm{#1} \! - \! \mathrm{#2}}
+\newcommand{\pt}[1]{\cdot 10^{#1}} % Power of ten
+\newcommand{\dt}[2][t]{\dfrac{d#2}{d#1}} % Derivative
+
+
+%------math
+%---Packages
+%\usepackage{textcomp}
+%\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools} % For abs
+\usepackage{stmaryrd} %for \llbracket and \rrbracket
+\usepackage{mathrsfs} %for \mathscr{x} (different from \mathcal{x})
+
+%---Commands
+%-Sets
+\newcommand{\N}{\mathbb{N}} %set N
+\newcommand{\Z}{\mathbb{Z}} %set Z
+\newcommand{\Q}{\mathbb{Q}} %set Q
+\newcommand{\R}{\mathbb{R}} %set R
+\newcommand{\C}{\mathbb{C}} %set C
+\newcommand{\U}{\mathbb{U}} %set U
+\newcommand{\set}[2]{\left[ #1\ ;\ #2 \right]}
+\newcommand{\nset}[2]{\left\llbracket #1\ ;\ #2 \right\rrbracket}
+
+%-Exponantial / complexs
+\newcommand{\e}{\mathrm{e}}
+\newcommand{\cj}[1]{\overline{#1}} %overline for the conjugate.
+
+%-Vectors
+\newcommand{\vect}{\overrightarrow}
+\newcommand{\veco}[3]{\displaystyle \vect{#1}\binom{#2}{#3}} %vector + coord
+
+%-Limits
+\newcommand{\lm}[2][{}]{\lim\limits_{\substack{#2 \\ #1}}} %$\lm{x \to a} f$ or $\lm[x < a]{x \to a} f$
+\newcommand{\Lm}[3][{}]{\lm[#1]{#2} \left( #3 \right)} %$\Lm{x \to a}{f}$ or $\Lm[x < a]{x \to a}{f}$
+\newcommand{\tendsto}[1]{\xrightarrow[#1]{}}
+
+%-Integral
+\newcommand{\dint}[4][x]{\displaystyle \int_{#2}^{#3} #4 \mathrm{d} #1} %$\dint{a}{b}{f(x)}$ or $\dint[t]{a}{b}{f(t)}$
+
+%-Others
+\newcommand{\para}{\ /\!/\ } %//
+\newcommand{\ssi}{\ \Leftrightarrow \ }
+\newcommand{\abs}[1]{\left\lvert #1 \right\rvert} % abs{x} -> |x|
+\newcommand{\eqsys}[2]{\begin{cases} #1 \\ #2 \end{cases}}
+
+\newcommand{\med}[2]{\mathrm{med} \left[ #1\ ;\ #2 \right]}  %$\med{A}{B} -> med[A ; B]$
+\newcommand{\Circ}[2]{\mathscr{C}_{#1, #2}}
+
+\newcommand{\lr}[1]{\left( #1 \right)}
+\newcommand{\lrb}[1]{\left[ #1 \right]}
+
+\newcommand{\lrangle}[1]{\left\langle #1 \right\rangle}
+
+\renewcommand{\le}{\leqslant}
+\renewcommand{\ge}{\geqslant}
+
+
+%------commands
+%---to quote french text
+\newcommand{\simplecit}[1]{\guillemotleft$\;$#1$\;$\guillemotright}
+\newcommand{\cit}[1]{\simplecit{\textcolor{656565}{#1}}}
+\newcommand{\quo}[1]{\cit{\it #1}}
+
+%---to indent
+\newcommand{\ind}[1][20pt]{\advance\leftskip + #1}
+\newcommand{\deind}[1][20pt]{\advance\leftskip - #1}
+
+%---to indent a text
+\newcommand{\indented}[2][20pt]{\par \ind[#1] #2 \par \deind[#1]}
+\newenvironment{indt}[2][20pt]{#2 \par \ind[#1]}{\par \deind} %Titled indented env
+
+%---title
+\newcommand{\thetitle}[2]{\begin{center}\textbf{{\LARGE \underline{\emph{#1} :}} {\Large #2}}\end{center}}
+
+%---parts
+%-I
+\newcommand{\mainpart}[2][$\!\!$]{\underline{\large \textbf{\emph{\textit{#1} #2}}}}
+\newcommand{\bmainpart}[2][$\!\!$]{\underline{\large \textbf{\textit{#1} #2}}}
+%-A
+\newcommand{\subpart}[2][$\!\!$]{\underline{\bf \textit{#1} #2}}
+%-1
+\newcommand{\subsubpart}[2][$\!\!$]{\underline{\textsl{#1} #2}}
+%-a
+\newcommand{\subsubsubpart}[2][$\!\!$]{\underline{\it #1 #2}}
+
+
+%------page style
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+
+\setlength{\headheight}{18pt}
+\setlength{\footskip}{50pt}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE, RO]{\textit{\today}}
+\fancyhead[RE, LO]{\large{\textsl{\emph{\texttt{\jobname}}}}}
+
+\fancyfoot[RO, LE]{\textit{\texttt{Page \thepage /\pageref{LastPage}}}}
+\fancyfoot[LO, RE]{\includegraphics[scale=0.12]{/home/lasercata/Pictures/1.images_profil/logo/mieux/lasercata_logo_fly_fond_blanc.png}}
+
+
+%------init lengths
+\setlength{\parindent}{0pt} %To avoid using \noindent everywhere.
+\setlength{\parskip}{3pt}
+
+
+%---------------------------------Begin Document
+\begin{document}
+
+    \thetitle{Chapitre 4}{Structures de données}
+    
+    
+    \tableofcontents
+    
+    \newpage
+    
+    
+    \begin{indt}{\section{Structures, types et modularité}}
+        
+        \begin{indt}{\subsection{Programmation modulaire}}
+            
+            \begin{indt}{\subsubsection{Principe}}
+                Le principe de la modularité est de décomposer un programme en éléments aussi indépendants et réutilisables que possible.
+                
+                \begin{indt}{Intérêts de la modularité :}
+                    $-$ Faciliter l’implémentation en se focalisant sur des tâches précises et simples ;
+                    
+                    $-$ Faciliter la lecture du code ;
+                    
+                    $-$ \'Eviter de coder plusieurs fois la même chose ;
+                    
+                    $-$ Faciliter le débogage et les tests ;
+                    
+                    $-$ Permettre des optimisations locales ;
+                    
+                    $-$ Permettre le travail d’équipe ;
+                    
+                    $-$ etc.
+                \end{indt}
+            \end{indt}
+            
+            \begin{indt}{\subsubsection{Outils}}
+                
+                \begin{indt}{Nous avons déjà évoqué deux types d’outils pour la programmation modulaire :}
+                    $-$ Les fonctions : ce sont des sous-programmes que l’on peut réutiliser pour exécuter le même algorithme sur des données différentes. Il est donc important de décomposer ses programmes en fonctions élémentaires ;
+                    
+                    $-$ Les bibliothèques, ou modules : ce sont des ensembles de définitions de constantes et de fonctions, regroupées pour leur appartenance à un même thème afin de fournir les fonctionalités nécessaires à la programmation dans le cadre de ce thème.
+                    Rappel : l’usage d’une bibliothèque en C nécessite l’inclusion de son/ses fichier(s) d’entête par une directive \texttt{\#include <fichier.h>} ou \texttt{\#include "fichier.h"}, la première option étant réservée à la bibliothèque standard. En OCaml, on peut utiliser directement un objet en préfixant son nom par celui du module qui le contient (ex : \texttt{Module.fonction}, comme \texttt{List.hd}), ou bien on peut inclure le contenu d’un module avec une expression de la forme \texttt{open Module}, et utiliser les éléments déclarés directement via leur nom. L’usage de bibliothèques est important car il permet de séparer l’implémentation de ses fonctionalités de leur usage. En particulier, un utilisateur n’a pas besoin de connaître les détails d’implémentations d’un module, et deux implémentations fournissant les mêmes fonctionalités sont interchangeables.
+                \end{indt}
+                
+            \end{indt}
+            
+            \begin{indt}{\subsubsection{Interfaces}}
+                L’interchangeabilité des implémentations de mêmes fonctionalités est rendue possible grâce aux fichiers d’interface (d’extension .h en C et .mli en OCaml) qui contiennent une description des noms déclarés dans un module. Le mécanisme de la compilation séparée permet alors d’écrire un programme sans avoir accès à une implémentation d’un module et, au moment de la production d’un exécutable, de choisir n’importe quelle implémentation qui fournit les objets requis.
+                
+                Le principe des interfaces et de l’interchangeabilité des implémentations n’est pas limité aux modules, mais s’applique également au stockage et à la manipulation de données.
+            \end{indt}
+            
+        \end{indt}
+            
+        \begin{indt}{\subsection{Structures de données}}
+            
+            \begin{indt}{\subsubsection{Définition}}
+                Une structure de données abstraite est la donnée d’une interface représentant un ensemble de données et l’ensemble des opérations permettant de manipuler ces données.
+            \end{indt}
+            
+            \begin{indt}{\subsubsection{Exemple}}
+                Une structure d’ensemble dont les éléments sont pris dans un ensemble E est la donnée d’un type représentant des collections d’éléments de E et d’opérations sur ce type permettant la construction d’ensembles élémentaires (ensemble vide, singletons, E), l’union, l’intersection, la différence de deux ensembles et les tests d’inclusion et d’égalité.
+                
+                Ce que nous avons fait dans le TP02 consistait à fournir une implémentation concrète de cette structure.
+            \end{indt}
+            
+            \begin{indt}{\subsubsection{Vocabulaire}}
+                \begin{indt}{Étant donné une structure de données abstraite, on appelle :}
+                    $-$ \textit{Constructeur} une opération permettant d’initialiser un élément de cette structure (ex : une opération singleton, qui prend un élément $e \in E$ et qui construit l’ensemble $\{e\}$) ;
+                    
+                    $-$ \textit{Accesseur} (ou \textit{getter}) une opération permettant d’accéder à des données stockées dans la structure (ex : une opération représentant, qui prend une structure de classe d’équivalence et qui renvoie un élément canonique de cette classe, par exemple les classes de congruence modulo $n$ avec pour représentants les entiers de $\nset{0}{n - 1}$) ;
+                    
+                    $-$ \textit{Transformateur} (ou \textit{setter}) une opération permettant de modifier l’état de la structure (ex : une opération d’ajout d’un élément à un ensemble, si cela est autorisé par la structure de données, cf. ci-après).
+                \end{indt}
+                
+                \vspace{6pt}
+                
+                On oppose structures de données \textit{statiques} et \textit{dynamiques}. Une structure de données dynamique est une structure dont on peut modifier la quantité de données stockées (par ajout ou suppression, par exemple le type list en Python). Une structure est statique si elle n’est pas dynamique.
+                
+                On oppose également structures de données \textit{mutables} et \textit{immuables}. Une structure est dite mutable si l’on peut changer la valeur de l’un de ses éléments. Dans le cas contraire, elle est immuable (on dit aussi fonctionnelle). Par exemple, en OCaml, les listes sont l’implémentation d’une structure immuable tandis que les tableaux implémentent une structure mutable.
+            \end{indt}
+            
+            \begin{indt}{\subsubsection{Concrétisations}}
+                Une structure de données abstraite est une manière d’exprimer un besoin pour résoudre plusieurs problèmes similaires. Une implémentation / concrétisation de cette structure est une manière de répondre à ce besoin. Étant donné un problème, le choix d’une structure de données pour le résoudre est important, car il conditionne la manière dont la résolution s’effectuera (le problème du parcours d’un graphe nous fournira plus tard un exemple).
+                
+                Il peut également être nécessaire de sélectionner une implémentation de cette structure selon les opérations qui seront le plus utilisées dans la résolution du problème. En effet, une structure de données abstraite peut avoir plusieurs implémentations / concrétisations ne fournissant pas les fonctionalités avec la même efficacité. Certains informaticiens considèrent que la définition d’une structure de données abstraite doit contenir des contraintes de complexité pour les opérations. Cependant, des contraintes de complexité trop précises peuvent limiter trop drastiquement les possibilités dans le choix de l’implémentation.
+                
+                En pratique, une implémentation d’une structure de données est la donnée d’un type concret et de fonctions manipulant ce type et implémentant les opérations requises.
+            \end{indt}
+            
+        \end{indt}
+            
+        \begin{indt}{\subsection{Déclaration de types}}
+            \begin{indt}{\subsubsection{Structures et types en C}}
+                On peut déclarer un nom de type comme synonyme d’un type existant (on parle d’alias).
+                
+                On utilise pour cela la syntaxe :
+                \begin{lstlisting}[language=C, xleftmargin=80pt]
+typedef <type> <nom>;\end{lstlisting}
+                
+                Par exemple :
+                \begin{lstlisting}[language=C, xleftmargin=80pt]
+typedef int entier_relatif;
+entier_relatif n = -1;\end{lstlisting}
+                
+                \vspace{6pt}
+                
+                Les déclarations de types synonymes sont particulièrement utiles en combinaison avec les déclarations de structures. Dans une structure, on regroupe des données dans des champs nommés. La structure peut porter un nom.
+                
+                Syntaxe :
+                \begin{lstlisting}[language=C, xleftmargin=80pt]
+struct [nom_structure] {
+    <type_champ_1> <nom_champ_1>;
+    ...
+    <type_champ_n> <nom_champ_n>;
+};\end{lstlisting}
+                
+                Par exemple :
+                \begin{lstlisting}[language=C, xleftmargin=80pt]
+struct couple {
+    int x;
+    int y;
+};\end{lstlisting}
+                
+                Il ne faut pas oublier le mot-clé \texttt{struct} lors de la déclaration d’un élément d’une structure.
+                
+                Par exemple :
+                \begin{lstlisting}[language=C, xleftmargin=80pt]
+struct couple c;\end{lstlisting}
+                
+                Pour initialiser un tel élément, cela fonctionne comme pour les tableaux : on peut l’initialiser directement au moment de la déclaration en fournissant les valeurs des champs dans l’ordre entre accolades, ou bien on initialise les champs un à un par affectation, sachant que l’accès à un champ se fait via la syntaxe :
+                
+                \texttt{<nom\_variable\_structure>.<nom\_champ>}.
+                
+                Par exemple :
+                
+                \begin{lstlisting}[language=C, xleftmargin=80pt]
+struct couple c = {0, 1};
+//ou bien
+struct couple c;
+c.x = 0;
+c.y = 1;\end{lstlisting}
+                
+                \vspace{6pt}
+                
+                On peut utiliser une déclaration de type éviter d’avoir à répéter le mot-clé \texttt{struct} :
+                
+                \begin{lstlisting}[language=C, xleftmargin=80pt]
+typedef struct couple couple_entier;\end{lstlisting}
+                
+                \vspace{6pt}
+                
+                En une seule fois, sans nommer la structure intermédiaire :
+                
+                \begin{lstlisting}[language=C, xleftmargin=80pt]
+typedef struct {
+    int x;
+    int y;
+} couple_entier;\end{lstlisting}
+                
+                \vspace{6pt}
+                
+                Remarque : lorsque l’on a un pointeur vers une structure, l’accès aux champs peut s’écrire \texttt{nom\_ptr->nom\_champ} plutôt que \texttt{(*nom\_ptr).nom\_champ.}
+            \end{indt}
+            
+            \begin{indt}{\subsubsection{Types en OCaml}}
+                Pour déclarer un type en OCaml, on peut utiliser la syntaxe suivante :
+                \begin{lstlisting}[language=Caml, xleftmargin=80pt]
+type <nom_type> = <type_concret>\end{lstlisting}
+                
+                \vspace{6pt}
+                
+                Par exemple, pour un type \emph{synonyme} :
+                \begin{lstlisting}[language=Caml, xleftmargin=80pt]
+type entier_relatif = int\end{lstlisting}
+                
+                \vspace{6pt}
+                
+                On peut définir l’équivalent d’une structure en C grâce aux types \emph{produits}/enregistrements.
+                
+                Syntaxe :
+                \begin{lstlisting}[language=Caml, xleftmargin=80pt]
+type <nom_type> = {
+    <nom_champ_1> : <type_champ_1>;
+    ...
+    <nom_champ_n> : <type_champ_n>;
+}\end{lstlisting}
+                
+                \vspace{6pt}
+                
+                Par exemple :
+                \begin{lstlisting}[language=Caml, xleftmargin=80pt]
+type couple_entier = {x : int; y : int}\end{lstlisting}
+                
+                \vspace{6pt}
+                
+                On déclare alors un élément de ce type en fournissant la valeur de chacun des champs. Par exemple :
+                \begin{lstlisting}[language=Caml, xleftmargin=80pt]
+let c = {x = 0; y = 1}\end{lstlisting}
+                
+                \vspace{6pt}
+                
+                Attention, les champs sont \textit{immuables}, sauf si l’on ajoute le mot-clé \texttt{mutable} aux champs que l’on souhaite pouvoir modifier. Une affectation sur un champ s’écrit avec une flèche, à la manière des tableaux. L’accès aux champs s’écrit comme en C. Par exemple :
+                
+                \begin{lstlisting}[language=Caml, xleftmargin=80pt]
+type couple_mutable = {mutable x : int; mutable y : int};;
+let c = {x = 0; y = 1};;
+c.x <- 1;;\end{lstlisting}
+                
+                \vspace{6pt}
+                
+                \begin{indt}{Remarques :}
+                    $-$ On a la compatibilité avec le polymorphisme :
+                    \begin{lstlisting}[language=Caml, xleftmargin=100pt]
+type 'a couple = {x : 'a; y : 'a};;
+let c : int couple = {x = 0; y = 1};;\end{lstlisting}
+                    
+                    \vspace{6pt}
+                    
+                    $-$ On peut déconstruire un élément d’un type enregistrement par filtrage, y compris dans un \texttt{let} :
+                    \begin{lstlisting}[language=Caml, xleftmargin=100pt]
+let {x = abscisse; y = _} = c in print_int abscisse
+(* voire *)
+let {x; y} = c in print_int x
+(* voire meme, puisqu'on n'utilise que x *)
+let {x} = c in print_int x\end{lstlisting}
+                \end{indt}
+                
+                \vspace{6pt}
+                
+                En OCaml, on dispose d’un format de type supplémentaire : le type \emph{somme}.
+                
+                Syntaxe :
+                \begin{lstlisting}[language=Caml, xleftmargin=80pt]
+type <nom_type> =
+    | <Nom_constructeur> (* constructeur sans argument *)
+    | <Nom_constructeur> of <type_argument > (* constructeur avec
+        arguments *)
+    | ...\end{lstlisting}
+                
+                Par exemple :
+                \begin{lstlisting}[language=Caml, xleftmargin=80pt]
+type carte = Roi | Dame | Valet | Nombre of int
+let carte_as = Nombre 1\end{lstlisting}
+                
+                \vspace{6pt}
+                
+                Un constructeur avec plusieurs arguments prend en fait un unique argument qui est le $n$-uplet des arguments. Par exemple :
+                
+                \begin{lstlisting}[language=Caml, xleftmargin=80pt]
+type carte_avec_couleur =
+    | Roi of string
+    | Dame of string
+    | Valet of string
+    | Nombre of int * string
+let as_pique = Nombre (1, "pique")\end{lstlisting}
+                
+                \vspace{6pt}
+                
+                Remarque : comme pour les types enregistrement, on la compatibilité avec le polymorphisme et le filtrage. On peut même définir des types récursifs. Par exemple :
+                \label{1.3.2}
+                \begin{lstlisting}[language=Caml, xleftmargin=80pt]
+type 'a liste = Nil | Cons of 'a * 'a liste;;
+let tete (l : 'a liste) : 'a =
+    match l with
+    | Nil -> failwith "Liste vide"
+    | Cons (t, q) -> t\end{lstlisting}
+            \end{indt}
+        \end{indt}
+        
+    \end{indt}
+    
+    \vspace{12pt}
+    
+    \begin{indt}{\section{Structures de données séquentielles}}
+        
+        \begin{indt}{\subsection{Listes}}
+            \begin{indt}{\subsubsection{Introduction}}
+                La structure de liste est une structure de donnée (SD) abstraite représentant un ensemble fini et ordonné de valeurs. Il n'y a pas vraiment d'interface standard pour cette SD.
+                
+                \begin{indt}{Les primitives possibles pour cette SD sont :}
+                    $-$ Opération de création de liste vide (commun à la plupart des SD) ;
+                    
+                    $-$ Un test de vacuité (commun à la plupart des SD) ;
+                    
+                    $-$ Une opération pour ajouter un élément (début / fin) ;
+                    
+                    $-$ Une opération pour accéder aux éléments (1\textsuperscript{er}, dernier, successeur, prédécesseur d'un élément) ;
+                    
+                    $-$ ...
+                \end{indt}
+                
+                \vspace{6pt}
+                
+                Le plus souvent, le terme \textit{liste} désigne la structure de liste simplement chaînée, qui est la notion principale de liste en programmation fonctionnelle (surtout en Lisp) et en théorie des types.
+            \end{indt}
+            
+            \vspace{6pt}
+            
+            \begin{indt}{\subsubsection{Listes simplement chaînées}}
+                \begin{indt}{$\bullet$ Définition :}
+                    La structure de liste simplement chaînée est une structure de liste dont les primitives sont les accès au 1\textsuperscript{er} élément et au successeur d'un élément donné.
+                \end{indt}
+                
+                \vspace{6pt}
+                
+                $\bullet$ Implémentation en OCaml : c'est le type \texttt{'a list} que l'on peut définir récursivement comme en \ref{1.3.2}. Les primitives sont les constructeurs du type, \texttt{Nil ([])} et \texttt{Cons (::)}, et les fonctions \texttt{List.hd} (accès au premier élément) et \texttt{List.tl} (accès au sucesseur).
+                Ces opérations sont garanties en temps constant, contrairement à d'autres opérations qu'il faut implémenter.
+                
+                \vspace{6pt}
+                
+                Exemple : ajout en fin de liste :
+                \begin{lstlisting}[language=Caml, xleftmargin=80pt]
+let rec append (x : 'a) (l : 'a list) : 'a list =
+    match l with
+    | [] -> [x] (*x::[]*)
+    | t::q -> t::(append x q)\end{lstlisting}
+                
+                \vspace{6pt}
+                
+                $\bullet$ Implémentation en C : on définit un structure représentant un maillon de la chaîne, contenant une valeur et (on doit connaître le type à l'avance) un pointeur vers le maillon suivant (la structure est récursive).
+                
+                \begin{lstlisting}[language=C, xleftmargin=80pt]
+struct maillon {
+    int valeur;
+    struct maillon* suivant;
+};
+typedef struct maillon* liste;\end{lstlisting}
+                
+                On utilise un pointeur car la liste vide ne peut être représentée comme un maillon. Ici, la liste vide sera le pointeur \texttt{NULL}.
+                
+                Exemples de primitives :
+                
+                \begin{lstlisting}[language=C, xleftmargin=80pt]
+int tete(liste l) {
+    return l->valeur;
+}
+
+int queue(liste l) {
+    l->suivant;
+}\end{lstlisting}
+                
+                Attention, une liste doit être allouée dynamiquement.
+                
+                \begin{lstlisting}[language=C, xleftmargin=80pt]
+liste list_of_arr(int* t, int n) {
+    liste l = NULL;
+    liste q = NULL;
+    
+    for (int k = n - 1 ; k >= 0 ; k--) {
+        l = (liste) malloc(sizeof(struct maillon));
+        assert(l != NULL);
+        l->valeur = t[k];
+        l->suivant = q;
+        q = l;
+    }
+    
+    return l;
+}\end{lstlisting}
+            \end{indt}
+            
+            \vspace{6pt}
+            
+            \begin{indt}{\subsubsection{Implémentation par tableau}}
+                On peut stocker les valeurs d'une liste dans un tableau (comme en Python).
+                
+                Idée : on fixe une taille et on remplit un tableau de cette taille avec les éléments de la liste, du dernier au premier.
+                
+                Ex, en OCaml :
+                \begin{lstlisting}[language=Caml, xleftmargin=80pt]
+type 'a liste = {valeur : 'a array; mutable nb_elts : int};;
+
+let liste_vide (x : 'a) : 'a liste =
+    {valeurs = Array.make 42 x; nb_elts = 0};;
+
+let add (x : 'a) (l : 'a liste) : unit =
+    l.valeurs.(l.nb_elts) <- x;
+    l.nb_elts <- l.nb_elts + 1;;\end{lstlisting}
+                
+                Avantages : accès en temps constant à tous les éléments (premier, dernier, par index, successeur, prédécesseur), calcul de la taille en temps constant.
+                
+                Problème : si on sature le tableau, on a une erreur à l'ajout suivant.
+                
+                Solution : on utilise des tableaux dynamiques : on alloue un tableau plus grand après saturation.
+                En OCaml, le champ \texttt{valeur} devient mutable.
+                
+                \vspace{6pt}
+                
+                Exo : implémentation de la fonction \texttt{add} en C dans laquelle on alloue un tableau de taille double après saturation.
+                
+                \newpage
+                
+                \begin{lstlisting}[language=C, xleftmargin=80pt]
+typedef struct {
+    int* valeurs;
+    int taille;
+    int nb_elts;
+} liste;
+
+void add(int x, liste* l)\end{lstlisting}
+                
+                Rq : le choix de doubler la taille n'est pas annodin : \texttt{add} est de complexité constante dans le meilleur cas, linéaire dans pire cas (allocation d'un tableau de taille $2n$ + copie des $n$ premiers éléments), et de complexité amortie constante.
+            \end{indt}
+            
+            \vspace{6pt}
+            
+            \begin{indt}{\subsubsection{Analyse amortie}}
+                L'analyse amorite permet de déterminer le coût moyen d'une opération au sein d'une série d'opérations : on calcule la moyenne de la complexité dans le pire cas d'une série de $n$ opérations. Ainsi, une opération coûteuse ponctuelle est compensée par un grand nombre d'opérations peu coûteuses.
+                
+                \vspace{6pt}
+                
+                Attention, ne pas comfondre avec la complexité moyenne, qui est la moyenne du coût d'une seule opération sur toutes les entrées d'une taille donnée.
+                
+                \vspace{12pt}
+                
+                \begin{indt}{Méthodes pour effectuer une analyse amortie :}
+                    $\bullet$ Méthode de \emph{l'agrégat} : on calcule un majorant $M(n)$ du coût de $n$ opérations. Le coût amorti est alors $\dfrac{M(n)}{n}$
+                    
+                    Ex : la fonction \texttt{add}. La $i$-ème opération coûte $O(1)$ sauf si $i$ est une puissance de 2 (si on part d'un tableau de taille 1). Dans ce cas, l'opération coûte $O(i)$.
+                    
+                    Le coût de $n$ opérations est alors inférieur à $\displaystyle n + \sum_{i = 0}^{\log_2(n)} 2^i < n + 2n = 3n$
+                    
+                    Le coût amorti de l'opération d'ajout est alors $\dfrac{3n}{n} = 3$
+                    
+                    \vspace{12pt}
+                    
+                    $\bullet$ Méthode \emph{comptable} : on surévalue le coût des opérations de faible complexité pour obtenir des ``crédits'' servant à ``payer'' les opérations de forte complexité. Les crédits sont associés à des objets stockés dans la SD : ils servent à payer les opérations sur ces objets.
+                    
+                    \begin{indt}{Ex : fonction \texttt{add} : chaque élément ajouté vient avec 3 crédits :}
+                        $-$ Un crédit pour l'ajout de l'élément ;
+                        
+                        $-$ Un crédit pour sa prochaine copie ;
+                        
+                        $-$ Un crédit pour la copie d'un autre élément déjà présent, et qui n'a plus de crédit.
+                    \end{indt}
+                    
+                    \vspace{6pt}
+                    
+                    Juste après une extension, on a un tableau de taille $m$ sans crédit. Il contient $\dfrac m 2$ éléments.
+                    Chacun des $\dfrac m 2$ éléments qu'on peut ajouter paye pour son insertion, sa copie et la copie de l'un des $\dfrac m 2$ premiers éléments.
+                    
+                    \vspace{12pt}
+                    
+                    $\bullet$ Méthode du \emph{potentiel} : on associe une fonction de potentiel à la SD et on définit le coût amorti d'une opération comme son coût réel + la variation de potentiel induite par l'opération.
+                    
+                    Si le potentiel final est supérieur au potentiel initial, on obtient bien un majorant pour la somme des coûts.
+                    
+                    $\sum$ Coûts amortis = $\sum$ coûts réels + (potentiel final - potentiel initial)
+                    
+                    \vspace{6pt}
+                    
+                    Ex : pour les tableaux dynamiques : $\Phi(t) = 2\mathtt{nb\_elts} - \mathtt{taille}(t)$
+                    
+                    Juste après une extension, $\Phi(t) = 0$
+                    
+                    De plus, $\Phi(t) \ge 0$ car le tableau est toujours au moins à moitié rempli donc le potentiel final est supérieur au potentiel initial.
+                    
+                    \begin{indt}{Coût amorti d'une opération :}
+                        $-$ S'il n'y a pas d'extension : $1 + ((2\underbrace{(n + 1)}_{\mathtt{nb\_elts}} - \underbrace{c}_{\text{taille}}) - (2n - c)) = 3$
+                        
+                        $-$ S'il y a une extension : $n + 1 + ((2(n + 1) - 2c) - (2n - c)) = n + 3 - c = 3$ car $n = c$
+                    \end{indt}
+                    
+                \end{indt}
+            \end{indt}
+        \end{indt}
+        
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Piles et files}}
+            \begin{indt}{\subsubsection{Motivations}}
+                Voici quelques problèmes que l'on souhaite résoudre :
+                
+                \vspace{6pt}
+                
+                (1) On veut implémenter la fonction retour arrière dans un navigateur / éditeur de texte.
+                
+                \begin{indt}{Besoins :}
+                    $-$ Stocker les états précédants
+                    
+                    $-$ Ajouter un nouvel état (nouvelle page)
+                    
+                    $-$ Obtenir l'état courant (affichage)
+                    
+                    $-$ Extraire l'état courant (retour arrière)
+                \end{indt}
+                
+                \vspace{6pt}
+                
+                (2) On veut gérer les appels de fonctions dans un programme.
+                
+                \begin{indt}{Besoins :}
+                    $-$ Stocker les blocs d'activation des fonctions
+                    
+                    $-$ Ajouter un bloc (appel de fonction)
+                    
+                    $-$ Retirer un bloc (retour de fonction)
+                \end{indt}
+                
+                \vspace{6pt}
+                
+                (3) On veut gérer les tâches d'un serveur d'impression.
+                
+                \begin{indt}{Besoins :}
+                    $-$ Stocker les tâches en attente
+                    
+                    $-$ extraire la tâche la plus ancienne
+                    
+                    $-$ Ajouter des tâches
+                \end{indt}
+                
+                \vspace{6pt}
+                
+                (4) On veut gérer les entrées au clavier sur un ordinateur.
+                
+                \begin{indt}{Besoins :}
+                    $-$ Stocker les caractères entrés (dans un buffer)
+                    
+                    $-$ Ajouter des caractères au buffer (nouvelle entrée)
+                    
+                    $-$ Extraire les caractères les plus anciens, au besoin
+                \end{indt}
+                
+                \vspace{6pt}
+                
+                Tous ces problèmes exprimment un besoin commun : stocker des données en attente d'être traités et les extraire dans un ordre précis. C'est le signe que l'élaboration d'une structure de données adaptée permettrait de les résoudre efficacement.
+                
+                \begin{indt}{Ici, on peut concevoir deux structures selon l'ordre d'extraction :}
+                    $-$ La structure de \emph{pile} : dernier entré, premier sorti (LIFO, \textit{last in, first out}), utile pour (1) et (2) ;
+                    
+                    $-$ La structure de \emph{file} : premier entré, premier sorti (FIFO, \textit{first in, first out}), utile pour (3) et (4).
+                \end{indt}
+                
+                \vspace{6pt}
+                
+                Ce sont deux cas particuliers de la structure de file de priorité, que nous verrons plus tard.
+            \end{indt}
+            
+            \vspace{6pt}
+            
+            \begin{indt}{\subsubsection{Définition (structure de pile)}}
+                \begin{indt}{Une pile est une structure de données dont les opérations sont les suivantes :}
+                    $-$ \texttt{pileVide} : crée une pile ;
+                    
+                    $-$ \texttt{estVide} : teste si une pile est vide ;
+                    
+                    $-$ \texttt{empiler} : ajoute un élément sur le sommet de la pile ;
+                    
+                    $-$ \texttt{dépiler} : extrait, \textit{i.e} retire et renvoie, le sommet de la pile ;
+                    
+                    $-$ \texttt{sommet} (facultatif) : renvoit la valeur du sommet sans l'extraire.
+                \end{indt}
+                
+                \vspace{6pt}
+                
+                Rq : Ceci est une structure dynamique (la SD peut changer) immuable (on ne peut pas modifier chaque bloc), qui peut être impérative persistante / fonctionnelle selon le type des opérations empiler / dépiler.
+            \end{indt}
+            
+            \vspace{6pt}
+            
+            \begin{indt}{\subsubsection{Concrétisation de la structure de pile}}
+                \begin{indt}{La structure de liste simplement chaînée est assez naturelle pour implémenter les piles :}
+                    $-$ \texttt{pileVide} : renvoit la liste vide ;
+                    
+                    $-$ \texttt{estVide} : teste l'égalité avec la liste vide ;
+                    
+                    $-$ \texttt{empiler} : ajoute en tête de liste ;
+                    
+                    $-$ \texttt{dépiler} : extrait la tête ;
+                    
+                    $-$ \texttt{sommet} : renvoit la tête.
+                \end{indt}
+                
+                \vspace{6pt}
+                
+                On peut donc utiliser une structure de mailles chaînées ou des tableaux pour implémenter les piles.
+                
+                \vspace{6pt}
+                
+                \boxed{\rm Exo} :
+                
+                $\bullet$ Implémenter en OCaml un type \texttt{'a stack} et ses primitives à partir du type \texttt{'a list}
+                
+                $\bullet$ Maillons chaînés en C :
+                
+                %\vspace{6pt}
+                \newpage
+                
+                \begin{lstlisting}[language=C, xleftmargin=80pt]
+struct maillon {
+    int val;
+    struct maillon* next;
+};
+typedef struct maillon* stack;
+
+stack push(int x, stack s) { //structure persistante
+    stack top = (stack) malloc(sizeof(struct maillon));
+    top->val = x;
+    top->next = s;
+    return top;
+}
+
+stack pop(int* x, stack s) {
+    assert(!estVide(s));
+    *x = s->val;
+    stack res = s->next;
+    free(s);
+    return res;
+}
+
+//Or
+void pop(stack s, int* x, stack* res) {
+    //Exo
+}\end{lstlisting}
+                
+                \vspace{6pt}
+                
+                $\bullet$ Tableau : comme pour les listes, on peut utiliser un tableau statique (en imposant une taille maximale) ou dynamique.
+                
+                Différence : la réallocation (version dynamique) et la création de pile vide (versions statique) sont plus coûteuses.
+                
+                \vspace{6pt}
+                
+                \boxed{\rm Exo} : implémentation en C et en OCaml.
+                
+                \vspace{6pt}
+                
+                \begin{indt}{$\bullet$ Module \texttt{Stack} d'OCaml : dans la bibliothèque standard, on dispose des objets suivants :}
+                    $-$ type \texttt{'a Stack.t} des piles ;
+                    
+                    $-$ \texttt{Stack.create : unit -> 'a Stack.t} qui crée une pile vide ;
+                    
+                    $-$ \texttt{Stack.is\_empty : 'a Stack.t -> bool} qui teste la vacuité de la pile ;
+                    
+                    $-$ \texttt{Stack.push : 'a -> 'a Stack.t -> unit} (donc structure impérative) ;
+                    
+                    $-$ \texttt{Stack.pop : 'a Stack.t -> 'a} qui extrait le sommet de la pile, et lève l'exception \texttt{Stack.Empty} si la pile est vide ;
+                    
+                    $-$ H.P \texttt{Stack.tp : 'a Stack.t -> 'a} qui renvoit le sommet de la pile, même exception si la pile est vide.
+                \end{indt}
+                
+                \vspace{6pt}
+                
+                Concrètement, la type \texttt t du module \texttt{Stack} est défini comme \texttt{unit} :
+                
+                \begin{lstlisting}[language=Caml, xleftmargin=80pt]
+type 'a t = {mutable C : 'a list}\end{lstlisting}
+                
+            \end{indt}
+            
+            \vspace{6pt}
+            
+            \begin{indt}{\subsubsection{Définition (structure abstraite de file)}}
+                \begin{indt}{Une file est une structure de données dont les opérations sont :}
+                    $-$ \texttt{fileVide} : crée une file vide ;
+                    
+                    $-$ \texttt{estVide} : teste si une file est vide ;
+                    
+                    $-$ \texttt{enfiler} : insère un élément en fin de file ;
+                    
+                    $-$ \texttt{défiler} : extrait l'élément en début de file ;
+                    
+                    $-$ \texttt{premier} (facultatif) : renvoit l'élément en début de file.
+                \end{indt}
+            \end{indt}
+            
+            \vspace{6pt}
+            
+            \begin{indt}{\subsubsection{Concrétisation de la structure de file}}
+                On a besoin d'accéder efficacement au premier et au dernier élément.
+                
+                \vspace{6pt}
+                
+                $\bullet$ Tableaux : on peut utiliser une structure de tableau associée à un indice de début et un indice de fin (\textit{cf} TD)
+                
+                \vspace{6pt}
+                
+                $\bullet$ Maillon chaînés : on peut utiliser une structure de liste simplement chaînée associée à des pointeurs vers le premier et le dernier maillon.
+                
+                \begin{indt}{C'est le principe de l'implémentation du module \texttt{Queue} d'OCaml, qui fournit les objets suivants :}
+                    $-$ type \texttt{'a Queue.t}, des files ;
+                    
+                    $-$ \texttt{Queue.create : unit -> 'a Queue.t} ;
+                    
+                    $-$ \texttt{Queue.is\_empty : 'a Queue.t -> bool} ;
+                    
+                    $-$ \texttt{Queue.add : 'a -> 'a Queue.t -> unit} Il y a un alias \texttt{Queue.push}, favorisé par le programme ;
+                    
+                    $-$ \texttt{Queue.take : 'a Queue.t -> 'a} (alias \texttt{Queue.pop}) ;
+                    
+                    $-$ H.P \texttt{Queue.peek : 'a Queue.t -> 'a} (alias \texttt{Queue.top}) qui lèvent l'exception \texttt{Queue.Empty} si la file est vide.
+                \end{indt}
+                
+                \vspace{6pt}
+                
+                Implémentation :
+                
+                \begin{lstlisting}[language=Caml, xleftmargin=80pt]
+type 'a cell =
+    | Nil
+    | Cons of {content : 'a; mutable next : 'a cell}
+
+type 'a t = {
+    mutable length : int;
+    mutable first : 'a cell;
+    mutable last : 'a cell;
+}\end{lstlisting}
+                
+                \vspace{6pt}
+                
+                \boxed{\rm Exo} : savoir le faire en C.
+            \end{indt}
+        \end{indt}
+        
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Tableau associatifs}}
+            \begin{indt}{\subsubsection{Définition (structure abstraite de tableau associatif)}}
+                Un tableau associatif, ou dictionnaire, est une structure de données permettant de stocker des associations entre des clés, prises dans un ensemble $K$, et des valeurs, prises dans un ensemble $V$.
+                Pour toute clé $k \in K$, il ne peut y avoir qu'au plus une valeur.
+                
+                \newpage
+                
+                \begin{indt}{Les opérations de la structure sont :}
+                    $-$ Création d'un dictionnaire vide ;
+                    
+                    $-$ Test de vacuité ;
+                    
+                    $-$ Test de présence d'une association pour une clé donnée ;
+                    
+                    $-$ Recherche de la valeur associée à une clé ;
+                    
+                    $-$ Insertion / modification / supression de la valeur associée à une clé.
+                \end{indt}
+            \end{indt}
+            
+            \vspace{6pt}
+            
+            \begin{indt}{\subsubsection{Remarque}}
+                Cette structure généralise celle de tableau (où les clés sont les indices).
+                
+                C'est une structure mutable (on peut modifier les éléments), dynamique (on peut ajouter ou retirer des éléments).
+            \end{indt}
+            
+            \vspace{6pt}
+            
+            \begin{indt}{\subsubsection{Implémentation par maillons chaînés ou par tableaux}}
+                N'importe quelle implémentation de la structure de liste convient en stockant les couples (clés, valeurs).
+                
+                \begin{indt}{Complexité des opérations}
+                    $-$ Création : $O(1)$ pour les maillons chaînés, $O(t)$ pour les tableaux ($t$ la taille initiale) ;
+                    
+                    $-$ Test de vacuité : $O(1)$ ;
+                    
+                    $-$ Test de présence / recherche de valeur : $O(n)$ ;
+                    
+                    $-$ Insertion : $O(1)$ (pire cas pour les maillon, amorti pour les tableaux), en supposant que l'on utilise une nouvelle clé ;
+                    
+                    $-$ Modification, supression : $O(n)$ (il faut déjà trouver l'élément).
+                \end{indt}
+                
+                \vspace{6pt}
+                
+                Les opérations les plus coûteuses le sont en raison de la recherche. On peut ramener en tête de liste les clés auxquelles on accède pour placer en début de liste les clés fréquemment recherchées afin d'améliorer la complexité moyenne (si l'on suppose une bonne distribution des clés).
+                
+                On appelle cette structure une \textit{liste auto-organisée}.
+                
+                \vspace{6pt}
+                
+                Si les clés appartiennent à un ensemble totalement ordonné (\textit{cf} chap 5), on peut rendre la recherche plus efficace dans l'implémentation par tableau en utilisant l'algorithme de la recherche dichotomique, si on conserve le tableau trié selon les clés.
+                
+                \begin{indt}{Les complexités qui changent sont :}
+                    $-$ Test de présence / recherche de valeur : $O(\log n)$ ;
+                    
+                    $-$ Insertion : $O(n)$, car $O(\log n)$ pour la recherche de l'emplacement, et $O(n)$ pour le décalage ;
+                    
+                    $-$ Modification : $O(\log n)$ ;
+                \end{indt}
+                
+                \vspace{6pt}
+                
+                Cette structure est efficace si on effectue peu d'insertions et de supressions.
+                
+                \vspace{6pt}
+                
+                \begin{indt}{Remarque : on a des fonctions dans le module \texttt{List} d'OCaml pour l'implémentation par maillon chaînés (H.P) :}
+                    $-$ \texttt{List.assoc : 'a -> ('a * 'b) list -> 'b} qui lève l'exception \texttt{Not\_found} si la clé passée en argument n'est pas dans la liste ;
+                    
+                    $-$ \texttt{List.assoc\_opt : 'a -> ('a * 'b) list -> 'b option} ;
+                    
+                    $-$ \texttt{List.mem\_assoc : 'a -> ('a * 'b) list -> bool}
+                    
+                    $-$ \texttt{List.remove\_assoc : 'a -> ('a * 'b) list -> ('a * 'b) list}, qui ne lève pas d'exception si l'association n'existe pas.
+                \end{indt}
+                
+                \vspace{6pt}
+                
+                \boxed{\rm Exo} : code.
+            \end{indt}
+            
+            \vspace{6pt}
+            
+            \begin{indt}{\subsubsection{Implémentation par table de hachage}}
+                Les problèmes de performance des implémentations précédantes sont liés à la recherche d'une clé dans la structure. Dans l'idéal, on voudrait accéder à la valeur associée à une clé en temps constant, comme dans un tableau indicé par les clés.
+                
+                Si l'ensemble $K$ est assez petit, on peut numéroter les clés, grâce à une bijection
+                    \[h : K \longrightarrow \nset{0}{\mathrm{card}(K) - 1}\]
+                et utiliser un tableau (la valeur associée à la clé $k$ est dans la case d'indice $h(k)$).
+                
+                Toutes les opérations se font en temps constant, sauf la création du tableau en $O(\mathrm{card}(K))$.
+                
+                Problème : c'est trop coûteux en espace.
+                
+                Idée : on réduit la taille du tableau, mais il y aura moins d'indices que de clés.
+                
+                On utilise donc un tableau associé à une fonction
+                    \[ h : K \longrightarrow \nset{0}{m} \]
+                où $m$ n'est pas trop grand, que l'on appelle \textit{fonction de hachage}. On appelle $h(k)$ le \textit{haché} de la clé $k$, $m$ la longueur de la table de hachage, et les cases du tableau les \textit{alvéoles}.
+                
+                Lorsque l'on a $k, k' \in K\ |\ h(k) = h(k')$, on parle de \textit{collision}.
+                
+                Les collisions empêchent de stocker directement la valeur associée à une clé dans l'alvéole d'indice le haché de la clé. Plusieurs techniques existent pour concevoir des fonctions de hachage limitant le nombre de collisions et pour gérer ces collisions. Elles sont toutes H.P. L'une d'entre elles est très classique : la résolution des collisions par chaînage : on stocke dans une alvéole d'indice $i$ une liste chaînée des associations (clé, valeur) telles que le haché de la clé vaut $i$.
+                
+                \vspace{6pt}
+                
+                Exemple : Prenons $m = 5$ et
+                    \[ h(k) = \left\lfloor mk \dfrac{\sqrt 5 - 1}{2} \right\rfloor \mod m \]
+                
+                \begin{indt}{et considérons les opérations suivantes :}
+                    $-$ Création d'une table de hachage de taille $m$ ;
+                    
+                    $-$ Insertion de $v_0$ de clé 4 ($h(4) = 2$) ;
+                    
+                    $-$ Insertion de $v_1$ de clé 3 ($h(3) = 4$)
+                    
+                    $-$ Insertion de $v_2$ de clé 9 ($h(9) = 2$)
+                \end{indt}
+                
+                \begin{tabular}{ccl}
+                    0
+                    & \fbox{$\phantom a$}
+                    & $[]$
+                    \\
+                    1
+                    & \fbox{$\phantom a$}
+                    & $[]$
+                    \\
+                    2
+                    & \fbox{$\phantom a$}
+                    & $[(9, v_2), (4, v_0)]$
+                    \\
+                    3
+                    & \fbox{$\phantom a$}
+                    & $[]$
+                    \\
+                    4
+                    & \fbox{$\phantom a$}
+                    & $[(3, v_1)]$
+                \end{tabular}
+                
+                \vspace{6pt}
+                
+                Le coût des opérations est en $O(\text{longueur de l'alvéole concernée})$. On peut montrer que si la fonction de hachage est bien choisie, \textit{i.e} si les clés sont uniformément réparties sur les alvéoles, la complexité moyenne des opérations est en $O(1 + \alpha)$, où $\alpha = \frac n m$ est le taux de remplissage de la table de hachage.
+                
+                En conservant $m$ proportionnel à $n$, on obtient une complexité moyenne constante pour les opérations de dictionnaire.
+                
+                Une possibilité est d'utiliser le double hachage si le nombre de clés devient trop grand : chaque alvéole est elle-même une table de hachage.
+                Une autre possibilité est d'agrandir la table de hachage, donc de changer de fonction de hachage, à la manière des tableaux dynamiques (\textit{cf} TD)
+                
+                \vspace{6pt}
+                
+                \begin{indt}{Remarque : le module \texttt{Hashtbl} d'OCaml fournit une implémentation des tables de hachage. On y trouve :}
+                    $-$ le type \texttt{('a, 'b) Hashtbl.t} des tables de hachage dont les clés sont de type \texttt{'a} est les valeurs de type \texttt{'b} ;
+                    
+                    $-$ \texttt{Hashtbl.create : int -> ('a, 'b) Hashtbl.t} qui crée une table de hachage dont le nombre d'alvéoles est donné en paramètre ;
+                    
+                    $-$ \texttt{Hashtbl.add : ('a, 'b) Hashtbl.t -> 'a -> 'b -> unit} ;
+                    
+                    $-$ \texttt{Hashtbl.replace : ('a, 'b) Hashtbl.t -> 'a -> 'b -> unit} H.P ;
+                    
+                    $-$ \texttt{Hashtbl.remove : ('a, 'b) Hashtbl.t -> 'a -> unit} ;
+                    
+                    $-$ \texttt{Hashtbl.mem : ('a, 'b) Hashtbl.t -> 'a -> bool} ;
+                    
+                    $-$ \texttt{Hashtbl.find : ('a, 'b) Hashtbl.t -> 'a -> 'b} qui lève l'exception \texttt{Not\_found} si la clé n'est pas dans la table ;
+                    
+                    $-$ \texttt{Hashtbl.find\_opt : ('a, 'b) Hashtbl.t -> 'a -> 'b opt} ;
+                    
+                    $-$ \texttt{Hashtbl.iter : ('a -> 'b -> unit) -> ('a, 'b) Hashtbl.t -> unit} Attention, l'ordre d'itération n'est pas spécifié ;
+                \end{indt}
+            \end{indt}
+        \end{indt}
+        
+    \end{indt}
+    
+    
+    
+\end{document}
+%--------------------------------------------End

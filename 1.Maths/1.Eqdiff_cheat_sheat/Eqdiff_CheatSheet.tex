@@ -1,0 +1,341 @@
+\documentclass[a4paper, 12pt, twoside]{article}
+
+
+%------------------------------------------------------------------------
+%
+% Author                :   Lasercata
+% Last modification     :   2021.11.18
+%
+%------------------------------------------------------------------------
+
+
+%------ini
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+%\usepackage[french]{babel}
+\usepackage[english]{babel}
+
+
+%------geometry
+\usepackage[textheight=700pt, textwidth=500pt]{geometry}
+
+
+%------color
+\usepackage{xcolor}
+\definecolor{ff4500}{HTML}{ff4500}
+\definecolor{00f}{HTML}{0000ff}
+\definecolor{0ff}{HTML}{00ffff}
+\definecolor{656565}{HTML}{656565}
+
+\renewcommand{\emph}{\textcolor{ff4500}}
+\renewcommand{\em}{\color{ff4500}}
+
+\newcommand{\strong}[1]{\textcolor{ff4500}{\bf #1}}
+\newcommand{\st}{\color{ff4500}\bf}
+
+
+%------Code highlighting
+\usepackage{listings}
+
+\definecolor{cbg}{HTML}{272822}
+\definecolor{cfg}{HTML}{ececec}
+\definecolor{ccomment}{HTML}{686c58}
+\definecolor{ckw}{HTML}{f92672}
+\definecolor{cstring}{HTML}{e6db72}
+\definecolor{cstringlight}{HTML}{98980f}
+\definecolor{lightwhite}{HTML}{fafafa}
+
+\lstdefinestyle{DarkCodeStyle}{
+    backgroundcolor=\color{cbg},
+    commentstyle=\itshape\color{ccomment},
+    keywordstyle=\color{ckw},
+    numberstyle=\tiny\color{cbg},
+    stringstyle=\color{cstring},
+    basicstyle=\ttfamily\footnotesize\color{cfg},
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=4,
+    xleftmargin=\leftskip
+}
+
+\lstdefinestyle{LightCodeStyle}{
+    backgroundcolor=\color{lightwhite},
+    commentstyle=\itshape\color{ccomment},
+    keywordstyle=\color{ckw},
+    numberstyle=\tiny\color{cbg},
+    stringstyle=\color{cstringlight},
+    basicstyle=\ttfamily\footnotesize\color{cbg},
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=10pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=4,
+    frame=L,
+    xleftmargin=\leftskip
+}
+
+\lstset{style=LightCodeStyle}
+
+%Usage : \begin{lstlisting}[language=Caml] ... \end{lstlisting}
+
+
+%-------make the table of content clickable
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=black
+}
+
+
+%------pictures
+\usepackage{graphicx}
+%\usepackage{wrapfig}
+
+
+%------tabular
+%\usepackage{color}
+%\usepackage{colortbl}
+%\usepackage{multirow}
+
+
+%------Physics
+%---Packages
+%\usepackage[version=4]{mhchem} %$\ce{NO4^2-}$
+
+%---Commands
+\newcommand{\link}[2]{\mathrm{#1} \! - \! \mathrm{#2}}
+\newcommand{\pt}[1]{\cdot 10^{#1}} % Power of ten
+\newcommand{\dt}[2][t]{\dfrac{d#2}{d#1}} % Derivative
+
+
+%------math
+%---Packages
+%\usepackage{textcomp}
+%\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools} % For abs
+\usepackage{stmaryrd} %for \llbracket and \rrbracket
+\usepackage{mathrsfs} %for \mathscr{x} (different from \mathcal{x})
+
+%---Commands
+%-Sets
+\newcommand{\N}{\mathbb{N}} %set N
+\newcommand{\R}{\mathbb{R}} %set R
+\newcommand{\C}{\mathbb{C}} %set C
+\newcommand{\U}{\mathbb{U}} %set U
+\newcommand{\set}[2]{\left[ #1\ ;\ #2 \right]}
+\newcommand{\nset}[2]{\left\llbracket #1\ ;\ #2 \right\rrbracket}
+
+%-Exponantial / complexs
+\newcommand{\e}[1]{\mathrm{e}^{#1}}
+\newcommand{\ex}{\e{x}}
+\newcommand{\cj}[1]{\overline{#1}} %overline for the conjugate.
+
+%-Vectors
+\newcommand{\vect}{\overrightarrow}
+\newcommand{\veco}[3]{\displaystyle \vect{#1}\binom{#2}{#3}} %vector + coord
+
+%-Limits
+\newcommand{\lm}[2][{}]{\lim\limits_{\substack{#2 \\ #1}}} %$\lm{x \to a} f$ or $\lm[x < a]{x \to a} f$
+\newcommand{\Lm}[3][{}]{\lm[#1]{#2} \left( #3 \right)} %$\Lm{x \to a}{f}$ or $\Lm[x < a]{x \to a}{f}$
+\newcommand{\tendsto}[1]{\xrightarrow[#1]{}}
+
+%-Integral
+\newcommand{\dint}[4][x]{\displaystyle \int_{#2}^{#3} #4 \mathrm{d} #1} %$\dint{a}{b}{f(x)}$ or $\dint[t]{a}{b}{f(t)}$
+
+%-Others
+\newcommand{\para}{\ /\!/\ } %//
+\newcommand{\ssi}{\ \Leftrightarrow \ }
+\newcommand{\abs}[1]{\left\lvert #1 \right\rvert} % abs{x} -> |x|
+\newcommand{\eqsys}[2]{\begin{cases} #1 \\ #2 \end{cases}}
+
+\newcommand{\med}[2]{\mathrm{med} \left[ #1\ ;\ #2 \right]}  %$\med{A}{B} -> med[A ; B]$
+\newcommand{\Circ}[2]{\mathscr{C}_{#1, #2}}
+
+\newcommand{\lr}[1]{\left( #1 \right)}
+\newcommand{\lrb}[1]{\left[ #1 \right]}
+\newcommand{\lrs}[1]{\left\{ #1 \right\}}
+
+
+%------commands
+%---to quote french text
+\newcommand{\simplecit}[1]{\guillemotleft$\;$#1$\;$\guillemotright}
+\newcommand{\cit}[1]{\simplecit{\textcolor{656565}{#1}}}
+\newcommand{\quo}[1]{\cit{\it #1}}
+
+%---to indent
+\newcommand{\ind}[1][20pt]{\advance\leftskip + #1}
+\newcommand{\deind}[1][20pt]{\advance\leftskip - #1}
+
+%---to indent a text
+\newcommand{\indented}[2][20pt]{\par \ind[#1] #2 \par \deind[#1]}
+\newenvironment{indentedenv}[1][20pt]{\par \ind[#1]}{\par \deind}
+\newenvironment{indt}[2][20pt]{#2 \begin{indentedenv}[#1]}{\end{indentedenv}} %Titled indented env
+
+%---title
+\newcommand{\thetitle}[2]{\begin{center}\textbf{{\LARGE \underline{\emph{#1} :}} {\Large #2}}\end{center}}
+
+%---parts
+%-I
+\newcommand{\mainpart}[2][$\!\!$]{\underline{\large \textbf{\emph{\textit{#1} #2}}}}
+\newcommand{\bmainpart}[2][$\!\!$]{\underline{\large \textbf{\textit{#1} #2}}}
+%-A
+\newcommand{\subpart}[2][$\!\!$]{\underline{\bf \textit{#1} #2}}
+%-1
+\newcommand{\subsubpart}[2][$\!\!$]{\underline{\textsl{#1} #2}}
+%-a
+\newcommand{\subsubsubpart}[2][$\!\!$]{\underline{\it #1 #2}}
+
+%math part
+\newcommand{\secpart}[1]{.\underline{\it #1 :}}
+
+\newenvironment{mathdef}[2][20pt]{
+    \secpart{#2} \begin{indentedenv}[#1]}
+    {\end{indentedenv}}
+
+
+%------page style
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+
+\setlength{\headheight}{18pt}
+\setlength{\footskip}{50pt}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE, RO]{\textit{\today}}
+\fancyhead[RE, LO]{\large{\textsl{\emph{\texttt{\jobname}}}}}
+
+\fancyfoot[RO, LE]{\textit{\texttt{Page \thepage /\pageref{LastPage}}}}
+\fancyfoot[LO, RE]{\includegraphics[scale=0.12]{/home/lasercata/Pictures/1.images_profil/logo/mieux/lasercata_logo_fly_fond_blanc.png}}
+
+
+%------init lengths
+\setlength{\parindent}{0pt} %no \noindent needed !!!
+\setlength{\parskip}{3pt}
+
+
+%---------------------------------Begin Document
+\begin{document}
+
+    \thetitle{Maths}{Differential equations cheat sheet}
+    
+    %\tableofcontents
+    
+    
+    \begin{indt}{\section{First order}}
+        
+        Let be $I$ an interval of $\R$.
+        \[ (E) : y' = a(x)y + b(x) \]
+        with $a, b \in \R^I$.
+        
+        \begin{indt}{\subsection{Homogenous equation}}
+            \[ (E_0) : y' = a(x)y \]
+            
+            The solution set of $(E_0)$ is, with $A \in \mathcal D(I)\ |\ A' = a$ :
+            \[ S_0 = \lrs{x \longmapsto \lambda \e{A(x)}\ |\ \lambda \in \R} \]
+        \end{indt}
+        
+        \begin{indt}{\subsection{Particular solution}}
+            \begin{indt}{\subsubsection{Constant variation}}
+            Let be $\lambda \in \mathcal D(I)$.
+            
+            Let be $f(x) = \lambda(x)\e{A(x)}$.
+            $f \in \mathcal D(I)$ by product and composition.
+            
+            \begin{eqnarray*}
+                f \text{ solution of } (E)
+                &\ssi& f' = a(x)f(x) + b(x)
+                \\
+                &\ssi& \lambda'(x)\e{A(x)} + a(x)\lambda(x)\e{A(x)} = a(x)f(x) + b(x)
+                \\
+                &\ssi&\lambda'(x) = b(x) \e{-A(x)}
+            \end{eqnarray*}
+            
+            Therefore $f(x) = \lambda(x)\e{A(x)}$ is solution of $(E) \ssi \lambda'(x) = b(x)\e{-A(x)}$.
+            \end{indt}
+            
+            \begin{indt}{\subsubsection{Constant coef and exponential second member}}
+                \[ (E_1) : y' - ay = \lambda\e{\alpha x} \]
+                
+                If \emph{$\alpha = -a$}, then $\emph{x \longmapsto Cx\e{\alpha x}},\ C \in \R$ is solution ;
+                
+                Else (\emph{$\alpha \neq -a$}), \emph{$x \longmapsto C\e{\alpha x}$} is solution.
+            \end{indt}
+        \end{indt}
+        
+        \begin{indt}{\subsection{Full solutions}}
+            The solution set of $(E)$ is, with $f$ a solution,
+            \[ \lrs{f + h_0 \ |\ h_0 \in S_0} \]
+            
+            So the solutions on $I$ are, for $x_0 \in I$,
+            \[ \lrs{x \longmapsto \lambda\e{A(x)} + \left.\e{A(x)}\int_{x_0}^x b(t)\e{-A(t)} \mathrm dt \quad \right| \ \lambda \in \R} \]
+        \end{indt}
+        
+        
+    \end{indt}
+    
+    \begin{indt}{\section{Second order with constant coefficients}}
+        
+        \[ (E') : ay'' + by' + cy = f(x) \]
+        with : $(a, b, c) \in \C^* \times \C$ and $f \in \C^\R$.
+        
+        \begin{indt}{\subsection{Homogenous equation}}
+            \[ (E_0') : ay'' + by' + cy = 0 \]
+            \[ (E_c') : ax^2 + bx + c = 0 \]
+            
+            \vspace{6pt}
+            
+            If $(E_c')$ has one double root $r$, the solution set of $(E_0')$ is :
+            \[ \lrs{x \longmapsto (\lambda x + \mu)\e{rx} \ | \ \lambda, \mu \in \C} \]
+            
+            \vspace{6pt}
+            
+            Else if $(E_c')$ has two roots $(r_1, r_2) \in \C$, the solution set of $(E_0')$ is :
+            \[ \lrs{x \longmapsto \lambda\e{r_1 x} + \mu\e{r_2 x}\ |\ \lambda, \mu \in \C} \]
+            
+            \vspace{6pt}
+            
+            If $(r_1, r_2) \in \C \backslash \R$, then $\exists (\alpha, \beta) \in \R\ | r_1 = \cj{r_2} = \alpha + i\beta$, and the real solution set for $(E_0')$ is :
+            \[ \lrs{x \longmapsto (\lambda\sin(\beta x) + \mu\cos(\beta x))\e{\alpha x}\ | \ \lambda, \mu \in \R} \]
+        \end{indt}
+        
+        \begin{indt}{\subsection{Particular solution}}
+            With $S_0$ the solution set of $(E_0')$, and $g$ a solution of $(E')$, the solution set of $(E')$ is of the form :
+            \[ \lrs{g + h_0 \ | \ h_0 \in S_0} \]
+            
+            \begin{indt}{\subsubsection{Exponential second member}}
+                \[(E_1') : ay'' + by' + cy = A\e{\alpha x}\]
+                
+                \vspace{6pt}
+                
+                If \emph{$\alpha$} is \emph{not solution} of $(E_c')$, then $\emph{x \longmapsto C\e{\alpha x}}, \ C \in \R$ is solution of $(E')$ ;
+                
+                Else if \emph{$\alpha$} is a \emph{simple root} of $(E_c')$, then $\emph{x \longmapsto Cx\e{\alpha x}}, \ C \in \R$ is solution of $(E')$ ;
+                
+                Else if \emph{$\alpha$} is the \emph{double root} of $(E_c')$, then $\emph{x \longmapsto Cx^2\e{\alpha x}}, \ C \in \R$ is solution of $(E')$ ;
+            \end{indt}
+        \end{indt}
+        
+    \end{indt}
+    
+
+    
+    
+\end{document}
+%--------------------------------------------End

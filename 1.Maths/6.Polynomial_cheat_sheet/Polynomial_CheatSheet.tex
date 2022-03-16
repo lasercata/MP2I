@@ -1,0 +1,815 @@
+\documentclass[a4paper, 12pt, twoside]{article}
+
+
+%------------------------------------------------------------------------
+%
+% Author                :   Lasercata
+% Last modification     :   2022.03.05
+%
+%------------------------------------------------------------------------
+
+
+%------ini
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+%\usepackage[french]{babel}
+%\usepackage[english]{babel}
+
+
+%------geometry
+\usepackage[textheight=700pt, textwidth=500pt]{geometry}
+
+
+%------color
+\usepackage{xcolor}
+\definecolor{ff4500}{HTML}{ff4500}
+\definecolor{00f}{HTML}{0000ff}
+\definecolor{0ff}{HTML}{00ffff}
+\definecolor{656565}{HTML}{656565}
+
+\renewcommand{\emph}{\textcolor{ff4500}}
+\renewcommand{\em}{\color{ff4500}}
+
+\newcommand{\strong}[1]{\textcolor{ff4500}{\bf #1}}
+\newcommand{\st}{\color{ff4500}\bf}
+
+
+%------Code highlighting
+\usepackage{listings}
+
+\definecolor{cbg}{HTML}{272822}
+\definecolor{cfg}{HTML}{ececec}
+\definecolor{ccomment}{HTML}{686c58}
+\definecolor{ckw}{HTML}{f92672}
+\definecolor{cstring}{HTML}{e6db72}
+\definecolor{cstringlight}{HTML}{98980f}
+\definecolor{lightwhite}{HTML}{fafafa}
+
+\lstdefinestyle{DarkCodeStyle}{
+    backgroundcolor=\color{cbg},
+    commentstyle=\itshape\color{ccomment},
+    keywordstyle=\color{ckw},
+    numberstyle=\tiny\color{cbg},
+    stringstyle=\color{cstring},
+    basicstyle=\ttfamily\footnotesize\color{cfg},
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=4,
+    xleftmargin=\leftskip
+}
+
+\lstdefinestyle{LightCodeStyle}{
+    backgroundcolor=\color{lightwhite},
+    commentstyle=\itshape\color{ccomment},
+    keywordstyle=\color{ckw},
+    numberstyle=\tiny\color{cbg},
+    stringstyle=\color{cstringlight},
+    basicstyle=\ttfamily\footnotesize\color{cbg},
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=10pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=4,
+    frame=L,
+    xleftmargin=\leftskip
+}
+
+%\lstset{style=DarkCodeStyle}
+\lstset{style=LightCodeStyle}
+
+%Usage : \begin{lstlisting}[language=Caml] ... \end{lstlisting}
+
+
+%-------make the table of content clickable
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=black
+}
+
+
+%------pictures
+\usepackage{graphicx}
+%\usepackage{wrapfig}
+
+
+%------tabular
+%\usepackage{color}
+%\usepackage{colortbl}
+%\usepackage{multirow}
+
+
+%------Physics
+%---Packages
+%\usepackage[version=4]{mhchem} %$\ce{NO4^2-}$
+
+%---Commands
+\newcommand{\link}[2]{\mathrm{#1} \! - \! \mathrm{#2}}
+\newcommand{\pt}[1]{\cdot 10^{#1}} % Power of ten
+\newcommand{\dt}[2][t]{\dfrac{d#2}{d#1}} % Derivative
+
+
+%------math
+%---Packages
+%\usepackage{textcomp}
+%\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools} % For abs
+\usepackage{stmaryrd} %for \llbracket and \rrbracket
+\usepackage{mathrsfs} %for \mathscr{x} (different from \mathcal{x})
+
+%---Commands
+%-Sets
+\newcommand{\N}{\mathbb{N}} %set N
+\newcommand{\Z}{\mathbb{Z}} %set Z
+\newcommand{\Q}{\mathbb{Q}} %set Q
+\newcommand{\R}{\mathbb{R}} %set R
+\newcommand{\C}{\mathbb{C}} %set C
+\newcommand{\U}{\mathbb{U}} %set U
+\newcommand{\seg}[2]{\left[ #1\ ;\ #2 \right]}
+\newcommand{\nset}[2]{\left\llbracket #1\ ;\ #2 \right\rrbracket}
+
+%-Exponantial / complexs
+\newcommand{\e}{\mathrm{e}}
+\newcommand{\cj}[1]{\overline{#1}} %overline for the conjugate.
+
+%-Vectors
+\newcommand{\vect}{\overrightarrow}
+\newcommand{\veco}[3]{\displaystyle \vect{#1}\binom{#2}{#3}} %vector + coord
+
+%-Limits
+\newcommand{\lm}[2][{}]{\lim\limits_{\substack{#2 \\ #1}}} %$\lm{x \to a} f$ or $\lm[x < a]{x \to a} f$
+\newcommand{\Lm}[3][{}]{\lm[#1]{#2} \left( #3 \right)} %$\Lm{x \to a}{f}$ or $\Lm[x < a]{x \to a}{f}$
+\newcommand{\tendsto}[1]{\xrightarrow[#1]{}}
+
+%-Integral
+\newcommand{\dint}[4][x]{\displaystyle \int_{#2}^{#3} #4 \mathrm{d} #1} %$\dint{a}{b}{f(x)}$ or $\dint[t]{a}{b}{f(t)}$
+
+%-Others
+\newcommand{\para}{\ /\!/\ } %//
+\newcommand{\ssi}{\ \Leftrightarrow \ }
+\newcommand{\abs}[1]{\left\lvert #1 \right\rvert} % abs{x} -> |x|
+\newcommand{\eqsys}[2]{\begin{cases} #1 \\ #2 \end{cases}}
+
+\newcommand{\med}[2]{\mathrm{med} \left[ #1\ ;\ #2 \right]}  %$\med{A}{B} -> med[A ; B]$
+\newcommand{\Circ}[2]{\mathscr{C}_{#1, #2}}
+
+\newcommand{\lr}[1]{\left( #1 \right)}
+\newcommand{\lrb}[1]{\left[ #1 \right]}
+\newcommand{\set}[1]{\left\{ #1 \right\}}
+
+\newcommand{\lrangle}[1]{\left\langle #1 \right\rangle}
+
+\renewcommand{\le}{\leqslant}
+\renewcommand{\ge}{\geqslant}
+
+\newcommand{\dom}{\mathrm{dom}}
+
+
+%------commands
+%---to quote french text
+\newcommand{\simplecit}[1]{\guillemotleft$\;$#1$\;$\guillemotright}
+\newcommand{\cit}[1]{\simplecit{\textcolor{656565}{#1}}}
+\newcommand{\quo}[1]{\cit{\it #1}}
+
+%---to indent
+\newcommand{\ind}[1][20pt]{\advance\leftskip + #1}
+\newcommand{\deind}[1][20pt]{\advance\leftskip - #1}
+
+%---to indent a text
+\newcommand{\indented}[2][20pt]{\par \ind[#1] #2 \par \deind[#1]}
+\newenvironment{indt}[2][20pt]{#2 \par \ind[#1]}{\par \deind} %Titled indented env
+
+%---title
+\newcommand{\thetitle}[2]{\begin{center}\textbf{{\LARGE \underline{\emph{#1} :}} {\Large #2}}\end{center}}
+
+%---parts
+%-I
+\newcommand{\mainpart}[2][$\!\!$]{\underline{\large \textbf{\emph{\textit{#1} #2}}}}
+\newcommand{\bmainpart}[2][$\!\!$]{\underline{\large \textbf{\textit{#1} #2}}}
+%-A
+\newcommand{\subpart}[2][$\!\!$]{\underline{\bf \textit{#1} #2}}
+%-1
+\newcommand{\subsubpart}[2][$\!\!$]{\underline{\textsl{#1} #2}}
+%-a
+\newcommand{\subsubsubpart}[2][$\!\!$]{\underline{\it #1 #2}}
+
+
+%------page style
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+
+\setlength{\headheight}{18pt}
+\setlength{\footskip}{50pt}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE, RO]{\textit{\today}}
+\fancyhead[RE, LO]{\large{\textsl{\emph{\texttt{\jobname}}}}}
+
+\fancyfoot[RO, LE]{\textit{\texttt{Page \thepage /\pageref{LastPage}}}}
+\fancyfoot[LO, RE]{\includegraphics[scale=0.12]{/home/lasercata/Pictures/1.images_profil/logo/mieux/lasercata_logo_fly_fond_blanc.png}}
+
+
+%------init lengths
+\setlength{\parindent}{0pt} %To avoid using \noindent everywhere.
+\setlength{\parskip}{3pt}
+
+
+%---------------------------------Begin Document
+\begin{document}
+
+    \thetitle{Maths}{Polynomial}    
+    
+    \tableofcontents
+    \newpage
+    
+    Dans tout ce qui suit, $K$ est un corps abélien, et $n, m \in \N$.
+    
+    \begin{indt}{\section{Définitions}}
+        
+        \begin{indt}{\subsection{Polynôme à une indéterminée}}
+            Un polynôme à une indéterminée $X$ à coefficients dans $K$ est une somme formelle
+            \[ \sum_{k = 0}^n a_k X^k \quad \text{avec} \ \forall k \in \nset{0}{n},\ a_k \in K \]
+            
+            Par convention, $\forall k > n,\ a_k = 0$.
+            
+            On note $K[X]$ l'ensemble des polynômes à une indéterminée à coefficients dans $K$.
+        \end{indt}
+        
+        \vspace{6pt}
+        
+        \begin{indt}{\subsection{Degré d'un polynôme}}
+            Soit $\displaystyle P = \sum_{k = 0}^n a_k X^k$.
+            
+            \vspace{6pt}
+            
+            Si $P = 0$, alors $\deg(P) = -\infty$.
+            
+            Sinon, $\deg(P) = \max \set{k \in \nset{0}{n}\ |\ a_k \neq 0,\ \forall j \in \nset{k + 1}{n},\ a_j = 0}$
+            
+            \vspace{12pt}
+            
+            On note $\dom(P) = a_{\deg(P)}$ (Attention, notation non universelle, à définir avant de l'utiliser)
+            
+            \vspace{6pt}
+            
+            $P$ est \textit{unitaire} $\ssi \dom(P) = 1$
+            
+            \vspace{6pt}
+            
+            On note $K_n[X] = \set{P \in K[X]\ |\ \deg(P) \le n}$
+        \end{indt}
+        
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Propriétés}}
+            Soit $\displaystyle P = \sum_{k = 0}^n a_k X^k$. Alors :
+            
+            \vspace{6pt}
+            
+            \begin{indt}{}
+                $\deg(P) \le n$
+                
+                $\deg(P) = n \ssi a_n \neq 0$
+                
+                $\exists p \in \nset{0}{n}\ |\ a_p \neq 0 \Rightarrow \deg(P) \ge p$
+            \end{indt}
+        \end{indt}
+        
+    \end{indt}
+    
+    \vspace{12pt}
+    
+    \begin{indt}{\section{Somme, produit}}
+        
+        Soient $\displaystyle P = \sum_{k = 0}^n a_k X^k$ et $\displaystyle Q = \sum_{k = 0}^m b_k X^k$.
+        
+        \begin{indt}{\subsection{Somme}}
+            On définit la somme $P + Q$ par :
+                \[ P + Q = \sum_{k = 0}^{\max(n, m)} (a_k + b_k)X^k \]
+        \end{indt}
+        
+        %\vspace{6pt}
+        
+        \begin{indt}{\subsection{Produit}}
+            Soit $\lambda \in K$.
+            
+            On définit $\lambda P$ par :
+                \[\lambda P = \sum_{k = 0}^n \lambda a_k X^k  \]
+            
+            On définit le produit $PQ$ par :
+                \[ PQ = \sum_{k = 0}^{n + m} \lr{\sum_{i = 0}^k a_i b_{k - i}} X^k = \sum_{k = 0}^{n + m} \lr{\sum_{i + j = k} a_i b_j} X^k \]
+            
+            On peut aussi écrire le produit comme suit :
+                \[ PQ = \sum_{i = 0}^n \sum_{j = 0}^m a_i b_j X^{i + j} = \sum_{\substack{0 \le i \le n \\ 0 \le j \le m}} a_i b_j X^{i + j} \]
+        \end{indt}
+        
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Degré d'une sommme, produit}}
+            Soient $P, Q \in K[X]$. On a :
+            
+            \vspace{6pt}
+            
+            \begin{indt}{$\bullet$ $\deg(P + Q) \le \max(\deg(P), \deg(Q))$, et plus précisément :}
+                $-$ Si $\deg(P) \neq \deg(Q)$, alors $\deg(P + Q) = \max(\deg(P), \deg(Q))$
+                
+                $-$ Sinon, $\deg(P) = \deg(Q)$, et $\deg(P + Q) = \deg(P) \ssi \dom(P) \neq - \dom(Q)$
+            \end{indt}
+            
+            \vspace{6pt}
+            
+            $\bullet$ $\deg(PQ) = \deg(P) + \deg(Q)$.
+            
+            \vspace{12pt}
+            
+            Soient $P \in K[X] \setminus \{0\},\ n \in \N$. On a $\deg(P^n) = n\deg(P)$
+            
+            \vspace{12pt}
+            
+            Soient $n \in \N^*$ et $(P_k)_{k \in \nset{1}{n}} \subset K[X]$. Alors :
+                \[ \deg\lr{\sum_{k = 0}^n P_k} \le \max\set{\deg(P_k)\ |\ k \in \nset 1 n} \]
+        \end{indt}
+        
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Anneau $K[X]$}}
+            $(K[X], +, \cdot)$ est un anneau abélien intègre.
+            
+            $K[X]^* = \set{P \in K[X]\ |\ \deg(P) = 0} = K^*$ (polynômes constants non nuls)
+        \end{indt}
+        
+    \end{indt}
+    
+    \vspace{12pt}
+    
+    \begin{indt}{\section{Composée}}
+        
+        \begin{indt}{\subsection{Définition}}
+            Soient $P, Q \in K[X]$, avec $\displaystyle P = \sum_k a_k X^k$
+            
+            On définit le polynôme composé $P \circ Q$ par
+                \[ P \circ Q = P(Q(X)) = \sum_k a_k Q^k \]
+        \end{indt}
+        
+        \vspace{6pt}
+        
+        \begin{indt}{\subsection{Propriétés}}
+            Soient $A, B, R \in K[X]$. Alors :
+                \[ (A \circ R) \cdot (B \circ R) = (AB) \circ R \]
+                \[ A \circ R + B \circ R = (A + B) \circ R \]
+            
+            \vspace{6pt}
+            
+            Si $A \neq 0$ ou $B \neq 0$, alors
+                \[ \deg(A \circ B) = \deg(A) \deg(B) \]
+        \end{indt}
+        
+    \end{indt}
+    
+    \vspace{12pt}
+    
+    \begin{indt}{\section{Division euclidienne}}
+        
+        \begin{indt}{\subsection{Divisibilité}}
+            Soient $A, B \in K[X]$.
+                \[ A|B \ssi \exists D \in K[X]\ |\ B = AD \]
+        \end{indt}
+        
+        \vspace{6pt}
+        
+        \begin{indt}{\subsection{Définition (association)}}
+            Soient $A, B \in K[X]$.
+            On note $A$ et $B$ sont \textit{associés} par $A \sim B$, et 
+                \[ A \sim B \ssi \exists \lambda \in K^* \ |\ A = \lambda B \]
+        \end{indt}
+        
+        \vspace{6pt}
+        
+        \begin{indt}{\subsection{Propriétés}}
+            Soient $A, B \in K[X]$. On a :
+                \[ \eqsys{A|B}{B \neq 0} \Rightarrow \deg(A) \le \deg(B) \]
+                \[ A \sim B \ssi \eqsys{A|B}{B|A} \]
+        \end{indt}
+        
+        \vspace{6pt}
+        
+        \begin{indt}{\subsection{Division euclidienne}}
+            $\forall (A, B) \in K[X] \times (K[X] \setminus \set 0),\ \exists! (Q, R) \in (K[X])^2\ |\ \eqsys{A = BQ + R}{\deg(R) < \deg(B)}$
+        \end{indt}
+        
+        \vspace{6pt}
+        
+        \begin{indt}{\subsection{Propriété}}
+            $\forall (a, P) \in K \times K[X],\ \exists (b, Q) \in K \times K[X]\ |\ P = (X - a)Q + b$, et on a $b = P(a)$.
+        \end{indt}
+        
+    \end{indt}
+    
+    \vspace{12pt}
+    
+    \begin{indt}{\section{Polynôme dérivé}}
+        
+        \begin{indt}{\subsection{Définition}}
+            Soit $\displaystyle P = \sum_{k = 0}^n a_k X^k$.
+            
+            \vspace{6pt}
+            
+            On définit le polynôme dérivé de $P$ par :
+                \[ P' = \sum_{k = 1}^n k a_k X^{k - 1} = \sum_{k = 0}^{n - 1} (k + 1) a_{k + 1} X^k \]
+            
+            Et par récurrence, le polynôme dérivé d'ordre $n \in \N^*$ est :
+                \[ P^{(n)} = \lr{P^{(n - 1)}}' \]
+            avec $P^{(0)} = P$.
+        \end{indt}
+        
+        \vspace{6pt}
+        
+        \begin{indt}{\subsection{Propriétés}}
+            Soient $P, Q \in K[X]$, et $\lambda, \mu \in K$. On a :
+                \[ (\lambda P + \mu Q)' = \lambda P' + \mu Q' \]
+                \[ (PQ)' = P'Q + Q'P \]
+            
+            \vspace{6pt}
+            
+            $\forall n, p \in \N$, on a :
+                \[
+                (X^n)^{(p)} =
+                \left\{ \!\!
+                \begin{array}{ll}
+                    \dfrac{n!}{(n - p)!} X^{n - p}
+                    & \text{si}\ n \ge p
+                    \\\\
+                    0
+                    & \text{sinon.}
+                \end{array}
+                \right.
+                \]
+            
+            \vspace{6pt}
+            
+            Soient $P, Q \in K[X]$. On a :
+                \[\begin{array}{l}
+                    P' = 0 \ssi \deg(P) \le 0
+                    \vspace{6pt}
+                    \\
+                    \deg(P) > 0 \Rightarrow \eqsys{\deg(P') = \deg(P) - 1}{\dom(P') = \deg(P) \cdot \dom(P)}
+                \end{array}\]
+            
+            Si $P \neq 0$, alors :
+                \[\begin{array}{l}
+                    \forall n \le \deg(P),\ \deg(P^{(n)}) = \deg(P) - n
+                    \vspace{6pt}
+                    \\
+                    P^{(\deg(P))} = (\deg(P))! \cdot \dom(P)
+                    \vspace{6pt}
+                    \\
+                    P^{(\deg(P) + 1)} = 0
+                \end{array}\]
+        \end{indt}
+        
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Formule de Leibniz}}
+            Soient $P, Q \in K[X]$. On a :
+                \[ (PQ)^{(n)} = \sum_{k = 0}^n \binom{n}{k} P^{(k)} Q^{(n - k)} \]
+        \end{indt}
+        
+    \end{indt}
+    
+    \vspace{12pt}
+    
+    \begin{indt}{\section{Racines d'un polynôme}}
+        
+        \begin{indt}{\subsection{Fonction polynomiale, formule de Taylor}}
+            \begin{indt}{\subsubsection{Défintion (fonction polynomiale)}}
+                Soit $\displaystyle P = \sum_{k = 0}^n a_k X^k \in K[X]$.
+                
+                \vspace{6pt}
+                
+                La fonction polynomiale associée à $P$ est la fonction
+                    \[
+                        \begin{array}{rcccc}
+                            \widetilde P
+                            & :
+                            & K
+                            & \longrightarrow
+                            & K
+                            \\
+                            && x
+                            & \longmapsto
+                            & \displaystyle \sum_{k = 0}^n a_k x^k
+                        \end{array}
+                    \]
+                
+                Pour $\alpha \in K$, on note
+                    \[ P(\alpha) = \widetilde P(\alpha) = \sum_{k = 0}^n a_k \alpha^k \]
+            \end{indt}
+            
+            \vspace{6pt}
+            
+            \begin{indt}{\subsubsection{Formule de Taylor}}
+                Soient $P \in K[X]$, et $a \in K$. On a :
+                    \[ P(X) = \sum_{k = 0}^{+\infty} \dfrac{P^{(k)}(a)}{k!}(X - a)^k \]
+                    \[ P(X + a) = \sum_{k = 0}^{+\infty} \dfrac{P^{(k)}(a)}{k!} X^k \]
+            \end{indt}
+            
+            \vspace{6pt}
+            
+            \begin{indt}{\subsubsection{Propriétés}}
+                Soient $P \in K[X]$, et $a \in K$. On a :
+                    \[ \forall m \ge \deg(P),\ P(X) = \sum_{k = 0}^m \dfrac{P^{(k)}(a)}{k!} (X - a)^k \]
+                
+                \vspace{6pt}
+                
+                Soient $n \in \N,\ a \in K$, et $(a_k)_{k \in \nset 0 n} \subset K$. Alors
+                    \[ \sum_{k = 0}^n a_k(X - a)^k = 0\ \Rightarrow\ \forall k \in \nset 0 n,\ a_k = 0 \]
+                
+                \vspace{6pt}
+                
+                Soient $(P, a, n) \in K[X] \times K \times \N^*$. On a : %$P \in K[X],\ n \in \N^*,\ a \in K$. On a :
+                    \[\begin{array}{rcl}
+                        P(X)
+                        &=& \displaystyle \sum_{k = 0}^{+\infty} \dfrac{P^{(k)}(a)}{k!} (X - a)^k
+                        \\
+                        &=& \displaystyle
+                        (X - a)^n \underbrace{\sum_{k = n}^{+\infty} \dfrac{P^{(k)}(a)}{k!} (X - a)^{k - n}}_{Q}
+                        +
+                        \underbrace{\sum_{k = 0}^{n - 1} \dfrac{P^{(k)}(a)}{k!} (X - a)^k}_{R}
+                    \end{array}\]
+                avec $Q$ et $R$ respectivement le quotient et le reste de la division euclidienne de $P$ par $(X - a)^n$
+            \end{indt}
+        \end{indt}
+        
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Racines simples}}
+            \begin{indt}{\subsubsection{Définition}}
+                Soient $P \in K[X]$, et $a \in K$.
+                
+                $a$ est \textit{racine} de $P$ $\ssi P(a) = 0$.
+            \end{indt}
+            
+            \vspace{6pt}
+            
+            \begin{indt}{\subsubsection{Propriétés}}
+                Soient $A, B \in K[X],\ a \in K$. Alors
+                    \[ \eqsys{A(a) = 0}{A|B} \Rightarrow B(a) = 0 \]
+                
+                \vspace{6pt}
+                
+                Soient $P \in K[X],\ \alpha \in K$. On a :
+                    \[ P(\alpha) = 0 \ssi X - \alpha | P \]
+                
+                \vspace{6pt}
+                
+                Soient
+                $
+                    \left|
+                    \begin{array}{l}
+                        P \in K[X]
+                        \\
+                        n \in \N^*
+                        \\
+                        (\alpha_k)_{k \in \nset 1 n} \subset K\ |\ \forall (i, j) \in \nset{1}{n}^2,\ i \neq j \Rightarrow \alpha_i \neq \alpha_j
+                    \end{array}
+                    \right.
+                $
+                Alors :
+                    \[ \forall k \in \nset 1 n,\ P(\alpha_k) = 0 \ssi \prod_{k = 1}^n (X - \alpha_k) \ |\ P \]
+                
+                \vspace{6pt}
+                
+                Soient
+                $
+                    \left|
+                    \begin{array}{l}
+                        P \in K[X]
+                        \\
+                        n = \deg(P)
+                        \\
+                        (\alpha_k)_{k \in \nset 1 n} \subset K\ |\ \forall k \in \nset 1 n,\ P(\alpha_k) = 0
+                    \end{array}
+                    \right.
+                $
+                Alors :
+                    \[ \exists \lambda \in K^*\ |\ P = \lambda \prod_{k = 1}^n (X - \alpha_k) \]
+            \end{indt}
+        \end{indt}
+        
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Racines multiples}}
+            \begin{indt}{\subsubsection{Propriétés}}
+                Soient $P \in K[X],\ a \in K,\ n \in \N^*$. Alors :
+                    \[ (X - a)^n | P \ssi \forall k \in \nset{0}{n - 1},\ P^{(k)}(a) = 0 \]
+                
+                \vspace{6pt}
+                
+                Soient $P \in K[X],\ a \in K,\ n \in \N$. Alors :
+                    \[\begin{array}{rcl}
+                        \exists Q \in K[X]\ \eqsys{P = (X - a)^n Q}{Q(a) \neq 0}
+                        &\ssi&
+                        \eqsys{(X - a)^n | P}{(X - a)^{n + 1} \nmid P}
+                        \vspace{6pt}
+                        \\
+                        &\ssi&
+                        \eqsys{\forall k \in \nset{0}{n - 1},\ P^{(k)}(a) = 0}{P^{(n)}(a) \neq 0}
+                    \end{array}\]
+            \end{indt}
+            
+            \vspace{6pt}
+            
+            \begin{indt}{\subsubsection{Définition (Ordre de multiplicité)}}
+                Soient $P \in K[X],\ a \in K,\ n \in \N^*$.
+                
+                $a$ est une racine d'ordre (exactement) $n$ de $P$ $\ssi \eqsys{(X - a)^n | P}{(X - a)^{n + 1} \nmid P}$
+                
+                L'entier $n$ est alors appelé \textit{l'ordre de multiplicité} de la racine $a$.
+                
+                \vspace{12pt}
+                
+                $P$ admet $a$ comme racine d'ordre au moins $n$ $\ssi (X - a)^n | P$.
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Définition (racines simples, multiples)}}
+                Soit $P \in K[X]$
+                
+                Une racine simple de $P$ est une racine d'ordre exactement 1.
+                
+                Une racine multiple de $P$ est une racine d'ordre au moins 2.
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Propriétés}}
+                Soient $P \in K[X],\ a \in K,\ n \in \N^*$. Si $a$ est racine d'ordre (exactement) $n$ de $P$, alors $a$ est racine d'ordre (exactement) $n - 1$ de $P'$.
+                
+                \vspace{6pt}
+                
+                Soient
+                $
+                    \left|
+                    \begin{array}{l}
+                        P \in K[X]
+                        \\
+                        n \in \N^*
+                        \\
+                        (r_k)_{k \in \nset 1 n} \subset N^*
+                        \\
+                        (a_k)_{k \in \nset 1 n} \subset K\ |\ \forall (i, j) \in \nset{1}{n}^2,\ i \neq j \Rightarrow a_i \neq a_j
+                    \end{array}
+                    \right.
+                $
+                Alors :
+                    \[ \forall k \in \nset 1 n,\ (X - a_k)^{r_k} | P \ssi \prod_{k = 1}^n (X - a_k)^{r_k} | P \]
+                
+                De plus, si $\displaystyle \deg(P) = \sum_{k = 1}^n r_k$, on a :
+                    \[
+                        \forall k \in \nset 1 n,\
+                        \eqsys{(X - a_k)^{r_k} | P}{(X - a)^{r_k + 1} \nmid P}
+                        \ssi
+                        \exists \lambda \in K^*\ |\ P = \lambda \prod_{k = 1}^n (X - a_k)^{r_k}
+                    \]
+            \end{indt}
+        \end{indt}
+        
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Polynômes scindés}}
+            \begin{indt}{\subsubsection{Définition (polynôme scindé)}}
+                Soit $P \in K[X]$.
+                
+                $P$ est \textit{scindé} sur $K$
+                $
+                    \ssi \eqsys
+                        {\deg(P) > 0}
+                        {\exists n \in \N^*,\ \exists (x_k)_{k \in \nset 1 n} \subset K,\ \exists \lambda \in K^*\ |\ P = \displaystyle \lambda \prod_{k = 1}^n (X - x_k)}
+                $
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Propriétés}}
+                Soient $A, B \in K[X] \setminus \set 0$, avec $A$ scindé.
+                
+                Soient
+                $
+                    \left|
+                    \begin{array}{l}
+                        n \in \N^*,
+                        \\
+                        (r_k)_{k \in \nset 1 n} \subset N^*
+                        \\
+                        (a_k)_{k \in \nset 1 n} \subset K\ |\ \forall (i, j) \in \nset 1 n ^2,\ i \neq j \Rightarrow a_i \neq a_j
+                    \end{array}
+                    \right.
+                $
+                
+                \vspace{6pt}
+                
+                tels que
+                $
+                    \displaystyle
+                    \exists \lambda \in K^*\ |\ A = \lambda \prod_{k = 1}^n (X - a_k)^{r_k}
+                $
+                (\textit{i.e} les $a_k$ sont les racines d'ordre $r_k$ de A). Alors :
+                    \[ A|B \ssi \forall k \in \nset 1 n,\ (X - a_k)^{r_k} | B \]
+            \end{indt}
+        \end{indt}
+        
+    \end{indt}
+    
+    \vspace{12pt}
+    
+    \begin{indt}{\section{\'Etude de $\C[X]$ et $\R[X]$}}
+        
+        \begin{indt}{\subsection{Définition (polynôme conjugé)}}
+            Soit $\displaystyle P = \sum_{k = 0}^n a_k X^k \in \C[X]$.
+            
+            On définit $\cj P$ le polynôme conjugé de $P$ par :
+                \[ \cj P = \sum_{k = 0}^n \cj{a_k} X^k \]
+        \end{indt}
+        
+        \vspace{6pt}
+        
+        \begin{indt}{\subsection{Propriétés}}
+            Soient $P \in \C[X],\ z \in \C,\ k \in \N$. Alors :
+                \[\begin{array}{l}
+                    \cj{P(z)} = \cj{P}(\cj z)
+                    \vspace{6pt}
+                    \\
+                    \cj{P^{(k)}} = \cj{P}^{(k)}
+                    \vspace{6pt}
+                    \\
+                    P \in \R[X] \ssi P = \cj P
+                    \vspace{6pt}
+                    \\
+                    \eqsys{(X - z)^k | P}{(X - z)^{k + 1} \nmid P} \ssi \eqsys{(X - \cj z)^k | \cj P}{(X - \cj z)^{k + 1} \nmid \cj P}
+                \end{array}\]
+            
+            \vspace{6pt}
+            
+            Soit $z \in \C$. Alors :
+                \[ (X - z)(X - \cj z) = X^2 + 2\Re(z)X + \abs{z}^2 \]
+            
+            \vspace{6pt}
+            
+            Soit $P \in \R[X]$. Alors on peut décomposer $P$ dans $\R[X]$ :
+                
+                $
+                    \displaystyle
+                    \left|
+                    \begin{array}{l}
+                        \exists \lambda \in \R^*
+                        \vspace{3pt}
+                        \\
+                        \exists n, m \in \N^*
+                        \vspace{3pt}
+                        \\
+                        \exists (a_k) \in \R^{\nset 1 n}
+                        \vspace{3pt}
+                        \\
+                        \exists (b_k),\ (c_k) \in \R^{\nset 1 m}
+                        \vspace{3pt}
+                        \\
+                        \exists (r_k)_{k \in \nset 1 n},\ (s_k)_{k \in \nset 1 m} \subset \N^*
+                    \end{array}
+                    \right.
+                    |\ P = \lambda \lr{\prod_{k = 1}^n (X - a_k)^{r_k}} \lr{\prod_{k = 1}^m (X^2 + b_k X + c_k)^{s_k}}
+                $
+                
+                \vspace{6pt}
+                
+                où $\forall k \in \nset 1 m,\ \nexists x \in \R\ |\ x^2 + b_k x + c_k = 0$.
+        \end{indt}
+        
+    \end{indt}
+
+
+
+
+
+    
+    
+    
+\end{document}
+%--------------------------------------------End

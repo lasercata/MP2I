@@ -1,0 +1,681 @@
+\documentclass[a4paper, 12pt, twoside]{article}
+
+
+%------------------------------------------------------------------------
+%
+% Author                :   Lasercata
+% Last modification     :   2022.02.23
+%
+%------------------------------------------------------------------------
+
+
+%------ini
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+%\usepackage[french]{babel}
+%\usepackage[english]{babel}
+
+
+%------geometry
+\usepackage[textheight=700pt, textwidth=500pt]{geometry}
+
+
+%------color
+\usepackage{xcolor}
+\definecolor{ff4500}{HTML}{ff4500}
+\definecolor{00f}{HTML}{0000ff}
+\definecolor{0ff}{HTML}{00ffff}
+\definecolor{656565}{HTML}{656565}
+
+\renewcommand{\emph}{\textcolor{ff4500}}
+\renewcommand{\em}{\color{ff4500}}
+
+\newcommand{\strong}[1]{\textcolor{ff4500}{\bf #1}}
+\newcommand{\st}{\color{ff4500}\bf}
+
+
+%------Code highlighting
+\usepackage{listings}
+
+\definecolor{cbg}{HTML}{272822}
+\definecolor{cfg}{HTML}{ececec}
+\definecolor{ccomment}{HTML}{686c58}
+\definecolor{ckw}{HTML}{f92672}
+\definecolor{cstring}{HTML}{e6db72}
+\definecolor{cstringlight}{HTML}{98980f}
+\definecolor{lightwhite}{HTML}{fafafa}
+
+\lstdefinestyle{DarkCodeStyle}{
+    backgroundcolor=\color{cbg},
+    commentstyle=\itshape\color{ccomment},
+    keywordstyle=\color{ckw},
+    numberstyle=\tiny\color{cbg},
+    stringstyle=\color{cstring},
+    basicstyle=\ttfamily\footnotesize\color{cfg},
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=4,
+    xleftmargin=\leftskip
+}
+
+\lstdefinestyle{LightCodeStyle}{
+    backgroundcolor=\color{lightwhite},
+    commentstyle=\itshape\color{ccomment},
+    keywordstyle=\color{ckw},
+    numberstyle=\tiny\color{cbg},
+    stringstyle=\color{cstringlight},
+    basicstyle=\ttfamily\footnotesize\color{cbg},
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=10pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=4,
+    frame=L,
+    xleftmargin=\leftskip
+}
+
+%\lstset{style=DarkCodeStyle}
+\lstset{style=LightCodeStyle}
+
+%Usage : \begin{lstlisting}[language=Caml] ... \end{lstlisting}
+
+
+%-------make the table of content clickable
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=black
+}
+
+
+%------pictures
+\usepackage{graphicx}
+%\usepackage{wrapfig}
+
+
+%------tabular
+%\usepackage{color}
+%\usepackage{colortbl}
+%\usepackage{multirow}
+
+
+%------Physics
+%---Packages
+%\usepackage[version=4]{mhchem} %$\ce{NO4^2-}$
+
+%---Commands
+\newcommand{\link}[2]{\mathrm{#1} \! - \! \mathrm{#2}}
+\newcommand{\pt}[1]{\cdot 10^{#1}} % Power of ten
+\newcommand{\dt}[2][t]{\dfrac{d#2}{d#1}} % Derivative
+
+
+%------math
+%---Packages
+%\usepackage{textcomp}
+%\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools} % For abs
+\usepackage{stmaryrd} %for \llbracket and \rrbracket
+\usepackage{mathrsfs} %for \mathscr{x} (different from \mathcal{x})
+
+%---Commands
+%-Sets
+\newcommand{\N}{\mathbb{N}} %set N
+\newcommand{\Z}{\mathbb{Z}} %set Z
+\newcommand{\Q}{\mathbb{Q}} %set Q
+\newcommand{\R}{\mathbb{R}} %set R
+\newcommand{\C}{\mathbb{C}} %set C
+\newcommand{\U}{\mathbb{U}} %set U
+\newcommand{\seg}[2]{\left[ #1\ ;\ #2 \right]}
+\newcommand{\nset}[2]{\left\llbracket #1\ ;\ #2 \right\rrbracket}
+
+\newcommand{\lr}[1]{\left( #1 \right)}
+\newcommand{\lrb}[1]{\left[ #1 \right]}
+\newcommand{\set}[1]{\left\{ #1 \right\}}
+
+%-Exponantial / complexs
+\newcommand{\e}{\mathrm{e}}
+\newcommand{\cj}[1]{\overline{#1}} %overline for the conjugate.
+
+%-Vectors
+\newcommand{\vect}{\overrightarrow}
+\newcommand{\veco}[3]{\displaystyle \vect{#1}\binom{#2}{#3}} %vector + coord
+
+%-Limits
+\newcommand{\lm}[2][{}]{\lim\limits_{\substack{#2 \\ #1}}} %$\lm{x \to a} f$ or $\lm[x < a]{x \to a} f$
+\newcommand{\Lm}[3][{}]{\lm[#1]{#2} \left( #3 \right)} %$\Lm{x \to a}{f}$ or $\Lm[x < a]{x \to a}{f}$
+\newcommand{\tendsto}[1]{\xrightarrow[#1]{}}
+
+%-Integral
+\newcommand{\dint}[4][x]{\displaystyle \int_{#2}^{#3} #4 \mathrm{d} #1} %$\dint{a}{b}{f(x)}$ or $\dint[t]{a}{b}{f(t)}$
+
+%-Others
+\newcommand{\para}{\ /\!/\ } %//
+\newcommand{\ssi}{\ \Leftrightarrow \ }
+\newcommand{\abs}[1]{\left\lvert #1 \right\rvert} % abs{x} -> |x|
+\newcommand{\eqsys}[2]{\begin{cases} #1 \\ #2 \end{cases}}
+
+\newcommand{\med}[2]{\mathrm{med} \left[ #1\ ;\ #2 \right]}  %$\med{A}{B} -> med[A ; B]$
+\newcommand{\Circ}[2]{\mathscr{C}_{#1, #2}}
+
+\newcommand{\lrangle}[1]{\left\langle #1 \right\rangle}
+
+\renewcommand{\le}{\leqslant}
+\renewcommand{\ge}{\geqslant}
+
+
+%------commands
+%---to quote french text
+\newcommand{\simplecit}[1]{\guillemotleft$\;$#1$\;$\guillemotright}
+\newcommand{\cit}[1]{\simplecit{\textcolor{656565}{#1}}}
+\newcommand{\quo}[1]{\cit{\it #1}}
+
+%---to indent
+\newcommand{\ind}[1][20pt]{\advance\leftskip + #1}
+\newcommand{\deind}[1][20pt]{\advance\leftskip - #1}
+
+%---to indent a text
+\newcommand{\indented}[2][20pt]{\par \ind[#1] #2 \par \deind[#1]}
+\newenvironment{indt}[2][20pt]{#2 \par \ind[#1]}{\par \deind} %Titled indented env
+
+%---title
+\newcommand{\thetitle}[2]{\begin{center}\textbf{{\LARGE \underline{\emph{#1} :}} {\Large #2}}\end{center}}
+
+%---parts
+%-I
+\newcommand{\mainpart}[2][$\!\!$]{\underline{\large \textbf{\emph{\textit{#1} #2}}}}
+\newcommand{\bmainpart}[2][$\!\!$]{\underline{\large \textbf{\textit{#1} #2}}}
+%-A
+\newcommand{\subpart}[2][$\!\!$]{\underline{\bf \textit{#1} #2}}
+%-1
+\newcommand{\subsubpart}[2][$\!\!$]{\underline{\textsl{#1} #2}}
+%-a
+\newcommand{\subsubsubpart}[2][$\!\!$]{\underline{\it #1 #2}}
+
+
+%------page style
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+
+\setlength{\headheight}{18pt}
+\setlength{\footskip}{50pt}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE, RO]{\textit{\today}}
+\fancyhead[RE, LO]{\large{\textsl{\emph{\texttt{\jobname}}}}}
+
+\fancyfoot[RO, LE]{\textit{\texttt{Page \thepage /\pageref{LastPage}}}}
+\fancyfoot[LO, RE]{\includegraphics[scale=0.12]{/home/lasercata/Pictures/1.images_profil/logo/mieux/lasercata_logo_fly_fond_blanc.png}}
+
+
+%------init lengths
+\setlength{\parindent}{0pt} %To avoid using \noindent everywhere.
+\setlength{\parskip}{3pt}
+
+
+%---------------------------------Begin Document
+\begin{document}
+    
+    \thetitle{Maths}{Développements limités}
+    
+    \tableofcontents
+    \newpage
+    
+    
+    \begin{indt}{\section{Définitions}}
+        
+        \begin{indt}{\subsection{Développement limité}}
+            Soit $I$ un intervalle de $\R$, $x_0 \in I$, $n \in \N$, $f \in \R^{D_f}$, avec $D_f = I$ ou $D_f = I \setminus \set{x_0}$.
+            
+            La fonction $f$ admet un développement limité en $x_0$ à l'ordre $n$, noté $DL_n(x_0)$, si :
+            
+            \[
+                \left| \!
+                \begin{array}{l}
+                    \exists (a_k)_{k \in \nset 0 n} \subset \R
+                    \vspace{6pt}
+                    \\
+                    \exists \varepsilon \in \R^{D_f}\ |\ \varepsilon(x) \tendsto{x \to x_0} 0
+                    \vspace{-6pt}
+                \end{array}
+                \right.
+            \]
+        tels que :
+            \[
+                \forall x \in D_f,\quad f(x) = \sum_{k = 0}^n a_k (x - x_0)^k + (x - x_0)^n \varepsilon(x)
+            \]
+        Ce qui s'écrit aussi :
+            \[
+                \forall x \in D_f,\quad f(x) = \sum_{k = 0}^n a_k (x - x_0)^k + o(x - x_0)^n
+            \]
+        \end{indt}
+        
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Partie régulière}}
+            Si $f$ admet un $DL_n(x_0)$
+                \[ \forall x \in D_f,\quad f(x) = \sum_{k = 0}^n a_k (x - x_0)^k + o(x - x_0)^n \]
+            on appelle \textit{partie régulière} le polynôme
+                \[ P(X) = \sum_{k = 0}^n a_k (X - x_0)^k \]
+        \end{indt}
+        
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Forme normalisée}}
+            Soit $f$ une fonction admettant un $DL_n(x_0)$
+                \[ f(x) = \sum_{k = 0}^n a_k (x - x_0)^k + o(x - x_0)^n \]
+            tel que $\exists k \in \nset 0 n\ |\ a_k \neq 0$.
+            
+            \vspace{6pt}
+            
+            Soit
+            $
+                p \in \nset 0 n\
+                \left| \!
+                \begin{array}{l}
+                    a_p \neq 0
+                    \\
+                    \forall k \in \nset{0}{p - 1},\ a_k = 0
+                \end{array}
+                \right.
+            $
+            
+            Alors la \textit{forme normalisée} du développement limité de $f$ est :
+                \[ f(x) = (x - x_0)^p \lr{\sum_{k = p}^n a_k (x - x_0)^{k - p} + o(x - x_0)^{n - p}} \]
+        \end{indt}
+        
+    \end{indt}
+    
+    \begin{indt}{\section{Propriétés}}
+        
+        \begin{indt}{\subsection{Troncature}}
+            Soit $f \in \R^I$ admetant un $DL_n(x_0)$
+                \[ f(x) = \sum_{k = 0}^n a_k (x - x_0)^k + o(x - x_0)^n \]
+            
+            Alors $\forall p \le n$, $f$ admet un $DL_p(x_0)$ :
+                \[ f(x) = \sum_{k = 0}^p a_k (x - x_0)^k + o(x - x_0)^p \]
+        \end{indt}
+        
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{$DL_0$ et limite / continuité}}
+            La fonction $f$ admet un $DL_0(x_0)$
+                \[f(x) = a_0 + o(1) \]
+            si, et seulement si
+                \[ f(x) \tendsto{x \to x_0} a_0 \]
+            
+            Donc une fonction qui admet un $DL_n(x_0)$ est soit continue, soit prolongeable par continuité en $x_0$, et dans ce cas,
+                \[ a_0 = f(x_0) \]
+        \end{indt}
+        
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{$DL_1$ et dérivabilité}}
+            La fonction $f$ admet un $DL_1(x_0)$
+                \[ f(x) = a_0 + a_1 (x - x_0) + o(x - x_0) \]
+            si, et seulement si
+                \[ 
+                    \begin{cases}
+                        \text{$f$ est dérivable en $x_0$}
+                        \\
+                        a_0 = f(x_0)
+                        \\
+                        a_1 = f'(x_0)
+                    \end{cases}
+                \]
+        \end{indt}
+        
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Parité}}
+            Si $f$ est paire (resp. impaire) et admet un $DL_n(0)$, alors sa partie régulière est paire (resp. impaire).
+        \end{indt}
+        
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Somme, produit}}
+            Soient $f, g \in \R^I$ deux fonctions admettant des $DL_n(x_0)$
+                \[
+                    f(x) = \sum_{k = 0}^n a_k (x - x_0)^k + o(x - x_0)^n
+                    \quad \text{et} \quad
+                    g(x) = \sum_{k = 0}^n b_k (x - x_0)^k + o(x - x_0)^n
+                \]
+            
+            La fonction $f + g$ admet un $DL_n(x_0)$ :
+                \[ f(x) + g(x) = \sum_{k = 0}^n (a_k + b_k) (x - x_0)^k + o(x - x_0)^n \]
+            
+            La fonction $fg$ admet un $DL_n(x_0)$ :
+                \[ f(x)g(x) = \sum_{k = 0}^n \lr{\sum_{i = 0}^k a_i b_{k - i}} (x - x_0)^k + o(x - x_0)^n \]
+            
+            La fonction $x \longmapsto (f(x))^s$, pour $s \in \N^*$, admet un $DL_n(x_0)$ :
+                \[ (f(x))^s = \lr{\sum_{k = 0}^n a_k (x - x_0)^k}^s + o(x - x_0)^n \]
+            où l'on tronque la puissance $s$-ième de la partie régulière à l'ordre $n$.
+            
+            \vspace{12pt}
+            
+            Remarque : Si $f$ admet un $DL_n(x_0)$ et $g$ admet un $DL_m(x_0)$, alors $f + g$ admet seulement un $DL_{\min(n, m)}(x_0)$.
+            
+            De plus, si leur forme normalisée est
+                \[ f(x) = (x - x_0)^p \left( \sum_{k = 0}^{n - p} a_{k + p} (x - x_0)^k + o(x - x_0)^{n - p} \right) \]
+                \[ g(x) = (x - x_0)^q \left( \sum_{k = 0}^{m - q} b_{k + q} (x - x_0)^k + o(x - x_0)^{n - q} \right) \]
+            alors $fg$ admet un $DL_{p + q + \min(n-p, m-q)}(x_0)$, qui est :
+                \[ f(x)g(x) = (x - x_0)^{p + q} \lr{ \sum_{k = 0}^{\min(n - p, m - q)} \lr{ \sum_{i = 0}^k a_{i + p} b_{k - (i + q)} }(x - x_0)^k + o(x - x_0)^{\min(n-p, m-q)} } \]
+        \end{indt}
+        
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Quotient de développements limités}}
+            
+            \begin{indt}{\subsubsection{Propriété}}
+                \label{2.5.1}
+                Soit $f \in \R^I$ une fonction admettant un $DL_n(0)$
+                    \[ f(x) = \sum_{k = 0}^n a_k x^k + o(x^n) \]
+                et telle que $f(0) = 0$.
+                
+                \vspace{6pt}
+                
+                Alors la fonction $x \longmapsto \dfrac{1}{1 - f(x)}$ admet un $DL_n(0)$ :
+                    \[
+                        \begin{array}{rcl}
+                            \dfrac{1}{1 - f(x)}
+                            &=& \displaystyle 1 + \sum_{i = 1}^n \lr{\sum_{j = 1}^n a_j x^j}^i + o(x^n)
+                            \\
+                            &=& \displaystyle 1 + \sum_{k = 1}^n \lr{\sum_{i = 1}^{n - k + 1} a_i x^i}^k + o(x^n)
+                        \end{array}
+                    \]
+                où les puissances de $x$ sont tronquées à l'ordre $n$.
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Quotient}}
+                Soit $f \in \R^I$ admettant un $DL_n(0)$
+                    \[ f(x) = \sum_{k = 0}^n a_k x^k + o(x^n) \]
+                et telle que $f(0) \neq 0$.
+                
+                Alors $\dfrac 1 f$ admet un $DL_n(0)$. En effet :
+                    \[
+                        \dfrac{1}{f(x)}
+                        = \cfrac{1}{f(0) \cfrac{f(x)}{f(0)}}
+                        = \dfrac{1}{f(0)} \dfrac{1}{1 - \lr{1 - \dfrac{f(x)}{f(0)}}}
+                    \]
+                
+                En posant $h(x) = 1 - \dfrac{f(x)}{f(0)}$, on a $h(0) = 0$, et on utilise \ref{2.5.1}.
+            \end{indt}
+            
+        \end{indt}
+        
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Composition}}
+            Soient $f, g \in \R^I$ deux fonction admettant un $DL_n(0)$
+                \[ f(x) = \sum_{k = à}^n a_k x^k + o(x^n) \quad \text{et} \quad g(x) = \sum_{k = 0}^n b_k x^k + o(x^n) \]
+            avec $g(0) = 0$.
+            
+            Alors la fonction $f \circ g$ admet un $DL_n(0)$ obtenu en composant les parties régulières des $DL_n(0)$ de $f$ et $g$ en tronquant à l'ordre $n$ :
+                \[ f(g(x)) = \sum_{k = 0}^n a_k \lr{\sum_{i = 0}^{n - k + 1} b_i x^i}^k + o(x^n) \]
+        \end{indt}
+        
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Intégration}}
+            Soit $f \in \mathcal C^0(I)$ une fonction admettant un $DL_n(x_0)$
+                \[ f(x) = \sum_{k = 0}^n a_k (x - x_0)^k + o(x - x_0)^n \]
+            
+            
+            Alors toute primitive $F$ de $f$ admet un $DL_{n + 1}(x_0)$
+                \[ F(x) = F(x_0) + \sum_{k = 0}^n a_k \dfrac{(x - x_0)^{k + 1}}{k + 1} + o(x - x_0)^{n + 1} \]
+        \end{indt}
+        
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Formule de Taylor-Young}}
+            Soient $n \in \N^*$, $f \in \R^I$ une fonction $n$-fois dérivable sur $I$, et $x_0 \in I$.
+            
+            Alors $f$ admet un $DL_n(x_0)$ :
+                \[ f(x) = \sum_{k = 0}^n \dfrac{f^{(k)}(x_0)}{k!} (x - x_0)^k + o(x - x_0)^n \]
+        \end{indt}
+        
+    \end{indt}
+    
+    \vspace{12pt}
+    
+    \begin{indt}{\section{Développements limités des fonctions usuelles en 0}}
+        
+        $\forall x \in ]-1 ; 1[$, on a :
+            \[ \sum_{k = 0}^n x^k = \dfrac{x^{n + 1} - 1}{x - 1} = \dfrac{1}{1 - x} - \dfrac{x}{1 - x}x^n \]
+        donc :
+            \[ \dfrac{1}{1 - x} = \sum_{k = 0}^n x^k + \dfrac{x}{1 - x} x^n \]
+        or $\varepsilon(x) = \dfrac{x}{1 - x} \tendsto{x \to 0} 0$, donc
+%             \[ {\dfrac{1}{1 - x} = \sum_{k = 0}^n x^k + x^n \varepsilon(x)} \]
+%         
+%         Puis :
+%             \[ {\dfrac{1}{1 + x} = \sum_{k = 0}^n (-1)^k x^k + o(x^n)} \]
+%         
+%         Et :
+%             \[ {\dfrac{1}{1 + x^2} = \sum_{k = 0}^n (-1)^k x^{2k} + o(x^{2n + 1})} \]
+%         
+%         D'où :
+%             \[ {\ln(1 + x) = \sum_{k = 0}^n (-1)^{k} \dfrac{x^{k + 1}}{k + 1} + o(x^{n + 1})} \]
+        
+        \[
+            \begin{array}{rcll}
+                \dfrac{1}{1 - x} &=& \displaystyle \sum_{k = 0}^n x^k + o(x^n)
+                \vspace{5pt}
+                \\
+                \dfrac{1}{1 + x} &=& \displaystyle \sum_{k = 0}^n (-1)^k x^k + o(x^n)
+                \vspace{5pt}
+                \\
+                \dfrac{1}{1 + x^2} &=& \displaystyle \sum_{k = 0}^n (-1)^k x^{2k} + o(x^{2n + 1})
+                \vspace{5pt}
+                \\
+                \ln(1 + x) &=& \displaystyle \sum_{k = 0}^n (-1)^k \dfrac{x^{k + 1}}{k + 1} + o(x^{n + 1})
+                & \text{par intégration de $\dfrac{1}{1 + x}$}
+                \vspace{5pt}
+                \\
+                \arctan(x) &=& \displaystyle \sum_{k = 0}^n (-1)^k \dfrac{x^{2k + 1}}{2k + 1} + o(x^{2n + 2})
+                & \text{par intégration de $\dfrac{1}{1 + x^2}$}
+                \vspace{5pt}
+                \\
+            \end{array}
+        \]
+        
+        \vspace{6pt}
+        
+        Puis par le théorème de Taylor :
+        
+        \[
+            \begin{array}{rcll}
+                \e^x &=& \displaystyle \sum_{k = 0}^n \dfrac{x^k}{k!} + o(x^n)
+                \vspace{6pt}
+                \\
+                \mathrm{ch}(x) &=& \displaystyle \sum_{k = 0}^n \dfrac{x^{2k}}{(2k)!} + o(x^{2n + 1})
+                & \text{partie paire de $\e^x$}
+                \vspace{6pt}
+                \\
+                \mathrm{sh}(x) &=& \displaystyle \sum_{k = 0}^n \dfrac{x^{2k + 1}}{(2k + 1)!} + o(x^{2n + 2})
+                & \text{partie impaire de $\e^x$}
+                \vspace{6pt}
+                \\
+                \cos(x) &=& \displaystyle \sum_{k = 0}^n (-1)^k \dfrac{x^{2k}}{(2k)!} + o(x^{2n + 1})
+                & \text{car $\cos(x) = \mathrm{ch}(ix)$}
+                \vspace{6pt}
+                \\
+                \sin(x) &=& \displaystyle \sum_{k = 0}^n (-1)^k \dfrac{x^{2k + 1}}{(2k + 1)!} + o(x^{2n + 2})
+                & \text{car $\sin(x) = \dfrac{\mathrm{sh}(ix)}{i}$}
+                \vspace{6pt}
+                \\
+                \mathrm{th}(x) &=& x - \dfrac{x^3}{3} + \dfrac{2x^5}{15} + o(x^6)
+                & \text{par quotient}
+                \vspace{6pt}
+                \\
+                \tan(x) &=& x + \dfrac{x^3}{3} + \dfrac{2x^5}{15} + o(x^6)
+                & \text{par quotient}
+                \vspace{12pt}
+                \\
+                (1 + x)^a &=& \displaystyle \sum_{k = 0}^n \lr{\prod_{i = 0}^{k - 1} (a - i)} \dfrac{x^k}{k!} + o(x^n)
+                & \text{par Taylor ($a \in \R$)}
+                \vspace{6pt}
+                \\
+                \sqrt{1 + x} &=& 1 + \dfrac x 2 - \dfrac{x^2}{8} + \dfrac{x^3}{16} + o(x^3)
+                \vspace{6pt}
+                \\
+                \dfrac{1}{\sqrt{1 - x^2}} &=& \displaystyle \sum_{k = 0}^n \lr{\prod_{i = 0}^{k - 1} \lr{\dfrac 1 2 + i}} \dfrac{x^{2k}}{k!} + o(x^{2n})
+                \vspace{6pt}
+                \\
+                \arcsin(x) &=& \displaystyle \sum_{k = 0}^n \lr{\prod_{i = 0}^{k - 1} \lr{\dfrac 1 2 + i}} \dfrac{x^{2k + 1}}{k!(2k + 1)} + o(x^{2n + 1})
+                & \text{par intégration de $\dfrac{1}{\sqrt{1 - x^2}}$}
+                \vspace{6pt}
+                \\
+                \arccos(x) &=& \displaystyle \dfrac \pi 2 -\sum_{k = 0}^n \lr{\prod_{i = 0}^{k - 1} \lr{\dfrac 1 2 + i}} \dfrac{x^{2k + 1}}{k!(2k + 1)} + o(x^{2n + 1})
+                & \text{par intégration de $\dfrac{-1}{\sqrt{1 - x^2}}$}
+                \vspace{6pt}
+                \\
+            \end{array}
+        \]
+        
+    \end{indt}
+    
+    \vspace{12pt}
+    
+    \begin{indt}{\section{Applications}}
+        
+        \begin{indt}{\subsection{Position par rapport à une tangente}}
+            Soient $x_0 \in I$, $f \in \R^I \cap \mathcal D(\set{x_0})$, $p \in \N,\ p \ge 2$.
+            
+            \vspace{6pt}
+            
+            Si $f$ admet un $DL_p(x_0)$
+                \[ f(x) = a_0 + a_1(x - x_0) + a_p(x - x_0)^p + o(x - x_0)^p, \quad (a_0, a_1, a_p) \in \R \times \R \times \R^* \]
+            
+            %\vspace{12pt}
+            \newpage
+            
+            \begin{indt}{Alors :} %la position de la courbe représentative de $f$ par rapport à la tangente au voisinage de $x_0$ est donnée par le signe de $a_p(x - x_0)^p$
+                $\bullet$ Si $a_p (x - x_0)^p > 0,\ (x,\ f(x))$ est au-dessus de la tangente ;
+                
+                $\bullet$ Si $a_p (x - x_0)^p < 0,\ (x,\ f(x))$ est en-dessous de la tangente.
+            \end{indt}
+        \end{indt}
+        
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{\'Etude d'un extremum local}}
+            Soient $a, b \in \R$, $I = ]a, b[$, $f \in \mathcal D(I)$, $x_0 \in I$, $p \in \N, p \ge 2$.
+            
+            \vspace{6pt}
+            
+            Si $f'(x_0) = 0$ et si $f$ admet un $DL_p(x_0)$
+                \[ f(x) = a_0 + a_p (x - x_0)^p + o(x - x_0)^p, \quad (a_0, a_p) \in \R \times \R^* \]
+            
+            \begin{indt}{Alors :}
+                $\bullet$ Si $p \equiv 1\ [2]$, $f(x_0)$ n'est pas un extremum ;
+                
+                \begin{indt}{$\bullet$ Si $p \equiv 0\ [2]$ :}
+                    $-$ Si $a_p > 0$, $f(x_0)$ est un minimum local ;
+                    
+                    $-$ Si $a_p < 0$, $f(x_0)$ est un maximum local.
+                \end{indt}
+            \end{indt}
+        \end{indt}
+        
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{\'Etude d'asymptotes}}
+            Soit $f$ une fonction définie au voisinage de $\pm \infty$ et admettant une limite en $\pm \infty$, et $(a, b, c) \in \R^2 \times \R^*,\ p \in \N,\ p \ge 2$.
+            
+            \vspace{6pt}
+            
+            Si, pour $u > 0$ (resp. $u < 0$), on a au voisinage de $0^+$ (resp $0^-$) :
+                \[ uf\!\lr{\dfrac 1 u} = a + bu + cu^p + \underset{0}{o}(u^p) \]
+            Alors on a au voisinage de $+\infty$ (resp. $-\infty$) :
+                \[ f(x) = ax + b + \dfrac{c}{x^{p - 1}} + \underset{\infty}{o}\!\lr{\dfrac{1}{x^{p - 1}}} \]
+            et $f$ admet en $+\infty$ (resp. $-\infty$) une asymptote d'équation
+                \[ y = ax + b \]
+            et la position de la courbe représentative de $f$ par rapport à l’asymptote est donnée par le signe de $\dfrac{c}{x^{p - 1}}$
+
+        \end{indt}
+        
+    \end{indt}
+    
+    \vspace{12pt}
+    
+    \begin{indt}{\section{Développements asymptotiques}}
+        
+        \begin{indt}{\subsection{Définition}}
+            Les développements asymptotiques sont une généralisation des développements limités : la ``partie régulière'' n'est pas forcément une fonction polynomiale, mais une somme finie de fonctions de référence, négligeables les unes devant les autres, qui donne une bonne approximation du comportement de la fonction dans le voisinage considéré. %a part from Wikipedia.
+            
+            \vspace{12pt}
+            
+            Soient $x_0 \in \cj\R$, et $f$ une fonction définie au voisinage de $x_0$.
+            
+            On cherche une fonction de référence $g_1$ telle que
+                \[ f \underset{x_0}{\sim} g_1 \ssi f = g_1 + \underset{x_0}{o}(g_1) \]
+            
+            On cherche ensuite une fonction de référence $g_2$ telle que
+                \[ f - g_1 \underset{x_0}{\sim} g_2 \ssi f = g_1 + g_2 + \underset{x_0}{o}(g_2) \]
+            
+            On continue ainsi si possible, et on appelle alors le développement asymptotique à $n$ termes de $f$ l'expression :
+                \[ f = \sum_{k = 1}^n g_k + o(g_n) \]
+        \end{indt}
+        
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Exemples}}
+            1) Soit $f(x) = (x\e)^x = \e^x \e^{x\ln x}$. On a, au voisinage de 0 :
+                \[ \e^u = 1 + u + \dfrac{u^2}{2} + u^2 \varepsilon(u) \]
+            avec $\varepsilon(u) \tendsto{u \to 0} 0$. Donc pour $u(x) = x\ln x \tendsto{x \to 0} 0$, on a :
+                \[ \e^{x \ln x} = 1 + x \ln x + \dfrac{(x\ln x)^2}{2} + (x \ln x)^2 \varepsilon(x \ln x) \]
+            Donc
+                \[
+                    f(x) =
+                    \lr{ 1 + x + \dfrac{x^2}{2} + x^2 \varepsilon(x) }
+                    \lr{ 1 + x \ln x + \dfrac{(x\ln x)^2}{2} + (x \ln x)^2 \varepsilon(x \ln x) }
+                \]
+            Or $x^2 = \underset{0}{o}(x^2\ln^2 x)$, donc la précision maximale est en $o(x^2\ln^2 x)$, et on obtient :
+                \[ f(x) = 1 + x\ln x + x + \dfrac{x^2 \ln^2 x}{2} + o(x^2\ln^2 x) \]
+            
+            On en déduit que $f(x) \tendsto{x \to 0^+} 1$, le graphe du prolongement par continuité de $f$ en 0 admet une tangente verticale car
+                \[ \dfrac{f(x) - 1}{x} \underset{x \to 0^+}{\sim} \ln x \tendsto{x \to 0^+} -\infty \]
+            et  le graphe de $f$ est au-dessus de celui de $x \longmapsto 1 + x\ln x$ au voisinage de $0^+$ car
+                \[ f(x) - (1 + x\ln x) \underset{x \to 0^+}{\sim} x \ge 0 \]
+            
+            %\vspace{12pt}
+            \newpage
+            
+            2) Soit $u_n$ l'unique solution dans $\left] n\pi - \dfrac \pi 2\ ;\ n\pi + \dfrac \pi 2 \right[$ de l'équation $\tan(x) = x$.
+            
+            $\bullet$ Par le théorème d'encadrement, $\boxed{u_n \sim n\pi}$.
+            
+            $\bullet$ Soit $v_n = u_n - n\pi$. On a $\tan(v_n) = \tan(u_n) = u_n$. Mais $v_n \in \left] - \dfrac \pi 2\ ;\ \dfrac \pi 2 \right[$, donc $v_n = \arctan(u_n) \tendsto{n \to +\infty} \dfrac \pi 2$ et $\boxed{v_n \sim \dfrac \pi 2}$
+            
+            $\bullet$ Soit $w_n = v_n - \dfrac \pi 2 \tendsto{n \to +\infty} 0$. Alors :
+                \[ w_n \sim \tan(w_n) = -\dfrac{1}{\tan(v_n)} \sim -\dfrac{1}{n\pi} \]
+            
+            Et finalement :
+                \[ \boxed{u_n = n\pi + \dfrac \pi 2 - \dfrac{1}{n\pi} + o\!\lr{\dfrac 1 n}} \]
+        \end{indt}
+    \end{indt}
+
+
+    
+    
+    
+\end{document}
+%--------------------------------------------End
