@@ -568,9 +568,9 @@
         
         \vspace{12pt}
         
-        \begin{indt}{\subsection{Application : couverture de points par des segments de même longeur}}
+        \begin{indt}{\subsection{Application : couverture de points par des segments de même longueur}}
             \begin{indt}{\subsubsection{Problème}}
-                \'Etant donné $n$ points $x_1, \ldots, x_n$ sur la droite réelle, et $k \in \N^*$, on veut déterminer la longeur $l$ minimale telle qu'il existe une converture de $x_1, \ldots, x_n$ par $k$ segments de longeur $l$.
+                \'Etant donné $n$ points $x_1, \ldots, x_n$ sur la droite réelle, et $k \in \N^*$, on veut déterminer la longueur $l$ minimale telle qu'il existe une couverture de $x_1, \ldots, x_n$ par $k$ segments de longueur $l$.
                 
                 $k$ segments $[l_1, r_1], \ldots, [l_k, r_k]$ forment une couverture de $x_1, \ldots, x_n$ si, et seulement si :
                     \[ \forall i \in \nset 1 n,\ \exists j \in \nset 1 k\ |\ x_i \in [l_j, r_j] \]
@@ -583,7 +583,7 @@
                 
                 On peut en général associer à un problème d'optimisation un problème de décision, c'est-à-dire un problème où l'on se pose la question de l'existence d'un objet vérifiant des contraintes.
                 
-                Ici : étant donné $x_1, \ldots, x_n$, $k$ et $l$, existe-il une couverture de $x_1, \ldots, x_n$ par $k$ segments de longeur $l$ ?
+                Ici : étant donné $x_1, \ldots, x_n$, $k$ et $l$, existe-il une couverture de $x_1, \ldots, x_n$ par $k$ segments de longueur $l$ ?
             \end{indt}
             
             \vspace{12pt}
@@ -602,7 +602,7 @@
                 Idée : on s'intéresse au problème de décision dual suivant : étant donné $n$ segments $[l_1, r_1], \ldots, [l_n, r_n]$ et $k \in \N^*$, peut-on choisir $k$ points $x_1, \ldots, x_k$ tels que
                     \[ \forall i \in \nset 1 n,\ \exists j \in \nset 1 k\ |\ x_j \in [l_i, r_i] \]
                 
-                Cela permet de résoudre le problème initial : si $\exists ([l_i, r_i])_{i \in \nset 1 k}$ couverture de $(x_j)_{j \in \nset 1 n}$ par des segments de longeur $l$, alors on a une solution au problème dual pour les intervalles $[x_1 - l, x_1], \ldots, [x_n - l, x_n]$ ($x_i \in [l_i, r_i] \ssi l_j \in [x_i - l, x_i]$)
+                Cela permet de résoudre le problème initial : si $\exists ([l_i, r_i])_{i \in \nset 1 k}$ couverture de $(x_j)_{j \in \nset 1 n}$ par des segments de longueur $l$, alors on a une solution au problème dual pour les intervalles $[x_1 - l, x_1], \ldots, [x_n - l, x_n]$ ($x_i \in [l_i, r_i] \ssi l_j \in [x_i - l, x_i]$)
                 
                 \vspace{6pt}
                 
@@ -634,7 +634,7 @@
                 
                 Correction : tous les arguments sont rencontrés par un point de $P$.
                 
-                Invariant de boucle : au début du tour d'indice $i$, tous les segments jusqu'aà l'indice $i - 1$ sont rencontrés et $p = \max P = r_j$ pour un certain $j < i$
+                Invariant de boucle : au début du tour d'indice $i$, tous les segments jusqu'à l'indice $i - 1$ sont rencontrés et $p = \max P = r_j$ pour un certain $j < i$
                 
                 \vspace{12pt}
                 
@@ -660,7 +660,7 @@
                 
                 On considère $P_{\rm opt}$ une solution optimale.
                 
-                Si $p_1 \not \in P_{\rm opt}$, on s'intéresse à $\min P_{\rm opt}$, sui est nécessaire pour rencontrer les segments $[l_1, r_1], \ldots, [l_j, r_j]$ pour un certain $j$.
+                Si $p_1 \not \in P_{\rm opt}$, on s'intéresse à $\min P_{\rm opt}$, qui est nécessaire pour rencontrer les segments $[l_1, r_1], \ldots, [l_j, r_j]$ pour un certain $j$.
                 
                 $\forall k \le j$, on remarque que $l_k \le \min P_{\rm opt} \le r_1 = p_1 \le r_k$ donc $P_{\rm opt} \setminus \set{\min P_{\rm opt}} \cup \set{r_1}$ convient.
                 
@@ -698,7 +698,7 @@
         
         \begin{indt}{\subsection{Méthode}}
             \begin{indt}{\subsubsection{Introduction}}
-                Si les sous-problèmes ne sont pas disjoints, la méthode \textit{diviser pour régner} donne des algorithmes dont la complexité est mauvaise, parce que l'on est ammené à résoudre plusieurs fois le même sous-problème.
+                Si les sous-problèmes ne sont pas disjoints, la méthode \textit{diviser pour régner} donne des algorithmes dont la complexité est mauvaise, parce que l'on est amené à résoudre plusieurs fois le même sous-problème.
                 
                 \vspace{6pt}
                 
@@ -750,7 +750,7 @@ let binom_memoised (n : int) (p : int) : int =
                 
                 \vspace{12pt}
                 
-                Remarque : on doit faire attention aux dépendances entre les valeurs calculées car elles ne sont plus gérées par la pile d'éxécution.
+                Remarque : on doit faire attention aux dépendances entre les valeurs calculées car elles ne sont plus gérées par la pile d'exécution.
                 
                 Exemple : triangle de Pascal :
                     \[
@@ -817,7 +817,7 @@ let binom_ascending (n : int) (p : int) : int =
             \vspace{12pt}
             
             \begin{indt}{\subsubsection{Exemple}}
-                Nombres de Delannoy : nombre de chemins distincs que peut prendre une dame sur un échiquier pour aller du coin inférieur gauche au coin supérieur droit en utilisant que les déplacements par rangée / colone croissante, en fonction des dimensions de l'échiquier.
+                Nombres de Delannoy : nombre de chemins distincts que peut prendre une dame sur un échiquier pour aller du coin inférieur gauche au coin supérieur droit en utilisant que les déplacements par rangée / colonne croissante, en fonction des dimensions de l'échiquier.
                 
                 \begin{center}
                     \begin{tabular}{|c|c|c|c|}
