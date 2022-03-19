@@ -1,0 +1,1120 @@
+\documentclass[a4paper, 12pt, twoside]{article}
+
+
+%------------------------------------------------------------------------
+%
+% Author                :   Lasercata
+% Last modification     :   2022.03.19
+%
+%------------------------------------------------------------------------
+
+
+%------ini
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+%\usepackage[french]{babel}
+%\usepackage[english]{babel}
+
+
+%------geometry
+\usepackage[textheight=700pt, textwidth=500pt]{geometry}
+
+
+%------color
+\usepackage{xcolor}
+\definecolor{ff4500}{HTML}{ff4500}
+\definecolor{00f}{HTML}{0000ff}
+\definecolor{0ff}{HTML}{00ffff}
+\definecolor{656565}{HTML}{656565}
+
+\renewcommand{\emph}{\textcolor{ff4500}}
+\renewcommand{\em}{\color{ff4500}}
+
+\newcommand{\strong}[1]{\textcolor{ff4500}{\bf #1}}
+\newcommand{\st}{\color{ff4500}\bf}
+
+
+%------Code highlighting
+\usepackage{listings}
+
+\definecolor{cbg}{HTML}{272822}
+\definecolor{cfg}{HTML}{ececec}
+\definecolor{ccomment}{HTML}{686c58}
+\definecolor{ckw}{HTML}{f92672}
+\definecolor{cstring}{HTML}{e6db72}
+\definecolor{cstringlight}{HTML}{98980f}
+\definecolor{lightwhite}{HTML}{fafafa}
+
+\lstdefinestyle{DarkCodeStyle}{
+    backgroundcolor=\color{cbg},
+    commentstyle=\itshape\color{ccomment},
+    keywordstyle=\color{ckw},
+    numberstyle=\tiny\color{cbg},
+    stringstyle=\color{cstring},
+    basicstyle=\ttfamily\footnotesize\color{cfg},
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=4,
+    xleftmargin=\leftskip
+}
+
+\lstdefinestyle{LightCodeStyle}{
+    backgroundcolor=\color{lightwhite},
+    commentstyle=\itshape\color{ccomment},
+    keywordstyle=\color{ckw},
+    numberstyle=\tiny\color{cbg},
+    stringstyle=\color{cstringlight},
+    basicstyle=\ttfamily\footnotesize\color{cbg},
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=10pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=4,
+    frame=L,
+    xleftmargin=\leftskip
+}
+
+%\lstset{style=DarkCodeStyle}
+\lstset{style=LightCodeStyle}
+
+%Usage : \begin{lstlisting}[language=Caml] ... \end{lstlisting}
+
+
+%-------make the table of content clickable
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=black
+}
+%Uncomment this and comment above for dark mode
+% \hypersetup{
+%     colorlinks,
+%     citecolor=white,
+%     filecolor=white,
+%     linkcolor=white,
+%     urlcolor=white
+% }
+
+
+%------pictures
+\usepackage{graphicx}
+%\usepackage{wrapfig}
+
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric}
+
+
+%------tabular
+%\usepackage{color}
+%\usepackage{colortbl}
+%\usepackage{multirow}
+
+
+%------Physics
+%---Packages
+%\usepackage[version=4]{mhchem} %$\ce{NO4^2-}$
+
+%---Commands
+\newcommand{\link}[2]{\mathrm{#1} \! - \! \mathrm{#2}}
+\newcommand{\pt}[1]{\cdot 10^{#1}} % Power of ten
+\newcommand{\dt}[2][t]{\dfrac{\mathrm d #2}{\mathcal d #1}} % Derivative
+
+
+%------math
+%---Packages
+%\usepackage{textcomp}
+%\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools} % For abs
+\usepackage{stmaryrd} %for \llbracket and \rrbracket
+\usepackage{mathrsfs} %for \mathscr{x} (different from \mathcal{x})
+
+%---Commands
+%-Sets
+\newcommand{\N}{\mathbb{N}} %set N
+\newcommand{\Z}{\mathbb{Z}} %set Z
+\newcommand{\Q}{\mathbb{Q}} %set Q
+\newcommand{\R}{\mathbb{R}} %set R
+\newcommand{\C}{\mathbb{C}} %set C
+\newcommand{\U}{\mathbb{U}} %set U
+\newcommand{\seg}[2]{\left[ #1\ ;\ #2 \right]}
+\newcommand{\nset}[2]{\left\llbracket #1\ ;\ #2 \right\rrbracket}
+
+%-Exponantial / complexs
+\newcommand{\e}{\mathrm{e}}
+\newcommand{\cj}[1]{\overline{#1}} %overline for the conjugate.
+
+%-Vectors
+\newcommand{\vect}{\overrightarrow}
+\newcommand{\veco}[3]{\displaystyle \vect{#1}\binom{#2}{#3}} %vector + coord
+
+%-Limits
+\newcommand{\lm}[2][{}]{\lim\limits_{\substack{#2 \\ #1}}} %$\lm{x \to a} f$ or $\lm[x < a]{x \to a} f$
+\newcommand{\Lm}[3][{}]{\lm[#1]{#2} \left( #3 \right)} %$\Lm{x \to a}{f}$ or $\Lm[x < a]{x \to a}{f}$
+\newcommand{\tendsto}[1]{\xrightarrow[#1]{}}
+
+%-Integral
+\newcommand{\dint}[4][x]{\displaystyle \int_{#2}^{#3} #4 \mathrm{d} #1} %$\dint{a}{b}{f(x)}$ or $\dint[t]{a}{b}{f(t)}$
+
+%-left right
+\newcommand{\lr}[1]{\left( #1 \right)}
+\newcommand{\lrb}[1]{\left[ #1 \right]}
+\newcommand{\set}[1]{\left\{ #1 \right\}}
+\newcommand{\abs}[1]{\left\lvert #1 \right\rvert} % abs{x} -> |x|
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
+\newcommand{\lrangle}[1]{\left\langle #1 \right\rangle}
+
+%-Others
+\newcommand{\para}{\ /\!/\ } %//
+\newcommand{\ssi}{\ \Leftrightarrow \ }
+\newcommand{\eqsys}[2]{\begin{cases} #1 \\ #2 \end{cases}}
+
+\newcommand{\med}[2]{\mathrm{med} \left[ #1\ ;\ #2 \right]}  %$\med{A}{B} -> med[A ; B]$
+\newcommand{\Circ}[2]{\mathscr{C}_{#1, #2}}
+
+\renewcommand{\le}{\leqslant}
+\renewcommand{\ge}{\geqslant}
+
+
+%------commands
+%---to quote french text
+\newcommand{\simplecit}[1]{\guillemotleft$\;$#1$\;$\guillemotright}
+\newcommand{\cit}[1]{\simplecit{\textcolor{656565}{#1}}}
+\newcommand{\quo}[1]{\cit{\it #1}}
+
+%---to indent
+\newcommand{\ind}[1][20pt]{\advance\leftskip + #1}
+\newcommand{\deind}[1][20pt]{\advance\leftskip - #1}
+
+%---to indent a text
+\newcommand{\indented}[2][20pt]{\par \ind[#1] #2 \par \deind[#1]}
+\newenvironment{indt}[2][20pt]{#2 \par \ind[#1]}{\par \deind} %Titled indented env
+
+%---title
+\newcommand{\thetitle}[2]{\begin{center}\textbf{{\LARGE \underline{\emph{#1} :}} {\Large #2}}\end{center}}
+
+%---parts
+%-I
+\newcommand{\mainpart}[2][$\!\!$]{\underline{\large \textbf{\emph{\textit{#1} #2}}}}
+\newcommand{\bmainpart}[2][$\!\!$]{\underline{\large \textbf{\textit{#1} #2}}}
+%-A
+\newcommand{\subpart}[2][$\!\!$]{\underline{\bf \textit{#1} #2}}
+%-1
+\newcommand{\subsubpart}[2][$\!\!$]{\underline{\textsl{#1} #2}}
+%-a
+\newcommand{\subsubsubpart}[2][$\!\!$]{\underline{\it #1 #2}}
+
+\setcounter{section}{-1} %Start numbering from 0
+
+
+%------page style
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+
+\setlength{\headheight}{18pt}
+\setlength{\footskip}{50pt}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE, RO]{\textit{\today}}
+\fancyhead[RE, LO]{\large{\textsl{\emph{\texttt{\jobname}}}}}
+
+\fancyfoot[RO, LE]{\textit{\texttt{\textcolor{black}{Page \thepage /}\pageref{LastPage}}}} %Change 'black' to 'white' for dark mode
+\fancyfoot[LO, RE]{\includegraphics[scale=0.12]{/home/lasercata/Pictures/1.images_profil/logo/mieux/lasercata_logo_fly_fond_blanc.png}}
+
+% For dark mode :
+%/home/lasercata/Pictures/1.images_profil/logo/mieux/lasercata_logo_fly.png
+
+
+%------init lengths
+\setlength{\parindent}{0pt} %To avoid using \noindent everywhere.
+\setlength{\parskip}{3pt}
+
+
+%---------------------------------Begin Document
+\begin{document}
+    
+    %For dark mode :
+    % \pagecolor{black}
+    % \color{white}
+    
+    \thetitle{Maths}{Espaces vectoriels}
+    
+    \tableofcontents
+    \newpage
+    
+    
+    Dans tout ce qui suit, $K$ désigne un corps (par exemple $\R$ ou $\C$), $I$, $J$ des ensembles d'indexation (par exemple $\N$), et $E$ désigne un $K$-espace vectoriel.
+    
+    
+    
+    \begin{indt}{\section{Familles}}
+        
+        \begin{indt}{\subsection{Définition (\textit{famille})}}
+            Soit $X$ un ensemble.
+            
+            Une famille d'éléments de $X$ indexée par $I$ est une application $x : I \longrightarrow X$, notée $(x_k)_{k \in I}$, où $\forall k \in I,\ x_k = x(k)$.
+            
+            \vspace{6pt}
+            
+            Cas particulier : si $I = \nset 1 n$, avec $n \in \N$, la famille $(x_k)_{k \in \nset 1 n} \subset X$ est une suite, et est souvent confondue avec le $n$-uplet $(x_1, \ldots, x_n) \in X^n$.
+        \end{indt}
+        
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Définition (\textit{famille à support fini})}}
+            Une famille $(x_k)_{k \in I} \subset X$ est dite à \textit{support fini} si
+                \[ \mathrm{card}\set{x_k \in X\ \left| \vphantom{\dfrac a a} \right.\ k \in I,\ x_k \neq 0} < +\infty \]
+            \textit{i.e} si au plus un nombre fini de $x_k$ sont non nuls.
+        \end{indt}
+        
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Définition (\textit{sous-famille, sur-famille})}}
+            Soit $\mathcal F = (x_k)_{k \in I} \subset X$ une famille.
+            
+            \vspace{6pt}
+            
+            Une \textit{sous-famille} de $\mathcal F$ est une famille $(x_k)_{k \in J} \subset X$, avec $J \subset I$.
+            
+            Une \textit{sur-famille} de $\mathcal F$ est une famille $(x_k)_{k \in J} \subset X$, avec $I \subset J$.
+        \end{indt}
+        
+    \end{indt}
+    
+    \vspace{12pt}
+    
+    \begin{indt}{\section{Définitions}}
+        
+        \begin{indt}{\subsection{Définition (\textit{Espace vectoriel})}}
+            Soit $K$ un corps, $(E,\ +)$ un groupe commutatif, et $\cdot : K \times E \longrightarrow E$ une application.
+            
+            \vspace{6pt}
+            
+            \begin{indt}{Un $K$-espace vectoriel est un triplet $(E,\ +,\ \cdot)$, avec $\forall (x, y) \in E^2,\ \forall (\lambda, \mu) \in K^2$ :}
+                (1) $\lambda \cdot (\mu \cdot x) = (\lambda \mu) \cdot x$
+                
+                (2) $(\lambda + \mu) \cdot x = \lambda \cdot x + \mu \cdot x$
+                
+                (3) $\lambda \cdot (x + y) = \lambda \cdot x + \lambda \cdot y$
+                
+                (4) $1 \cdot x = x$
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            Les éléments de $K$ sont appelés les \textit{scalaires}, et ceux de $E$ les \textit{vecteurs}.
+        \end{indt}
+        
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Propriétés}}
+            Soit $(E, +, \cdot)$ un $K$-espace vectoriel.
+            
+            Alors
+            $
+                \forall (\lambda, x) \in K \times E,\
+                \left|
+                \begin{array}{l}
+                    0 \cdot x = 0
+                    \\
+                    \lambda \cdot 0 = 0
+                \end{array}
+                \right.
+            $
+            
+            $\forall x \in E,\ (-1) \cdot x = -x$
+        \end{indt}
+        
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Définition (\textit{sous-espace vectoriel})}}
+            Soit $(E, +, \cdot)$ un $K$-espace vectoriel.
+            
+            \begin{indt}{L'ensemble $F$ est un \textit{sous-espace vectoriel} de $E$ si :}
+                (1) $F \in \mathcal P(E) \setminus \varnothing$
+                
+                (2) $\forall (\lambda, x) \in K \times F,\ \lambda x \in F$
+                
+                (3) $\forall (x, y) \in F^2,\ x + y \in F$
+            \end{indt}
+        \end{indt}
+            
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Propriétés}}
+            Soit $(E, +, \cdot)$ un $K$-espace vectoriel.
+            
+            \vspace{6pt}
+            
+            $\bullet$ Si $F$ est un sous-espace vectoriel de $E$, alors $0 \in F$, et $F$ est un $K$-espace vectoriel pour les lois induites.
+            
+            \vspace{6pt}
+            
+            $\bullet$ Soit $F \in \mathcal P(E) \setminus \varnothing$.
+            
+            Alors $F$ est un sous-espace vectoriel de $E$ $\ssi$ $F$ est un sous-groupe de $(E, +)$ tel que $\forall (\lambda, x) \in K \times F,\ \lambda \cdot x \in F$ (stable par multiplication par les scalaires).
+            
+            \vspace{12pt}
+            
+            $\bullet$ Soit $(F_k)_{k \in I}$ une famille de sous-espaces vectoriels de $E$. Alors
+                \[ \bigcap_{k \in I} F_k \]
+            est un sous-espace vectoriel de $E$.
+        \end{indt}
+        
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Caractérisation d'un sous-espace vectoriel}}
+            Soit $(E, +, \cdot)$ un $K$-espace vectoriel, et $F \in \mathcal P(E) \setminus \varnothing$.
+            
+            \vspace{6pt}
+            
+            Alors $F$ est un sous-espace vectoriel de $E$ $\ssi$
+                \[ \forall ((\lambda, \mu), (x, y)) \in K^2 \times F^2,\ \lambda x + \mu y \in F \]
+        \end{indt}
+        
+    \end{indt}
+    
+    \vspace{12pt}
+    
+    \begin{indt}{\section{Combinaisons linéaires}}
+        
+        \begin{indt}{\subsection{Définition (combinaisons linéaires)}}
+            Soit $(E, +, \cdot)$ un $K$-espace vectoriel, et $\mathcal F = (x_k)_{k \in I} \subset E$ une famille de $E$.
+            
+            Les combinaisons linéaires de la famille $\mathcal F$ sont les vecteurs de la forme :
+                \[ \sum_{k \in I} \lambda_k x_k \]
+            où $(\lambda_k)_{k \in I} \subset K$ est une famille de scalaires à \textit{support fini}.
+            
+            \vspace{6pt}
+            
+            On note l'ensemble des combinaisons linéaires :
+                \[ \mathrm{vect}(x_k)_{k \in I} = \set{\sum_{k \in I} \lambda_k x_k\ |\ (\lambda_k)_{k \in I} \subset K} \]
+        \end{indt}
+        
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Définition (sous-espace vectoriel engendré par une partie)}}
+            Soit $E$ un $K$-espace vectoriel, et $X \subset E$.
+            
+            Alors le sous-espace vectoriel engendré par $X$ est l'ensemble des combinaisons linéaires des vecteurs de $X$, noté $\mathrm{vect}(X)$.
+        \end{indt}
+        
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Propriétés}}
+            \label{2.3}
+            
+            Soit $E$ un $K$-espace vectoriel, et $x \subset E$
+            
+            $\bullet$ Soit $F$ un sous-espace vectoriel de $E$.
+            
+            Alors $F = \mathrm{vect}(X) \ssi \eqsys{X \subset F}{\forall G \supset X\ \text{sous-espace vectoriel de}\ E,\ F \subset G}$
+            
+            \vspace{12pt}
+            
+            $\bullet$ $\forall (x_k)_{k \in I}, (y_k)_{k \in J} \subset E,\ (x_k)_{k \in I} \subset \mathrm{vect}(y_k)_{k \in J} \Rightarrow \mathrm{vect}(x_k)_{k \in I} \subset \mathrm{vect}(y_k)_{k \in J}$
+            
+            \vspace{12pt}
+            
+            $\bullet$ Soit $(x_k)_{k \in I} \subset E$, et $i \in I$.
+            
+            Alors $\forall (\lambda_k)_{k \in I} \subset K\ |\ \forall k \in I,\ \lambda_k \neq 0$ :
+                \[ \mathrm{vect}(x_k)_{k \in I} = \mathrm{vect}\lr{x_i + \sum_{j \in I \setminus \set i} \lambda_j x_j,\ x_k}_{k \in I \setminus \set i} \]
+            \textit{i.e} $\mathrm{vect}(x_k)_{k \in I}$ ne change pas si à l’un des vecteurs on rajoute une combinaison linéaire des autres, et :
+                \[ \mathrm{vect}(x_k)_{k \in I} = \mathrm{vect}(\lambda_k x_k)_{k \in I} \]
+        \end{indt}
+        
+    \end{indt}
+    
+    \vspace{12pt}
+    
+    \begin{indt}{\section{Familles libres, génératrices, bases}}
+        
+        \begin{indt}{\subsection{Familles génératrices}}
+            \begin{indt}{\subsubsection{Définition (\textit{famille génératrice})}}
+                Soit $E$ un $K$-espace vectoriel.
+                
+                \vspace{6pt}
+                
+                Un sous-espace vectoriel $A$ de $E$ est engendré par une famille $(x_k)_{k \in I} \subset A$ si
+                    \[ A = \mathrm{vect}(x_k)_{k \in I} \]
+                ou encore si
+                    \[ \forall x \in A,\ \exists (\lambda_k)_{k \in I} \subset K\ |\ x = \sum_{k \in I} \lambda_k x_k \]
+                
+                La famille $(x_k)_{k \in I}$ est alors une \textit{famille génératrice} de $A$.
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Propriétés}}
+                Soit $E$ un $K$-espace vectoriel.
+                
+                \vspace{6pt}
+                
+                $\bullet$ Une sur-famille d’une famille génératrice de $E$ est une famille génératrice de $E$.
+                
+                \vspace{12pt}
+                
+                $\bullet$ Soit $(x_k)_{k \in I} \subset E$ une famille génératrice de $E$. Alors une famille $(y_k)_{k \in J} \subset E$ est génératrice de $E$ si, et seulement si :
+                    \[ \forall k \in I, x_k \in \mathrm{vect}(y_k)_{k \in J} \]
+                Autrement dit, si $\mathcal F$ est une famille génératrice de $E$, alors une famille $\mathcal G$ est génératrice de $E$ si, et seulement si :
+                    \[ \mathcal F \subset \mathrm{vect}(\mathcal G) \]
+                
+                \vspace{12pt}
+                
+                $\bullet$ Soit $\mathcal F = (x_k)_{k \in I} \subset E$ une famille génératrice de $E$, et $(x_k)_{k \in J} \subset E$ une sous-famille de $\mathcal F$, telle que
+                    \[ \forall k \in J,\ x_k \in \mathrm{vect}(x_k)_{k \in I \setminus J} \]
+                Alors $(x_k)_{k \in I \setminus J}$ est une famille génératrice de $E$
+            \end{indt}
+        \end{indt}
+        
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Familles libres, liées}}
+            \begin{indt}{\subsubsection{Définition (\textit{famille libre, liée})}}
+                Une famille finie $(x_k)_{k \in I} \subset E$ est \textit{libre}, ou \textit{indépendante linéairement} si
+                    \[ \forall (\lambda_k)_{k \in I} \subset K,\ \sum_{k \in I} \lambda_k x_k = 0\ \Rightarrow\ \forall k \in I,\ \lambda_k = 0 \]
+                
+                Dans le cas contraire, \textit{i.e} si
+                    \[
+                        \exists (\lambda_k)_{k \in I} \subset K
+                        \left|
+                        \begin{array}{l}
+                            \exists i \in I\ |\ \lambda_i \neq 0
+                            \vspace{6pt}
+                            \\
+                            \displaystyle \sum_{k \in I} \lambda_k x_k = 0
+                        \end{array}
+                        \right.
+                    \]
+                alors elle est \textit{liée}.
+                
+                \vspace{12pt}
+                
+                Une famille infinie de $E$ est libre si toute ses sous-familles finies sont libres.
+                
+                Elle est liée si elle admet une sous-famille finie liée.
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Propriétés}}
+                $\bullet$ Une famille $(P_k)_{k \in I} \subset K[X]\ |\ \forall (i, j) \in I^2,\ i \neq j \Rightarrow \deg P_i \neq \deg P_j$ est libre.
+                
+                \vspace{12pt}
+                
+                $\bullet$ Une famille $(x_k)_{k \in I} \subset E$ est liée $\ssi \exists i \in I\ |\ x_i = \mathrm{vect}(x_k)_{k \in I \setminus J}$
+                
+                \vspace{12pt}
+                
+                $\bullet$ Toute sous-famille d'une famille libre est libre, toute sur-famille d'une famille liée est liée.
+                
+                \vspace{12pt}
+                
+                $\bullet$ Soit une famille $\mathcal F = (x_k)_{k \in I} \subset E$. Alors $\mathcal F$ est libre si, et seulement si
+                    \[ \forall (\lambda_k)_{k \in I}, (\mu_k)_{k \in I} \subset K,\ \sum_{k \in I} \lambda_k x_k = \sum_{k \in I} \mu_k x_k \Rightarrow \forall k \in I,\ \lambda_k = \mu_k \]
+                (les familles de scalaires doivent être à support fini) ou encore si, et seulement si
+                    \[ \forall x \in \mathrm{vect}(x_k)_{k \in I},\ \exists! (\lambda_k)_{k \in I} \subset K\ |\ x = \sum_{k \in I} \lambda_k x_k \]
+            \end{indt}
+        \end{indt}
+        
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Bases}}
+            \begin{indt}{\subsubsection{Définition (\textit{Base})}}
+                Soit $E$ un $K$-espace vectoriel.
+                
+                \vspace{6pt}
+                
+                Une \textit{base} de $E$ est une famille libre et génératrice de $E$.
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Propriétés}}
+                $\bullet$ Soit $\mathcal F = (e_k)_{k \in I} \subset E$.
+                Alors $\mathcal F$ est une base de $E$ si, et seulement si
+                    \[
+                        \forall x \in E,\
+                        \exists! (x_k)_{k \in I} \subset K\ |\
+                        x = \sum_{k \in I} x_k e_k
+                    \]
+                où la famille de scalaires est à support fini.
+                Dans ce cas, si $I = \nset 1 p$, $(x_1, \ldots, x_p)$ sont les \textit{composantes} de $x$ dans la base $\mathcal F$, souvent noté verticalement :
+                $
+                    \begin{pmatrix}
+                        x_1
+                        \\
+                        \vdots
+                        \\
+                        x_p
+                    \end{pmatrix}
+                $
+                
+                \vspace{12pt}
+                
+                $\bullet$ Soit $(v_k)_{k \in \nset 1 p}$ une base de $E$, et $x \in E$ tel que
+                    \[ \exists (\lambda_k)_{k \in \nset 2 p} \subset K\ |\ x = v_1 + \sum_{k = 2}^p \lambda_k v_k \]
+                Alors $(x, v_2, \ldots, v_p)$ est une base de $E$.
+                
+                \vspace{12pt}
+                
+                $\bullet$ Soient $(e_k)_{k \in I} \subset E,\ (f_k)_{k \in J} \subset F$ des bases respectives de $E$ et $F$.
+                
+                Alors la famille
+                    \[ \lr{ \vphantom{\frac a a} (e_k, 0_F)_{k \in I}, (f_k, 0_E)_{k \in J}} \]
+                est une base de $E \times F$.
+            \end{indt}
+        \end{indt}
+        
+    \end{indt}
+    
+    \vspace{12pt}
+    
+    \begin{indt}{\section{Somme de sous-espaces vectoriels}}
+        
+        \begin{indt}{\subsection{Définition (somme finie de sous-espaces vectoriels)}}
+            Soient $E$ un $K$-espace vectoriel, $n \in \N^*$, et $(E_k)_{k \in \nset 1 n}$ des sous-espaces vectoriels de $E$.
+            
+            La somme de ces sous-espaces vectoriels est le sous espace vectoriel :
+                \[ \sum_{k = 1}^n E_k = \set{ \sum_{k = 1}^n x_k\ |\ \forall k \in \nset 1 n, x_k \in E_k } \]
+            
+            Par exemple pour $n = 2$ :
+                \[ E_1 + E_2 = \set{x + y\ |\ (x, y) \in E_1 \times E_2 \vphantom{\tfrac a a}} \]
+        \end{indt}
+        
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Propriétés}}
+            $\bullet$ Soit $n \in \N^*$, et $(E_k)_{k \in \nset 1 n}$ des sous-espaces vectoriels de $E$. Alors
+                \[ \mathrm{vect}\lr{\bigcup_{k = 1}^n E_k} = \sum_{k = 1}^n E_k \]
+        \end{indt}
+        
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Définition (\textit{somme directe})}}
+            $\bullet$ Soient $A, B$ deux sous-espaces vectoriels de $E$.
+            
+            $A$ et $B$ sont en \textit{somme directe}, noté $A + B = A \oplus B$, si :
+                \[ A + B = A \oplus B \ssi \forall x \in A + B,\ \exists! (a, b) \in A \times B\ |\ x = a + b \]
+            
+            
+            $\bullet$ Soient $n \in \N^*$, et $(E_k)_{k \in \nset 1 n}$ des sous-espaces vectoriels de $E$.
+            
+            Si la somme de ces sous-espaces vectoriels est \textit{directe}, on note
+                \[ \sum_{k = 1}^n E_k = \bigoplus_{k = 1}^n E_k \]
+            et on a:
+                \[
+                    \sum_{k = 1}^n E_k = \bigoplus_{k = 1}^n E_k
+                    \ssi
+                    \forall x \in \sum_{k = 0}^n E_k,\
+                    \exists! (x_k)_{k \in \nset 1 n}\
+                    \left|
+                    \begin{array}{l}
+                        \forall k \in \nset 1 n,\ x_k \in E_k
+                        \vspace{6pt}
+                        \\
+                        \displaystyle x = \sum_{k = 1}^n x_k
+                    \end{array}
+                    \right.
+                \]
+            \textit{i.e} si tout vecteur de la somme se décompose de façon unique comme somme de vecteurs de chaque sous-espace vectoriel.
+        \end{indt}
+        
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Caractérisation d'une somme directe}}
+            \begin{indt}{\subsubsection{Cas de deux vecteurs}}
+                Soient $A, B$ deux sous-espaces vectoriel de $E$. Alors :
+                    \[ A + B = A \oplus B \ssi A \cap B = \set 0 \]
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Cas d'un nombre fini de vecteurs}}
+                Soit $n \in \N^*$, et $(E_k)_{k \in \nset 1 n}$ des sous-espaces vectoriels de $E$. Alors :
+                    \[
+                        \begin{array}{c}
+                            \displaystyle \sum_{k = 1}^n E_k = \bigoplus_{k = 1}^n E_k
+                            \vspace{6pt}
+                            %\\
+                            \displaystyle
+                            \ssi
+                            \forall (x_k)_{k \in \nset 1 n}\ |\
+                            \forall k \in \nset 1 n,\ x_k \in E_k,\
+                            \\
+                            \displaystyle
+                            \sum_{k = 0}^n x_k = 0\ \Rightarrow\ \forall k \in \nset 1 n,\ x_k = 0
+                        \end{array}
+                    \]
+                
+                Remarque : la condition
+                    $\displaystyle \bigcup_{k \in \nset 1 n} E_k = \set 0 $
+                ne suffit pas (exemple : trois droites dans le plan).
+            \end{indt}
+        \end{indt}
+        
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Définition (sous-espaces \textit{supplémentaires})}}
+            Soient $A, B$ deux sous-espaces vectoriels de $E$.
+            
+            \vspace{6pt}
+            
+            1. Les sous-espaces vectoriels $A$ et $B$ sont \textit{supplémentaires} si
+                \[ E = A \oplus B \]
+            \textit{i.e} si
+                \[ \eqsys{E = A + B}{A + B = A \oplus B} \]
+            
+            \vspace{12pt}
+            
+            2. Un \textit{supplémentaire} de $A$ dans $E$ est un sous-espace vectoriel $G$ de $E$ tel que $E = A \oplus G$.
+        \end{indt}
+        
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Propriétés}}
+            $\bullet$ Soient $n \in \N^*$, $(E_k)_{k \in \nset 1 n}$ des sous-espaces vectoriels de $E$, et $(\mathcal F_k)_{k \in \nset 1 n}$ des familles génératrices respectives de $E_1, \ldots, E_n$.
+            
+            Alors : %$\mathcal F \cup \mathcal G$ est une famille génératrice de $A + B$, \textit{i.e}
+                \[ \sum_{k = 1}^n E_k = \mathrm{vect}\lr{\bigcup_{k \in \nset 1 n} \mathcal F_k} \]
+            \textit{i.e} $\displaystyle \bigcup_{k \in \nset 1 n} \mathcal F_k$ est une famille génératrice de $\displaystyle \sum_{k = 1}^n E_k$.
+            
+            \vspace{12pt}
+            
+            De plus, si $\displaystyle \sum_{k = 1}^n E_k = \bigoplus_{k = 1}^n E_k$, alors la famille $\displaystyle \bigcup_{k \in \nset 1 n} \mathcal F_k$ est libre (et génératrice de la somme).
+            
+            %Et si $A + B = A \oplus B$, alors la famille $\mathcal F \cup \mathcal G$ est libre (et génératrice de $A \oplus B$).
+            
+            \vspace{12pt}
+            
+            $\bullet$ Soient $n \in \N^*$, $(E_k)_{k \in \nset 1 n}$ des sous-espaces vectoriels de $E$ tels que $\displaystyle \sum_{k = 1}^n E_k = \bigoplus_{k = 1}^n E_k$, et $(\mathcal F_k)_{k \in \nset 1 n}$ des bases respectives de $E_1, \ldots, E_n$.
+            
+            \vspace{6pt}
+            
+            Alors $\displaystyle \bigcup_{k \in \nset 1 n} \mathcal F_k$ est une base de $\displaystyle \bigoplus_{k = 1}^n E_k$.
+        \end{indt}
+        
+    \end{indt}
+    
+    \vspace{12pt}
+    
+    \begin{indt}{\section{Espaces vectoriels de dimension finie}}
+        
+        \begin{indt}{\subsection{Définition (espace vectoriel de dimension finie)}}
+            Un espace vectoriel est de \textit{dimension finie} si il admet une famille génératrice finie. Sinon, il est de \textit{dimension infinie}.
+        \end{indt}
+        
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Lemme}}
+            Soient $\mathcal F$ une famille finie libre de $E$, et $\mathcal G$ une famille finie génératrice de $E$.
+            
+            Alors
+                \[ \mathrm{card}( \mathcal F) \le \mathrm{card}(\mathcal G) \]
+        \end{indt}
+        
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Théorème}}
+            Soit $E$ un espace vectoriel de dimension finie.
+            
+            \begin{indt}{Alors :}
+                (1) $E$ admet une base finie ;
+                
+                (2) Toutes les bases de $E$ sont finies, et ont le même nombre d'éléments.
+            \end{indt}
+        \end{indt}
+        
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Définition (\textit{dimension d'un espace vectoriel})}}
+            Soit $E$ un $K$-espace vectoriel de dimension finie.
+            
+            La \textit{dimension} de $E$, notée $\dim(E)$, est le nombre d'éléments de ses bases.
+        \end{indt}
+        
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Propriétés}}
+            Soient $E$ un $K$-espace vectoriel de dimension finie, et $\mathcal F$ une famille de $E$.
+            
+            Alors, si $\mathcal F$ est libre :
+                \[ \mathrm{card}(\mathcal F) \le \dim(E) \]
+            et $\mathcal F$ est une base si, et seulement si $\mathrm{card}(\mathcal F) = \dim(E)$.
+            
+            Et si $\mathcal F$ est génératrice, alors
+                \[ \mathrm{card}(\mathcal F) \ge \dim(E) \]
+            et $\mathcal F$ est une base si, et seulement si $\mathrm{card}(\mathcal F) = \dim(E)$.
+        \end{indt}
+        
+        \begin{indt}{\subsection{Théorème de la base extraite}}
+            Soit $E$ un espace vectoriel de dimension finie, et $\mathcal F$ une famille génératrice de $E$.
+            
+            Alors $\exists \mathcal G \subset \mathcal F\ |\ \mathcal G$ soit une base de $E$.
+        \end{indt}
+        
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Théorème de la base incomplète}}
+            Soit $E$ un espace vectoriel de dimension finie, $r \in \N^*$, $n = \dim(E)$, et $\mathcal F = (y_k)_{k \in \nset 1 r}$ une famille libre de $E$.
+            
+            Alors $\exists (y_k)_{k \in \nset{p + 1}{n}} \ |\ (y_k)_{k \in \nset 1 n}$ soit une base de $E$.
+        \end{indt}
+        
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Corrolaire}}
+            Soit $E$ un espace vectoriel (pas nécessairement de dimension finie), $n, p \in \N^*\ |\ n < p$, et $(x_k)_{k \in \nset 1 n} \subset E$.
+            
+            Alors
+                \[ \forall (y_k)_{k \in \nset 1 p} \subset \mathrm{vect}(x_k)_{k \in \nset 1 n},\ (y_k)_{k \in \nset 1 p}\ \text{est liée} \]
+        \end{indt}
+        
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Propriété}}
+            Soit $E$ un espace vectoriel. Alors
+                \[ \dim(E) = +\infty \ssi \forall n \in \N^*,\ \exists (x_k)_{k \in \nset 1 n} \subset E\ |\ (x_k)_{k \in \nset 1 n}\ \text{libre} \]
+        \end{indt}
+        
+    \end{indt}
+    
+    \vspace{12pt}
+    
+    \begin{indt}{\section{Dimension d'un sous-espace vectoriel en dimension finie}}
+        
+        \begin{indt}{\subsection{Propriété}}
+            Soit $E$ un espace vectoriel de dimension finie, et $F$ un sous-espace vectoriel de $E$.
+            
+            Alors
+                \[ \dim(F) \le \dim(E) \]
+            et
+                \[ E = F \ssi \dim(F) = \dim(E) \]
+        \end{indt}
+        
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Définition (\textit{hyperplan})}}
+            Un \textit{hyperplan} d'un espace vectoriel $E$ de dimension finie est un sous-espace vectoriel $F$ de $E$ tel que
+                \[ \dim(F) = \dim(E) - 1 \]
+        \end{indt}
+        
+        \begin{indt}{\subsection{Propriétés}}
+            Soit $E$ un espace vectoriel de dimension finie, et $F, G$ deux sous-espaces vectoriels de $E$.
+            
+            Alors
+                \[
+                    \begin{array}{rcl}
+                        F = G &\ssi& \eqsys{\dim(F) = \dim(G)}{F \subset G}
+                        \vspace{6pt}
+                        \\
+                        &\ssi& \eqsys{\dim(F) = \dim(G)}{\exists (x_k)_{k \in I} \subset G\ |\ F = \mathrm{vect}(x_k)_{k \in I}}
+                    \end{array}
+                \]
+            
+%             De plus,
+%                 \[
+%                     F \subset G
+%                     \ssi
+%                     \exists (x_k)_{k \in I} \subset G\ |\
+%                     F = \mathrm{vect}(x_k)_{k \in I}
+% %                     \left|
+% %                     \begin{array}{l}
+% %                         F = \mathrm{vect}(x_k)_{k \in I}
+% %                         \\
+% %                         (x_k)_{k \in I} \subset G
+% %                     \end{array}
+% %                     \right.
+%                 \]
+        \end{indt}
+        
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Définition (système d'équation dans une base)}}
+            Soit $E$ un espace vectoriel de dimension finie, $n = \dim(E)$, $\mathcal B$ une base de $E$, et $F$ un sous-espace vectoriel de $E$.
+            
+            Un \textit{système d'équation} de $F$ dans la base $\mathcal B$ est un système $S$ de $p \in \N$ équations ($p \le n$) à $n$ inconnues $(x_k)_{k \in \nset 1 n}$ tel que $\forall v \in E,\ v \in F \ssi$ ses composantes dans la base $\mathcal B$ sont solutions de $S$.
+        \end{indt}
+        
+    \end{indt}
+    
+    \vspace{12pt}
+    
+    \begin{indt}{\section{Rang d'une famille de vecteurs}}
+        
+        \begin{indt}{\subsection{Définition (\textit{rang})}}
+            Soit $E$ un $K$-espace vectoriel, et $\mathcal F = (x_k)_{k \in I} \subset E$.
+            
+            Le \textit{rang} de la famille de vecteurs $\mathcal F$, noté $\mathrm{rang}(x_k)_{k \in I}$, est la dimension du sous-espace vectoriel engendré par les vecteurs de $\mathcal F$, \textit{i.e} :
+                \[ \mathrm{rang}(x_k)_{k \in I} = \dim\!\lr{\mathrm{vect}(x_k)_{k \in I} \vphantom{\tfrac a a}} \]
+        \end{indt}
+        
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Propriétés}}
+            $\bullet$ Soit $E$ un $K$-espace vectoriel, et $(x_k)_{k \in I} \subset E$. Alors :
+                \[ \mathrm{rang}(x_k)_{k \in I} = 0 \ssi \forall k \in I,\ x_k = 0 \]
+                \[
+                    \mathrm{rang}(x_k)_{k \in I} = 1
+                    \ssi
+                    \exists i \in I\
+                    \left|
+                    \begin{array}{l}
+                        x_i \neq 0
+                        \\
+                        \forall k \in I,\ x_k \propto x_i
+                    \end{array}
+                    \right.
+                \]
+            
+            ($x_k \propto x_i \ssi \exists \lambda \in K^*\ |\ x_k = \lambda x_i$)
+            
+            \vspace{18pt}
+            
+            $\bullet$ Soient $(x_k)_{k \in I} \subset E$, et $i \in I$. Alors :
+                \[ x_i \in \mathrm{vect}(x_k)_{k \in I \setminus \set i} \ssi \mathrm{rang}(x_k)_{k \in I} = \mathrm{rang}(x_k)_{k \in I \setminus \set i} \]
+            
+            \vspace{12pt}
+            
+            $\bullet$ Soient $(x_k)_{k \in I}, (y_k)_{k \in J} \subset E$. Alors :
+                \[ \mathrm{vect}(x_k)_{k \in I} = \mathrm{vect}(y_k)_{k \in J}\ \Rightarrow\ \mathrm{rang}(x_k)_{k \in I} = \mathrm{rang}(y_k)_{k \in J} \]
+            
+            \vspace{12pt}
+            
+            $\bullet$ Soient $p \in \N^*$, et $(x_k)_{k \in \nset 1 p} \subset E$. Alors :
+                \[ \mathrm{rang}(x_k)_{k \in \nset 1 p} \le p \]
+            et
+                \[ \mathrm{rang}(x_k)_{k \in \nset 1 p} = p \ssi (x_k)_{k \in \nset 1 p}\ \text{libre} \]
+                
+            De plus, si $\exists r \in \nset 1 p\ |\ (x_k)_{k \in \nset 1 r}$ libre, alors :
+                \[ \mathrm{rang}(x_k)_{k \in \nset 1 p} \ge r \]
+            
+            \vspace{12pt}
+            
+            $\bullet$ Soient $(x_k)_{k \in I} \subset E$, $i \in I$, $x \in \mathrm{vect}(x_k)_{k \in I \setminus \set i}$. Alors :
+                \[ \mathrm{rang}(x_k)_{k \in I} = \mathrm{rang}(x_i + x, x_k)_{k \in I \setminus \set i} \]
+            et
+                \[ \forall (\lambda_k)_{k \in I} \subset K,\ \mathrm{rang}(x_k)_{k \in I} = \mathrm{rang}(\lambda_k x_k)_{k \in I} \]
+            
+            \textit{cf} \ref{2.3}, troisième point.
+        \end{indt}
+        
+    \end{indt}
+    
+    \vspace{12pt}
+    
+    \begin{indt}{\section{Somme et produit de sous-espaces vectoriels en dimension finie}}
+        
+        \begin{indt}{\subsection{Somme de deux sous-espaces vectoriels}}
+            \begin{indt}{\subsubsection{Propriétés}}
+                Soit $E$ un espace vectoriel de dimension finie $n$.
+                
+                \vspace{6pt}
+                
+                $\bullet$ Soient
+                $
+                    \left|
+                    \begin{array}{l}
+                        n \in \N^*, p \in \nset 1 n
+                        \vspace{3pt}
+                        \\
+                        (e_k)_{k \in \nset 1 n} \subset E\ \text{une base de $E$}
+                        \vspace{3pt}
+                        \\
+                        A = \mathrm{vect}(e_k)_{k \in \nset 1 p}
+                        \vspace{3pt}
+                        \\
+                        B = \mathrm{vect}(e_k)_{k \in \nset{p + 1}{n}}
+                    \end{array}
+                    \right.
+                $. Alors $A \oplus B = E$.
+                
+                \vspace{6pt}
+                
+                De plus, $(e_k)_{k \in \nset 1 p}$ est une base de $A$, et $(e_k)_{k \in \nset{p + 1}{n}}$ est une base de $B$.
+                
+                \vspace{12pt}
+                
+                $\bullet$ Soient
+                $
+                    \left|
+                    \begin{array}{l}
+                        A, B \subset E\ |\ E = A \oplus B
+                        \vspace{3pt}
+                        \\
+                        p = \dim(A), q = \dim(B)
+                        \vspace{3pt}
+                        \\
+                        (e_k)_{k \in \nset 1 p} \subset A\ \text{une base de $A$}
+                        \vspace{3pt}
+                        \\
+                        (e_k)_{k \in \nset{p + 1}{p + q}} \subset B\ \text{une base de $B$}
+                    \end{array}
+                    \right.
+                $
+                
+                \vspace{6pt}
+                
+                Alors $(e_k)_{k \in \nset 1 {p + q}}$ est une base de $E$.
+                
+                \vspace{12pt}
+                
+                $\bullet$ Tout sous-espace vectoriel de $E$ admet un supplémentaire.
+                
+                \vspace{12pt}
+                
+                $\bullet$ Soient $A, B$ deux sous-espaces vectoriels de $E$ tels que $A + B = A \oplus B$. Alors :
+                    \[ \dim(A \oplus B) = \dim(A) + \dim(B) \]
+                
+                En particulier, si $E = A \oplus B$, on a
+                    \[ \dim(E) = \dim(A) + \dim(B) \]
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Formule de Grassmann}}
+                Soient $F, G$ deux sous-espaces vectoriels d'un espace vectoriel $E$ de dimension finie.
+                
+                Alors :
+                    \[ \dim(F + G) = \dim(F) + \dim(G) - \dim(F \cap G) \]
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Caractérisation des sous-espaces vectoriels supplémentaires}}
+                Soient $F, G$ deux sous-espaces vectoriels d'un espace vectoriel $E$ de dimension finie.
+                
+                Alors :
+                    \[
+                        \begin{array}{rcl}
+                            E = F \oplus G
+                            &\ssi& \eqsys{E = F + G}{\dim(E) = \dim(F) + \dim(G)}
+                            \vspace{6pt}
+                            \\
+                            &\ssi& \eqsys{F \cap G = \set 0}{\dim(E) = \dim(F) + \dim(G)}
+                        \end{array}
+                    \]
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Cas d'un hyperplan}}
+                Soit $H$ un hyperplan de $E$, et $u \in E \setminus H$. Alors
+                    \[ E = H \oplus \mathrm{vect}(u) \]
+            \end{indt}
+        \end{indt}
+        
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Dimension des sommes et produits d'espaces vectoriels}}
+            \begin{indt}{\subsubsection{Dimension d'un produit}}
+                Soient $n \in \N^*$, et $(E_k)_{k \in \nset 1 n}$ des espaces vectoriels de dimension finie.
+                
+                Alors $\displaystyle \dim\!\lr{\prod_{k = 1}^n E_k} < +\infty$, et :
+                    \[ \dim\!\lr{\prod_{k = 1}^n E_k} = \sum_{k = 1}^n \dim(E_k) \]
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Propriétés}}
+                $\bullet$ Soient
+                $
+                    \left|
+                    \begin{array}{l}
+                        n \in \N^*, m \in \N
+                        \vspace{3pt}
+                        \\
+                        (e_k)_{k \in \nset 1 n} \subset E\ \text{une base de $E$}
+                        \vspace{3pt}
+                        \\
+                        (p_k)_{k \in \nset 0 m} \subset \N\
+                        \left|
+                        \begin{array}{l}
+                            p_0 = 0, p_m = n
+                            \\
+                            \forall k \in \nset{0}{m - 1},\ p_k < p_{k + 1}
+                        \end{array}
+                        \right.
+                        \vspace{3pt}
+                        \\
+                        \forall i \in \nset 1 m,\ A_i = \mathrm{vect}(e_k)_{k \in \nset{p_{i - 1} + 1}{p_i}}
+                    \end{array}
+                    \right.
+                $
+                
+                Alors :
+                    \[ E = \bigoplus_{i = 1}^m A_i = \bigoplus_{i = 1}^m \mathrm{vect}(e_k)_{k \in \nset{p_{i - 1} + 1}{p_i}} \]
+                
+                \vspace{12pt}
+                
+                $\bullet$
+%                 Soient $m \in \N^*$, $(A_k)_{k \in \nset 1 m} \subset \mathcal P(E)$ des sous-espaces vectoriels de $E$ tels que
+%                     \[ E = \bigoplus_{k = 1}^m A_k \]
+%                 Soient $(p_k)_{k \in \nset 1 m} \subset N\ |\ \forall k \in \nset 1 m,\ p_k = \dim(A_k)$
+                Soient
+                $
+                    \left|
+                    \begin{array}{l}
+                        m \in \N^*
+                        \\
+                        (A_k)_{k \in \nset 1 m} \subset \mathcal P(E)\ \text{des s-ev de $E$}\ |\ \displaystyle E = \bigoplus_{k = 1}^m A_k
+                        \vspace{3pt}
+                        \\
+                        (p_k)_{k \in \nset 1 m} \subset N\ |\ \forall k \in \nset 1 m,\ p_k = \dim(A_k)
+                        \vspace{3pt}
+                        \\
+                        \forall i \in \nset 1 m,\ (e_{k,i})_{k \in \nset{1}{p_i}} \subset A_i\ \text{une base de $A_i$}
+                    \end{array}
+                    \right.
+                $
+                
+                \vspace{12pt}
+                
+                Alors $(e_{ij})_{\substack{i \in \nset 1 {p_j} \\ j \in \nset 1 m}}$ est une base de $E$.
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Dimension d'une somme directe}}
+                Soient $E$ un espace vectoriel de dimension finie, $m \in \N^*$, $(A_k)_{k \in \nset 1 m} \subset \mathcal P(E)$ des sous-espaces vectoriels de $E$, tels que
+                    \[ \sum_{k = 1}^m A_k = \bigoplus_{k = 1}^m A_k \]
+                
+                Alors :
+                    \[ \dim\!\lr{\bigoplus_{k = 1}^m A_k} = \sum_{k = 1}^m \dim(A_k) \]
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Dimension d'une somme}}
+                Soient $n \in \N^*$, $(E_k)_{k \in \nset 1 n} \subset \mathcal P(E)$ des sous-espaces vectoriels de dimension finie d'un espace vectoriel $E$.
+                
+                Alors $\displaystyle \dim\!\lr{\sum_{k = 1}^n E_k} < +\infty$, et
+                    \[ \dim\!\lr{\sum_{k = 1}^n E_k} \le \sum_{k = 1}^n \dim(E_k) \]
+                avec égalité si et seulement si la somme est directe.
+            \end{indt}
+        \end{indt}
+        
+    \end{indt}
+    
+    
+    
+\end{document}
+%--------------------------------------------End
