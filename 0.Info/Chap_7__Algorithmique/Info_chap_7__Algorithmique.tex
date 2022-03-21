@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2022.03.16
+% Last modification     :   2022.03.21
 %
 %------------------------------------------------------------------------
 
@@ -712,7 +712,7 @@
                             \\
                             &=& \cdots
                             \\
-                            &=& \displaystyle \mathcal O\lr{\binom p n}
+                            &=& \displaystyle \mathcal O\lr{\binom n p}
                         \end{array}
                     \]
                 exponentiel dans le pire cas $\lr{p = \dfrac n 2}$
@@ -817,21 +817,15 @@ let binom_ascending (n : int) (p : int) : int =
             \vspace{12pt}
             
             \begin{indt}{\subsubsection{Exemple}}
+                \label{3.1.4}
+                
                 Nombres de Delannoy : nombre de chemins distincts que peut prendre une dame sur un échiquier pour aller du coin inférieur gauche au coin supérieur droit en utilisant que les déplacements par rangée / colonne croissante, en fonction des dimensions de l'échiquier.
                 
                 \begin{center}
-                    \begin{tabular}{|c|c|c|c|}
-                        \hline
-                        &&&
-                        \\
-                        \hline
-                        &&&
-                        \\
-                        \hline
-                        &&&
-                        \\
-                        \hline
-                    \end{tabular}
+                    \begin{tikzpicture}[scale=.5]
+                        \draw[step=1cm] (0, 0) grid (4, 4);
+                        \draw[fill] (.5, .5) circle (.2cm);
+                    \end{tikzpicture}
                 \end{center}
                 
                 \[ D(i, j) = \underbrace{D(i, j - 1)}_{\rightarrow} + \underbrace{D(i - 1, j)}_{\uparrow} + \underbrace{D(i - 1, j - 1)}_{\nearrow} \]
@@ -841,6 +835,195 @@ let binom_ascending (n : int) (p : int) : int =
                 $D(i, j) = 1$ si $i = 0$ ou $j = 0$
                 
                 par programmation dynamique, on calcule $D(n, p)$ en $\mathcal O(np)$ en temps et $\mathcal O(p)$ en espace (2 rangées suffisent).
+            \end{indt}
+        \end{indt}
+        
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Application aux problèmes d'optimisation}}
+            \begin{indt}{\subsubsection{Introduction}}
+                Un problème d'optimisation est un problème dans lequel on veut maximiser ou minimiser une valeur sous certaines contraintes.
+                L'objectif est de déterminer les paramètres permettant d'atteindre l'optimum. La méthode de la programmation dynamique s'applique à de nombreux problèmes d'optimisation.
+                Pour appliquer cette méthode, le problème doit avoir une certaine propriété, appelée \textit{propriété de sous-structre optimale} : si l'on dispose d'une solution optimale au problème, alors cette solution induit une solution optimale à un ou plusieurs sous-problèmes.
+                
+                Par exemple, si un plus court chemin de $A$ vers $B$ passe par $C$, alors le sous-chemin de $A$ vers $C$ est bien un plus court chemin de $A$ à $C$.
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Exemple}}
+                Chemin de poids maximum sur un échiquier.
+                
+                On reprend le problème vu en \ref{3.1.4}, mais on ne cherche pas à déterminer le nombre de chemins, mais plutôt on suppose que les cases de l'échiquier contiennent des poids et on veut trouver un chemin qui maximise la somme des poids des cases parcourues.
+                
+                On modélise le problème à l'aide d'une matrice de poids :
+                    \[
+                        \begin{pmatrix}
+                            31 & 21 & 12 & 26 & 34
+                            \\
+                            37 & 21 & 34 & 26 & 10
+                            \\
+                            2 & 39 & 12 & 49 & 47
+                        \end{pmatrix}
+                    \]
+                
+                Une recherche exhaustive n'est pas raisonnable : le nombre de chemins à tester pour une matrice $n \times p$ est le nombre de Delannoy $D(n, p)$. Or $\displaystyle D(n, p) \ge \binom{n + p}{p}$ (en interdisant les pas diagonaux, il faut $n$ pas verticaux, et $p$ pas horizontaux pour passer d'un coin à l'autre. Un chemin est donc caractérisé par l'emplacement de ses pas horizontaux).
+                
+                \vspace{12pt}
+                
+                Vérifions que ce problème satisfait la propriété de sous-problème optimale : si un chemin de poids maximal de $(0, 0)$ à $(n - 1, p - 1)$ passe par $(i, j)$, alors le sous-chemin de $(0, 0)$ à $(i, j)$ est de poids maximal. Sinon, on complète un chemin de poids maximal de $(0, 0)$ à $(i, j)$ par le sous-chemin de $(i, j)$ à $(n - 1, p - 1)$ et on obtient un chemin valide de $(0, 0)$ à $(n - 1, p - 1)$ qui contredit l'optimalité du chemin initial.
+                
+                La propriété de sous-structure optimale correspond en fait à une récurrence sur le poids maximal $w_{i, j}$ d'un chemin de $(0, 0)$ à $(i ,j)$ : on note $M = (m_{i, j})_{i, j}$ la matrice définissant le problème.
+                
+                Alors :
+                    \[
+                        w_{i, j} = m_{i, j} +
+                        \left\{
+                        \begin{array}{ll}
+                            0
+                            & \text{si $i = j = 0$}
+                            \\
+                            w_{0, j - 1}
+                            & \text{si $i = 0$ et $j \neq 0$}
+                            \\
+                            w_{i - 1, 0}
+                            & \text{si $i \neq 0$ et $j = 0$}
+                            \\
+                            \max(w_{i, j - 1}, w_{i - 1, j}, w_{i - 1, j - 1})
+                            & \text{si $i \neq 0$ et $j \neq 0$}
+                        \end{array}
+                        \right.
+                    \]
+                
+%                     \[
+%                         \begin{array}{cc}
+%                             \begin{array}{cc}
+%                                 n - 1
+%                                 & \rightarrow
+%                                 \\
+%                                 \\
+%                                 0 & \rightarrow
+%                             \end{array}
+%                             &
+%                             \begin{pmatrix}
+%                                 * & \phantom * & \phantom *
+%                                 \\
+%                                 \\
+%                                 *
+%                             \end{pmatrix}
+%                             \\
+%                             &
+%                             \begin{array}{ccc}
+%                                 \uparrow & & \uparrow
+%                                 \\
+%                                 0 & & p - 1
+%                             \end{array}
+%                         \end{array}
+%                     \]
+                On peut calculer $w_{n - 1, p - 1}$ par programmation dynamique.
+                
+                On adopte l'approche ascendante de la programmation dynamique : on remplit la matrice $W = (w_{i, j})_{i, j}$ soit par lignes croissantes (et colones croissantes), soit par colones croissantes (et lignes croissantes), soit par anti-diagonales, \textit{i.e} par $i + j$ croissant.
+                
+                \boxed{\rm Exo} : code
+                
+                \vspace{12pt}
+                
+                Complexité : $\mathcal O(np)$, en espace aussi, mais on peut optimiser l'espace requis car il suffit de connaître une ligne ou une colone pour remplir la suivante : $\mathcal O(\min(n, p))$ en espace.
+                
+                \vspace{12pt}
+                
+                Remarque : on n'a calculé que le poids maximal, pas un chemin réalisant ce poids.
+                
+                \begin{indt}{Deux possibilités :}
+                    (1) Lors du remplissage de la matrice, on détermine en plus de $w_{i, j}$ un prédécesseur de $(i, j)$ sur un chemin de poids maximal de $(0, 0)$ à $(i ,j)$. On détermine un tel prédécesseur en gardant un couple qui réalise le maximum dans la formule de récurrence.
+                    
+                    (2) On détermine la matrice $W$ puis on retrouve un chemin de poids maximal en partant de la case $(n - 1, p - 1)$, en déterminant un prédécesseur à l'aide des valeurs de $N$ puis en calculant récursivement un chemin vers ce prédécesseur.
+                \end{indt}
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Exemple : Produit de matrices}}
+                On cherche à minimiser le nombre de multiplications nécéssaires au calcul du produit de $n$ matrices.
+                
+                Si $A \in \mathcal M_{n, p}(K),\ B \in \mathcal M_{p, q} (K)$, on peut caluler $AB$ à l'aide de $npq$ multiplications grâce à la définition :
+                    \[ (AB)_{i, j} = \sum_{k = 1}^p a_{i,k} b_{k, j} \]
+                
+                \begin{indt}{Si $A, B, C$ sont de tailles respectives $2 \times 5,\ 5 \times 8,\ 8 \times 6$, on peut calculer $ABC$ de deux façons :}
+                    $-$ $(AB)C$ : 176 multiplications ;
+                    
+                    $-$ $A(BC)$ : 300 multiplications.
+                \end{indt}
+                
+                On veut donc trouver un parenthésage optimal du produit
+                    \[ \prod_{k = 0}^{n - 1} A_k \]
+                où $\forall k \in \nset{0}{n - 1},\ A_k \in \mathcal M_{t_k, t_{k + 1}} (K)$.
+                
+                \vspace{12pt}
+                
+                Ce problème vérifie la propriété de sous-problème optimal : si
+                    \[ \lr{ \prod_{k = 0}^k A_k } \lr{ \prod_{k = i + 1}^{n - 1} A_k } \]
+                est un parenthésage optimal, on a bien des parenthésages optimaux des produits
+                    \[ \prod_{k = 0}^i A_k \quad \text{et} \quad \prod_{k = i + 1}^{n - 1} A_k \]
+                
+                On observe qu'il faudra résoudre les sous-problèmes suivants : optimisation du parenthésage du produit
+                    \[ P_{i, j} = \prod_{k = i}^j A_k \]
+                $\forall (i, j) \in \nset 0 {n - 1}^2$. On note $m_{i, j}$ le nombre minimal de multiplications nécéssaires au calcul de $P_{i, j}$.
+                
+                Si $\underbrace{P_{i, k}}_{\in \mathcal M_{t_i, t_{k + 1} (K)}} \times \underbrace{P_{k + 1, j}}_{\in \mathcal M_{t_{k + 1}, t_{j + 1}}}$ est un parenthésage optimal, alors
+                    \[ m_{i, j} = m_{i, k} + m_{k + 1, j} + t_i t_{k + 1} t_{j + 1} \]
+                
+                On trouve alors la relation de récurrence
+                    \[
+                        m_{i, j} =
+                        \left\{
+                        \begin{array}{ll}
+                            0
+                            & \text{si $i = j$}
+                            \\
+                            \min\limits_{k \in \nset{i}{j - 1}} \lr{ m_{i, k} + m_{k + 1, j} + t_i t_{k + 1} t_{j + 1} }
+                            & \text{si $i < j$}
+                        \end{array}
+                        \right.
+                    \]
+                
+                Comment remplir la matrice $M = (m_{i,j})_{i,j}$ ?
+                    \[
+                        \begin{pmatrix}
+                            0
+                            \\
+                            & \ddots & \leftarrow & \bullet
+                            \\
+                            & & \ddots & \downarrow
+                            \\
+                            & & & \ddots
+                            \\
+                            & & & & 0
+                        \end{pmatrix}
+                    \]
+                
+                On peut remplir la matrice par diagonales, \textit{i.e} par $j - i$ croissant.
+                
+                \boxed{\rm Exo} code.
+                
+                \vspace{12pt}
+                
+                Complexité : $\mathcal O(n^3)$ en temps, et $\mathcal O(n^2)$ en espace.
+                
+                \vspace{12pt}
+                
+                Comment représenter un parenthésage optimal $\Pi_{i, j}$ de $P_{i, j}$ ?
+                
+                Si le parenthésage s'écrit $P_{i, k} P_{k + 1, j}$, il suffit de retenir $k$ et les parenthésages $\Pi_{i, k}$ et $\Pi_{k + 1, j}$
+                
+                \begin{center}
+                    \begin{tikzpicture}
+                        \node [circle, draw] {$k$}
+                            child {node [rectangle, draw] {$\Pi_{i, k}$}}
+                            child {node [rectangle, draw] {$\Pi_{k + 1, j}$}}
+                        ;
+                    \end{tikzpicture}
+                \end{center}
             \end{indt}
         \end{indt}
         
