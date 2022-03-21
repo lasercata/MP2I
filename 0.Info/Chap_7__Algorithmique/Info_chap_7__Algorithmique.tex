@@ -844,7 +844,7 @@ let binom_ascending (n : int) (p : int) : int =
             \begin{indt}{\subsubsection{Introduction}}
                 Un problème d'optimisation est un problème dans lequel on veut maximiser ou minimiser une valeur sous certaines contraintes.
                 L'objectif est de déterminer les paramètres permettant d'atteindre l'optimum. La méthode de la programmation dynamique s'applique à de nombreux problèmes d'optimisation.
-                Pour appliquer cette méthode, le problème doit avoir une certaine propriété, appelée \textit{propriété de sous-structre optimale} : si l'on dispose d'une solution optimale au problème, alors cette solution induit une solution optimale à un ou plusieurs sous-problèmes.
+                Pour appliquer cette méthode, le problème doit avoir une certaine propriété, appelée \textit{propriété de sous-structure optimale} : si l'on dispose d'une solution optimale au problème, alors cette solution induit une solution optimale à un ou plusieurs sous-problèmes.
                 
                 Par exemple, si un plus court chemin de $A$ vers $B$ passe par $C$, alors le sous-chemin de $A$ vers $C$ est bien un plus court chemin de $A$ à $C$.
             \end{indt}
@@ -922,13 +922,13 @@ let binom_ascending (n : int) (p : int) : int =
 %                     \]
                 On peut calculer $w_{n - 1, p - 1}$ par programmation dynamique.
                 
-                On adopte l'approche ascendante de la programmation dynamique : on remplit la matrice $W = (w_{i, j})_{i, j}$ soit par lignes croissantes (et colones croissantes), soit par colones croissantes (et lignes croissantes), soit par anti-diagonales, \textit{i.e} par $i + j$ croissant.
+                On adopte l'approche ascendante de la programmation dynamique : on remplit la matrice $W = (w_{i, j})_{i, j}$ soit par lignes croissantes (et colonnes croissantes), soit par colonnes croissantes (et lignes croissantes), soit par anti-diagonales, \textit{i.e} par $i + j$ croissant.
                 
                 \boxed{\rm Exo} : code
                 
                 \vspace{12pt}
                 
-                Complexité : $\mathcal O(np)$, en espace aussi, mais on peut optimiser l'espace requis car il suffit de connaître une ligne ou une colone pour remplir la suivante : $\mathcal O(\min(n, p))$ en espace.
+                Complexité : $\mathcal O(np)$, en espace aussi, mais on peut optimiser l'espace requis car il suffit de connaître une ligne ou une colonne pour remplir la suivante : $\mathcal O(\min(n, p))$ en espace.
                 
                 \vspace{12pt}
                 
@@ -944,7 +944,7 @@ let binom_ascending (n : int) (p : int) : int =
             \vspace{12pt}
             
             \begin{indt}{\subsubsection{Exemple : Produit de matrices}}
-                On cherche à minimiser le nombre de multiplications nécéssaires au calcul du produit de $n$ matrices.
+                On cherche à minimiser le nombre de multiplications nécessaires au calcul du produit de $n$ matrices.
                 
                 Si $A \in \mathcal M_{n, p}(K),\ B \in \mathcal M_{p, q} (K)$, on peut caluler $AB$ à l'aide de $npq$ multiplications grâce à la définition :
                     \[ (AB)_{i, j} = \sum_{k = 1}^p a_{i,k} b_{k, j} \]
@@ -968,7 +968,7 @@ let binom_ascending (n : int) (p : int) : int =
                 
                 On observe qu'il faudra résoudre les sous-problèmes suivants : optimisation du parenthésage du produit
                     \[ P_{i, j} = \prod_{k = i}^j A_k \]
-                $\forall (i, j) \in \nset 0 {n - 1}^2$. On note $m_{i, j}$ le nombre minimal de multiplications nécéssaires au calcul de $P_{i, j}$.
+                $\forall (i, j) \in \nset 0 {n - 1}^2$. On note $m_{i, j}$ le nombre minimal de multiplications nécessaires au calcul de $P_{i, j}$.
                 
                 Si $\underbrace{P_{i, k}}_{\in \mathcal M_{t_i, t_{k + 1} (K)}} \times \underbrace{P_{k + 1, j}}_{\in \mathcal M_{t_{k + 1}, t_{j + 1}}}$ est un parenthésage optimal, alors
                     \[ m_{i, j} = m_{i, k} + m_{k + 1, j} + t_i t_{k + 1} t_{j + 1} \]
