@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2022.03.21
+% Last modification     :   2022.03.23
 %
 %------------------------------------------------------------------------
 
@@ -120,6 +120,7 @@
 
 
 %------tabular
+\usepackage{array}
 %\usepackage{color}
 %\usepackage{colortbl}
 %\usepackage{multirow}
@@ -205,6 +206,24 @@
 %---to indent a text
 \newcommand{\indented}[2][20pt]{\par \ind[#1] #2 \par \deind[#1]}
 \newenvironment{indt}[2][20pt]{#2 \par \ind[#1]}{\par \deind} %Titled indented env
+
+
+\usepackage[many]{tcolorbox}
+\DeclareTColorBox{pseudocode}{O{black}O{lightwhite}}{
+    breakable,
+    outer arc=0pt,
+    arc=0pt,
+    top=0pt,
+    toprule=-.5pt,
+    right=0pt,
+    rightrule=-.5pt,
+    bottom=0pt,
+    bottomrule=-.5pt,
+    colframe=#1,
+    colback=#2,
+    enlarge left by=10pt,
+    width=\linewidth-\leftskip-10pt,
+}
 
 %---title
 \newcommand{\thetitle}[2]{\begin{center}\textbf{{\LARGE \underline{\emph{#1} :}} {\Large #2}}\end{center}}
@@ -599,6 +618,8 @@
             \vspace{12pt}
             
             \begin{indt}{\subsubsection{Résolution du problème de décision}}
+                \label{2.3.4}
+                
                 Idée : on s'intéresse au problème de décision dual suivant : étant donné $n$ segments $[l_1, r_1], \ldots, [l_n, r_n]$ et $k \in \N^*$, peut-on choisir $k$ points $x_1, \ldots, x_k$ tels que
                     \[ \forall i \in \nset 1 n,\ \exists j \in \nset 1 k\ |\ x_j \in [l_i, r_i] \]
                 
@@ -612,7 +633,8 @@
                 
                 On traite les segments par extrémités droite croissante :
                 
-                \begin{indt}{Algorithme :}
+                Algorithme :
+                \begin{pseudocode}
                     $P \leftarrow \varnothing$
                     
                     Trier et renuméroter les segments par $r_i$ croissant
@@ -630,7 +652,7 @@
                     \end{indt}
                     
                     Si $\abs P \le k$ succès, sinon échec.
-                \end{indt}
+                \end{pseudocode}
                 
                 Correction : tous les arguments sont rencontrés par un point de $P$.
                 
@@ -1024,6 +1046,293 @@ let binom_ascending (n : int) (p : int) : int =
                         ;
                     \end{tikzpicture}
                 \end{center}
+            \end{indt}
+        \end{indt}
+        
+    \end{indt}
+    
+    \vspace{12pt}
+    
+    \begin{indt}{\section{Algorithmes gloutons}}
+        
+        \label{4}
+        
+        \begin{indt}{\subsection{Méthode}}
+            \begin{indt}{\subsubsection{Introduction}}
+                La programmation dynamique est une méthode utile pour résoudre de nombreux problèmes, mais les implémentations nécessitent en général d'allouer une grande quantité de mémoire.
+                
+                L'approche des \textit{algorithmes gloutons} est similaire à celle de la programmation dynamique dans sa version descendante.
+                La différence principale réside dans le fait qu'on ne résout pas plusieurs sous-problèmes pour garder ensuite la meilleure solution : on choisit à l'avance le sous-problème à résoudre.
+                Le choix du sous-problème se fait à l'aide d'une \textit{heuristique}, \textit{i.e} d'une stratégie de décision locale permettant de faire un choix rapide.
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Exemple : Problème du rendu de monaie}}
+                On doit rendre une somme $n$ à l'aide de pièces / billets dont la valeur appartient à un ensemble $S$.
+                
+                Objectif : minimiser le nombre de pièces / billets utilisés.
+                
+                \vspace{12pt}
+                
+                $\bullet$ Résolution par programmation dynamique : on note $f(n, S)$ le nombre minimal de pièces / billets nécessaire pour atteindre $n$ avec des pièces / billets de valeur prise dans $S$, et on note $S = \set{c_1, \ldots, c_k}$.
+                
+                On remarque que $\forall i \in \nset 1 k,\ f(n, S) \le \min( \underbrace{f(n, S \setminus \set{c_i})}_{\text{on n'utise pas $c_i$}},\ 1 + f(n - c_i, S) )$
+                
+                On peut remplir la matrice $F = (f_{i, j})_{i, j}$ où $\forall (i, j),\ f_{i, j} = f(i, \set{c_l\ |\ l \in \nset 1 j})$
+                
+                Algo en $\mathcal O(nk)$ donc complexité exponentielle !
+                
+                Explication :
+                
+                $-$ paramètres du problème : $n$ et $S = \set{c_l\ |\ l \in \nset 1 k}$
+                
+                $-$ taille des paramètres : $\mathcal O(\log n)$ et $k$
+                
+                $\mathcal O(nk) = \mathcal O(2^{\log_2 n} k)$ exponentiel en $\log n$
+                
+                \vspace{12pt}
+                
+                $\bullet$ Algo glouton :
+                
+                Idée : on utilise autant que possible la plus grande pièce $\le n$ dans l'idée qu'il faudrait utiliser plusieurs petites pièces pour compenser l'abscence d'une telle pièce.
+                
+                \vspace{6pt}
+                
+                Algorithme :
+                \begin{pseudocode}
+                    Trier $S$ par ordre décroissant et renuméroter en $c_1', \ldots, c_k'$
+                    
+                    \begin{indt}{Pour $i$ de 1 à $k$}
+                        Utiliser $c_i'$ autant que possible, \textit{i.e} $\floor{\dfrac{n}{c_i'}}$ fois :
+                        
+                        $n \leftarrow n - c_i' \cdot \floor{\dfrac n {c_i'}}$
+                    \end{indt}
+                    
+                    Si $n \neq 0$, échec
+                \end{pseudocode}
+                
+                \vspace{12pt}
+                
+                $\bullet$ Exemple : $n = 48$
+                
+                $-$ Dans le système européen, $S = \set{1, 2, 5, 10, 20}$.
+                Solution : $2 \cdot 20 + 5 + 2 + 1$
+                
+                On peut démontrer que l'algo est optimal et qu'il réussit toujours dans ce système.
+                
+                $-$ Dans le système britanique antérieur à 1971 : $S = \set{1, 3, 6, 12, 24, 30}$.
+                Solution : $30 + 12 + 6$
+                
+                Optimum : $2 \cdot 24$
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Remarque}}
+                Cet exemple démontre qu'un algorithme glouton ne fournit pas forcément toujours une solution optimale. Il faut donc pouvoir démontrer l'optimalité d'un algorithme glouton lorsque l'on souhaite l'utiliser. Il existe un cadre théorique donnant une condition suffisante d'optimalité, appelée \textit{théorie des matroïdes} (H.P).
+                
+                Nous avons vu en \ref{2.3.4} une autre méthode de démonstration : on montre par récurrence qu'il existe une solution optimale qui fait les mêmes choix que l'algorithme glouton et on montre aussi que l'algorithme glouton fournit une solution, ce qui implique que toute solution optimale faisant les mêmes choix donne la même solution.
+            \end{indt}
+        \end{indt}
+        
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Application : Ordonnancement de tâches unitaires avec pénalité de retard}}
+            \begin{indt}{\subsubsection{Description du problème}}
+                On considère un ensemble de $n$ tâches $T = \set{t_k\ |\ k \in \nset{0}{n - 1}}$ qui nécessitent chacune une unité de temps pour être réalisées. \`A chaque tâche $t \in T$ est associée une date limite $f(t) \in \nset{0}{n - 1}$ et une pénalité $p(t) \in \N$ si la date limite n'est pas respectée.
+                
+                On appelle ordonnancement des tâches une fonction
+                    \[
+                        \begin{array}{rcccc}
+                            d & : & \longrightarrow & \nset{0}{n - 1}
+                            \\
+                            & t & \longmapsto & d(t)
+                        \end{array}
+                    \]
+                qui à chaque $t \in T$ associe la date $d(t)$ à laquelle la tâche est réalisée. $d$ doit $être$ une bijection (on n'effectue qu'une tâche à chaque instant et toutes les tâches sont traités).
+                
+                \vspace{6pt}
+                
+                \begin{indt}{Un ordonnancement $d$ définit 2 ensembles :}
+                    $-$ $T^+ = \set{t \in T\ |\ d(t) \le f(t)}$ ensemble des tâches réalisées à temps ;
+                    
+                    $-$ $T^- = \set{t \in T\ |\ d(t) > f(t)}$ ensemble des tâches réalisées en retard.
+                \end{indt}
+                
+                \vspace{6pt}
+                
+                La pénalité associée à $d$ est $\displaystyle P(d) = \sum_{ t \in T^-} p(t)$
+                
+                Objectif : déterminer $d$ minimisant $P(d)$.
+                
+                \vspace{12pt}
+                
+                Exemple :
+                
+                \begin{center}
+                    \begin{tabular}{|c!{\vline width 2pt}c|c|c|c|c|c|c|c|}
+                        \hline
+                        & 0 & 1 & 2 & 3 & 4 & 5 & 6
+                        \\
+                        \noalign{\hrule height 2pt}
+                        $f$ & 0 & 1 & 2 & 3 & 3 & 3 & 5
+                        \\
+                        \hline
+                        $p$ & 3 & 6 & 4 & 2 & 5 & 7 & 1
+                        \\
+                        \hline
+                        $d$ & 6 & 0 & 1 & 4 & 3 & 2 & 5
+                        \\
+                        \hline
+                    \end{tabular}
+                \end{center}
+                
+                Donne $P(d) = p(t_0) + p(t_3) = 3 + 2 = 5$
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Algorithme glouton}}
+                On remarque que les pénalités de retard ne dépendent pas de la durée du retard.
+                
+                Ce qui compte est donc l'ordonnancement des tâches de $T^+$. On cherche donc à construire $T^+ \subseteq T$ tel que l'on puisse trouver un ordonnancement qui traite dans les délais les éléments de $T^+$ et tel que $P(T^+) = \displaystyle \sum_{t \in T^+} p(t)$ est maximal.
+                
+                Heuristique : on sélectionne en priorité les tâches de pénalité maximale que l'on planifie le plus tard possible.
+                
+                \vspace{12pt}
+                
+                Algorithme :
+                
+                \begin{pseudocode}
+                    Trier les tâches par pénalité décroissante et les renommer $t_0, \ldots, t_{n - 1}$
+                    
+                    $T^+ \leftarrow \varnothing$
+                    
+                    Marquer toutes les dates de $\nset{0}{n - 1}$ comme disponibles
+                    
+                    \begin{indt}{Pour $i$ de 0 à $n - 1$ :}
+                        \begin{indt}{S'il existe une date $j \le f(t_i)$ disponible :}
+                            Ajouter $t_i$ à $T^+$
+                            
+                            Marquer le plus grand $j \le f(t_i)$ disponible comme occupé par $t_i$
+                        \end{indt}
+                    \end{indt}
+                    
+                    \vspace{6pt}
+                    
+                    \`A la fin, placer les tâches non sélectionnées aux dates restantes.
+                \end{pseudocode}
+                
+                \vspace{12pt}
+                
+                Complexité :
+                
+                $-$ le tri de fait en $\mathcal O(n\log n)$
+                
+                $-$ la recherche d'un temps $j \le f(t_i)$ disponible dépend de la structure de données utilisée pour représenter l'ensemble des dates disponibles.
+                
+                Avec un tableau de booléens, on parcourt les dates jusqu'à en trouver une disponible ou jusqu'à exhaustion des dates : recherche linéaire donc $\mathcal O(n^2)$ au total.
+                
+                Avec un ABR équilibré contenant les dates disponibles :
+                
+                \boxed{\rm Exo} étant donné une date $d$, on peut trouver le plus grand élément de l'ABR inférieur ou égal à $d$ et l'extraire en temps $\mathcal O(\log n)$
+                
+                Donc $\mathcal O(n \log n)$ au total.
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Preuve d'optimalité}}
+                \begin{indt}{\textbf{Lemme 1 :}}
+                    Soit $T$ un ensemble de tâches et $t \in T$ de pénalité maximale.
+                    
+                    Alors $\exists T^+ \subseteq T$ dont on peut planifier les éléments dans les délais, tel que $P(T^+)$ est maximal et tel que $t \in T^+$
+                \end{indt}
+                
+                \vspace{12pt}
+                
+                \begin{indt}{$\square$ Démonstration :}
+                    On considère $T^+$ optimal.
+                    
+                    Si $t \not \in T^+$, s'il reste une date $d \le f(t)$ non occupée par des tâches de $T^+$, alors $T^+ \cup \set A$ contredit l'optimalité de $T^+$.
+                    
+                    Donc $\exists t' \in T^+$ planifiée à une date $d \le f(t)$.
+                    
+                    Or $p(t') \le p(t)$ donc $T' = (T^+ \setminus \set{t'}) \cup \set t$ est aussi une solution optimale.
+                    
+                    En effet, on peut traiter toutes les tâches de $T$ dans les délais et $P(T') = P(T^+) - p(t') + p(t) \ge P(T^+)$
+                    $\blacksquare$
+                \end{indt}
+                
+                \vspace{12pt}
+                
+                \begin{indt}{\textbf{Lemme 2 :}}
+                    On considère $T^+ \subseteq T$ optimal contenant une tâche et de pénalité maximale associée à la date $j$.
+                    
+                    On construit le sous-problème sans $t$ ni la date $j$ ainsi :
+                        \[ T' = T \setminus \set t \]
+                        \[
+                            \forall t' \in T',\ f'(t') =
+                            \left\{\!\!
+                            \begin{array}{ll}
+                                f(t') & \text{si $f(t') < j$}
+                                \\
+                                f(t') - 1 & \text{sinon}
+                            \end{array}
+                            \right.
+                        \]
+                    
+                    Alors $T^+ \setminus \set t$ est optimal pout $T'$
+                \end{indt}
+                
+                \vspace{12pt}
+                
+                \begin{indt}{$\square$ Démonstration}
+                    Tout ordonnancement de $T'$ correspond à ordonnancement de $T$ et réciproquement en décalant les temps postérieurs à $j$ pour insérer la tâche $t$. Si on dispose de $d'$ pour $T'$, alors $d$, définie par
+                        \[
+                            d(t') =
+                            \left\{\!\!
+                            \begin{array}{ll}
+                                d'(t') & \text{si $d'(t') < j$}
+                                \\
+                                d'(t') + 1 & \text{sinon}
+                            \end{array}
+                            \right.
+                        \]
+                    donne un ordonnancement de même pénalité.
+                    
+                    Si $\exists T^{++}$ optimal pour $T'$ avec $P(T^{++}) > P(T^+ \setminus \set t) = P(T^+) - p(t)$
+                    alors $T^{++} \cup \set t$ donneront une solution optimale pour $T$ qui contredit l'optimalité de $T^+$
+                    $\blacksquare$
+                \end{indt}
+                
+                \vspace{12pt}
+                
+                \begin{indt}{\textbf{Théorème}}
+                    L'algorithme glouton donne une solution optimale.
+                \end{indt}
+                
+                \vspace{12pt}
+                
+                \begin{indt}{$\square$ Démonstration :}
+                    Par récurrence sur $n$ :
+                    
+                    $-$ Initialisation : $n = 1$, trivial.
+                    
+                    $-$ Héréditée : on note $T = \set{t_k\ |\ k \in \nset 0 n}$ ordonné par pénalité décroissante
+                    
+                    Par le lemme 1, il existe une solution optimale $T^+$ contenant $t_0$
+                    
+                    Par le lemme 2, $T^+ \setminus \set{t_0}$ est optimal pour $T \setminus \set{t_0}$ avec les délais décalés
+                    
+                    Par hypothèse de récurrence, l'algorithme glouton est optimal pour $T \setminus \set{t_0}$ avec les délais décalés : ensemble $T'$
+                    
+                    On peut décaler l'ordonnancement pour insérer $t_0$ et obtenir une solution pour $T$
+                    
+                    $P(T' \cup \set{t_0}) = P(T') + p(t_0) = P(T^+ \setminus \set{t_0}) + p(t_0) = P(T^+)$ optimal
+                    $\blacksquare$
+                \end{indt}
             \end{indt}
         \end{indt}
         
