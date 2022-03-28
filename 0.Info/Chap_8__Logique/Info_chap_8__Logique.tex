@@ -1,0 +1,547 @@
+\documentclass[a4paper, 12pt, twoside]{article}
+
+
+%------------------------------------------------------------------------
+%
+% Author                :   Lasercata
+% Last modification     :   2022.03.28
+%
+%------------------------------------------------------------------------
+
+
+%------ini
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+%\usepackage[english]{babel}
+
+
+%------geometry
+\usepackage[textheight=700pt, textwidth=500pt]{geometry}
+
+
+%------color
+\usepackage{xcolor}
+\definecolor{ff4500}{HTML}{ff4500}
+\definecolor{00f}{HTML}{0000ff}
+\definecolor{0ff}{HTML}{00ffff}
+\definecolor{656565}{HTML}{656565}
+
+\renewcommand{\emph}{\textcolor{ff4500}}
+\renewcommand{\em}{\color{ff4500}}
+
+\newcommand{\strong}[1]{\textcolor{ff4500}{\bf #1}}
+\newcommand{\st}{\color{ff4500}\bf}
+
+
+%------Code highlighting
+%---listings
+\usepackage{listings}
+
+\definecolor{cbg}{HTML}{272822}
+\definecolor{cfg}{HTML}{ececec}
+\definecolor{ccomment}{HTML}{686c58}
+\definecolor{ckw}{HTML}{f92672}
+\definecolor{cstring}{HTML}{e6db72}
+\definecolor{cstringlight}{HTML}{98980f}
+\definecolor{lightwhite}{HTML}{fafafa}
+
+\lstdefinestyle{DarkCodeStyle}{
+    backgroundcolor=\color{cbg},
+    commentstyle=\itshape\color{ccomment},
+    keywordstyle=\color{ckw},
+    numberstyle=\tiny\color{cbg},
+    stringstyle=\color{cstring},
+    basicstyle=\ttfamily\footnotesize\color{cfg},
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=4,
+    xleftmargin=\leftskip
+}
+
+\lstdefinestyle{LightCodeStyle}{
+    backgroundcolor=\color{lightwhite},
+    commentstyle=\itshape\color{ccomment},
+    keywordstyle=\color{ckw},
+    numberstyle=\tiny\color{cbg},
+    stringstyle=\color{cstringlight},
+    basicstyle=\ttfamily\footnotesize\color{cbg},
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=10pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=4,
+    frame=L,
+    xleftmargin=\leftskip
+}
+
+%\lstset{style=DarkCodeStyle}
+\lstset{style=LightCodeStyle}
+%Usage : \begin{lstlisting}[language=Caml] ... \end{lstlisting}
+
+%---tcolorbox
+\usepackage[many]{tcolorbox}
+\DeclareTColorBox{pseudocode}{O{black}O{lightwhite}}{
+    breakable,
+    outer arc=0pt,
+    arc=0pt,
+    top=0pt,
+    toprule=-.5pt,
+    right=0pt,
+    rightrule=-.5pt,
+    bottom=0pt,
+    bottomrule=-.5pt,
+    colframe=#1,
+    colback=#2,
+    enlarge left by=10pt,
+    width=\linewidth-\leftskip-10pt,
+}
+
+
+%-------make the table of content clickable
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=black
+}
+%Uncomment this and comment above for dark mode
+% \hypersetup{
+%     colorlinks,
+%     citecolor=white,
+%     filecolor=white,
+%     linkcolor=white,
+%     urlcolor=white
+% }
+
+
+%------pictures
+\usepackage{graphicx}
+%\usepackage{wrapfig}
+
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric}
+
+
+%------tabular
+%\usepackage{color}
+%\usepackage{colortbl}
+%\usepackage{multirow}
+
+
+%------Physics
+%---Packages
+%\usepackage[version=4]{mhchem} %$\ce{NO4^2-}$
+
+%---Commands
+\newcommand{\link}[2]{\mathrm{#1} \! - \! \mathrm{#2}}
+\newcommand{\pt}[1]{\cdot 10^{#1}} % Power of ten
+\newcommand{\dt}[2][t]{\dfrac{\mathrm d #2}{\mathrm d #1}} % Derivative
+
+
+%------math
+%---Packages
+%\usepackage{textcomp}
+%\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools} % For abs
+\usepackage{stmaryrd} %for \llbracket and \rrbracket
+\usepackage{mathrsfs} %for \mathscr{x} (different from \mathcal{x})
+
+%---Commands
+%-Sets
+\newcommand{\N}{\mathbb{N}} %set N
+\newcommand{\Z}{\mathbb{Z}} %set Z
+\newcommand{\Q}{\mathbb{Q}} %set Q
+\newcommand{\R}{\mathbb{R}} %set R
+\newcommand{\C}{\mathbb{C}} %set C
+\newcommand{\U}{\mathbb{U}} %set U
+\newcommand{\seg}[2]{\left[ #1\ ;\ #2 \right]}
+\newcommand{\nset}[2]{\left\llbracket #1\ ;\ #2 \right\rrbracket}
+
+%-Exponantial / complexs
+\newcommand{\e}{\mathrm{e}}
+\newcommand{\cj}[1]{\overline{#1}} %overline for the conjugate.
+
+%-Vectors
+\newcommand{\vect}{\overrightarrow}
+\newcommand{\veco}[3]{\displaystyle \vect{#1}\binom{#2}{#3}} %vector + coord
+
+%-Limits
+\newcommand{\lm}[2][{}]{\lim\limits_{\substack{#2 \\ #1}}} %$\lm{x \to a} f$ or $\lm[x < a]{x \to a} f$
+\newcommand{\Lm}[3][{}]{\lm[#1]{#2} \left( #3 \right)} %$\Lm{x \to a}{f}$ or $\Lm[x < a]{x \to a}{f}$
+\newcommand{\tendsto}[1]{\xrightarrow[#1]{}}
+
+%-Integral
+\newcommand{\dint}[4][x]{\displaystyle \int_{#2}^{#3} #4 \mathrm{d} #1} %$\dint{a}{b}{f(x)}$ or $\dint[t]{a}{b}{f(t)}$
+
+%-left right
+\newcommand{\lr}[1]{\left( #1 \right)}
+\newcommand{\lrb}[1]{\left[ #1 \right]}
+\newcommand{\set}[1]{\left\{ #1 \right\}}
+\newcommand{\abs}[1]{\left\lvert #1 \right\rvert}
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
+\newcommand{\lrangle}[1]{\left\langle #1 \right\rangle}
+
+%-Others
+\newcommand{\para}{\ /\!/\ } %//
+\newcommand{\ssi}{\ \Leftrightarrow \ }
+\newcommand{\eqsys}[2]{\begin{cases} #1 \\ #2 \end{cases}}
+
+\newcommand{\med}[2]{\mathrm{med} \left[ #1\ ;\ #2 \right]}  %$\med{A}{B} -> med[A ; B]$
+\newcommand{\Circ}[2]{\mathscr{C}_{#1, #2}}
+
+\renewcommand{\le}{\leqslant}
+\renewcommand{\ge}{\geqslant}
+
+
+%------commands
+%---to quote french text
+\newcommand{\simplecit}[1]{\guillemotleft$\;$#1$\;$\guillemotright}
+\newcommand{\cit}[1]{\simplecit{\textcolor{656565}{#1}}}
+\newcommand{\quo}[1]{\cit{\it #1}}
+
+%---to indent
+\newcommand{\ind}[1][20pt]{\advance\leftskip + #1}
+\newcommand{\deind}[1][20pt]{\advance\leftskip - #1}
+
+%---to indent a text
+\newcommand{\indented}[2][20pt]{\par \ind[#1] #2 \par \deind[#1]}
+\newenvironment{indt}[2][20pt]{#2 \par \ind[#1]}{\par \deind} %Titled indented env
+
+%---title
+\newcommand{\thetitle}[2]{\begin{center}\textbf{{\LARGE \underline{\emph{#1} :}} {\Large #2}}\end{center}}
+
+
+%------Sections
+% To change section numbering :
+% \renewcommand\thesection{\Roman{section}}
+% \renewcommand\thesubsection{\arabic{subsection}}
+% \renewcommand\thesubsubsection{\aleph{subsection}}
+
+% To start numbering from 0
+% \setcounter{section}{-1}
+
+
+%------page style
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+
+\setlength{\headheight}{18pt}
+\setlength{\footskip}{50pt}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE, RO]{\textit{\textcolor{black}{\today}}}
+\fancyhead[RE, LO]{\large{\textsl{\emph{\texttt{\jobname}}}}}
+
+\fancyfoot[RO, LE]{\textit{\texttt{\textcolor{black}{Page \thepage /}\pageref{LastPage}}}} %Change 'black' to 'white' for dark mode
+\fancyfoot[LO, RE]{\includegraphics[scale=0.12]{/home/lasercata/Pictures/1.images_profil/logo/mieux/lasercata_logo_fly_fond_blanc.png}}
+
+% For dark mode :
+%/home/lasercata/Pictures/1.images_profil/logo/mieux/lasercata_logo_fly.png
+
+
+%------init lengths
+\setlength{\parindent}{0pt} %To avoid using \noindent everywhere.
+\setlength{\parskip}{3pt}
+
+
+%---------------------------------Begin Document
+\begin{document}
+    
+    %For dark mode :
+    % \pagecolor{black}
+    % \color{white}
+    
+    \thetitle{Chapitre 8}{Logique}
+    
+    \tableofcontents
+    \newpage
+    
+    
+    \begin{indt}{\section{Introduction}}
+        
+        La logique est un domaine mathématique dont l'objet d'étude est l'ensemble des propriétés que l'on peut exprimer, leur valeur de vérité et la notion de démonstration. La logique propose un cadre formel pour manipuler ces notions, où l'on distingue la \textit{syntaxe}, \textit{i.e} la manière d'exprimer les propriétés, de la \textit{sémantique}, \textit{i.e} des interprétations que l'on peut donner à la syntaxe.
+        
+        Les démonstrations, vues en tant qu'objets mathématiques, ne seront étudiées qu'en MPI.
+        
+    \end{indt}
+    
+    \vspace{12pt}
+    
+    \begin{indt}{\section{Syntaxe des formules logiques}}
+        
+        \begin{indt}{\subsection{Logique propositionnelle}}
+            \begin{indt}{\subsubsection{Introduction}}
+                On décompose les propriétés que l'on cherche à exprimer pour faire ressortir leur structure logique. Les énoncés que l'on ne peut pas décomposer sont appelés \textit{atomes}. En logique propositionnelle, on abstrait les atomes en des variables dites propositionnelles.
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Définition (formules de la logique propositionnelle)}}
+                Soit $V$ un ensemble de variables propositionnelles.
+                
+                on définit inductivement l'ensemble $\mathcal F$ des formules de la logique propositionnelle par
+                    \[
+                        \dfrac{x \in V}{x \in \mathcal F}
+                        \qquad
+                        \dfrac{\varphi \in \mathcal F}{\neg \varphi \in \mathcal F}
+                    \]
+                    \[
+                        \dfrac{\varphi_1 \in \mathcal F\ \varphi_2 \in \mathcal F}{\varphi_1 \vee \varphi_2 \in \mathcal F}
+                        \qquad
+                        \dfrac{\varphi_1 \in \mathcal F\ \varphi_2 \in \mathcal F}{\varphi_1 \wedge \varphi_2 \in \mathcal F}
+                        \qquad
+                        \dfrac{\varphi_1 \in \mathcal F\ \varphi_2 \in \mathcal F}{\varphi_1 \rightarrow \varphi_2 \in \mathcal F}
+                    \]
+                
+                \vspace{6pt}
+                
+                On appelle $\neg$ la \textit{négation}, $\vee$ la \textit{disjonction}, $\wedge$ la \textit{conjonction}, et $\rightarrow$ l'\textit{implication}.
+                
+                On appelle aussi \textit{équivalence} le symbole $\leftrightarrow$ défini par
+                    \[ \varphi_1 \leftrightarrow \varphi_2 = (\varphi_1 \rightarrow \varphi_2) \wedge (\varphi_2 \rightarrow \varphi_1) \]
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Remarque}}
+                Malgré leur nom, les symboles de la définition précédente n'ont aucune signification.
+                
+                Le sens des symboles tient au domaine de la sémantique. On parle ici de syntaxe abstraite.
+                
+                On peut utiliser une autre représentation pour les syntaxes abstraites, appelée \textit{grammaire}, qui s'écrit comme suit :
+                    \[
+                        \varphi ::= x \
+                        |\ \neg \varphi\
+                        |\ \varphi_1 \vee \varphi_2\
+                        |\ \varphi_1 \wedge \varphi_2\
+                        |\ \varphi_1 \rightarrow \varphi_2
+                    \]
+                où $x$ parcourt $V$.
+                
+                L'étude précise des grammaires relève du programme de MPI.
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Vocabulaire}}
+                Les symboles $\neg, \vee, \wedge, \rightarrow, \leftrightarrow$ sont appelés connecteurs logiques. Ce sont eux qui définissent la structure logique des énoncés. Le nombre d'arguments d'un connecteur logique est appelé son \textit{arité}.
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Représentation des formules}}
+                On représente généralement les formules de manière linéaire en ajoutant des parenthèses pour désambigüer la lecture. Par exemple, $p \vee q \wedge r$ peut se lire $p \vee (q \wedge r)$ ou $(p \vee q) \wedge r$. Par convention, la négation est prioritaire sur les autres connecteurs, donc $\neg p \vee q$ se lit $(\neg p) \vee q$ et pas $\neg (p \vee q)$.
+                
+                \vspace{12pt}
+                
+                En raison de leur définition inductive, les formules ont une représentation arborescente naturelle : chaque règle d'inférence utilisée définit un symbole de tête / connecteur principal qui est la racine du sous-arbre correspondant.
+                
+                \vspace{12pt}
+                
+                Exemple : $p \rightarrow (\neg q \vee r)$ est représenté par :
+                
+                \begin{center}
+                    \begin{tikzpicture}
+                        \node {$\rightarrow$}
+                            child {node {$p$}}
+                            child {node {$\vee$}
+                                child {node {$\neg$}
+                                    child {node {$q$}}
+                                }
+                                child {node {$r$}}
+                            }
+                        ;
+                    \end{tikzpicture}
+                \end{center}
+                
+                Remarque : on obtient un arbre (binaire) dont les n\oe uds internes sont les connecteurs logiques et les n\oe uds externes sont les atomes. L'arité d'un connecteur est l'arité du n\oe ud correspondant.
+                
+                L'écriture linéaire de la formule correspond au parcours en profondeur infixe, en adoptant une représentation préfixe pour les n\oe uds d'arité 1.
+                
+                On pourrait envisager d'utilier les parcours préfixes et postfixe pour représenter les formules.
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Vocabulaire}}
+                $-$ Une \textit{sous-formule} d'une formule $\varphi$ donnée est la formule associée à un sous-arbre de l'arbre représentant $\varphi$.
+                
+                On définit inductivement l'ensemble $SF(\varphi)$ des sous-formules de $\varphi$ par :
+                    \[
+                        \forall x \in V,\ SF(x) = \set x
+                        \qquad
+                        SF(\neg \varphi) = \set{\neg \varphi} \cup SF(\varphi)
+                    \]
+                    \[
+                        \forall \circ \in \set{\vee, \wedge, \rightarrow},\ SF(\varphi_1 \circ \varphi_2) = \set{\varphi_1 \circ \varphi_2} \cup SF(\varphi_1) \cup SF(\varphi_2)
+                    \]
+                
+                Exemple :
+                    \[ SF(p \rightarrow (\neg q \vee r)) = \set{p \rightarrow (\neg q \vee r), \neg q \vee r, p, \neg q, r, q} \]
+                
+                \vspace{12pt}
+                
+                $-$ La \textit{taille} $\abs \varphi$ d'une formule $\varphi$ est le nombre de connecteurs logiques de la formule, \textit{i.e} le nombre de n\oe uds internes de l'arbre $A_\varphi$ associé à $\varphi$.
+                
+                \vspace{12pt}
+                
+                \textbf{Proposition :}
+                    \[ \dfrac{\abs{A_\varphi} - 1}{2} \le \abs \varphi \le \abs{A_\varphi} - 1 \]
+                
+                \begin{indt}{$\square$ Démonstration :}
+                    L'arbre $A_\varphi$ contient au moins une feuille donc $\abs \varphi \le \abs{A_\varphi} - 1$
+                    
+                    (cas d'égalité pour $\varphi$ de taille $n$ : $\varphi = \underbrace{\neg \neg \cdots \neg}_{n\ \text{fois}} p$)
+                    
+                    $A_\varphi$ est un arbre binaire ayant $\abs{\varphi}$ n\oe uds internes, donc il a au plus $\abs \varphi + 1$ feuilles (Chap 6, 1.1.10), donc $\abs{A_\varphi} \le \abs \varphi + \abs \varphi + 1 = 2 \abs \varphi + 1$ $\blacksquare$
+                \end{indt}
+                
+                \vspace{12pt}
+                
+                $-$ La \textit{hauteur} d'une formule est la hauteur de l'arbre associé, \textit{i.e} le nombre maximal de connecteurs à traverser pour atteindre une variable propositionnelle.
+                
+                Exemple : la hauteur de $p \rightarrow (\neg q \vee r)$ est 3.
+            \end{indt}
+        \end{indt}
+        
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Logique du premier ordre}}
+            \begin{indt}{\subsubsection{Définition (\textit{langage du premier ordre})}}
+                \begin{indt}{Un \textit{langage du premier ordre} est défini par une signature $\Sigma$, composée de :}
+                    $-$ symboles de fonction, chacun muni d'une arité $k \in \N$. Les symboles de fonction d'arité 0 sont appelés symboles de constante ;
+                    
+                    $-$ symboles de prédicat ou de relation, chacun muni d'une arité $k \in \N$. Les symboles de prédicat d'arité 0 sont appelés symboles de constante propositionnelle.
+                \end{indt}
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Exemple : le langage de la théorie des ensembles}}
+                \begin{indt}{Le langage de la théorie des ensembles est défini par la signature suivante :}
+                    $-$ symboles de fonction : $\varnothing$ (arité 0), $\set \cdot$ (arité 1), $\cdot \cup \cdot$ et $\cdot \cap \cdot$ (arité 2), $\cdot^c$ (arité 1) ;
+                    
+                    $-$ symboles de prédicat : $\cdot = \cdot$, $\cdot \subseteq \cdot$, $\cdot \in \cdot$ (arité 2).
+                \end{indt}
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Définition (\textit{termes} et formules de la logique du premier ordre)}}
+                Soit $\Sigma$ une signature et $V$ un ensemble de variables.
+                
+                \begin{indt}{$\Sigma$ et $V$ définissent des ensembles de termes et de formules, \textit{via} les grammaires suivantes :}
+                    $-$ Termes :
+                        \[
+                            t ::= x\ |\ f(t_1, \ldots, t_k)
+                        \]
+                    où
+                        \[
+                            \eqsys{x\ \text{parcourt}\ V}{(f, k)\ \text{parcourt les symboles de la fonction et leur arité}}
+                        \]
+                    
+                    $-$ Formules :
+                        \[
+                            \varphi ::=
+                            p(t_1, \ldots, t_k)\
+                            |\ \neg \varphi\
+                            |\ \varphi_1 \vee \varphi_2\
+                            |\ \varphi_1 \wedge \varphi_2\
+                            |\ \varphi_1 \rightarrow \varphi_2\
+                            |\ \forall x\ \varphi\
+                            |\ \exists x\ \varphi
+                        \]
+                    où :
+                        \[
+                            \eqsys{x\ \text{parcourt}\ V}{(p, k)\ \text{parcourt les symboles de prédicat et leur arité}}
+                        \]
+                \end{indt}
+                
+                On appelle $\forall$ le \textit{quantificateur universel}, et $\exists$ le \textit{quantificateur existentiel}.
+                
+                Les atomes de cette logique sont les formules de la forme $p(t_1, \ldots, t_k)$.
+                
+                    \[ \exists! x,\ P(x)\ \equiv\ \exists x\ (P(x) \wedge \forall y (P(y) \rightarrow y = x)) \]
+                
+                On parle de logique du premier ordre car on ne peut quantifier que sur des variables représentant des termes.
+                Si l'on peut quantifier sur des variables représentant des formules, on parle de logique du second ordre.
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Exemple}}
+                En théorie des ensembles, la formule $(\forall A, \forall B, A \cap B \subseteq A) \wedge \varnothing \subseteq A$ est représentée de manière arborescente par :
+                \begin{center}
+                    \begin{tikzpicture}[terme/.style={shape=rectangle, draw=ff4500}, atome/.style={shape=circle, draw=blue}]
+                        \node {$\wedge$}
+                            child {node [xshift=-20pt] {$\forall A$}
+                                child {node {$\forall B$}
+                                    child {node {$\subseteq$}
+                                        child {node (cap) {$\cap$}
+                                            child {node {$A$}}
+                                            child {node {$B$}}
+                                        }
+                                        child {node (A)  [terme] {$A$}}
+                                    }
+                                }
+                            }
+                            child {node [xshift=20pt] {$\subseteq$}
+                                child {node (v)  [terme] {$\varnothing$}}
+                                child {node [terme] {$A$}}
+                            }
+                        ;
+                        
+                        \draw[terme] (-3.2, -7.8) rectangle (-1.2, -5.75);
+                        \draw[atome] (-1.5, -6.5) circle (2.3cm);
+                        \draw[atome] (1.47, -2.5) circle (1.35cm);
+                        
+                        \matrix [draw, below left] at (5, -5) {
+                            \node [terme, label=right:terme] {}; \\
+                            \node [atome, label=right:atome] {}; \\
+                        };
+                    \end{tikzpicture}
+                \end{center}
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Remarque}}
+                $\bullet$ La logique du premier ordre est aussi appelée calcul des prédicats.
+                
+                \vspace{12pt}
+                
+                $\bullet$ Dans une formule du premier ordre, les variables peuvent être ``capturées'' par un quantificateur ou indépendantes de toute quantification.
+                
+                On peut voir une formule comme une propriété des variables indépendantes de toute quantification et donc remplacer ces variables par des termes concrets.
+                
+                \vspace{12pt}
+                
+                $\bullet$ Le calcul propositionnel est un cas particulier du calcul des prédicats où il n'y a que des constantes propositionnelles (les quantificateurs et les termes deviennent innutiles).
+            \end{indt}
+        \end{indt}
+        
+    \end{indt}
+
+    
+    
+    
+\end{document}
+%--------------------------------------------End
