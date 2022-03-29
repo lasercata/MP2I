@@ -279,7 +279,7 @@
     
     \begin{indt}{\section{Introduction}}
         
-        \`A la manière de la recherche d'un élément dans un ABR, on s'intéresse à la décomposition d'un problème en un ou plusieurs sous-problèmes. On distingue plusieurs méthodes selon le type de problème à résoudre, la manière dont on décompose le problème et la manière dont on reconstruit la solution au problème à partir de celles des sous-problèmes. Nous étudierons la méthode \textit{diviser pour régner}, la programmation dynamique, et les algorithmiques gloutons.
+        \`A la manière de la recherche d'un élément dans un ABR, on s'intéresse à la décomposition d'un problème en un ou plusieurs sous-problèmes. On distingue plusieurs méthodes selon le type de problème à résoudre, la manière dont on décompose le problème et la manière dont on reconstruit la solution au problème à partir de celles des sous-problèmes. Nous étudierons la méthode \textit{diviser pour régner}, la programmation dynamique, et les algorithmes gloutons.
         
     \end{indt}
     
@@ -743,7 +743,7 @@
             \vspace{12pt}
             
             \begin{indt}{\subsubsection{Approche descendante de la programmation dynamique}}
-                On stocke les valeurs calculées pour retrouver en temps constant si on en a encore besoin. On parle de \textit{mémoisation}.
+                On stocke les valeurs calculées pour retrouver en temps constant si on en a encore besoin. On parle de \textit{mémoïsation}.
                 
                 Exemple :
                 
@@ -968,7 +968,7 @@ let binom_ascending (n : int) (p : int) : int =
             \begin{indt}{\subsubsection{Exemple : Produit de matrices}}
                 On cherche à minimiser le nombre de multiplications nécessaires au calcul du produit de $n$ matrices.
                 
-                Si $A \in \mathcal M_{n, p}(K),\ B \in \mathcal M_{p, q} (K)$, on peut caluler $AB$ à l'aide de $npq$ multiplications grâce à la définition :
+                Si $A \in \mathcal M_{n, p}(K),\ B \in \mathcal M_{p, q} (K)$, on peut calculer $AB$ à l'aide de $npq$ multiplications grâce à la définition :
                     \[ (AB)_{i, j} = \sum_{k = 1}^p a_{i,k} b_{k, j} \]
                 
                 \begin{indt}{Si $A, B, C$ sont de tailles respectives $2 \times 5,\ 5 \times 8,\ 8 \times 6$, on peut calculer $ABC$ de deux façons :}
@@ -1068,7 +1068,7 @@ let binom_ascending (n : int) (p : int) : int =
             
             \vspace{12pt}
             
-            \begin{indt}{\subsubsection{Exemple : Problème du rendu de monaie}}
+            \begin{indt}{\subsubsection{Exemple : Problème du rendu de monnaie}}
                 On doit rendre une somme $n$ à l'aide de pièces / billets dont la valeur appartient à un ensemble $S$.
                 
                 Objectif : minimiser le nombre de pièces / billets utilisés.
@@ -1077,7 +1077,7 @@ let binom_ascending (n : int) (p : int) : int =
                 
                 $\bullet$ Résolution par programmation dynamique : on note $f(n, S)$ le nombre minimal de pièces / billets nécessaire pour atteindre $n$ avec des pièces / billets de valeur prise dans $S$, et on note $S = \set{c_1, \ldots, c_k}$.
                 
-                On remarque que $\forall i \in \nset 1 k,\ f(n, S) \le \min( \underbrace{f(n, S \setminus \set{c_i})}_{\text{on n'utise pas $c_i$}},\ 1 + f(n - c_i, S) )$
+                On remarque que $\forall i \in \nset 1 k,\ f(n, S) \le \min( \underbrace{f(n, S \setminus \set{c_i})}_{\text{on n'utilise pas $c_i$}},\ 1 + f(n - c_i, S) )$
                 
                 On peut remplir la matrice $F = (f_{i, j})_{i, j}$ où $\forall (i, j),\ f_{i, j} = f(i, \set{c_l\ |\ l \in \nset 1 j})$
                 
@@ -1095,7 +1095,7 @@ let binom_ascending (n : int) (p : int) : int =
                 
                 $\bullet$ Algo glouton :
                 
-                Idée : on utilise autant que possible la plus grande pièce $\le n$ dans l'idée qu'il faudrait utiliser plusieurs petites pièces pour compenser l'abscence d'une telle pièce.
+                Idée : on utilise autant que possible la plus grande pièce $\le n$ dans l'idée qu'il faudrait utiliser plusieurs petites pièces pour compenser l'absence d'une telle pièce.
                 
                 \vspace{6pt}
                 
@@ -1121,7 +1121,7 @@ let binom_ascending (n : int) (p : int) : int =
                 
                 On peut démontrer que l'algo est optimal et qu'il réussit toujours dans ce système.
                 
-                $-$ Dans le système britanique antérieur à 1971 : $S = \set{1, 3, 6, 12, 24, 30}$.
+                $-$ Dans le système britannique antérieur à 1971 : $S = \set{1, 3, 6, 12, 24, 30}$.
                 Solution : $30 + 12 + 6$
                 
                 Optimum : $2 \cdot 24$
@@ -1150,7 +1150,7 @@ let binom_ascending (n : int) (p : int) : int =
                             & t & \longmapsto & d(t)
                         \end{array}
                     \]
-                qui à chaque $t \in T$ associe la date $d(t)$ à laquelle la tâche est réalisée. $d$ doit $être$ une bijection (on n'effectue qu'une tâche à chaque instant et toutes les tâches sont traités).
+                qui à chaque $t \in T$ associe la date $d(t)$ à laquelle la tâche est réalisée. $d$ doit $être$ une bijection (on n'effectue qu'une tâche à chaque instant et toutes les tâches sont traitées).
                 
                 \vspace{6pt}
                 
@@ -1283,7 +1283,7 @@ let binom_ascending (n : int) (p : int) : int =
                             \right.
                         \]
                     
-                    Alors $T^+ \setminus \set t$ est optimal pout $T'$
+                    Alors $T^+ \setminus \set t$ est optimal pour $T'$
                 \end{indt}
                 
                 \vspace{12pt}
