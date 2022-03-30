@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2022.03.29
+% Last modification     :   2022.03.30
 %
 %------------------------------------------------------------------------
 
@@ -536,10 +536,271 @@
                 
                 $\bullet$ Le calcul propositionnel est un cas particulier du calcul des prédicats où il n'y a que des constantes propositionnelles (les quantificateurs et les termes deviennent inutiles).
             \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Définition (varibles libres / liées)}}
+                Les \textit{variables libres} d'une formule $\varphi$ sont les variables qui ne sont pas ``capturées'' par un quantificateur. On les définit inductivement par
+                
+                    $
+                        \begin{array}{l}
+                            \displaystyle
+                            FV(p(t_1, \ldots, t_n)) = \bigcup_{i = 1}^n \mathrm{Vars}(t_i) 
+                            \quad
+                            \text{où}
+                            \quad
+                            \eqsys{\mathrm{Vars}(x) = \set x}{\displaystyle \mathrm{Vars}(f(t_1, \ldots, t_n)) = \bigcup_{i = 1}^n \mathrm{Vars}(t_i)}
+                            \\
+                            FV(\neg \varphi) = FV(\varphi)
+                            \vspace{6pt}
+                            \\
+                            \forall \circ \in \set{\vee, \wedge, \rightarrow},\ FV(\varphi_1 \circ \varphi_2) = FV(\varphi_1) \cup FV(\varphi_2)
+                            \vspace{6pt}
+                            \\
+                            \forall Q \in \set{\exists, \forall},\ FV(Q x \varphi) = FV(\varphi) \setminus \set x
+                        \end{array}
+                    $
+                
+                \vspace{12pt}
+                
+                Exemple :
+                
+                $FV(\forall x,\ x + S y > 0) = \set y$
+                
+                \begin{center}
+                    \begin{tikzpicture}[circ/.style={shape=circle, draw=black}]
+                        \node [circ] {$\forall x$}
+                            child {node [circ] {$>$}
+                                child {node [circ] {$+$}
+                                    child {node [circ] {$x$}}
+                                    child {node [circ] {$S$}
+                                        child {node [circ] {$y$}}
+                                    }
+                                }
+                                child {node [circ] {$0$}}
+                            }
+                        ;
+                    \end{tikzpicture}
+                \end{center}
+                
+                $FV((\forall x\ x + y = 1) \wedge (\forall y\ x + y = 1)) = \set{x, y}$
+                
+                Une variable est dite \textit{liée} si elle n'est pas libre. Un même nom de variable peut avoir des occurences libres et des occurences liées. Dans une formule de la forme $Q\ x\ \varphi$ où $Q \in \set{\forall, \exists}$, on dit que $\varphi$ est la portée de la liaison pour $x$. Une variable est donc libre si elle admet une occurence hors de la portée de toutes les liaisons pour cette variable et une variable est liée si toutes ses occurences sont dans la portée d'une liaison pour cette variable.
+                
+                UNe formule dont toutes les variables sont liées est dite \textit{close}.
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Remarque}}
+                Le nom des variables liées n'est pas important.
+                
+                Exemple : $\forall x,\ x = x$ et $\forall y,\ y = y$ expriment la même propriété.
+                
+                On identifiera donc les formules au renommage près de leurs variables liées.
+                
+                On appelle cela \textit{l'$\alpha$-équivalence}.
+                
+                Lors du renommage de variables liées, il faut faire attention au phénomène de \textit{capture} de variables, par exemple $\forall y,\ x + y = 1$ n'est pas la même formule que $\forall x,\ x + x = 1$.
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Définition (\textit{substitution})}}
+                Soit $\varphi$ une formule, $x$ une variable, et $t$ un terme.
+                
+                La substitution de $t$ à $x$ dans $\varphi$, notée $\varphi [x := t]$ est définie inductivement par :
+                    \[
+                        p(t_1, \ldots, t_n) [x := t] = p(t_1[x := t], \ldots, t_n [x := t])
+                    \]
+                où
+                    \[
+                        \begin{cases}
+                            x [x := t] = t
+                            \\
+                            y [x := t] = y\ \forall y \in V \setminus \set x
+                            \\
+                            f(t_1, \ldots, t_n) [x := t] = f(t_1 [x := t], \ldots, t_n [x := t])
+                        \end{cases}
+                    \]
+                    
+                    \[
+                        \begin{array}{l}
+                            (\neg \varphi) [x := t] = \neg (\varphi [x := t])
+                            \vspace{6pt}
+                            \\
+                            \forall \circ \in \set{\vee, \wedge, \rightarrow},\ (\varphi_1 \circ \varphi_2) [x := t] = \varphi_1[x := t] \circ \varphi_2 [x := t]
+                            \vspace{6pt}
+                            \\
+                            \forall Q \in \set{\forall, \exists},\ (Q\ x\ \varphi)[x := t] = Q\ x\ \varphi
+                            \vspace{6pt}
+                            \\
+                            \forall Q \in \set{\exists, \forall},\ (Q\ y\ \varphi)[x := t] = Q\ y\ (\varphi [x := t])\ \text{si $y \neq x$ et $y \not \in \mathrm{Vars}(t)$}
+                        \end{array}
+                    \]
+                
+                Exemple :
+                
+                $(\forall x,\ x = x)[x := 2 + 2] = \forall x,\ x = x$
+                car
+                $(\forall x,\ x = x)\ \underset{\alpha}{\equiv} \ (\forall y,\ y = y)$
+                
+                \vspace{6pt}
+                
+                $((\forall x,\ x + y = 1) \wedge (\forall y, \ x + y = 1))[x := 2] = (\forall x,\ x + y = 1) \wedge (\forall y,\ 2 + y = 1)$
+                
+                \vspace{12pt}
+                
+                $(\forall y,\ y = y + x)[x := 1 + y] \neq \forall y (y = y + 1 + y)$
+                
+                Mais plutôt $\forall z,\ z = z + 1 + y$ : on renomme les occurences liées dans $\varphi$ des variables de $t$ avant de les substituer.
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Remarque}}
+                Le principe de l'$\alpha$-équivalence et les restrictions de la substitution sont liées aux questions de sémantique : l'$\alpha$-équivalence et la substitution doivent en quelque sorte conserver la signification logique des formules.
+            \end{indt}
         \end{indt}
         
     \end{indt}
-
+    
+    \vspace{12pt}
+    
+    \begin{indt}{\section{Sémantique de la logique propositionnelle}}
+        
+        \begin{indt}{\subsection{Vocabulaire}}
+            \begin{indt}{\subsubsection{Introduction}}
+                Définir une sémantique revient à donner du sens aux symboles utilisés dans la syntaxe abstraite. On doit donc choisir un ensemble de valeurs qui servent d'interprétations aux termes construits à l'aide de la syntaxe et on doit décrire l'effet des symboles sur cet ensemble de valeurs.
+                
+                \vspace{12pt}
+                
+                Exemple : on considère des termes arithmétiques définis par :
+                    \[ t ::= x\ |\ c\ |\ t_1 + t_2\ |\ t_1 - t_2\ |\ t_1 \times t_2 \]
+                où $x$ parcourt un ensemble $V$ de variables et $c$ parcourt $\N$, l'ensemble des constantes.
+                
+                On peut définir une sémantique en choisisant $\N$ pour l'ensemble des valeurs, $c + 1$ comme interprétation de $c$, la fonction $\min$ comme interprétation de $+$, la fonction $\max$ pour $-$, et l'addition pour $\times$.
+                
+                On peut bien-sûr donner une autre sémantique à ces termes, plus en cohérence avec les règles de l'arithmétique.
+                
+                Problème : l'interprétation des variables : elle dépend d'un contexte qui donne une valeur à chaque variable.
+                
+                Les sémantiques sont donc paramétrées par un environnement.
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Définition (\textit{valuation})}}
+                Une \textit{valuation} est une fonction de l'ensemble $\mathcal V$ des variables dans l'ensemble des valeurs choisi pour définir la sémantique. On parle aussi d'environnement, ou, dans le cas de la logique propositionnelle, de \textit{distribution} de vérité. L'ensemble des valeurs de vérité est noté $\set{V, F}$ où $V$ est la valeur vraie et $F$ la valeur fausse.
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Définition (valeur de vérité d'une formule)}}
+                Soit $\varphi$ une formule et $v$ une valuation.
+                
+                On définit inductivement l'interprétation de $\varphi$ pour $v$, notée $\llbracket \varphi \rrbracket_v$, par :
+                    \[ \forall x\ \text{variable propositionnelle},\ \llbracket x \rrbracket_v = v(x) \]
+                    \[ \llbracket \neg \varphi \rrbracket_v = \eqsys{V\ \text{si $\llbracket \varphi \rrbracket_v = F$}}{F\ \text{sinon}} \]
+                    \[ \llbracket \varphi_1 \vee \varphi_2 \rrbracket_v = \eqsys{F\ \text{si $\llbracket \varphi_1 \rrbracket_v = \llbracket \varphi_2 \rrbracket_v = F$}}{V\ \text{sinon}} \]
+                    \[ \llbracket \varphi_1 \wedge \varphi_2 \rrbracket_v = \eqsys{V\ \text{si $\llbracket \varphi_1 \rrbracket_v = \llbracket \varphi_2 \rrbracket_v = V$}}{F\ \text{sinon}} \]
+                    \[ \llbracket \varphi_1 \rightarrow \varphi_2 \rrbracket_v = \eqsys{F\ \text{si $\llbracket \varphi_1 \rrbracket_v = V$ et $\llbracket \varphi_2 \rrbracket_v = F$}}{V\ \text{sinon}} \]
+                
+                On dit $v$ est un modèle de $\varphi \ssi \llbracket \varphi \rrbracket_v = V$
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Définition (\textit{tautologie} / \textit{antilogie} / \textit{satisfiabilité})}}
+                Soit $\varphi$ une formule.
+                
+                \begin{indt}{On dit que $\varphi$ est}
+                    $-$ une \textit{tautologie} $\ssi$ toute valuation est un modèle de $\varphi$. On note alors $\vDash^\varphi$ ;
+                    
+                    $-$ une \textit{antilogie} $\ssi$ elle n'admet aucun modèle ;
+                    
+                    $-$ \textit{satisfiable} $\ssi$ elle admet un modèle.
+                \end{indt}
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Remarque}}
+                On ajoute parfois à la syntaxe une tautologie notée $\top$ et une antilogie notée $\bot$.
+                
+                On peut toutefois les encoder :
+                    \[ \top = x \vee \neg x \qquad \bot = x \wedge \neg x \]
+                
+                La tautologie $\varphi \vee \neg \varphi$ est appelée loi du tiers exclu.
+                
+                \boxed{\rm Exo} Montrer que les formules suivantes sont des tautologie :
+                
+                $p \rightarrow (q \rightarrow p), (p \rightarrow q) \vee (q \rightarrow r), (p \rightarrow (q \rightarrow r)) \rightarrow ((p \rightarrow q) \rightarrow (p \rightarrow r))$
+                
+                \vspace{12pt}
+                
+                Ex : Falso Quadlilet : $\bot \rightarrow \varphi$
+                
+                $\neg \neg \varphi \rightarrow \varphi$ (non admis par tout le monde)
+                
+                principe de démonstration par l'absurde : $\neg \neg \varphi = \neg \varphi \rightarrow \bot$
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Définition (\textit{table de vérité})}}
+                La \textit{table de vérité} de $\varphi$ est la table indexée par les valuations des variables de $\varphi$ et qui contient comme entrée correspondant à une valuation $v$ la valeur $\llbracket \varphi \rrbracket_v$.
+                
+                On représente la table de $\varphi$, de variables $x_1, \ldots, x_n$, en plaçant une colone pour chaque $x_i$ et une colone pour $\varphi$.
+                
+                Pour chaque valuation $v$, l'entrée correspondant à $x_i$ est $v(x_i)$ et l'entrée correspondant à $\varphi$ est $\llbracket \varphi \rrbracket_v$.
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Exemple : table de vérité de $p \leftrightarrow q$}}
+                $p \leftrightarrow q = (p \rightarrow q) \wedge (q \rightarrow p)$
+                
+                \begin{tabular}{c|c|c|c|c}
+                    $p$ & $q$ & $p \rightarrow q$ & $q \rightarrow p$ & $p \leftrightarrow q$
+                    \\
+                    \hline
+                    $F$ & $F$ & $V$ & $V$ & $V$
+                    \\
+                    $F$ & $V$ & $V$ & $F$ & $F$
+                    \\
+                    $V$ & $F$ & $F$ & $V$ & $F$
+                    \\
+                    $V$ & $V$ & $V$ & $V$ & $V$
+                \end{tabular}
+                
+                Remarque : Ici on a considéré des colones supplémentaires pour des sous-formules pour simplfier le calcul.
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Remarque}}
+                Construire une table de vérité est un algorithme simple pour déterminer si une formule est satisfiable / une tautologie / une antilogie.
+                
+                Cependant, si $\varphi$ a $n$ variables distinctes, alors il y a $2^n$ lignes dans sa table de vérité.
+                
+                De plus, étant donné $v$, déterminer $\llbracket \varphi \rrbracket_v$ se fait en temps $\mathcal O(\abs \varphi)$ et $\varphi$ peut avoir au plus $\abs\varphi + 1$ variables distinctes.
+                
+                Cela donne donc un algorithme de complexité $\mathcal O(\abs\varphi 2^{\abs\varphi})$
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Proposition}}
+                Il y a $2^{(2^n)}$ tables de vérités distinctes pour des formules à $n$ variables distinctes.
+                
+                \begin{indt}{$\square$ Démonstration :}
+                    Il y a $2^n$ lignes dans une table et pour chaque ligne on a le choix entre 2 valeurs de vérité $\blacksquare$
+                \end{indt}
+            \end{indt}
+        \end{indt}
+        
+    \end{indt}
     
     
     
