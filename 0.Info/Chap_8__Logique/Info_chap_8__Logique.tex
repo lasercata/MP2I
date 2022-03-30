@@ -539,7 +539,7 @@
             
             \vspace{12pt}
             
-            \begin{indt}{\subsubsection{Définition (varibles libres / liées)}}
+            \begin{indt}{\subsubsection{Définition (variables libres / liées)}}
                 Les \textit{variables libres} d'une formule $\varphi$ sont les variables qui ne sont pas ``capturées'' par un quantificateur. On les définit inductivement par
                 
                     $
@@ -585,9 +585,9 @@
                 
                 $FV((\forall x\ x + y = 1) \wedge (\forall y\ x + y = 1)) = \set{x, y}$
                 
-                Une variable est dite \textit{liée} si elle n'est pas libre. Un même nom de variable peut avoir des occurences libres et des occurences liées. Dans une formule de la forme $Q\ x\ \varphi$ où $Q \in \set{\forall, \exists}$, on dit que $\varphi$ est la portée de la liaison pour $x$. Une variable est donc libre si elle admet une occurence hors de la portée de toutes les liaisons pour cette variable et une variable est liée si toutes ses occurences sont dans la portée d'une liaison pour cette variable.
+                Une variable est dite \textit{liée} si elle n'est pas libre. Un même nom de variable peut avoir des occurrences libres et des occurrences liées. Dans une formule de la forme $Q\ x\ \varphi$ où $Q \in \set{\forall, \exists}$, on dit que $\varphi$ est la portée de la liaison pour $x$. Une variable est donc libre si elle admet une occurence hors de la portée de toutes les liaisons pour cette variable et une variable est liée si toutes ses occurrences sont dans la portée d'une liaison pour cette variable.
                 
-                UNe formule dont toutes les variables sont liées est dite \textit{close}.
+                Une formule dont toutes les variables sont liées est dite \textit{close}.
             \end{indt}
             
             \vspace{12pt}
@@ -653,13 +653,13 @@
                 
                 $(\forall y,\ y = y + x)[x := 1 + y] \neq \forall y (y = y + 1 + y)$
                 
-                Mais plutôt $\forall z,\ z = z + 1 + y$ : on renomme les occurences liées dans $\varphi$ des variables de $t$ avant de les substituer.
+                Mais plutôt $\forall z,\ z = z + 1 + y$ : on renomme les occurrences liées dans $\varphi$ des variables de $t$ avant de les substituer.
             \end{indt}
             
             \vspace{12pt}
             
             \begin{indt}{\subsubsection{Remarque}}
-                Le principe de l'$\alpha$-équivalence et les restrictions de la substitution sont liées aux questions de sémantique : l'$\alpha$-équivalence et la substitution doivent en quelque sorte conserver la signification logique des formules.
+                Le principe de l'$\alpha$-équivalence et les restrictions de la substitution sont liés aux questions de sémantique : l'$\alpha$-équivalence et la substitution doivent en quelque sorte conserver la signification logique des formules.
             \end{indt}
         \end{indt}
         
@@ -679,7 +679,7 @@
                     \[ t ::= x\ |\ c\ |\ t_1 + t_2\ |\ t_1 - t_2\ |\ t_1 \times t_2 \]
                 où $x$ parcourt un ensemble $V$ de variables et $c$ parcourt $\N$, l'ensemble des constantes.
                 
-                On peut définir une sémantique en choisisant $\N$ pour l'ensemble des valeurs, $c + 1$ comme interprétation de $c$, la fonction $\min$ comme interprétation de $+$, la fonction $\max$ pour $-$, et l'addition pour $\times$.
+                On peut définir une sémantique en choisissant $\N$ pour l'ensemble des valeurs, $c + 1$ comme interprétation de $c$, la fonction $\min$ comme interprétation de $+$, la fonction $\max$ pour $-$, et l'addition pour $\times$.
                 
                 On peut bien-sûr donner une autre sémantique à ces termes, plus en cohérence avec les règles de l'arithmétique.
                 
@@ -719,7 +719,7 @@
                     
                     $-$ une \textit{antilogie} $\ssi$ elle n'admet aucun modèle ;
                     
-                    $-$ \textit{satisfiable} $\ssi$ elle admet un modèle.
+                    $-$ \textit{satisfaisante} $\ssi$ elle admet un modèle.
                 \end{indt}
             \end{indt}
             
@@ -751,7 +751,7 @@
             \begin{indt}{\subsubsection{Définition (\textit{table de vérité})}}
                 La \textit{table de vérité} de $\varphi$ est la table indexée par les valuations des variables de $\varphi$ et qui contient comme entrée correspondant à une valuation $v$ la valeur $\llbracket \varphi \rrbracket_v$.
                 
-                On représente la table de $\varphi$, de variables $x_1, \ldots, x_n$, en plaçant une colone pour chaque $x_i$ et une colone pour $\varphi$.
+                On représente la table de $\varphi$, de variables $x_1, \ldots, x_n$, en plaçant une colonne pour chaque $x_i$ et une colonne pour $\varphi$.
                 
                 Pour chaque valuation $v$, l'entrée correspondant à $x_i$ est $v(x_i)$ et l'entrée correspondant à $\varphi$ est $\llbracket \varphi \rrbracket_v$.
             \end{indt}
@@ -774,13 +774,13 @@
                     $V$ & $V$ & $V$ & $V$ & $V$
                 \end{tabular}
                 
-                Remarque : Ici on a considéré des colones supplémentaires pour des sous-formules pour simplfier le calcul.
+                Remarque : Ici on a considéré des colonnes supplémentaires pour des sous-formules pour simplifier le calcul.
             \end{indt}
             
             \vspace{12pt}
             
             \begin{indt}{\subsubsection{Remarque}}
-                Construire une table de vérité est un algorithme simple pour déterminer si une formule est satisfiable / une tautologie / une antilogie.
+                Construire une table de vérité est un algorithme simple pour déterminer si une formule est satisfaisante / une tautologie / une antilogie.
                 
                 Cependant, si $\varphi$ a $n$ variables distinctes, alors il y a $2^n$ lignes dans sa table de vérité.
                 
