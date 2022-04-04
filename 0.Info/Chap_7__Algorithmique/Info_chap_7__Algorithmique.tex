@@ -992,7 +992,7 @@ let binom_ascending (n : int) (p : int) : int =
                     \[ P_{i, j} = \prod_{k = i}^j A_k \]
                 $\forall (i, j) \in \nset 0 {n - 1}^2$. On note $m_{i, j}$ le nombre minimal de multiplications nécessaires au calcul de $P_{i, j}$.
                 
-                Si $\underbrace{P_{i, k}}_{\in \mathcal M_{t_i, t_{k + 1} (K)}} \times \underbrace{P_{k + 1, j}}_{\in \mathcal M_{t_{k + 1}, t_{j + 1}}}$ est un parenthésage optimal, alors
+                Si $\underbrace{P_{i, k}}_{\in \mathcal M_{t_i, t_{k + 1} }(K)} \times \underbrace{P_{k + 1, j}}_{\in \mathcal M_{t_{k + 1}, t_{j + 1}}(K)}$ est un parenthésage optimal, alors
                     \[ m_{i, j} = m_{i, k} + m_{k + 1, j} + t_i t_{k + 1} t_{j + 1} \]
                 
                 On trouve alors la relation de récurrence
@@ -1145,12 +1145,12 @@ let binom_ascending (n : int) (p : int) : int =
                 On appelle ordonnancement des tâches une fonction
                     \[
                         \begin{array}{rcccc}
-                            d & : & \longrightarrow & \nset{0}{n - 1}
+                            d & : & T & \longrightarrow & \nset{0}{n - 1}
                             \\
-                            & t & \longmapsto & d(t)
+                            && t & \longmapsto & d(t)
                         \end{array}
                     \]
-                qui à chaque $t \in T$ associe la date $d(t)$ à laquelle la tâche est réalisée. $d$ doit $être$ une bijection (on n'effectue qu'une tâche à chaque instant et toutes les tâches sont traitées).
+                qui à chaque $t \in T$ associe la date $d(t)$ à laquelle la tâche est réalisée. $d$ doit être une bijection (on n'effectue qu'une tâche à chaque instant et toutes les tâches sont traitées).
                 
                 \vspace{6pt}
                 
