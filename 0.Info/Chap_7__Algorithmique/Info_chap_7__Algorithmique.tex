@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2022.03.29
+% Last modification     :   2022.04.04
 %
 %------------------------------------------------------------------------
 
@@ -488,7 +488,7 @@
                         \end{cases}
                         \quad \text{selon la taille de $l_<$}
                     \]
-                avec les notations de \ref{2.1.7}.
+                avec les notations de \ref{2.1.7} (p.\pageref{2.1.7}).
                 
                 \vspace{12pt}
                 
@@ -533,7 +533,7 @@
                 
                 On s'intéresse à $l_<$ (le cas de $l_>$ se traite de manière similaire).
                 
-                Observons les $\dfrac n 5$ médianes des paquets. Parmi celles-ci, il y en a la moitié qui sont inférieures à $p$. Dans le pire cas, tous les éléments des $\dfrac n {10}$ paquets de ces médianes sont inférieures à $p$. Dans les autres paquets, il y a au plus 2 éléments inférieure à $p$ (car la médiane et les 2 éléments qui lui sont supérieurs sont supérieurs à $p$).
+                Observons les $\dfrac n 5$ médianes des paquets. Parmi celles-ci, il y en a la moitié qui sont inférieures à $p$. Dans le pire cas, tous les éléments des $\dfrac n {10}$ paquets de ces médianes sont inférieures à $p$. Dans les autres paquets, il y a au plus 2 éléments inférieurs à $p$ (car la médiane et les 2 éléments qui lui sont supérieurs sont supérieurs à $p$).
                 
                 Au total, il y a au plus $5 \cdot \dfrac n {10} + 2 \cdot \dfrac n {10} = \dfrac n 2 + \dfrac n 5 = 7\dfrac n {10}$ éléments dans $l_<$.
                 
@@ -696,7 +696,7 @@
                 
                 \vspace{12pt}
                 
-                Remarque : on utilise un algorithme glouton pour résoudre le problème dual (\textit{cf} \ref{4})
+                Remarque : on utilise un algorithme glouton pour résoudre le problème dual (\textit{cf} partie \ref{4}, p.\pageref{4})
             \end{indt}
             
             \vspace{12pt}
@@ -876,7 +876,7 @@ let binom_ascending (n : int) (p : int) : int =
             \begin{indt}{\subsubsection{Exemple}}
                 Chemin de poids maximum sur un échiquier.
                 
-                On reprend le problème vu en \ref{3.1.4}, mais on ne cherche pas à déterminer le nombre de chemins, mais plutôt on suppose que les cases de l'échiquier contiennent des poids et on veut trouver un chemin qui maximise la somme des poids des cases parcourues.
+                On reprend le problème vu en \ref{3.1.4} (p. \pageref{3.1.4}), mais on ne cherche pas à déterminer le nombre de chemins, mais plutôt on suppose que les cases de l'échiquier contiennent des poids et on veut trouver un chemin qui maximise la somme des poids des cases parcourues.
                 
                 On modélise le problème à l'aide d'une matrice de poids :
                     \[
@@ -1132,7 +1132,7 @@ let binom_ascending (n : int) (p : int) : int =
             \begin{indt}{\subsubsection{Remarque}}
                 Cet exemple démontre qu'un algorithme glouton ne fournit pas forcément toujours une solution optimale. Il faut donc pouvoir démontrer l'optimalité d'un algorithme glouton lorsque l'on souhaite l'utiliser. Il existe un cadre théorique donnant une condition suffisante d'optimalité, appelée \textit{théorie des matroïdes} (H.P).
                 
-                Nous avons vu en \ref{2.3.4} une autre méthode de démonstration : on montre par récurrence qu'il existe une solution optimale qui fait les mêmes choix que l'algorithme glouton et on montre aussi que l'algorithme glouton fournit une solution, ce qui implique que toute solution optimale faisant les mêmes choix donne la même solution.
+                Nous avons vu en \ref{2.3.4} (p.\pageref{2.3.4}) une autre méthode de démonstration : on montre par récurrence qu'il existe une solution optimale qui fait les mêmes choix que l'algorithme glouton et on montre aussi que l'algorithme glouton fournit une solution, ce qui implique que toute solution optimale faisant les mêmes choix donne la même solution.
             \end{indt}
         \end{indt}
         
