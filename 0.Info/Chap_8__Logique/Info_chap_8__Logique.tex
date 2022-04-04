@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2022.03.30
+% Last modification     :   2022.04.04
 %
 %------------------------------------------------------------------------
 
@@ -192,6 +192,7 @@
 %-left right
 \newcommand{\lr}[1]{\left( #1 \right)}
 \newcommand{\lrb}[1]{\left[ #1 \right]}
+\newcommand{\lrbb}[1]{\left\llbracket #1 \right\rrbracket}
 \newcommand{\set}[1]{\left\{ #1 \right\}}
 \newcommand{\abs}[1]{\left\lvert #1 \right\rvert}
 \newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
@@ -797,6 +798,378 @@
                 \begin{indt}{$\square$ Démonstration :}
                     Il y a $2^n$ lignes dans une table et pour chaque ligne on a le choix entre 2 valeurs de vérité $\blacksquare$
                 \end{indt}
+            \end{indt}
+        \end{indt}
+        
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Conséquence et équivalence}}
+            \begin{indt}{\subsubsection{Définition (\textit{conséquence})}}
+                \label{3.2.1}
+                
+                Soient $\varphi$ et $\psi$ deux formules.
+                
+                On dit que $\psi$ est une conséquence logique de $\varphi$, noté $\varphi \vDash \psi$, si tout modèle de $\varphi$ est un modèle de $\psi$.
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Proposition}}
+                Soient $\varphi$ et $\psi$ deux formules.
+                    \[ \varphi \vDash \psi \ssi \vDash \varphi \rightarrow \psi \]
+                
+                \begin{indt}{$\square$ Démonstration :}
+                    $
+                        \begin{array}{rcl}
+                            \varphi \vDash \psi &\ssi& \text{tout modèle de $\varphi$ est un modèle de $\psi$}
+                            \\
+                            &\ssi& \forall\ \text{valutation $v$, soit $\lrbb \varphi _v = V = \lrbb{\psi}_v$, soit $\lrbb{\varphi}_v = F$}
+                            \\
+                            &\ssi& \forall\ \text{valuation $v$, $\lrbb{\varphi \rightarrow \psi}_v = V$}
+                            \\
+                            &\ssi& \vDash \varphi \rightarrow \psi \quad \blacksquare
+                        \end{array}
+                    $
+                \end{indt}
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Généralisatoin aux ensembles de formules}}
+                $-$ Modèle : un modèle d'un ensemble $\Gamma$ de formules est une valuation $v$ telle que
+                    \[ \forall \varphi \in \Gamma,\ \lrbb{\varphi}_v = V \]
+                
+                \begin{indt}{$-$ Satisfiabilité : un ensemble $\Gamma$ de formules est dit :}
+                    $\bullet$ satisfiable si $\Gamma$ admet un modèle ;
+                    
+                    $\bullet$ contradictoire si $\Gamma$ n'admet pas de modèle.
+                \end{indt}
+                
+                \vspace{12pt}
+                
+                $-$ Conséquence logique : une formule $\varphi$ est conséquence logique d'un ensemble $\Gamma$ de formules si tout modèle de $\Gamma$ est modèle de $\varphi$. On note alors $\Gamma \vDash \varphi$.
+                
+                \vspace{12pt}
+                
+                Remarques :
+                
+                $-$ $\varphi \vDash \psi \ssi \set \varphi \vDash \psi$
+                
+                $-$ L'intuition est la suivante : un ensemble de formules $\Gamma$ définit une théorie (un ensemble d'axiomes) et on s'intéresse aux formules vraies dans cette théorie (les conséquences logiques de $\Gamma$).
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Proposition}}
+                Soit $\Gamma$ un ensemble de formules, et $\varphi$ une formule.
+                    \[ \Gamma \vDash \varphi \ssi \Gamma \cup \set{\neg \varphi}\ \text{est contradictoire} \]
+                
+                \begin{indt}[18pt]{$\square$ Démonstration :}
+                    $
+                        \begin{array}{rcl}
+                            \Gamma \vDash \varphi &\ssi& \text{tout modèle de $\Gamma$ est un modèle de $\varphi$}
+                            \vspace{6pt}
+                            \\
+                            &\ssi& \forall\ \text{valuation}\ v,\
+                            \left|
+                            \begin{array}{l}
+                                \text{soit $v$ n'est pas un modèle de $\Gamma$}
+                                \\
+                                \text{soit}
+                                \begin{cases}
+                                    v\ \text{est un modèle de $\Gamma$}
+                                    \\
+                                    \lrbb \varphi _v = V
+                                \end{cases}
+                            \end{array}
+                            \right.
+                            \vspace{6pt}
+                            \\
+                            &\ssi& \forall\ \text{valuation $v$},\
+                            \left|
+                            \begin{array}{l}
+                                \text{soit $v$ n'est pas un modèle de $\Gamma$}
+                                \\
+                                \text{soit}
+                                \begin{cases}
+                                    v\ \text{est un modèle de $\Gamma$}
+                                    \\
+                                    \lrbb{\neg \varphi}_v = F
+                                \end{cases}
+                            \end{array}
+                            \right.
+                            \vspace{6pt}
+                            \\
+                            &\ssi& \Gamma \cup \set{\neg \varphi}\ \text{n'admet aucun modèle}
+                            \\
+                            &\ssi& \Gamma \cup \set{\neg \varphi}\ \text{est contradictoire.} \quad \blacksquare
+                        \end{array}
+                    $
+                \end{indt}
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Proposition}}
+                Soient $(\varphi_k)_{k \in \nset 1 n}$ et $\psi$ des formules.
+                    \[ \set{\varphi_k\ |\ k \in \nset 1 n} \vDash \psi \ssi \bigwedge_{k = 1}^n \varphi_k \rightarrow \psi \]
+                
+                \begin{indt}{$\square$ Démonstration :}
+                    \textbf{Lemme} : Soit $\Gamma$ un ensemble de formules, et $\varphi, \psi$ deux formules.
+                        \[ \Gamma \cup \set \varphi \vDash \psi \ssi \Gamma \vDash \varphi \rightarrow \psi \]
+                    
+                    \begin{indt}{$\square$ Démonstration du lemme :}
+                        $
+                            \begin{array}{rcl}
+                                \Gamma \cup \set \varphi \vDash \psi &\ssi& \forall\ \text{valuation $v$},\
+                                \left|
+                                \begin{array}{l}
+                                    \text{soit $v$ n'est pas un modèle de $\Gamma \cup \set\varphi$}
+                                    \\
+                                    \text{soit $\lrbb{\varphi}_v = V$}
+                                \end{array}
+                                \right.
+                                \vspace{6pt}
+                                \\
+                                &\ssi& \forall\ \text{valuation $v$,}\
+                                \left|
+                                \begin{array}{l}
+                                    \text{soit $v$ n'est pas un modèle de $\Gamma$}
+                                    \\
+                                    \text{soit $\lrbb{\varphi}_v = F$, soit $\lrbb \varphi _v = V = \lrbb \psi _v$}
+                                \end{array}
+                                \right.
+                                \vspace{6pt}
+                                \\
+                                &\ssi& \forall\ \text{valuation $v$},\
+                                \left|
+                                \begin{array}{l}
+                                    \text{soit $v$ n'est pas un modèle de $\Gamma$}
+                                    \\
+                                    \text{soit $\lrbb{\varphi \rightarrow \psi}_v = V$}
+                                \end{array}
+                                \right.
+                                \vspace{6pt}
+                                \\
+                                &\ssi& \Gamma \vDash \varphi \rightarrow \psi \quad \blacksquare
+                            \end{array}
+                        $
+                    \end{indt}
+                    
+                    \vspace{12pt}
+                    
+                    On procède alors par récurrence en remarquant que
+                        \[ \forall \varphi_1, \varphi_2,\ (\varphi_1 \wedge \varphi_2) \rightarrow \varphi\ \text{et}\ \varphi_1 \rightarrow (\varphi_2 \rightarrow \varphi) \]
+                    ont les mêmes modèles $\blacksquare$
+                \end{indt}
+                
+                \vspace{12pt}
+                
+                Remarque : cela ne s'exprime que pour les ensembles finis de formules, car les formules sont des objets finis. Le théorème de compacité (H.P) permet toujours de se ramener à un ensemble fini de formules.
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Définition (\textit{équivalence})}}
+                Soient $\varphi, \psi$ deux formules.
+                
+                On dit que $\varphi$ et $\psi$ sont équivalentes, noté $\varphi \equiv \psi$, si $\varphi$ et $\psi$ ont les mêmes modèles.
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Remarque}}
+                $\bullet$ $\varphi \equiv \psi \ssi (\varphi \vDash \psi\ \text{et}\ \psi \vDash \varphi) \ssi \varphi \leftrightarrow \psi$ (d'après \ref{3.2.1})
+                
+                $\bullet$ $\equiv$ est une relation d'équivalence
+                
+                $\bullet$ Deux formules sont équivalentes si elle ont la même table de vérité, donc il y a au plus $2^{(2^n)}$ classes d'équivalences pour des formules à $n$ variables.
+                
+                On verra comment construire une formule associée à chaque table de vérité possible.
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{\'Equivalences classiques}}
+                $\bullet$ \'Elément neutre :
+                    \[ \varphi \wedge \top \equiv \varphi \qquad \varphi \vee \bot \equiv \varphi \]
+                
+                $\bullet$ \'Elément absorbant :
+                    \[ \varphi \wedge \bot \equiv \bot \qquad \varphi \vee \top \equiv \top \]
+                
+                $\bullet$ Commutativité :
+                    \[ \varphi_1 \wedge \varphi_2 \equiv \varphi_2 \wedge \varphi_1 \qquad \varphi_1 \vee \varphi_2 \equiv \varphi_2 \vee \varphi_1 \]
+                
+                $\bullet$ Associativité :
+                    \[ \varphi_1 \wedge (\varphi_2 \wedge \varphi_3) \equiv (\varphi_1 \wedge \varphi_2) \wedge \varphi_3 \qquad \varphi_1 \vee (\varphi_2 \vee \varphi_3) \equiv (\varphi_1 \vee \varphi_2) \vee \varphi_3 \]
+                
+                $\bullet$ Distributivité :
+                    \[ \varphi_1 \wedge (\varphi_2 \vee \varphi_3) \equiv (\varphi_1 \wedge \varphi_2) \vee (\varphi_1 \wedge \varphi_3) \]
+                    \[ \varphi_1 \vee (\varphi_2 \wedge \varphi_3) \equiv (\varphi_1 \vee \varphi_2) \wedge (\varphi_1 \vee \varphi_3) \]
+                
+                $\bullet$ Idempotence :
+                    \[ \varphi \wedge \varphi \equiv \varphi \qquad \varphi \vee \varphi \equiv \varphi \]
+                
+                $\bullet$ Involutivité :
+                    \[ \neg \neg \varphi \equiv \varphi \]
+                
+                $\bullet$ Règles de complément (tiers exclu) :
+                    \[ \varphi \wedge \neg \varphi \equiv \bot \qquad \varphi \vee \neg \varphi \equiv \top \]
+                
+                $\bullet$ Lois de De Morgan :
+                    \[ \neg (\varphi \wedge \psi) \equiv \neg \varphi \vee \neg \psi \qquad \neg (\varphi \vee \psi) \equiv \neg \varphi \wedge \neg \psi \]
+                
+                $\bullet$ Décomposition de l'implication :
+                    \[ \varphi \rightarrow \psi \equiv \neg (\varphi \wedge \neg \psi) \equiv \neg \varphi \vee \psi \]
+                
+                $\bullet$ Contraposition :
+                    \[ \varphi \rightarrow \psi \equiv \neg \psi \rightarrow \neg \varphi \]
+                
+                $\bullet$ Currification :
+                    \[ (\varphi_1 \wedge \varphi_2) \rightarrow \varphi_3 \equiv \varphi_1 \rightarrow (\varphi_2 \rightarrow \varphi_3) \]
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Remarque}}
+                Ces équivalences définissent des règles de simplication qui présentent la valeur logique des formules. Ces règles peuvent aussi s'appliquer aux sous formules d'une formule donnée. On dit que l'équivalence passe au contexte et que c'est une relation de congruence. Ces règles permettent de donner une forme particulière aux formules afin de simplifier l'étude de leur satisfiabilité.
+            \end{indt}
+        \end{indt}
+        
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Formes normales}}
+            \begin{indt}{\subsubsection{Définition (\textit{littéraux, classes, formes normales})}}
+                $-$ Un \textit{littéral} est une formule qui est soit une variable, soit la négation d'une variable ;
+                
+                $-$ Une \textit{classe conjonctive} (resp. \textit{disjonctive}) est une conjonction (resp. disjonction) de littéraux ;
+                
+                $-$ Une formule sous \textit{forme normale} disjonctive (resp. conjonctive) est une disjonction (resp. conjonction) de classes conjonctives (resp. disjonctive).
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Exemple}}
+                $(\neg x \wedge \neg y) \vee (\neg x \wedge \neg z \wedge t)$ est une FND (Forme Normale Disjonctive)
+                
+                $(x \vee y) \wedge (\neg x \vee \neg y)$ est une FNC (c'est XOR)
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Théorème}}
+                Toute formule est équivalente à une forme normale conjonctive (resp. disjonctive).
+                
+                \vspace{6pt}
+                
+                \begin{indt}{$\square$ Démonstration}
+                    \begin{indt}{(1) Il suffit de montrer le théorème pour les FND :}
+                        Soit $\varphi$ une formule. Alors $\neg \varphi$ est équivalente à une FND.
+                        
+                        Cette FND, $\displaystyle \bigvee_{i = 1}^n c_i$ où $\forall i \in \nset 1 n$, la classe $c_i$ s'écrit $\displaystyle \bigwedge_{j = 1}^{m_i} l_{i, j}$ avec les $l_{i, j}$ des littéraux.
+                        
+                        Donc
+                            \[
+                                \begin{array}{rcl}
+                                    \varphi
+                                    &\equiv& \neg \neg \varphi
+                                    \vspace{6pt}
+                                    \ \equiv\ \displaystyle \neg \lr{\bigvee_{i = 1}^n c_i}
+                                    \vspace{6pt}
+                                    \ \equiv\ \displaystyle \bigwedge_{i = 1}^n \neg c_i
+                                    \vspace{6pt}
+                                    \\
+                                    &\equiv& \displaystyle \bigwedge_{i = 1}^n \neg \lr{\bigwedge_{j = 1}^{m_i} l_{i, j}}
+                                    \vspace{6pt}
+                                    \ \equiv\ \displaystyle \bigwedge_{i = 1}^n \bigvee_{j = 1}^{m_i} \neg l_{i, j}
+                                    \vspace{6pt}
+                                    \\
+                                    &\equiv& \displaystyle \underbrace{\bigwedge_{i = 1}^n \bigvee_{j = 1}^{m_i} \widetilde{l_{i, j}}}_{\text{FNC}}
+                                \end{array}
+                            \]
+                        où
+                            \[
+                                \forall (i, j),\ \widetilde{l_{i, j}} =
+                                \left\{
+                                \begin{array}{ll}
+                                    \neg x_{i, j} & \text{si $l_{i ,j} = x_{i ,j} \in V$}
+                                    \\
+                                    x_{i ,j} & \text{si $l_{i ,j} = \neg \underbrace{x_{i, j}}_{\in \mathcal V}$}
+                                    \vspace{-12pt}
+                                \end{array}
+                                \right.
+                            \]
+                    \end{indt}
+                    
+                    %\vspace{12pt}
+                    \newpage
+                    
+                    \begin{indt}{(2) Soit $\varphi$ une formule. Montrons que $\varphi$ est équivalente à une FND.}
+                        Soit $v$ une valuation. On construit la classe
+                            \[ c_v = \bigwedge_{\substack{x \in \mathcal V \\ v(x) = V}} x \wedge \bigwedge_{\substack{x \in \mathcal V \\ v(x) = F}} \neg x \]
+                        (classe conjonctive)
+                        
+                        \boxed{\rm Exo} : $v$ est l'unique modèle de $c_v$.
+                        
+                        \vspace{12pt}
+                        
+                        Alors $\varphi \equiv \displaystyle \bigvee_{v\ |\ \lrbb{\varphi}_v = V} c_v$ (FND) $\blacksquare$
+                    \end{indt}
+                \end{indt}
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Remarque}}
+                $-$ On a démontré qu'il existe une formule associée à toute
+                table de vérité.
+                
+                $-$ La normalisation d'une formule peut réutiliser une formule de taille exponentielle en la taille de la formule initiale.
+                
+                Exemple :
+                    \[ \varphi = \bigwedge_{k = 1}^n (x_k \wedge y_k) \]
+                est une FNC (dont la FND est de taille exponentielle en $n$)
+                
+                \boxed{\rm Exo} cette formule admet $3^n$ modèles.
+                
+                \vspace{12pt}
+                
+                $-$ Si on ne s'intéresse qu'à la satisfiabilité d'une formule, il est innutile de préserver l'équivalence : il suffit de considérer une formule qui est équistaisfiable, \textit{i.e} satisfiable si et seulement si la formule initiale est satisfiable.
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Transformation de Tseitin (H.P)}}
+                Idée : on ajoute de nouvelles variables qui seront ``équivalentes'' aux sous-formules.
+                
+                Soit $\varphi$ une formule. $\forall \psi \in SF(\varphi)$, on ajoute une variable $p_\psi$ et on construit une FNC $f_\psi$ définie inductivement par :
+                    \[
+                        \begin{array}{lrl}
+                            f_x &=& (\neg p_x \vee x) \wedge (p_x \vee \neg x)
+                            \\
+                            f_{\neg \psi} &=& (\neg p_{\neg \psi} \vee \neg p_\psi) \wedge (p_{\neg \psi} \vee p_\psi)
+                            \\
+                            f_{\psi_1 \vee \psi_2} &=& (\neg p_{\psi_1 \vee \psi_2} \wedge p_{\psi_1} \vee p_{\psi_2}) \wedge (p_{\psi_1 \vee \psi_2} \vee \neg p_{\psi_1}) \wedge (p_{\psi_1 \vee \psi_2} \vee \neg p_{\psi_2})
+                            \\
+                            f_{\psi_1 \wedge \psi_2} &=& (\neg p_{\psi_1 \wedge \psi_2} \vee p_{\psi_1}) \wedge (\neg p_{\psi_1 \wedge \psi_2} \vee p_{\psi_2}) \wedge (p_{\psi_1 \wedge \psi_2} \vee \neg p_{\psi_1} \vee \neg p_{\psi_2})
+                        \end{array}
+                    \]
+                
+                On suppose avoir éliminé les simplifications ce qui ne fait que doubler la taille de la formule dans le pire cas.
+                
+                \vspace{12pt}
+                
+                La transformée de Tseitin de $\varphi$ est alors
+                    \[ p_\varphi \wedge \bigwedge_{\psi \in SF(\varphi)} f_\psi \]
+                qui est une FNC.
+                
+                \vspace{12pt}
+                
+                Remarque : la transformée de Tseitin se calcule en temps linéaire en la taille de la formule.
+                
+                Proposition (admise) : $\varphi$ et $p_\varphi \wedge \displaystyle \bigwedge_{\psi \in SF(\varphi)} f_\psi$ sont équisatisfiable.
+                
+                Idée : $f_\psi$ exprime $\psi \leftrightarrow p_\psi$.
             \end{indt}
         \end{indt}
         
