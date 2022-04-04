@@ -296,11 +296,11 @@
             \vspace{12pt}
             
             \begin{indt}{\subsubsection{Définition (formules de la logique propositionnelle)}}
-                Soit $V$ un ensemble de variables propositionnelles.
+                Soit $\mathcal V$ un ensemble de variables propositionnelles.
                 
                 on définit inductivement l'ensemble $\mathcal F$ des formules de la logique propositionnelle par
                     \[
-                        \dfrac{x \in V}{x \in \mathcal F}
+                        \dfrac{x \in \mathcal V}{x \in \mathcal F}
                         \qquad
                         \dfrac{\varphi \in \mathcal F}{\neg \varphi \in \mathcal F}
                     \]
@@ -335,7 +335,7 @@
                         |\ \varphi_1 \wedge \varphi_2\
                         |\ \varphi_1 \rightarrow \varphi_2
                     \]
-                où $x$ parcourt $V$.
+                où $x$ parcourt $\mathcal V$.
                 
                 L'étude précise des grammaires relève du programme de MPI.
             \end{indt}
@@ -387,7 +387,7 @@
                 
                 On définit inductivement l'ensemble $SF(\varphi)$ des sous-formules de $\varphi$ par :
                     \[
-                        \forall x \in V,\ SF(x) = \set x
+                        \forall x \in \mathcal V,\ SF(x) = \set x
                         \qquad
                         SF(\neg \varphi) = \set{\neg \varphi} \cup SF(\varphi)
                     \]
@@ -447,16 +447,16 @@
             \vspace{12pt}
             
             \begin{indt}{\subsubsection{Définition (\textit{termes} et formules de la logique du premier ordre)}}
-                Soit $\Sigma$ une signature et $V$ un ensemble de variables.
+                Soit $\Sigma$ une signature et $\mathcal V$ un ensemble de variables.
                 
-                \begin{indt}{$\Sigma$ et $V$ définissent des ensembles de termes et de formules, \textit{via} les grammaires suivantes :}
+                \begin{indt}{$\Sigma$ et $\mathcal V$ définissent des ensembles de termes et de formules, \textit{via} les grammaires suivantes :}
                     $-$ Termes :
                         \[
                             t ::= x\ |\ f(t_1, \ldots, t_k)
                         \]
                     où
                         \[
-                            \eqsys{x\ \text{parcourt}\ V}{(f, k)\ \text{parcourt les symboles de la fonction et leur arité}}
+                            \eqsys{x\ \text{parcourt}\ \mathcal V}{(f, k)\ \text{parcourt les symboles de la fonction et leur arité}}
                         \]
                     
                     $-$ Formules :
@@ -472,7 +472,7 @@
                         \]
                     où :
                         \[
-                            \eqsys{x\ \text{parcourt}\ V}{(p, k)\ \text{parcourt les symboles de prédicat et leur arité}}
+                            \eqsys{x\ \text{parcourt}\ \mathcal V}{(p, k)\ \text{parcourt les symboles de prédicat et leur arité}}
                         \]
                 \end{indt}
                 
@@ -619,7 +619,7 @@
                         \begin{cases}
                             x [x := t] = t
                             \\
-                            y [x := t] = y\ \forall y \in V \setminus \set x
+                            y [x := t] = y\ \forall y \in \mathcal V \setminus \set x
                             \\
                             f(t_1, \ldots, t_n) [x := t] = f(t_1 [x := t], \ldots, t_n [x := t])
                         \end{cases}
@@ -678,7 +678,7 @@
                 
                 Exemple : on considère des termes arithmétiques définis par :
                     \[ t ::= x\ |\ c\ |\ t_1 + t_2\ |\ t_1 - t_2\ |\ t_1 \times t_2 \]
-                où $x$ parcourt un ensemble $V$ de variables et $c$ parcourt $\N$, l'ensemble des constantes.
+                où $x$ parcourt un ensemble $\mathcal V$ de variables et $c$ parcourt $\N$, l'ensemble des constantes.
                 
                 On peut définir une sémantique en choisissant $\N$ pour l'ensemble des valeurs, $c + 1$ comme interprétation de $c$, la fonction $\min$ comme interprétation de $+$, la fonction $\max$ pour $-$, et l'addition pour $\times$.
                 
@@ -979,7 +979,7 @@
             \vspace{12pt}
             
             \begin{indt}{\subsubsection{Remarque}}
-                $\bullet$ $\varphi \equiv \psi \ssi (\varphi \vDash \psi\ \text{et}\ \psi \vDash \varphi) \ssi \varphi \leftrightarrow \psi$ (d'après \ref{3.2.1})
+                $\bullet$ $\varphi \equiv \psi \ssi (\varphi \vDash \psi\ \text{et}\ \psi \vDash \varphi) \ssi \varphi \leftrightarrow \psi$ (d'après \ref{3.2.1}, p.\pageref{3.2.1})
                 
                 $\bullet$ $\equiv$ est une relation d'équivalence
                 
@@ -1092,7 +1092,7 @@
                                 \forall (i, j),\ \widetilde{l_{i, j}} =
                                 \left\{
                                 \begin{array}{ll}
-                                    \neg x_{i, j} & \text{si $l_{i ,j} = x_{i ,j} \in V$}
+                                    \neg x_{i, j} & \text{si $l_{i ,j} = x_{i ,j} \in \mathcal V$}
                                     \\
                                     x_{i ,j} & \text{si $l_{i ,j} = \neg \underbrace{x_{i, j}}_{\in \mathcal V}$}
                                     \vspace{-12pt}
