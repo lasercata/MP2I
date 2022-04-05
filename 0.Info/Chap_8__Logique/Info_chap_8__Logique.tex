@@ -979,7 +979,7 @@
             \begin{indt}{\subsubsection{Définition (\textit{équivalence})}}
                 Soient $\varphi, \psi$ deux formules.
                 
-                On dit que $\varphi$ et $\psi$ sont équivalentes, noté $\varphi \equiv \psi$, si $\varphi$ et $\psi$ ont les mêmes modèles.
+                On dit que $\varphi$ et $\psi$ sont équivalents, noté $\varphi \equiv \psi$, si $\varphi$ et $\psi$ ont les mêmes modèles.
             \end{indt}
             
             \vspace{12pt}
@@ -989,7 +989,7 @@
                 
                 $\bullet$ $\equiv$ est une relation d'équivalence
                 
-                $\bullet$ Deux formules sont équivalentes si elle ont la même table de vérité, donc il y a au plus $2^{(2^n)}$ classes d'équivalences pour des formules à $n$ variables.
+                $\bullet$ Deux formules sont équivalentes si elles ont la même table de vérité, donc il y a au plus $2^{(2^n)}$ classes d'équivalences pour des formules à $n$ variables.
                 
                 On verra comment construire une formule associée à chaque table de vérité possible.
             \end{indt}
@@ -1038,7 +1038,7 @@
             \vspace{12pt}
             
             \begin{indt}{\subsubsection{Remarque}}
-                Ces équivalences définissent des règles de simplication qui présentent la valeur logique des formules. Ces règles peuvent aussi s'appliquer aux sous formules d'une formule donnée. On dit que l'équivalence passe au contexte et que c'est une relation de congruence. Ces règles permettent de donner une forme particulière aux formules afin de simplifier l'étude de leur satisfiabilité.
+                Ces équivalences définissent des règles de simplification qui présentent la valeur logique des formules. Ces règles peuvent aussi s'appliquer aux sous formules d'une formule donnée. On dit que l'équivalence passe au contexte et que c'est une relation de congruence. Ces règles permettent de donner une forme particulière aux formules afin de simplifier l'étude de leur satisfiabilité.
             \end{indt}
         \end{indt}
         
@@ -1142,7 +1142,7 @@
                 
                 \vspace{12pt}
                 
-                $-$ Si on ne s'intéresse qu'à la satisfiabilité d'une formule, il est innutile de préserver l'équivalence : il suffit de considérer une formule qui est équistaisfiable, \textit{i.e} satisfiable si et seulement si la formule initiale est satisfiable.
+                $-$ Si on ne s'intéresse qu'à la satisfiabilité d'une formule, il est inutile de préserver l'équivalence : il suffit de considérer une formule qui est équistaisfiable, \textit{i.e} satisfiable si et seulement si la formule initiale est satisfiable.
             \end{indt}
             
             \vspace{12pt}
@@ -1189,7 +1189,7 @@
         
         \begin{indt}{\subsection{Présentation du problème}}
             \begin{indt}{\subsubsection{Définition (\textit{Problème SAT})}}
-                La problème SAT est le problème de décision suivant : étant donné une formule $\varphi$ de la logique propositionnelle, $\varphi$ est-elle satisfiable ?
+                Le problème SAT est le problème de décision suivant : étant donné une formule $\varphi$ de la logique propositionnelle, $\varphi$ est-elle satisfiable ?
             \end{indt}
             
             \vspace{12pt}
@@ -1240,7 +1240,7 @@
                 \begin{indt}{$\square$ Démonstration :}
                     Une FND est satisfiable $\ssi$ l'une de ses clauses est satisfiable
                     
-                    $\ssi$ l'une de ses clauses ne contienr pas une variable et sa négation.
+                    $\ssi$ l'une de ses clauses ne contient pas une variable et sa négation.
                     
                     \vspace{12pt}
                     
@@ -1330,7 +1330,7 @@
                 
                 Si on parvient à retirer toutes les clauses, alors la formule est satisfiable.
                 
-                Si on retire tous les littéraux d'une clause, alors elle n'est pas satisfiable dans la valuation partielle : il faut donc changer de valuation partielle en revenant sur les choix précédants.
+                Si on retire tous les littéraux d'une clause, alors elle n'est pas satisfiable dans la valuation partielle : il faut donc changer de valuation partielle en revenant sur les choix précédents.
                 
                 \vspace{12pt}
                 
