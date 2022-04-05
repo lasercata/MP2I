@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2022.04.04
+% Last modification     :   2022.04.05
 %
 %------------------------------------------------------------------------
 
@@ -298,7 +298,7 @@
             \begin{indt}{\subsubsection{Définition (formules de la logique propositionnelle)}}
                 Soit $\mathcal V$ un ensemble de variables propositionnelles.
                 
-                on définit inductivement l'ensemble $\mathcal F$ des formules de la logique propositionnelle par
+                On définit inductivement l'ensemble $\mathcal F$ des formules de la logique propositionnelle par
                     \[
                         \dfrac{x \in \mathcal V}{x \in \mathcal F}
                         \qquad
@@ -781,6 +781,8 @@
             \vspace{12pt}
             
             \begin{indt}{\subsubsection{Remarque}}
+                \label{3.1.8}
+                
                 Construire une table de vérité est un algorithme simple pour déterminer si une formule est satisfiable / une tautologie / une antilogie.
                 
                 Cependant, si $\varphi$ a $n$ variables distinctes, alors il y a $2^n$ lignes dans sa table de vérité.
@@ -835,7 +837,7 @@
             
             \vspace{12pt}
             
-            \begin{indt}{\subsubsection{Généralisatoin aux ensembles de formules}}
+            \begin{indt}{\subsubsection{Généralisation aux ensembles de formules}}
                 $-$ Modèle : un modèle d'un ensemble $\Gamma$ de formules est une valuation $v$ telle que
                     \[ \forall \varphi \in \Gamma,\ \lrbb{\varphi}_v = V \]
                 
@@ -861,8 +863,10 @@
             \vspace{12pt}
             
             \begin{indt}{\subsubsection{Proposition}}
-                Soit $\Gamma$ un ensemble de formules, et $\varphi$ une formule.
-                    \[ \Gamma \vDash \varphi \ssi \Gamma \cup \set{\neg \varphi}\ \text{est contradictoire} \]
+                \begin{pseudocode}
+                    Soit $\Gamma$ un ensemble de formules, et $\varphi$ une formule.
+                        \[ \Gamma \vDash \varphi \ssi \Gamma \cup \set{\neg \varphi}\ \text{est contradictoire} \]
+                \end{pseudocode}
                 
                 \begin{indt}[18pt]{$\square$ Démonstration :}
                     $
@@ -911,8 +915,10 @@
             \vspace{12pt}
             
             \begin{indt}{\subsubsection{Proposition}}
-                Soient $(\varphi_k)_{k \in \nset 1 n}$ et $\psi$ des formules.
-                    \[ \set{\varphi_k\ |\ k \in \nset 1 n} \vDash \psi \ssi \bigwedge_{k = 1}^n \varphi_k \rightarrow \psi \]
+                \begin{pseudocode}
+                    Soient $(\varphi_k)_{k \in \nset 1 n}$ et $\psi$ des formules.
+                        \[ \set{\varphi_k\ |\ k \in \nset 1 n} \vDash \psi \ssi \bigwedge_{k = 1}^n \varphi_k \rightarrow \psi \]
+                \end{pseudocode}
                 
                 \begin{indt}{$\square$ Démonstration :}
                     \textbf{Lemme} : Soit $\Gamma$ un ensemble de formules, et $\varphi, \psi$ deux formules.
@@ -1058,7 +1064,9 @@
             \vspace{12pt}
             
             \begin{indt}{\subsubsection{Théorème}}
-                Toute formule est équivalente à une forme normale conjonctive (resp. disjonctive).
+                \begin{pseudocode}
+                    Toute formule est équivalente à une forme normale conjonctive (resp. disjonctive).
+                \end{pseudocode}
                 
                 \vspace{6pt}
                 
@@ -1170,6 +1178,244 @@
                 Proposition (admise) : $\varphi$ et $p_\varphi \wedge \displaystyle \bigwedge_{\psi \in SF(\varphi)} f_\psi$ sont équisatisfiable.
                 
                 Idée : $f_\psi$ exprime $\psi \leftrightarrow p_\psi$.
+            \end{indt}
+        \end{indt}
+        
+    \end{indt}
+    
+    \vspace{12pt}
+    
+    \begin{indt}{\section{Problème de la satisfiabilité des formules propositionnelles}}
+        
+        \begin{indt}{\subsection{Présentation du problème}}
+            \begin{indt}{\subsubsection{Définition (\textit{Problème SAT})}}
+                La problème SAT est le problème de décision suivant : étant donné une formule $\varphi$ de la logique propositionnelle, $\varphi$ est-elle satisfiable ?
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Remarque}}
+                Il existe un algorithme pour répondre à ce problème (on dit que SAT est décidable), mais l'algorithme vu en \ref{3.1.8} (p.\pageref{3.1.8}) est de complexité exponentielle.
+                
+                Question : peut-on faire mieux ?
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Proposition}}
+                \label{4.1.3}
+                
+                \begin{pseudocode}
+                    Une clause conjonctive est une antinomie (= antilogie) $\ssi$ elle contient une variable et sa négation.
+                \end{pseudocode}
+                
+                \begin{indt}{$\square$ Démonstration :}
+                    \boxed{\Leftarrow} Si la clause s'écrit $x \wedge \neg x \wedge c$ (à l'ordre près des littéraux), alors
+                        \[ \forall v,\ \lrbb{x \wedge \neg x \wedge c}_v = F \]
+                    car $\lrbb{x \wedge \neg x}_v = F$.
+                    
+                    \vspace{12pt}
+                    
+                    \boxed{\Rightarrow} Par contraposée, on suppose que la clause ne contient pas une variable et sa négation. On montre qu'elle est satisfiable.
+                    
+                    On peut supposer que les littéraux portent sur des variables deux à deux distinctes. ($x \wedge x = x$ et $\neg x \wedge \neg x =\neg x $)
+                    
+                    On note alors $l_1, \ldots, l_n$ les littéraux, et $x_1, \ldots, x_n$ les variables associées.
+                    
+                    On définit une valuation $v$ par
+                        \[ \forall i \in \nset 1 n,\ v(x_i) = \eqsys{V\ \text{si $l_i = x_i$}}{F\ \text{si $l_i = \neg x_i$}} \]
+                    Alors
+                        \[ \lrbb{\bigwedge_{i = 1}^n l_i}_v = V \]
+                    donc la clause est satisfiable $\blacksquare$
+                \end{indt}
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Corollaire}}
+                \begin{pseudocode}
+                    On peut résoudre SAT en temps polynomial pour les FND
+                \end{pseudocode}
+                
+                \begin{indt}{$\square$ Démonstration :}
+                    Une FND est satisfiable $\ssi$ l'une de ses clauses est satisfiable
+                    
+                    $\ssi$ l'une de ses clauses ne contienr pas une variable et sa négation.
+                    
+                    \vspace{12pt}
+                    
+                    Vérifier si une clause ne contient pas une variable et sa négation se fait en temps $\mathcal O(n^2)$ si la clause contient $n$ littéraux, voire $\mathcal O(n)$ si les variables sont représentées par des entiers.
+                    
+                    On applique cette vérification à chaque clause $\blacksquare$
+                \end{indt}
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Remarque}}
+                $-$ On ne sait pas s'il est possible de résoudre SAT en temps polynomial (\textit{cf} cours sur la classe NP).
+                
+                \vspace{12pt}
+                
+                $-$ C'est déjà le cas pour certains cas particuliers de SAT.
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Définition ($k$-SAT)}}
+                \'Etant donné $k \in \N^*$, $k$-SAT est le problème de décision suivant : étant donné une formule $\varphi$ sous FNC telle que chaque clause contient au plus $k$ littéraux, $\varphi$ est-elle satisfiable ?
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Remarque}}
+                $-$ $1$-SAT est résoluble en temps polynomial (\textit{cf} \ref{4.1.3}, p.\pageref{4.1.3})
+                
+                $-$ On verra que $2$-SAT est résoluble en temps polynomial (\textit{cf} cours sur la théorie des graphes).
+                
+                $-$ La transformation de Tseitin fournit pour toute formule $\varphi$ une instance de $3$-SAT qui est de taille linéaire en la taille de $\varphi$ et qui est équisatifiable à $\varphi$, donc on ne sait pas résoudre $k$-SAT en temps polynomial pour $k \ge 3$.
+                
+                $-$ SAT et ses restrictions sont des problèmes importants car ils servent à modéliser de nombreux problèmes. On parle de réduction de ces problèmes à SAT.
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Exemple de réduction à SAT}}
+                Le problème du Sudoku
+                
+                $\bullet$ Rappel des règles : on dispose d'une grille $n \times n$ qu'on veut remplir avec des entiers de $\nset 1 n$ de telle sorte que chaque ligne / colonne / bloc de taille $l \times l$, où $n = l^2$ contienne chaque entier exactement une fois.
+                
+                Une grille peut être partiellement pré-remplie afin qu'il n'existe qu'une seule solution.
+                
+                \vspace{12pt}
+                
+                $\bullet$ Réduction à SAT : on introduit $n^3$ variables propositionnelles $(x_{i, j}^k)_{i, j, k \in \nset 1 n}$.
+                
+                Idée : $x_{i, j}^k$ signifie ``la case $(i, j)$ contient l'entier $k$''.
+                
+                On peut représenter les règles à l'aide de formules :
+                
+                $-$ Chaque case contient un unique chiffre :
+                    \[ \bigwedge_{i = 1}^n \bigwedge_{j = 1}^n \bigvee_{k = 1}^n \lr{x_{i, j}^k \wedge \bigwedge_{k' \neq k} \neg x_{i, j}^{k'}} \]
+                
+                $-$ Chaque ligne contient au moins une fois chaque chiffre :
+                    \[ \bigwedge_{k = 1}^n \bigwedge_{i = 1}^n \bigvee_{j = 1}^n x_{i, j}^k  \]
+                
+                $-$ Chaque ligne contient au plus une fois chaque chiffre :
+                    \[ \bigwedge_{i = 1}^n \bigwedge_{j = 1}^n \bigwedge_{k = 1}^n \lr{x_{i, j}^k \rightarrow \bigwedge_{j' \neq j} \neg x_{i, j'}^k} \]
+                
+                $-$ Ect.
+                
+                ($\bigwedge$ est la version finie de $\forall$, et $\bigvee$ est la version finie de $\exists$)
+                
+                \vspace{12pt}
+                
+                On peut représenter les cases pré-remplies par des clauses unitaires $x_{i, j}^k$ (si la case $(i, j)$ est pré-remplie avec $k$)
+                
+                La conjonction de toutes ces formules donne une instance de SAT telle que tout modèle de cette conjonction représente une solution.
+            \end{indt}
+        \end{indt}
+        
+        \begin{indt}{\subsection{Résolution du problème SAT}}
+            \begin{indt}{\subsubsection{Algorithme de Quine}}
+                L'algorithme de Quine est un algorithme de résolution de SAT pour les FNC.
+                
+                Idée : on teste toutes les valuations possibles, mais en construisant de manière incrémentale les valuations en simplifiant la formule lors de la construction.
+                
+                Si $v(x) = V$ et si une clause $c$ contient $x$, alors $\lrbb c _v = V$ donc on peut retirer $c$ de la formule.
+                
+                Si $v(x) = F$ et si une clause $c$ contient $\neg x$, alors $\lrbb c _v \lrbb{c \setminus \set{\neg x}}_v$ donc on peut retirer $\neg x$ de $c$.
+                
+                Cas symétrique si $v(x) = F$.
+                
+                Si on parvient à retirer toutes les clauses, alors la formule est satisfiable.
+                
+                Si on retire tous les littéraux d'une clause, alors elle n'est pas satisfiable dans la valuation partielle : il faut donc changer de valuation partielle en revenant sur les choix précédants.
+                
+                \vspace{12pt}
+                
+                Algorithme :
+                
+                Entrée : ensemble de clauses disjonctives $C$
+                
+                \begin{pseudocode}
+                    \begin{indt}{fonction Quine($C$) :}
+                        Si $C = \varnothing$ alors renvoyer vrai
+                        
+                        Si la clause vide $\in C$, alors envoyer faux
+                        
+                        \vspace{6pt}
+                        
+                        Choisir $x$, une variable apparaissant dans une clause de $C$
+                        
+                        $C' \leftarrow C$, où toute clause contenant $x$ a été supprimée et où $\neg x$  a été retiré de toutes les clauses.
+                        
+                        \vspace{6pt}
+                        
+                        Si Quine($C'$) alors renvoyer vrai
+                        
+                        \begin{indt}{Sinon : \textcolor{656565}{\it // on choisit $v(x) = F$}}
+                            $C'' \leftarrow C$ où toute clause contenant $\neg x$ a été supprimée et où $x$ a été retiré de toutes les clauses
+                            
+                            Renvoyer Quine($C''$)
+                        \end{indt}
+                    \end{indt}
+                \end{pseudocode}
+                
+                Dans le pire cas, on teste toutes les valuations, d'où la complexité exponentielle.
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Implémentation de l'algorithme de Quine}}
+                On peut représenter les clauses par des listes de littéraux et les FNC par des listes de clauses.
+                
+                \begin{lstlisting}[language=Caml, xleftmargin=80pt]
+type litteral =
+    | Var of string
+    | NVar of string
+
+type clause = litteral list
+type fnc = clause list
+
+let rec quine (f : fnc) : bool =
+    match f with
+    | [] -> true
+    | _ when List.mem [] f -> false
+    | (Var x :: _) :: _ | (NVar x :: _) :: _ ->
+        if quine (List.map (List.filter (fun l -> l <> NVar x))
+           (List.filter (fun c -> not (List.mem (Var x) c)) f)
+        ) then true
+        else quine (List.map (List.filter (fun l -> l <> Var x))
+            (List.filter (fun c -> not (List.mem (NVar x) c)) f)
+        )
+    | _ -> failwith "Impossible"\end{lstlisting}
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Optimisations}}
+                \begin{indt}{On peut utiliser plusieurs techniques afin de rendre cet algo plus efficace :}
+                    $-$ Propagation des clauses unitaire : si une clause ne contient plus qu'un seul littéral, la valeur de ce littéral est imposée. On peut donc effectuer les simplifications associées à cette valeur sans avoir besoin de revenir sur ce choix.
+                    
+                    Cela donne l'algorithme DPLL (Davis Putnam Logemann Loveland) (H.P)
+                    
+                    \vspace{12pt}
+                    
+                    $-$ On peut utiliser des heuristiques pour le choix du littéral, par exemple le littéral le plus fréquent, celui qui apparaît dans une clause la plus courante possible, ou un littéral choisi au hasard.
+                    
+                    \vspace{12pt}
+                    
+                    $-$ On peut ajouter des clauses à la formule pour tenir compte des échecs : une valuation partielle correspond à un ensemble de choix.
+                    
+                    \vspace{12pt}
+                    
+                    $-$ On peut ``apprendre'' une clause pour ne pas refaire de choix similaire dans un autre appel récursif.
+                    
+                    Cela donne l'algorithme CDCL (Conflict Driver Clause Learning) (H.P)
+                    
+                    DPLL et CDCL sont à la base des SAT-solvers modernes.
+                \end{indt}
             \end{indt}
         \end{indt}
         
