@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2022.04.05
+% Last modification     :   2022.04.06
 %
 %------------------------------------------------------------------------
 
@@ -1416,6 +1416,309 @@ let rec quine (f : fnc) : bool =
                     
                     DPLL et CDCL sont à la base des SAT-solvers modernes.
                 \end{indt}
+            \end{indt}
+        \end{indt}
+        
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Compléments d'algorithmique}}
+            \begin{indt}{\subsubsection{Introduction}}
+                L'algorithme de Quine est un cas particulier d'algorithme de recherche par \textit{force brute}. Le principe de la recherche par force brute, ou exploration exhaustive, est de tester toutes les valeurs possibles pour en trouver une qui répond au problème que l'on se pose.
+                
+                On peut appliquer cette méthode pour résoudre des problèmes de décision (existe-t-il une valeur qui satisfait des contraintes données ?) ou des problèmes d'optimisation (trouver une valeur qui satisfait certaines contraintes tout en maximisant / minimisant une certaine quantité)
+                
+                \begin{tabular}{|p{200pt}|p{200pt}|}
+                    \hline
+                    Avantages & Inconvénients
+                    \\
+                    \hline
+                    $-$ Méthode complète : on trouve nécessairement une solution (optimale) si elle existe ;
+                    
+                    $-$ Souplesse : on peut aisément modifier l'algorithme à l'aide d'heuristiques pour le rendre plus efficace dans certains cas ;
+                    
+                    $-$ Méthode simple : implémentation aisée et simple à débugger ;
+                    
+                    $-$ On peut trouver toutes les solutions possibles, si c'est ce que l'on cherche.
+                    & $-$ Complexité élevée (ex : trouver la clé secrète d'un schéma cryptographique, encodée sur $n$ bits nécessite $2^n$ essais)
+                    \\
+                    \hline
+                \end{tabular}
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Modalité d'implémentation}}
+                Un algorithme de recherche par force brute s'écrit simplement ainsi :
+                
+                \begin{pseudocode}
+                    \begin{indt}{Pour toute valeur $v$ :}
+                        \begin{indt}{Si $v$ satisfait les contraintes :}
+                            S'arrêter avec $v$ comme solution
+                        \end{indt}
+                    \end{indt}
+                    
+                    \'Echec de la recherche.
+                \end{pseudocode}
+                
+                Version ``toutes les solutions'' :
+                
+                \begin{pseudocode}
+                    $S \leftarrow \varnothing$
+                    
+                    \begin{indt}{Pour toute valeur $v$ :}
+                        \begin{indt}{Si $v$ satisfait les contraintes :}
+                            $S \leftarrow S \cup \set v$
+                        \end{indt}
+                    \end{indt}
+                    
+                    Renvoyer $S$
+                \end{pseudocode}
+                
+                \vspace{12pt}
+                
+                Pour l'implémentation d'un tel algorithme, le paradigme de programmation et la manière dont on parcourt les valeurs contraignent la façon dont on écrit le code.
+                
+                \vspace{12pt}
+                
+                Pour une implémentation récursive, on peut manipuler l'ensemble des valeurs à traiter en retirant une à chaque appel récursif (coûteux en espace), ou, si l'on dispose d'une manière d'énumérer les valeurs en choisissant la valeur qui suit une valeur donnée, on peut partir d'une valeur initiale et faire un appel récursif sur la suivante jusqu'à exhaution des valeurs (ex : listes chaînées, ou parcourt des indices d'un tableau par une fonction récursive).
+                
+                Si on dispose d'une telle manière d'énumérer les valeurs, on peut facilement traduire l'algorithme récursif en boucle \texttt{while} (tant que l'on n'a pas trouver de solution et que l'on n'a pas parcouru toutes les valeurs, passer à la valeur suivante) ou une boucle \texttt{for} (pour $i$ de 1 au nombre de valeurs, tester la valeur n°$i$).
+                
+                \vspace{12pt}
+                
+                Exemple : on veut savoir si $x$ apparaît dans $t$ de taille $n$ :
+                
+                Boucle \texttt{while} :
+                
+                \begin{lstlisting}[language=C, xleftmargin=80pt]
+bool trouve = false;
+int i = -1;
+while (i < n - 1 && !trouve) {
+    i++;
+    trouve = t[i] == x;
+}
+//test de trouve\end{lstlisting}
+                
+                Boucle \texttt{for} :
+                
+                \begin{lstlisting}[language=C, xleftmargin=80pt]
+int i;
+for (i = 0 ; i < n ; i++) {
+    if (t[i] == x)
+        break;
+}
+//test de i\end{lstlisting}
+                
+                Remarques :
+                
+                $-$ On peut aussi simplifier la boucle \texttt{while} avec l'usage de \texttt{break}.
+                
+                $-$ Il n'y a pas d'instruction \texttt{break} en OCaml, mais on peut contrôler l'exécution à l'aide d'une exception :
+                
+                \begin{lstlisting}[language=Caml, xleftmargin=80pt]
+exception Trouve of int
+try
+    for i = 0 to n - 1 do
+        if t.(i) = x then
+            raise (Trouve i)
+    done;
+    raise Not_found
+with
+| Trouve i -> i\end{lstlisting}
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Retour sur trace (\textit{backtracking})}}
+                L'algorithme de Quine correspond à une autre manière de parcourir l'ensemble des valeurs : on construit de manière incrémentale des valeurs partielles (valuation d'un sous-ensemble des variables), en passant d'une valeur partielle à une autre en effectuant un choix (choix de la valeur d'une variable) sur lequel on reviendra pour tester d'autres choix si celui-ci ne permet pas de trouver une solution.
+                
+                On appelle cette méthode le \textit{retour sur trace} (ou \textit{backtracking}).
+                
+                Le caractère incrémental impose de ne pas pouvoir boucler sur un ensemble de valeurs partielles et peut permettre d'éliminer des choix avant d'avoir construit une valeur complète.
+                
+                \vspace{12pt}
+                
+                Pseudo-code :
+                
+                \begin{pseudocode}
+                    \begin{indt}{Recherche($v_{\rm init}$) :}
+                        \begin{indt}{Si $v_{\rm init}$ est complète et satisfait les contraintes :}
+                            S'arrêter avec $v_{\rm init}$ comme solution
+                        \end{indt}
+                        
+                        \vspace{6pt}
+                        
+                        \begin{indt}{Si $v_{\rm init}$ est partielle :}
+                            \begin{indt}{Pour chaque choix valide à partir de $v_{\rm init}$ :}
+                                $v_{\rm next} \leftarrow$ résultat du choix
+                                
+                                Recherche($v_{\rm next}$)
+                            \end{indt}
+                        \end{indt}
+                    \end{indt}
+                \end{pseudocode}
+                
+                \vspace{12pt}
+                
+                Exemple : Sudoku
+                
+                Valeur : remplissage de la grille (pas forcément selon les règles)
+                
+                Valeur partielle : remplissage partiel de la grille : il peut y avoir des cases vides
+                
+                $v_{\rm init}$ : problème posé
+                
+                Choix : écriture d'un chiffre dans une case vide
+                
+                Choix valide : choix qui respecte les règles du jeu vis-à-vis des chiffres déjà inscrits.
+                
+                \vspace{12pt}
+                
+                Avec ces définitions, une valeur complète construite à l'aide d'une succession de choix valides est nécessairement une solution.
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Optimisations}}
+                $-$ Comme pour l'algorithme DPLL par rapport à l'algorithme de Quine, certains choix peuvent contraindre la complétion des valeurs partielles de telle sorte qu'il n'est pas nécessaire de revenir sur les choix ``imposés'' ;
+                
+                \vspace{12pt}
+                
+                $-$ On peut également parcourir qu'un sous-ensemble des valeurs possibles.
+                
+                C'est un procédé classique en géométrie algorithme : l'ensemble des valeurs à parcourir est en général construit à partir d'un ensemble de point du plan / de l'espace. Parcourir l'ensemble des points selon une direction permet de ne considérer que certaines valeurs. On appelle cela un algorithme par \textit{droite de balayage}.
+                
+                \vspace{12pt}
+                
+                Idée : une droite / un plan perpendiculaire à la direction choisie balaye l'ensemble des points, et à chaque point rencontré, on effectue des opérations visant à construire une solution.
+                
+                Exemple : retour sur le TP$_{12}$
+                
+                Problème : étant donné un ensemble de points du plan, trouver une paire de points qui minimise la distance euclidienne entre ces points.
+                
+                Ensemble des valeurs : l'ensemble des paires de points $\rightarrow$ algorithme force brute en $\mathcal O(n^2)$
+                
+                Rappel : algorithme ``diviser pour régner'' en $\mathcal O(n\log n)$ vu en TP.
+                
+                Idée d'algorithme par droite de balayage : on parcourt les points par abscisse croissante en conservant la distance minimale courante $d$.
+                
+                On note $(x_0, y_0), \ldots, (x_{n - 1}, y_{n - 1})$ les points triés par abscisse.
+                
+                Si la distance minimale vaut $d$ après le parcourt des $k$ premiers points, il est inutile de considérer les points d'abscisse $< x_k - d$ pour la mise à jour de $d$.
+                
+                De même, il est inutile de considérer les points d'ordonnée $< y_k - d$ ou $> y_k + d$
+                
+                \begin{center}
+                    \begin{tikzpicture}
+                        \draw[->] (0, -.3) -- (6, -.3);
+                        \draw[dashed] (3, -1) to (3, 3);
+                        
+                        \draw (2, .5) rectangle (3, 1.5);
+                        \draw (2, 1.5) rectangle (3, 2.5);
+                        
+                        \draw[<->] (3.2, .5) -- node [right] {$d$} (3.2, 1.5);
+                        \draw[<->] (3.2, 1.5) -- node [right] {$d$} (3.2, 2.5);
+                        \draw[<->] (2, .3) -- node [below] {$d$} (3, .3);
+                    \end{tikzpicture}
+                \end{center}
+                
+                Attention : si les points d'abscisse $< x_k - d$ peuvent être définitivement oubliés, ceux d'abscisse $\ge x_k - d$ doivent être conservés même s'ils sont hors du rectangle dans l'éventualité d'un usage avec $(x_{k + 1}, y_{k + 1}                )$
+                
+                Remarque :
+                le rectangle autour du point courant contient au plus 5 points en plus du point courant.
+                
+                \begin{center}
+                    \begin{tikzpicture}
+                        \draw (0, 0) rectangle (1, 1);
+                        \draw (0, 1) rectangle (1, 2);
+                        
+                        \node at (0, 0) {$\bullet$};
+                        \node at (1, 0) {$\bullet$};
+                        \node at (1, 1) {$\bullet$};
+                        \node at (1, 2) {$\bullet$};
+                        \node at (0, 2) {$\bullet$};
+                        \node at (0, 1) {$\bullet$};
+                        
+                        \draw[<->] (1.5, 0) -- node [right] {$d$} (1.5, .99);
+                        \draw[<->] (1.5, 1.01) -- node [right] {$d$} (1.5, 2);
+                        
+                        \node (n) at (-2, 1) {$(x, y)$};
+                        
+                        \draw[->] (n) -- (-.2, 1);
+                    \end{tikzpicture}
+                \end{center}
+                
+                S'il y en avait plus, l'un des rectangles de dimention $\dfrac{2d}{3} \cdot \dfrac d 2$ contiendrait deux points.
+                
+                \begin{center}
+                    \begin{tikzpicture}[scale=1]
+                        \draw (0, 0) rectangle (2, 3);
+                        
+                        \draw[dashed] (1, -.5) -- (1, 3.5);
+                        \draw[dashed] (-.5, 1) -- (2.5, 1);
+                        \draw[dashed] (-.5, 2) -- (2.5, 2);
+                        
+                        \draw[<->] (2.2, 0) -- node [right] {$\dfrac{2d}{3}$} (2.2, 0.99);
+                        \draw[<->] (2.2, 1.01) -- node [right] {$\dfrac{2d}{3}$} (2.2, 1.99);
+                        \draw[<->] (2.2, 2.01) -- node [right] {$\dfrac{2d}{3}$} (2.2, 2.99);
+                        
+                        \draw[<->] (0, -.2) -- node [below] {$\dfrac{d}{2}$} (.99, -.2);
+                        \draw[<->] (1.01, -.2) -- node [below] {$\dfrac{d}{2}$} (2, -.2);
+                    \end{tikzpicture}
+                \end{center}
+                
+                La distance maximale entre 2 points dans un tel rectangle est :
+                    \[
+                        \sqrt{\lr{\dfrac{2d}{3}}^2 + \lr{\dfrac d 2}^2}
+                        = \sqrt{\dfrac{4d^2}{9} + \dfrac{d^2}{4}}
+                        = \sqrt{\dfrac{25}{36}}d
+                        = \dfrac 5 6 d
+                        < d
+                    \]
+                impossible.
+                
+                \vspace{12pt}
+                
+                On en déduit l'algorithme suivant :
+                
+                \begin{pseudocode}
+                    Trier les points par abscisse croissante, les nommer
+                    $(x_0, y_0), \ldots, (x_{n - 1}, y_{n - 1})$
+                    
+                    $E \leftarrow \set{(x_0, y_0), (x_1, y_1)}$
+                    
+                    $d \leftarrow \mathrm{dist}((x_0, y_0), (x_1, y_1))$
+                    
+                    \begin{indt}{Pour $k$ de 2 à $n - 1$ :}
+                        Retirer de $E$ les points d'abscisse $< x_k - d\qquad (*)$
+                        
+                        \begin{indt}{Pour chaque point actif $(x, y)$ tq $y_k - d \le y \le y_k + d$ : $\qquad (**)$}
+                            $d \leftarrow \min(d,\ \mathrm{dist}((x_k, y_k), (x, y)))$
+                        \end{indt}
+                        
+                        $E \leftarrow E \cup \set{(x_k, y_k)}$
+                    \end{indt}
+                    
+                    Renvoyer $d$.
+                \end{pseudocode}
+                
+                Complexité :
+                
+                $-$ $\mathcal O(n \log n)$ pour le tri
+                
+                $-$ Manipulation de $E$ : cela dépend de la structure de données
+                
+                $(*)$ inutile de faire un parcourt de $E$ : il suffit de parcourir la liste des points triés en se souvenant du dernier point retiré.
+                
+                Coût total de cette ligne : coût de $n$ supressions dans $E$.
+                
+                On aura aussi le coût de $n$ insertions dans $E$
+                
+                \vspace{12pt}
+                
+                $(**)$ nécessite une structure organisée selon les ordonées : on peut choisir pour $E$ une structure d'ABR équilibrée : coût d'une insertion (suppression en $\mathcal O(\log n)$), coût de la recherche des (au plus) 5 éléments en $(**)$ : $\mathcal O(\log n)$ \boxed{\rm Exo}
+                
+                Au total $\mathcal O(n \log n)$.
             \end{indt}
         \end{indt}
         
