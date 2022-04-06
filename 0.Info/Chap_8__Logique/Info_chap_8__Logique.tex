@@ -1480,7 +1480,7 @@ let rec quine (f : fnc) : bool =
                 
                 \vspace{12pt}
                 
-                Pour une implémentation récursive, on peut manipuler l'ensemble des valeurs à traiter en retirant une à chaque appel récursif (coûteux en espace), ou, si l'on dispose d'une manière d'énumérer les valeurs en choisissant la valeur qui suit une valeur donnée, on peut partir d'une valeur initiale et faire un appel récursif sur la suivante jusqu'à exhaution des valeurs (ex : listes chaînées, ou parcourt des indices d'un tableau par une fonction récursive).
+                Pour une implémentation récursive, on peut manipuler l'ensemble des valeurs à traiter en retirant une à chaque appel récursif (coûteux en espace), ou, si l'on dispose d'une manière d'énumérer les valeurs en choisissant la valeur qui suit une valeur donnée, on peut partir d'une valeur initiale et faire un appel récursif sur la suivante jusqu'à exhaustion des valeurs (ex : listes chaînées, ou parcourt des indices d'un tableau par une fonction récursive).
                 
                 Si on dispose d'une telle manière d'énumérer les valeurs, on peut facilement traduire l'algorithme récursif en boucle \texttt{while} (tant que l'on n'a pas trouver de solution et que l'on n'a pas parcouru toutes les valeurs, passer à la valeur suivante) ou une boucle \texttt{for} (pour $i$ de 1 au nombre de valeurs, tester la valeur n°$i$).
                 
@@ -1586,7 +1586,7 @@ with
                 
                 $-$ On peut également parcourir qu'un sous-ensemble des valeurs possibles.
                 
-                C'est un procédé classique en géométrie algorithme : l'ensemble des valeurs à parcourir est en général construit à partir d'un ensemble de point du plan / de l'espace. Parcourir l'ensemble des points selon une direction permet de ne considérer que certaines valeurs. On appelle cela un algorithme par \textit{droite de balayage}.
+                C'est un procédé classique en géométrie algorithmique : l'ensemble des valeurs à parcourir est en général construit à partir d'un ensemble de point du plan / de l'espace. Parcourir l'ensemble des points selon une direction permet de ne considérer que certaines valeurs. On appelle cela un algorithme par \textit{droite de balayage}.
                 
                 \vspace{12pt}
                 
@@ -1648,7 +1648,7 @@ with
                     \end{tikzpicture}
                 \end{center}
                 
-                S'il y en avait plus, l'un des rectangles de dimention $\dfrac{2d}{3} \cdot \dfrac d 2$ contiendrait deux points.
+                S'il y en avait plus, l'un des rectangles de dimension $\dfrac{2d}{3} \cdot \dfrac d 2$ contiendrait deux points.
                 
                 \begin{center}
                     \begin{tikzpicture}[scale=1]
@@ -1716,7 +1716,7 @@ with
                 
                 \vspace{12pt}
                 
-                $(**)$ nécessite une structure organisée selon les ordonées : on peut choisir pour $E$ une structure d'ABR équilibrée : coût d'une insertion (suppression en $\mathcal O(\log n)$), coût de la recherche des (au plus) 5 éléments en $(**)$ : $\mathcal O(\log n)$ \boxed{\rm Exo}
+                $(**)$ nécessite une structure organisée selon les ordonnées : on peut choisir pour $E$ une structure d'ABR équilibrée : coût d'une insertion (suppression en $\mathcal O(\log n)$), coût de la recherche des (au plus) 5 éléments en $(**)$ : $\mathcal O(\log n)$ \boxed{\rm Exo}
                 
                 Au total $\mathcal O(n \log n)$.
             \end{indt}
