@@ -287,11 +287,11 @@
             \vspace{12pt}
             
             \begin{indt}{\subsubsection{Systèmes de gestion de bases de données (SGBD) et paradigme logique}}
-                Préserver l'intégrité des données est une tâche complexe dans un contexte d'accès concurrents, donc le traitement des donnéessera confié à un outil appelé SGBD dont le rôle est de recevoir les requêtes des utilisateurs (modification des données ou extraction d'information à partir de ces données) et de les traduire en des opérations effectuées sur la base de données. C'est au SGBD de garantir la cohérence des données au fur et à mesure des opérations réalisées. Les requêtes prennent en général la forme d'une description du résultat attendu sans indication sur la manière de calculer. C'est le SGBD qui implémente la recherche du résultat.
+                Préserver l'intégrité des données est une tâche complexe dans un contexte d'accès concurrents, donc le traitement des données sera confié à un outil appelé SGBD dont le rôle est de recevoir les requêtes des utilisateurs (modification des données ou extraction d'information à partir de ces données) et de les traduire en des opérations effectuées sur la base de données. C'est au SGBD de garantir la cohérence des données au fur et à mesure des opérations réalisées. Les requêtes prennent en général la forme d'une description du résultat attendu sans indication sur la manière de calculer. C'est le SGBD qui implémente la recherche du résultat.
                 
                 C'est le principe du \emph{paradigme logique} : un programme est une description des propriétés que doit satisfaire le résultat. Un résultat est un jeu de paramètres qui satisfait les propriétés. Il n'y a aucune indication sur la manière de calculer les résultats.
                 
-                Pour que cela fonctionne, la pluspart des SGBD s'appuient sur un modèle introduit dans les années 1970, appelé modèle relationnel.
+                Pour que cela fonctionne, la plupart des SGBD s'appuient sur un modèle introduit dans les années 1970, appelé modèle relationnel.
             \end{indt}
             
             \vspace{12pt}
@@ -366,7 +366,7 @@
                     & 240
                     \\
                     \textit{Cyrano de Bergerac}
-                    & Edmond Rostant
+                    & Edmond Rostand
                     & Théâtre
                     & 1857
                     & 280
@@ -388,7 +388,7 @@
                 
                 \vspace{6pt}
                 
-                Il peut y avoir plusieurs clés candidates et on doit enc choisir une, appelée \textit{clé primaire}. On souligne dans le schéma relationnel les attributs de la clé primaire pour les repérer efficacement.
+                Il peut y avoir plusieurs clés candidates et on doit en choisir une, appelée \textit{clé primaire}. On souligne dans le schéma relationnel les attributs de la clé primaire pour les repérer efficacement.
                 
                 Remarque : on choisit souvent d'ajouter un attribut entier pour numéroter les enregistrements, que l'on choisit comme clé primaire.
                 
@@ -404,7 +404,7 @@
             \vspace{12pt}
             
             \begin{indt}{\subsubsection{Algèbre relationnelle}}
-                L'algèbre relationnelle est une théorie mathématique qui décrit des opérations que l'on peut réaliser sur une base de données du point de vue du modèle relationnel. Les propriétés qui découlent de cette théorie définissent un fondement rigoureux aux implémentations de SGBD en justifiant les optimisations des requêtes des utilisateurs. Cette théorie des H.P, mais nous l'étudierons \textit{via} le langage re requêtes SQL (Structured Query Language).
+                L'algèbre relationnelle est une théorie mathématique qui décrit des opérations que l'on peut réaliser sur une base de données du point de vue du modèle relationnel. Les propriétés qui découlent de cette théorie définissent un fondement rigoureux aux implémentations de SGBD en justifiant les optimisations des requêtes des utilisateurs. Cette théorie des H.P, mais nous l'étudierons \textit{via} le langage de requêtes SQL (Structured Query Language).
             \end{indt}
         \end{indt}
         
@@ -412,7 +412,7 @@
             \begin{indt}{\subsubsection{Gestion du contexte}}
                 $-$ Choix de la base de données : \texttt{USE <nom\_base>;}
                 
-                $-$ Obtenir du schéma relationnel d'une table : \texttt{DESCRIBE <nom\_table>;}
+                $-$ Obtention du schéma relationnel d'une table : \texttt{DESCRIBE <nom\_table>;}
                 
                 Exemple :
                 
@@ -455,7 +455,7 @@ SELECT DISTINCT titre, date_de_parution FROM Document;\end{lstlisting}
 SELECT * FROM Document
 ORDER BY auteur, date_de_parution;\end{lstlisting}
                 
-                Pour utiliser l'odre décroissant selon l'un des attributs, on utilise le mot-clé \texttt{DESC} après le nom de l'attribut.
+                Pour utiliser l'ordre décroissant selon l'un des attributs, on utilise le mot-clé \texttt{DESC} après le nom de l'attribut.
                 
                 Exemple :
                 
