@@ -1,0 +1,492 @@
+\documentclass[a4paper, 12pt, twoside]{article}
+
+
+%------------------------------------------------------------------------
+%
+% Author                :   Lasercata
+% Last modification     :   2022.04.11
+%
+%------------------------------------------------------------------------
+
+
+%------ini
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+%\usepackage[english]{babel}
+
+
+%------geometry
+\usepackage[textheight=700pt, textwidth=500pt]{geometry}
+
+
+%------color
+\usepackage{xcolor}
+\definecolor{ff4500}{HTML}{ff4500}
+\definecolor{00f}{HTML}{0000ff}
+\definecolor{0ff}{HTML}{00ffff}
+\definecolor{656565}{HTML}{656565}
+
+\renewcommand{\emph}{\textcolor{ff4500}}
+\renewcommand{\em}{\color{ff4500}}
+
+\newcommand{\strong}[1]{\textcolor{ff4500}{\bf #1}}
+\newcommand{\st}{\color{ff4500}\bf}
+
+
+%------Code highlighting
+%---listings
+\usepackage{listings}
+
+\definecolor{cbg}{HTML}{272822}
+\definecolor{cfg}{HTML}{ececec}
+\definecolor{ccomment}{HTML}{686c58}
+\definecolor{ckw}{HTML}{f92672}
+\definecolor{cstring}{HTML}{e6db72}
+\definecolor{cstringlight}{HTML}{98980f}
+\definecolor{lightwhite}{HTML}{fafafa}
+
+\lstdefinestyle{DarkCodeStyle}{
+    backgroundcolor=\color{cbg},
+    commentstyle=\itshape\color{ccomment},
+    keywordstyle=\color{ckw},
+    numberstyle=\tiny\color{cbg},
+    stringstyle=\color{cstring},
+    basicstyle=\ttfamily\footnotesize\color{cfg},
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=4,
+    xleftmargin=\leftskip
+}
+
+\lstdefinestyle{LightCodeStyle}{
+    backgroundcolor=\color{lightwhite},
+    commentstyle=\itshape\color{ccomment},
+    keywordstyle=\color{ckw},
+    numberstyle=\tiny\color{cbg},
+    stringstyle=\color{cstringlight},
+    basicstyle=\ttfamily\footnotesize\color{cbg},
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=10pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=4,
+    frame=L,
+    xleftmargin=\leftskip
+}
+
+%\lstset{style=DarkCodeStyle}
+\lstset{style=LightCodeStyle}
+%Usage : \begin{lstlisting}[language=Caml] ... \end{lstlisting}
+
+%---tcolorbox
+\usepackage[many]{tcolorbox}
+\DeclareTColorBox{pseudocode}{O{black}O{lightwhite}}{
+    breakable,
+    outer arc=0pt,
+    arc=0pt,
+    top=0pt,
+    toprule=-.5pt,
+    right=0pt,
+    rightrule=-.5pt,
+    bottom=0pt,
+    bottomrule=-.5pt,
+    colframe=#1,
+    colback=#2,
+    enlarge left by=10pt,
+    width=\linewidth-\leftskip-10pt,
+}
+
+
+%-------make the table of content clickable
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=black
+}
+%Uncomment this and comment above for dark mode
+% \hypersetup{
+%     colorlinks,
+%     citecolor=white,
+%     filecolor=white,
+%     linkcolor=white,
+%     urlcolor=white
+% }
+
+
+%------pictures
+\usepackage{graphicx}
+%\usepackage{wrapfig}
+
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric}
+
+
+%------tabular
+%\usepackage{color}
+%\usepackage{colortbl}
+%\usepackage{multirow}
+
+
+%------Physics
+%---Packages
+%\usepackage[version=4]{mhchem} %$\ce{NO4^2-}$
+
+%---Commands
+\newcommand{\link}[2]{\mathrm{#1} \! - \! \mathrm{#2}}
+\newcommand{\pt}[1]{\cdot 10^{#1}} % Power of ten
+\newcommand{\dt}[2][t]{\dfrac{\mathrm d #2}{\mathrm d #1}} % Derivative
+
+
+%------math
+%---Packages
+%\usepackage{textcomp}
+%\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools} % For abs
+\usepackage{stmaryrd} %for \llbracket and \rrbracket
+\usepackage{mathrsfs} %for \mathscr{x} (different from \mathcal{x})
+
+%---Commands
+%-Sets
+\newcommand{\N}{\mathbb{N}} %set N
+\newcommand{\Z}{\mathbb{Z}} %set Z
+\newcommand{\Q}{\mathbb{Q}} %set Q
+\newcommand{\R}{\mathbb{R}} %set R
+\newcommand{\C}{\mathbb{C}} %set C
+\newcommand{\U}{\mathbb{U}} %set U
+\newcommand{\seg}[2]{\left[ #1\ ;\ #2 \right]}
+\newcommand{\nset}[2]{\left\llbracket #1\ ;\ #2 \right\rrbracket}
+
+%-Exponantial / complexs
+\newcommand{\e}{\mathrm{e}}
+\newcommand{\cj}[1]{\overline{#1}} %overline for the conjugate.
+
+%-Vectors
+\newcommand{\vect}{\overrightarrow}
+\newcommand{\veco}[3]{\displaystyle \vect{#1}\binom{#2}{#3}} %vector + coord
+
+%-Limits
+\newcommand{\lm}[2][{}]{\lim\limits_{\substack{#2 \\ #1}}} %$\lm{x \to a} f$ or $\lm[x < a]{x \to a} f$
+\newcommand{\Lm}[3][{}]{\lm[#1]{#2} \left( #3 \right)} %$\Lm{x \to a}{f}$ or $\Lm[x < a]{x \to a}{f}$
+\newcommand{\tendsto}[1]{\xrightarrow[#1]{}}
+
+%-Integral
+\newcommand{\dint}[4][x]{\displaystyle \int_{#2}^{#3} #4 \mathrm{d} #1} %$\dint{a}{b}{f(x)}$ or $\dint[t]{a}{b}{f(t)}$
+
+%-left right
+\newcommand{\lr}[1]{\left( #1 \right)}
+\newcommand{\lrb}[1]{\left[ #1 \right]}
+\newcommand{\set}[1]{\left\{ #1 \right\}}
+\newcommand{\abs}[1]{\left\lvert #1 \right\rvert}
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
+\newcommand{\lrangle}[1]{\left\langle #1 \right\rangle}
+
+%-Others
+\newcommand{\para}{\ /\!/\ } %//
+\newcommand{\ssi}{\ \Leftrightarrow \ }
+\newcommand{\eqsys}[2]{\begin{cases} #1 \\ #2 \end{cases}}
+
+\newcommand{\med}[2]{\mathrm{med} \left[ #1\ ;\ #2 \right]}  %$\med{A}{B} -> med[A ; B]$
+\newcommand{\Circ}[2]{\mathscr{C}_{#1, #2}}
+
+\renewcommand{\le}{\leqslant}
+\renewcommand{\ge}{\geqslant}
+
+
+%------commands
+%---to quote french text
+\newcommand{\simplecit}[1]{\guillemotleft$\;$#1$\;$\guillemotright}
+\newcommand{\cit}[1]{\simplecit{\textcolor{656565}{#1}}}
+\newcommand{\quo}[1]{\cit{\it #1}}
+
+%---to indent
+\newcommand{\ind}[1][20pt]{\advance\leftskip + #1}
+\newcommand{\deind}[1][20pt]{\advance\leftskip - #1}
+
+%---to indent a text
+\newcommand{\indented}[2][20pt]{\par \ind[#1] #2 \par \deind[#1]}
+\newenvironment{indt}[2][20pt]{#2 \par \ind[#1]}{\par \deind} %Titled indented env
+
+%---title
+\newcommand{\thetitle}[2]{\begin{center}\textbf{{\LARGE \underline{\emph{#1} :}} {\Large #2}}\end{center}}
+
+
+%------Sections
+% To change section numbering :
+% \renewcommand\thesection{\Roman{section}}
+% \renewcommand\thesubsection{\arabic{subsection}}
+% \renewcommand\thesubsubsection{\aleph{subsection}}
+
+% To start numbering from 0
+% \setcounter{section}{-1}
+
+
+%------page style
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+
+\setlength{\headheight}{18pt}
+\setlength{\footskip}{50pt}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE, RO]{\textit{\textcolor{black}{\today}}}
+\fancyhead[RE, LO]{\large{\textsl{\emph{\texttt{\jobname}}}}}
+
+\fancyfoot[RO, LE]{\textit{\texttt{\textcolor{black}{Page \thepage /}\pageref{LastPage}}}} %Change 'black' to 'white' for dark mode
+\fancyfoot[LO, RE]{\includegraphics[scale=0.12]{/home/lasercata/Pictures/1.images_profil/logo/mieux/lasercata_logo_fly_fond_blanc.png}}
+
+% For dark mode :
+%/home/lasercata/Pictures/1.images_profil/logo/mieux/lasercata_logo_fly.png
+
+\author{Lasercata}
+\date{\today}
+
+%------init lengths
+\setlength{\parindent}{0pt} %To avoid using \noindent everywhere.
+\setlength{\parskip}{3pt}
+
+
+%---------------------------------Begin Document
+\begin{document}
+    
+    %For dark mode :
+    % \pagecolor{black}
+    % \color{white}
+    
+    \thetitle{Chapitre 9}{Bases de données}
+    
+    \tableofcontents
+    \newpage
+    
+    
+    \begin{indt}{\section{Concepts élémentaires}}
+        
+        \begin{indt}{\subsection{Introduction aux bases de données}}
+            \begin{indt}{\subsubsection{Introduction}}
+                De nombreuses applications informatiques manipulent de grandes quantités de données qui doivent être organisées et stockées de sorte qu'il est possible de les traiter efficacement pour en ajouter, en retirer, ou en extraire de l'information. Ce traitement doit pouvoir se faire de manière concurrente tout en préservant l'intégrité des données.
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Systèmes de gestion de bases de données (SGBD) et paradigme logique}}
+                Préserver l'intégrité des données est une tâche complexe dans un contexte d'accès concurrents, donc le traitement des donnéessera confié à un outil appelé SGBD dont le rôle est de recevoir les requêtes des utilisateurs (modification des données ou extraction d'information à partir de ces données) et de les traduire en des opérations effectuées sur la base de données. C'est au SGBD de garantir la cohérence des données au fur et à mesure des opérations réalisées. Les requêtes prennent en général la forme d'une description du résultat attendu sans indication sur la manière de calculer. C'est le SGBD qui implémente la recherche du résultat.
+                
+                C'est le principe du \emph{paradigme logique} : un programme est une description des propriétés que doit satisfaire le résultat. Un résultat est un jeu de paramètres qui satisfait les propriétés. Il n'y a aucune indication sur la manière de calculer les résultats.
+                
+                Pour que cela fonctionne, la pluspart des SGBD s'appuient sur un modèle introduit dans les années 1970, appelé modèle relationnel.
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Le modèle relationnel}}
+                $\bullet$ Le modèle relationnel est une modèle mathématique basé sur la théorie des ensembles et la logique des prédicats, et qui présente les bases de données comme des objets qui définissent des relations entre les blocs d'information. C'est un modèle abstrait qui s'exprime indépendamment des implémentations possibles et qui couvre donc de nombreux SGBD.
+                
+                \vspace{12pt}
+                
+                $\bullet$ Dans ce modèle, une base de données est vue comme un ensemble de relations. Ces relations sont aussi appelées \textit{tables} car on peut les représenter par des tableaux à double entrée dont les colonnes correspondent à un type d'information particulier. Ces colonnes sont appelées les \textit{attributs} de la relation.
+                
+                \vspace{6pt}
+                
+                Exemple : dans le système d'information d'une bibliothèque, on peut avoir une table Document dont les attributs sont le titre, l'auteur, le genre, la date de parution, le nombre de pages, ...
+                
+                \vspace{12pt}
+                
+                $\bullet$ Chaque attribut est associé à un domaine qui correspond à l'ensemble des valeurs possibles par l'attribut. Le domaine permet de choisir un type pour implémenter concrètement la base de données.
+                
+                \vspace{6pt}
+                
+                \'Etant donné une relation $R$ dont les attributs sont $A_1, \ldots, A_n$ associés aux domaines $D_1, \ldots, D_n$, on appelle \textit{schéma relationnel} de $R$ l'association des attributs et des domaines notée
+                    \[ R(A_1 : D_1, \ldots, A_n : D_n) \]
+                
+                \begin{indt}{Exemple : pour la table Document :}
+                    $-$ Le titre et l'auteur sont des données textuelles ;
+                    
+                    $-$ Le genre est tirée d'une énumération finie (roman, poésie, théâtre, ...) ;
+                    
+                    $-$ La date de parution est une date ;
+                    
+                    $-$ Le nombre de pages est un entier.
+                \end{indt}
+                
+                \vspace{6pt}
+                
+                D'où le schéma relationnel :
+                
+                Document(titre : texte, auteur : texte, genre : enum(roman, ...), date de parution : date, nombre de pages : entier)
+                
+                \vspace{6pt}
+                
+                Le domaine ``texte'' peut être par exemple associé au type \texttt{string} des chaînes de caractères et le domaine entier au type \texttt{int}.
+                
+                \vspace{12pt}
+                
+                $\bullet$ Les lignes d'une relation de schéma $R(A_1 : D_1, \ldots, A_n : D_n)$ correspondent aux éléments de la relation $R$, qui est un sous ensemble de $\displaystyle \prod_{k = 1}^n D_k$. On appelle donc ces éléments des tuples ou des enregistrements.
+                
+                \vspace{6pt}
+                
+                Exemple pour la table Document :
+                
+                \begin{tabular}{|c|c|c|c|c|}
+                    \hline
+                    Titre
+                    & Auteur
+                    & Genre
+                    & Date de parution
+                    & Nombre de pages
+                    \\
+                    \hline
+                    \textit{La cousine Bette}
+                    & Honoré de Balzac
+                    & Roman
+                    & 1846
+                    & 240
+                    \\
+                    \textit{De la guerre}
+                    & Carl von Clausewitz
+                    & Traité
+                    & 1832
+                    & 240
+                    \\
+                    \textit{Cyrano de Bergerac}
+                    & Edmond Rostant
+                    & Théâtre
+                    & 1857
+                    & 280
+                    \\
+                    \hline
+                \end{tabular}
+                
+                \vspace{12pt}
+                
+                Remarque : certains enregistrements peuvent coïncider pour certains attributs et on veut une manière efficace de les distinguer.
+                
+                \vspace{12pt}
+                
+                $\bullet$ On appelle \textit{clé candidate} un ensemble minimal (pour l'inclusion) d'attributs permettant de caractériser de manière unique chaque enregistrement, \textit{i.e} tel qu'il n'existe pas deux enregistrements qui coïncident sur tous les attributs de la clé.
+                
+                \vspace{6pt}
+                
+                Exemple : pour la table Document, \{titre, auteur\} devrait convenir.
+                
+                \vspace{6pt}
+                
+                Il peut y avoir plusieurs clés candidates et on doit enc choisir une, appelée \textit{clé primaire}. On souligne dans le schéma relationnel les attributs de la clé primaire pour les repérer efficacement.
+                
+                Remarque : on choisit souvent d'ajouter un attribut entier pour numéroter les enregistrements, que l'on choisit comme clé primaire.
+                
+                \vspace{12pt}
+                
+                $\bullet$ Dans une relation $R$, on appelle \textit{clé étrangère} un ensemble d'attributs qui constitue une clé candidate (souvent primaire) d'une autre relation.
+                
+                \vspace{6pt}
+                
+                Exemple : dans une table Emprunts décrivant les emprunts de la bibliothèque, on intègre la clé de la table Document pour identifier les documents empruntés.
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Algèbre relationnelle}}
+                L'algèbre relationnelle est une théorie mathématique qui décrit des opérations que l'on peut réaliser sur une base de données du point de vue du modèle relationnel. Les propriétés qui découlent de cette théorie définissent un fondement rigoureux aux implémentations de SGBD en justifiant les optimisations des requêtes des utilisateurs. Cette théorie des H.P, mais nous l'étudierons \textit{via} le langage re requêtes SQL (Structured Query Language).
+            \end{indt}
+        \end{indt}
+        
+        \begin{indt}{\subsection{Le langage SQL : requêtes élémentaires}}
+            \begin{indt}{\subsubsection{Gestion du contexte}}
+                $-$ Choix de la base de données : \texttt{USE <nom\_base>;}
+                
+                $-$ Obtenir du schéma relationnel d'une table : \texttt{DESCRIBE <nom\_table>;}
+                
+                Exemple :
+                
+                \begin{lstlisting}[language=SQL, xleftmargin=80pt]
+USE bibliotheque;
+DESCRIBE Document;\end{lstlisting}
+                
+                Les opérations de création / suppression / modification de bases de données / de tables sont H.P.
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Opération de projection}}
+                Pour visualiser le contenu d'une table, on utilise la requête \texttt{SELECT * FROM <nom\_table>;}
+                
+                C'est une cas particulier de l'opération de projection qui permet de construire une table ne contenant que les valeurs des tuples que pour certains attributs.
+                
+                Attention, la table construite par une requête est éphémère.
+                
+                Syntaxe :
+                \texttt{SELECT <attribut$_1$>, ..., <attribut$_n$> FROM <nom\_table>;}
+                
+                Exemple :
+                \begin{lstlisting}[language=SQL, xleftmargin=80pt]
+SELECT titre, date_de_parution FROM Document;\end{lstlisting}
+                
+                Remarque : cette requête peut créer une table contenant des doublons qui sont conservés par défaut. On utilise le mot-clé \texttt{DISTINCT} pour éliminer les doublons.
+                
+                Exemple :
+                \begin{lstlisting}[language=SQL, xleftmargin=80pt]
+SELECT DISTINCT titre, date_de_parution FROM Document;\end{lstlisting}
+               
+               Les enregistrements du résultat d'une projection sont a \textit{priori} rangés dans le même ordre que dans la table initiale. On peut choisir de les réordonner en utilisant le mot-clé \texttt{ORDER BY} suivi d'une liste d'attributs.
+               
+               L'ordre associé à cette liste est l'ordre croissant lexicographique.
+               
+               Exemple :
+               
+                \begin{lstlisting}[language=SQL, xleftmargin=80pt]
+SELECT * FROM Document
+ORDER BY auteur, date_de_parution;\end{lstlisting}
+                
+                Pour utiliser l'odre décroissant selon l'un des attributs, on utilise le mot-clé \texttt{DESC} après le nom de l'attribut.
+                
+                Exemple :
+                
+                \begin{lstlisting}[language=SQL, xleftmargin=80pt]
+SELECT * FROM Document
+ORDER BY date_de_parution DESC;\end{lstlisting}
+                
+                Attention, \texttt{DESC} ne porte que sur un seul attribut (le répéter si besoin).
+                
+                \vspace{12pt}
+                
+                Il est aussi possible de renommer les attributs du résultat d'une projection, ce qui peut être nécessaire dans des opérations plus complexes faisant intervenir des sous-requêtes ou plusieurs tables. On utilise pour cela le mot-clé \texttt{AS}.
+                
+                Exemple :
+                
+                \begin{lstlisting}[language=SQL, xleftmargin=80pt]
+SELECT titre, auteur, date_de_parution AS date
+FROM Document;\end{lstlisting}
+                
+                On peut combiner tout cela :
+                
+                \begin{lstlisting}[language=SQL, xleftmargin=80pt]
+SELECT titre, date_de_parution AS date
+FROM Document
+ORDER BY date DESC, titre;\end{lstlisting}
+            \end{indt}
+        \end{indt}
+        
+    \end{indt}
+    
+    
+    
+\end{document}
+%--------------------------------------------End
