@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2022.04.11
+% Last modification     :   2022.05.02
 %
 %------------------------------------------------------------------------
 
@@ -482,8 +482,366 @@ SELECT titre, date_de_parution AS date
 FROM Document
 ORDER BY date DESC, titre;\end{lstlisting}
             \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Opération de sélection}}
+                On peut ne conserver que les enregistrements qui satisfont une condition donnée \textit{via} l'opération de sélection, introduite par le mot-clé \texttt{WHERE}.
+
+                Exemple :
+                \begin{lstlisting}[language=SQL, xleftmargin=80pt]
+SELECT * FROM Document
+WHERE auteur = 'Edmond Rostand';\end{lstlisting}
+                
+                Les opérateurs de comparaison au programme sont : \texttt{=, <>, <, >, <=, >=}
+
+                Attention, les enregistrements ne fournissent pas forcément une valeur pour chaque attribut. Les attributs sans valeurs prennent la valeur spéciale \texttt{NULL}. On ne peut pas vérifier si un attribut a la valeur \texttt{NULL} avec les opérateurs ci-dessus : on utilise les opérateurs \texttt{IS NULL} et \texttt{IS NOT NULL}
+
+                Exemple :
+
+                \begin{lstlisting}[language=SQL, xleftmargin=80pt]
+SELECT * FROM Document
+WHERE date_de_parution IS NULL;\end{lstlisting}
+
+                On peut combiner plusieurs conditions grâce aux connecteurs logiques : \texttt{AND, OR, NOT}.
+
+                Exemple :
+
+                \begin{lstlisting}[language=SQL, xleftmargin=80pt]
+SELECT * FROM Document
+WHERE NOT (date_de_parution >= 2000 AND nombre_de_page < 200);\end{lstlisting}
+
+                Remarque : On peut combiner sélection et projection
+
+                On peut aussi fixer un nombre maximal d'enregistrements pour le résultat : le SGBD choisira les premiers qu'il traite jusqu'à éventuellement atteindre la borne. On utilise le mot clé \texttt{LIMIT}
+
+                Exemple : 10 ouvrages les + récents
+
+                \begin{lstlisting}[language=SQL, xleftmargin=80pt]
+SELECT * FROM Document
+ORDER BY date_de_parution DESC
+LIMIT 10;
+                \end{lstlisting}
+
+                On peut ajouter un décalage lors de l'usage de \texttt{LIMIT} grâce au mot-clé \texttt{OFFSET}.
+
+                Exemple : dernier tiers du top 15 des auteurs ayant écrit les plus gros livres.
+
+                \begin{lstlisting}[language=SQL, xleftmargin=80pt]
+SELECT DISTINCT auteur FROM Document
+ORDER BY nombre_de_pages DESC
+LIMIT 5 OFFSET 10;
+                \end{lstlisting}
+            \end{indt}
         \end{indt}
         
+    \end{indt}
+
+    \vspace{12pt}
+    
+    \begin{indt}{\section{Conception de bases de données}}
+        \begin{indt}{\subsection{Modèle entité-association}}
+            \begin{indt}{\subsubsection{Introduction}}
+                Le modèle \textit{entité-association}  est un modèle de la fin des années 1970 qui propose un formalisme pour décrire la structure des données en fonction des liens qu'elles entretiennent.
+
+                On lui associe une représentation graphique permettant d'identifier facilement les deux concepts de base du modèle : les \textit{entités} et les \textit{associations}.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Entités}}
+                Une entité est un objet donné pour lequel on dispose de données que l'on souhaite traiter.
+
+                Exemple : moi, le livre d'Edmond Rostand intitulé \textit{Cyrano de Bergerac}, $\ldots$ 
+
+                Les informations associées à une entité sont ses attributs. On réunit un ensemble d'entités ayant des caractéristiques communes dans un type d'entité que l'on appelle aussi par abus entités.
+
+                Dans ce cadre, une entité concrète est appelée instance ou occurrence de l'entité.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Associations}}
+                Une association exprime un lien entre plusieurs entités.
+
+                Exemple : Edmond Rostand \emph{\it a écrit} le livre intitulé \textit{Cyrano de Bergerac}.
+
+                Une association peut aussi avoir des attributs (ex : date d'écriture) et on fait également l'abus de langage qui consiste à appeler association un type d'association.
+
+                \vspace{12pt}
+                
+                Représentation graphique : on dessine deux types de bloc (les entités et les associations) et on lie les blocs d'entité \textit{via} les blocs d'association qui expriment ces liens
+                \begin{center}
+                    \begin{tikzpicture}
+                        \node (D) at (0, 0) [rectangle, draw] {
+                            \begin{tabular}{c}
+                                Document
+                                \\
+                                \hline
+                                $-$ titre
+                                \\
+                                $-$ genre
+                                \\
+                                $-$ nb pages
+                            \end{tabular}
+                        };
+                        \node (A) at (4, 0) [ellipse, draw] {
+                            \begin{tabular}{c}
+                                \'Ecriture
+                                \\
+                                \hline
+                                $-$ Date
+                            \end{tabular}
+                        };
+                        \node (P) at (8, 0) [rectangle, draw] {
+                            \begin{tabular}{c}
+                                Personne
+                                \\
+                                \hline
+                                $-$ Num
+                                \\
+                                $-$ Prénom
+                                \\
+                                $-$ Date naissance
+                                \\
+                                $-$ ...
+                            \end{tabular}
+                        };
+
+                        \draw (D) -- (A);
+                        \draw (A) -- (P);
+                    \end{tikzpicture}
+                \end{center}
+
+                On distingue les associations binaires (\textit{i.e} qui lient 2 entités) des associations $n$-aires. On peut toujours se limiter aux associations binaires en remplaçant une association $n$-aire par une nouvelle entité représentant l'association, liée aux $n$ entités par $n$ associations binaires.
+
+                Exemple :
+
+                \begin{center}
+                    \begin{tikzpicture}
+                        \node (P) at (0, 0) [rectangle, draw] {Personne};
+                        \node (E) at (3, 0) [ellipse, draw] {Emprunt};
+                        \node (D) at (3, -2) [rectangle, draw] {Document};
+                        \node (B) at (6, 0) [rectangle, draw] {Bibliothèque};
+
+                        \draw (P) -- (E);
+                        \draw (B) -- (E);
+                        \draw (D) -- (E);
+                    \end{tikzpicture}
+                \end{center}
+
+                donne :
+
+                \begin{center}
+                    \begin{tikzpicture}
+                        \node (P) at (0, 0) [rectangle, draw] {Personne};
+                        \node (R) at (3, 0) [ellipse, draw] {Réalise};
+                        \node (E) at (6, 0) [rectangle, draw] {Emprunt};
+                        \node (C) at (6, -2) [ellipse, draw] {Concerne};
+                        \node (L) at (9, 0) [ellipse, draw] {A lieux dans};
+                        \node (D) at (6, -4) [rectangle, draw] {Document};
+                        \node (B) at (13, 0) [rectangle, draw] {Bibliothèque};
+
+                        \draw (P) -- (R) -- (E) -- (L) -- (B);
+                        \draw (E) -- (C) -- (D);
+                    \end{tikzpicture}
+                \end{center}
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Cardinalité d'une association}}
+                Le lien entre une entité et une association peut être étiqueté par un couple $(p, q)$ représentant les nombres minimums et maximum de fois que l'entité peut apparaître dans une association de ce type : $q = *$  s'il n'y a pas de borne supérieure.
+
+                Exemple :
+
+                \begin{center}
+                    \begin{tikzpicture}
+                        \node (P) at (0, 0) [rectangle, draw] {Personne};
+                        \node (E) at (3, 0) [ellipse, draw] {\'Ecriture};
+                        \node (D) at (6, 0) [rectangle, draw] {Document};
+
+                        \draw (P) to node [above] {$0, *$} (E); %up tag : 0, *
+                        \draw (E) to node [above] {$1, *$} (D); %up tag : 1, *
+                    \end{tikzpicture}
+                \end{center}
+
+                On appelle cette association une association $*-*$ car elle peut lier plusieurs entités à plusieurs autres.
+
+                D'autres types d'association sont :
+
+                $-$ Les associations $1-*$ : elles lient une entité à plusieurs autres.
+
+                Exemple : une \oe vure peut être tirée à plusieurs exemplaires mais un exemplaire n'est un tirage que d'une seule \oe uvre
+
+                \begin{center}
+                    \begin{tikzpicture}
+                        \node (O) at (0, 0) [rectangle, draw] {\oe uvre};
+                        \node (T) at (3, 0) [ellipse, draw] {Tirage};
+                        \node (E) at (6, 0) [rectangle, draw] {Exemplaire};
+
+                        \draw (O) -- node [above] {$1, *$} (T); % label up : 1, *
+                        \draw (T) -- node [above] {$1, 1$} (E); %label : 1, 1
+                    \end{tikzpicture}
+                \end{center}
+
+                $-$ Les associations $1-1$ : elles lient une entité à une seule autre.
+
+                Exemple : chaque exemplaire d'une bibliothèque a une référence unique
+
+                \begin{center}
+                    \begin{tikzpicture}
+                        \node (E) at (0, 0) [rectangle, draw] {Exemplaire};
+                        \node (T) at (4, 0) [ellipse, draw] {Est référencé par};
+                        \node (R) at (8, 0) [rectangle, draw] {Référence};
+
+                        \draw (E) -- (T);
+                        \draw (T) -- (R);
+                    \end{tikzpicture}
+                \end{center}
+
+                Remarque : on peut souvent fusionner les entités impliquées dans une association $1-1$ sans introduire trop de redondance dans les données.
+
+                Une association $*-*$ peut être scindée en deux associations $1-*$ \textit{via} l'introduction d'une nouvelle entité représentant l'association.
+
+                Exemple :
+
+                \begin{center}
+                    \begin{tikzpicture}
+                        \node (P) at (0, 0) [rectangle, draw] {Personne};
+                        \node (E) at (4, 0) [ellipse, draw] {
+                            \begin{tabular}{c}
+                                \'Ecriture
+                                \\
+                                \hline
+                                $-$ Date
+                            \end{tabular}
+                        };
+                        \node (D) at (8, 0) [rectangle, draw] {Document};
+
+                        \draw (P) -- node [above] {$0, *$} (E); % label up : 0, *
+                        \draw (E) -- node [above] {$1, *$} (D); %label : 1, *
+                    \end{tikzpicture}
+                \end{center}
+
+                donne :
+
+                \begin{center}
+                    \begin{tikzpicture}
+                        \node (P) at (0, 0) [rectangle, draw] {Personne};
+                        \node (p) at (3.5, 0) [ellipse, draw] {Participe à};
+                        \node (E) at (7.5, 0) [rectangle, draw] {
+                            \begin{tabular}{c}
+                                Ecriture
+                                \\
+                                \hline
+                                $-$ Date
+                                \\
+                                $-$ Auteur
+                                \\
+                                $-$ Ouvrage
+                            \end{tabular}
+                        };
+                        \node (C) at (11.5, 0) [ellipse, draw] {Concerne};
+                        \node (D) at (15, 0) [rectangle, draw] {Document};
+
+                        \draw (P) -- node [above] {$0, *$} (p); % 0, *
+                        \draw (p) -- node [above] {$1, 1$} (E); % 1, 1
+                        \draw (E) -- node [above] {$1, 1$} (C); % 1, 1
+                        \draw (C) -- node [above] {$1, *$} (D); % 1, *
+                    \end{tikzpicture}
+                \end{center}
+
+                Remarque : les attributs de la nouvelle entité doivent permettre d'identifier les entités impliquées dans l'association : on utilise des clés étrangères dans le modèle relationnel associé à ce modèle.
+            \end{indt}
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Passage du modèle entité-association au modèle relationnel}}
+            \begin{indt}{\subsubsection{Idée}}
+                On associe une relation à chaque  entité, avec les mêmes attributs, les associatoins expriment des liens entre les tables et introduisent donc des contraintes d'intégrité des données.
+
+                $\bullet$ La décomposition d'une association $n$-aire ou en associations binaires se traduit en la création d'une nouvelle entité donc d'une nouvelle association.
+
+                $\bullet$ La décomposition des associations binaires $*-*$ en deux associations $1-*$ se traduit aussi en la creation d'une nouvelle table, dite de \textit{jonction}.
+
+                $\bullet$ Après cela, il ne reste qu'à traiter les associations $1-1$  et $1-*$ .
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Cas des associations $1-1$ et $1-*$}}
+                Ces types d'association impliquent que pour l'une des deux entités, chaque instance de l'entité ne peut être associée qu'à une unique instance de l'autre entité. Pour exprimer ce lien entre les tables correspondantes on ajoute une clé étrangère à la première table, faisant référence à l'unique enregistrement de la seconde table impliquée dans l'association. Les attributs de l'association seront aussi intégrés à la première table.
+
+
+                Exemple :
+
+                \begin{center}
+                    \begin{tikzpicture}
+                        \node (P) at (0, 0) [rectangle, draw] {
+                            \begin{tabular}{c}
+                                Personne
+                                \\
+                                \hline
+                                $-$ Nom
+                                \\
+                                $-$ Prénom
+                                \\
+                                $-$ Date de naissance
+                            \end{tabular}
+                        };
+                        \node (E) at (0, -3) [ellipse, draw] {
+                            \begin{tabular}{c}
+                                Écriture
+                                \\
+                                $-$ Date
+                            \end{tabular}
+                        };
+                        \node (D) at (0, -6) [rectangle, draw] {
+                            \begin{tabular}{c}
+                                Document
+                                \\
+                                \hline
+                                $-$ Titre
+                                \\
+                                $-$ Genre
+                            \end{tabular}
+                        };
+                        \node (T) at (0, -9) [ellipse, draw] {
+                            \begin{tabular}{c}
+                                $-$ Date d'impression
+                            \end{tabular}
+                        };
+                        \node (e) at (0, -12) [rectangle, draw] {
+                            \begin{tabular}{c}
+                                Exemplaire
+                                \\
+                                \hline
+                                $-$ Numéro
+                                \\
+                                $-$ Imprimerie
+                            \end{tabular}
+                        };
+                        
+                        \draw (P) -- node [right] {$0, *$} (E); % 0, *
+                        \draw (E) -- node [right] {$1, *$} (D); % 1, *
+                        \draw (D) -- node [right] {$1, *$} (T); % 1, *
+                        \draw (T) -- node [right] {$1, 1$} (e); % 1, 1
+                    \end{tikzpicture}
+                \end{center}
+
+                \begin{indt}{Modèle relationnel associé : on utilise des identifiants numériques pour les clés primaires :}
+                    Personne(id: entier, nom: texte, prénom: texte, date de naissance: date)
+                    
+                    Document(id Doc: entier, titre: texte, genre: enuml(...))
+                    
+                    Exemplaire(numéro: entier, imprimerie: texte, id Doc: entier, date d'impression: date)
+                    
+                    \'Ecriture(date: date, id Doc: entier, id: entier)
+                \end{indt}
+            \end{indt}
+        \end{indt}
     \end{indt}
     
     
