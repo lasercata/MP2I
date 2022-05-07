@@ -672,7 +672,7 @@ LIMIT 5 OFFSET 10;
 
                 $-$ Les associations $1-*$ : elles lient une entité à plusieurs autres.
 
-                Exemple : une \oe vure peut être tirée à plusieurs exemplaires mais un exemplaire n'est un tirage que d'une seule \oe uvre
+                Exemple : une \oe uvre peut être tirée à plusieurs exemplaires mais un exemplaire n'est un tirage que d'une seule \oe uvre
 
                 \begin{center}
                     \begin{tikzpicture}
@@ -905,7 +905,10 @@ WHERE Personne.id = Ecriture.id AND Document.idDoc = Ecriture.idDoc;\end{lstlist
 
                 Attention : pas de \texttt{UNION} dans une clause \texttt{FROM}
 
-                Exemple : \texttt{SELECT ... UNION SELECT ...}
+                Exemple : 
+                
+                \begin{lstlisting}[language=SQL, xleftmargin=80pt]
+SELECT ... UNION SELECT ... ;\end{lstlisting}
 
                 Exemple : dates qui sont des dates d'écriture ou d'impression de documents.
 
@@ -922,7 +925,7 @@ SELECT date d impression FROM Exemplaire;\end{lstlisting}
 
                 Réalisation SQL : on utilise le mot-clé \texttt{INTERSECT} de la même manière que \texttt{UNION}.
 
-                Remarque : certains SGBD (comme mysql) n'implémentent pas cette opération. Dans ce cas, il faut encoder cette opération avec des requêtes. On peut par exemple utiliser un produit cartésien.
+                Remarque : certains SGBD (comme MySQL) n'implémentent pas cette opération. Dans ce cas, il faut encoder cette opération avec des requêtes. On peut par exemple utiliser un produit cartésien.
 
                 Exemple : Prénom qui sont aussi des titres d'\oe uvres.
                 \begin{lstlisting}[language=SQL, xleftmargin=80pt]
