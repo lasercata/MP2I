@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2022.05.04
+% Last modification     :   2022.05.09
 %
 %------------------------------------------------------------------------
 
@@ -343,36 +343,37 @@
                 \vspace{6pt}
                 
                 Exemple pour la table Document :
-                
-                \begin{tabular}{|c|c|c|c|c|}
-                    \hline
-                    Titre
-                    & Auteur
-                    & Genre
-                    & Date de parution
-                    & Nombre de pages
-                    \\
-                    \hline
-                    \textit{La cousine Bette}
-                    & Honoré de Balzac
-                    & Roman
-                    & 1846
-                    & 240
-                    \\
-                    \textit{De la guerre}
-                    & Carl von Clausewitz
-                    & Traité
-                    & 1832
-                    & 240
-                    \\
-                    \textit{Cyrano de Bergerac}
-                    & Edmond Rostand
-                    & Théâtre
-                    & 1857
-                    & 280
-                    \\
-                    \hline
-                \end{tabular}
+                \begin{center}
+                    \begin{tabular}{|c|c|c|c|c|}
+                        \hline
+                        Titre
+                        & Auteur
+                        & Genre
+                        & Date de parution
+                        & Nombre de pages
+                        \\
+                        \hline
+                        \textit{La cousine Bette}
+                        & Honoré de Balzac
+                        & Roman
+                        & 1846
+                        & 240
+                        \\
+                        \textit{De la guerre}
+                        & Carl von Clausewitz
+                        & Traité
+                        & 1832
+                        & 240
+                        \\
+                        \textit{Cyrano de Bergerac}
+                        & Edmond Rostand
+                        & Théâtre
+                        & 1857
+                        & 280
+                        \\
+                        \hline
+                    \end{tabular}
+                \end{center}
                 
                 \vspace{12pt}
                 
@@ -520,8 +521,7 @@ WHERE NOT (date_de_parution >= 2000 AND nombre_de_page < 200);\end{lstlisting}
                 \begin{lstlisting}[language=SQL, xleftmargin=80pt]
 SELECT * FROM Document
 ORDER BY date_de_parution DESC
-LIMIT 10;
-                \end{lstlisting}
+LIMIT 10;\end{lstlisting}
 
                 On peut ajouter un décalage lors de l'usage de \texttt{LIMIT} grâce au mot-clé \texttt{OFFSET}.
 
@@ -530,8 +530,7 @@ LIMIT 10;
                 \begin{lstlisting}[language=SQL, xleftmargin=80pt]
 SELECT DISTINCT auteur FROM Document
 ORDER BY nombre_de_pages DESC
-LIMIT 5 OFFSET 10;
-                \end{lstlisting}
+LIMIT 5 OFFSET 10;\end{lstlisting}
             \end{indt}
         \end{indt}
         
@@ -638,7 +637,7 @@ LIMIT 5 OFFSET 10;
                         \node (R) at (3, 0) [ellipse, draw] {Réalise};
                         \node (E) at (6, 0) [rectangle, draw] {Emprunt};
                         \node (C) at (6, -2) [ellipse, draw] {Concerne};
-                        \node (L) at (9, 0) [ellipse, draw] {A lieux dans};
+                        \node (L) at (9.4, 0) [ellipse, draw] {A lieux dans};
                         \node (D) at (6, -4) [rectangle, draw] {Document};
                         \node (B) at (13, 0) [rectangle, draw] {Bibliothèque};
 
@@ -953,7 +952,7 @@ WHERE prenom = titre;\end{lstlisting}
 
                 \vspace{6pt}
                 
-                Exemple : noms qui ne sont pas des prénoms
+                Exemple : noms qui ne sont pas des prénoms :
 
                 \begin{lstlisting}[language=SQL, xleftmargin=80pt]
 SELECT nom FROM Personne
@@ -1008,7 +1007,7 @@ SELECT ... FROM R JOIN R2 ON C ...\end{lstlisting}
 
                 \vspace{12pt}
                 
-                On souhaite récupérer les noms et prénoms des emprunteurs avec les dates de retour associées
+                On souhaite récupérer les noms et prénoms des emprunteurs avec les dates de retour associées :
 
                 \begin{lstlisting}[language=SQL, xleftmargin=80pt]
 SELECT nom, prenom, dateRetour
@@ -1059,40 +1058,44 @@ FROM Personne LEFT JOIN Emprunt ON Personne.id = Emprunt.id;\end{lstlisting}
 
                 \vspace{6pt}
                 
-                Personne :
-                \begin{tabular}{|c|c|c|}
-                    \hline
-                    idAlice & Alice & Dupond
+                \begin{tabular}{lcl}
+                    Personne & : &
+                    \begin{tabular}{|c|c|c|}
+                        \hline
+                        idAlice & Alice & Dupond
+                        \\
+                        \hline
+                        idBob & Bob & Dupont
+                        \\
+                        \hline
+                    \end{tabular}
+                    \vspace{6pt}
                     \\
-                    \hline
-                    idBob & Bob & Dupont
+                    Emprunt & : &
+                    \begin{tabular}{|c|c|c|}
+                        \hline
+                        idAlice & 2022-05-04 & idDoc1
+                        \\
+                        \hline
+                        idAlice & 2022-05-05 & idDoc2
+                        \\
+                        \hline
+                    \end{tabular}
+                    \vspace{6pt}
                     \\
-                    \hline
-                \end{tabular}
-
-                Emprunt :
-                \begin{tabular}{|c|c|c|}
-                    \hline
-                    idAlice & 2022-05-04 & idDoc1
-                    \\
-                    \hline
-                    idAlice & 2022-05-05 & idDoc2
-                    \\
-                    \hline
-                \end{tabular}
-
-                Résultat :
-                \begin{tabular}{|c|c|c|}
-                    \hline
-                    Alice & Dupond & 2022-05-04
-                    \\
-                    \hline
-                    Alice & Dupond & 2022-05-05
-                    \\
-                    \hline
-                    Bob & Dupont & NULL
-                    \\
-                    \hline
+                    Résultat & : &
+                    \begin{tabular}{|c|c|c|}
+                        \hline
+                        Alice & Dupond & 2022-05-04
+                        \\
+                        \hline
+                        Alice & Dupond & 2022-05-05
+                        \\
+                        \hline
+                        Bob & Dupont & NULL
+                        \\
+                        \hline
+                    \end{tabular}
                 \end{tabular}
 
                 \begin{indt}{Remarque : il existe d'autres types de jointure (H.P) :}
@@ -1101,6 +1104,204 @@ FROM Personne LEFT JOIN Emprunt ON Personne.id = Emprunt.id;\end{lstlisting}
                     $-$ naturelle (\texttt{NATURAL JOIN})
 
                     $-$ totale (\texttt{TOTAL JOIN})
+                \end{indt}
+            \end{indt}
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Agrégation et imbrication}}
+            \label{3.3}
+
+            \begin{indt}{\subsubsection{Application de fonctions aux attributs}}
+                Il est possible d'appliquer des fonctions aux attributs des tuples sélectionnés par une requête pour calculer de nouvelles valeurs.
+
+                Sont au programme : \texttt{+, -, *, /}.
+
+                Exemple : la durée restante avant le retour pour les documents empruntés :
+
+                \begin{lstlisting}[language=SQL, xleftmargin=80pt]
+SELECT idDoc, dateRetour - '2022-05-09' AS delai FROM Emprunt;\end{lstlisting}
+
+                Remarque : ces fonctions permettent d'obtenir un résultat pour chaque tuple sélectionné en fonction des valeurs de ses attributs. On peut vouloir au contraire travailler sur une colonne, \textit{i.e} sur l'ensemble des valeurs prises par un attribut pour tous les enregistrements sélectionnés : c'est le rôle des fonctions agrégatives.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Fonctions d'agrégation}}
+                Une \textit{fonction d'agrégation} ou \textit{fonction agrégative} est une fonction qui s'applique à l'ensemble des valeurs d'un attribut donné pour tous les enregistrements sélectionnés. Une telle fonction renvoie en général un unique résultat donc la table créée par la requête ne contient qu'une seule ligne.
+
+                Sont au programme : \texttt{MIN, MAX, SUM, AVG, COUNT} (cardinal du multi-ensemble des valeurs privé de \texttt{NULL})
+
+                Exemple : nombre de documents empruntés :
+
+                \begin{lstlisting}[language=SQL, xleftmargin=80pt]
+SELECT COUNT(idDoc) FROM Emprunt;\end{lstlisting}
+
+                Remarque : ici, le choix de l'attribut n'est pas important tant que c'est  une clé car on veut calculer le nombre d'enregistrements. On dispose de la syntaxe \texttt{COUNT(*)} pour cela.
+
+                \vspace{6pt}
+                
+                Pour connaître le nombre d'auteurs dont une \oe uvre est dans la bibliothèque, on peut avoir des doublons que l'on veut éliminer avant comptage : on place le mot clé \texttt{DISTINCT} dans l'argument de la fonction \texttt{COUNT} :
+
+                \begin{lstlisting}[language=SQL, xleftmargin=80pt]
+SELECT COUNT(DISTINCT auteur) FROM Document;\end{lstlisting}
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Regroupement d'enregistrements}}
+                On peut réunir dans un groupe les enregistrements d'une table qui coïncident sur un ensemble d'attributs. On obtient dans le résultat de la requête un tuple par groupe.
+
+                Réalisation SQL :
+
+                \begin{lstlisting}[language=SQL, xleftmargin=80pt]
+SELECT ... GROUP BY attribut_1, ... attribut_n;\end{lstlisting}
+
+                Exemple :
+
+                \begin{lstlisting}[language=SQL, xleftmargin=80pt]
+SELECT auteur FROM Document
+GROUP BY auteur;\end{lstlisting}
+
+                équivalent à :
+
+                \begin{lstlisting}[language=SQL, xleftmargin=80pt]
+SELECT DISTINCT auteur FROM Document;\end{lstlisting}
+
+                On peut bien sûr projeter sur plusieurs attributs, mais cela n'a pas de sens si ces attributs n'ont pas la même valeur pour tous les tuples d'un groupe.
+
+                Exemple :
+
+                \begin{lstlisting}[language=SQL, xleftmargin=80pt]
+SELECT auteur, titre FROM Document
+GROUP BY auteur;\end{lstlisting}
+
+                Ici, MySQL conserve le titre du premier enregistrement traité de chaque groupe.
+
+                \vspace{12pt}
+                
+                En pratique, le regroupement perd tout son intérêt s'il est combiné avec les fonctions agrégatives car elles permettent d'obtenir une valeur unique pour tous les enregistrements d'un groupe.
+
+                Exemple : nombre d'ouvrages dans la bibliothèque pour chaque auteur :
+
+                \begin{lstlisting}[language=SQL, xleftmargin=80pt]
+SELECT auteur, COUNT(*) FROM Document
+GROUP BY auteur;\end{lstlisting}
+
+                Nombre d'ouvrages empruntés pour chaque usager :
+
+                \begin{lstlisting}[language=SQL, xleftmargin=80pt]
+SELECT Personne.id, COUNT(idDoc)
+FROM Personne LEFT JOIN Emprunt ON Personne.id = Emprunt.id
+GROUP BY Personne.id;\end{lstlisting}
+
+                Nombre d'homonymes parmi les usagers :
+
+                \begin{lstlisting}[language=SQL, xleftmargin=80pt]
+SELECT nom, prenom COUNT(*) FROM Personne
+GROUP BY nom, prenom;\end{lstlisting}
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Filtrage des agrégats}}
+                On peut vouloir sélectionner certains enregistrements après regroupement et / ou après application d'une fonction d'agrégation. Par exemple, on veut garder les usagers qui ont empruntés au moins 10 documents. 
+
+                Réalisation SQL : on utilise le mot clé \texttt{HAVING}, qui s'utilise comme \texttt{WHERE}, mais qui sélectionne les tuples après regroupement contrairement à \texttt{WHERE} qui les sélectionne avant.
+
+                \begin{lstlisting}[language=SQL, xleftmargin=80pt]
+SELECT ... HAVING condition;\end{lstlisting}
+
+                La condition de la clause \texttt{HAVING} ne peut porter que sur des caractéristiques du groupe, \textit{i.e} sur des attributs sur lesquelles tous les tuples du groupe coïncident ou sur le résultat de l'application d'une fonction agrégative sur les tuples du groupe.
+                
+                Exemple :
+
+                \begin{lstlisting}[language=SQL, xleftmargin=80pt]
+SELECT id, COUNT(*) FROM Emprunt
+GROUP BY id
+HAVING COUNT(*) >= 10;\end{lstlisting}
+
+                \vspace{6pt}
+                
+                Usagers ayant au moins deux documents en retard :
+
+                \begin{lstlisting}[language=SQL, xleftmargin=80pt]
+SELECT id FROM Emprunt
+WHERE dateRetour < '2022-05-09'
+GROUP BY id
+HAVING COUNT(*) >= 2;\end{lstlisting}
+
+                Si on veut connaître les usagers ayant le plus de documents en retard ?
+                Ici, on veut pouvoir réutiliser le résultat d'une requête pour faire une autre requête.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Requêtes imbriquées}}
+                Une \textit{sous-requête} est une requête imbriquée dans une autre. On parle aussi de \textit{requête interne}, par opposition à la \textit{requête externe}, ou \textit{englobante} qui la contient. Une sous-requête doit être écrite entre parenthèses et peut être placée à divers endroits.
+
+                \vspace{12pt}
+                
+                $\bullet$ Sous-requête dans une clause \texttt{FROM} :
+
+                Exemple : nombre moyen de documents en retard par usager :
+
+                \begin{lstlisting}[language=SQL, xleftmargin=80pt]
+SELECT AVG(nbreRetard)
+FROM (
+    SELECT COUNT(*) AS nbreRetard FROM Emprunt
+    WHERE dateRetour < '2022-05-09'
+    GROUP BY id
+);\end{lstlisting}
+
+                \vspace{12pt}
+                
+                \begin{indt}{$\bullet$ Sous-requête dans une clause \texttt{WHERE} ou \texttt{HAVING} : l'usage du résultat de la sous-requête dépend de son nombre de lignes :}
+                    $-$ Cas des sous-requêtes dont le résultat ne contient qu'une seule ligne : on utilise directement ce résultat comme on aurait utilisé les attributs d'un enregistrement donné.
+
+                    Exemple : usagers ayant le plus de documents en retard :
+
+                    \begin{lstlisting}[language=SQL, xleftmargin=100pt]
+SELECT id FROM (
+    SELECT id, COUNT(*) AS nbRetard FROM Emprunt
+    WHERE dateRetour < '2022-05-09'
+    GROUP BY id
+) AS Tretard
+WHERE nbRetard = (SELECT MAX(nbRetard) FROM Tretard);\end{lstlisting}
+
+                    \vspace{12pt}
+                    
+                    $-$ Cas des sous-requêtes à plusieurs résultats : on ne peut pas utiliser les opérateurs habituels car la sous-requête renvoie une table et pas une unique valeur.
+                    On dispose d'opérateurs pour vérifier si cette table est vide ou pas (\texttt{EXISTS}, \texttt{NOT EXISTS}) et pour vérifier si une valeur apparaît dans la table (\texttt{IN}, \texttt{NOT IN}).
+
+                    Exemple : usagers sans emprunts en cours :
+
+                    \begin{lstlisting}[language=SQL, xleftmargin=100pt]
+SELECT id FROM Personne
+WHERE id NOT IN (
+    SELECT id FROM Emprunt
+);\end{lstlisting}
+
+                    ou
+
+                    \begin{lstlisting}[language=SQL, xleftmargin=100pt]
+SELECT id FROM Personne
+WHERE NOT EXISTS (
+    SELECT id FROM Emprunt
+    WHERE Personne.id = Emprunt.id
+);\end{lstlisting}
+
+                    \vspace{12pt}
+                    
+                    Usagers ne partageant pas leur nom de famille avec d'autres :
+
+                    \begin{lstlisting}[language=SQL, xleftmargin=100pt]
+SELECT id FROM Personne
+WHERE NOT EXISTS (
+    SELECT id FROM Personne AS P
+    WHERE P.id <> Personne =.id AND P.nom = Personne.nom
+);\end{lstlisting}
                 \end{indt}
             \end{indt}
         \end{indt}
