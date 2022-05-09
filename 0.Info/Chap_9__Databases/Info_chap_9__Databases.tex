@@ -405,7 +405,7 @@
             \vspace{12pt}
             
             \begin{indt}{\subsubsection{Algèbre relationnelle}}
-                L'algèbre relationnelle est une théorie mathématique qui décrit des opérations que l'on peut réaliser sur une base de données du point de vue du modèle relationnel. Les propriétés qui découlent de cette théorie définissent un fondement rigoureux aux implémentations de SGBD en justifiant les optimisations des requêtes des utilisateurs. Cette théorie des H.P, mais nous l'étudierons \textit{via} le langage de requêtes SQL (Structured Query Language).
+                L'algèbre relationnelle est une théorie mathématique qui décrit des opérations que l'on peut réaliser sur une base de données du point de vue du modèle relationnel. Les propriétés qui découlent de cette théorie définissent un fondement rigoureux aux implémentations de SGBD en justifiant les optimisations des requêtes des utilisateurs. Cette théorie est H.P, mais nous l'étudierons \textit{via} le langage de requêtes SQL (Structured Query Language).
             \end{indt}
         \end{indt}
         
@@ -516,7 +516,7 @@ WHERE NOT (date_de_parution >= 2000 AND nombre_de_page < 200);\end{lstlisting}
 
                 On peut aussi fixer un nombre maximal d'enregistrements pour le résultat : le SGBD choisira les premiers qu'il traite jusqu'à éventuellement atteindre la borne. On utilise le mot clé \texttt{LIMIT}
 
-                Exemple : 10 ouvrages les + récents
+                Exemple : 10 ouvrages les plus récents
 
                 \begin{lstlisting}[language=SQL, xleftmargin=80pt]
 SELECT * FROM Document
@@ -573,7 +573,7 @@ LIMIT 5 OFFSET 10;\end{lstlisting}
                 \begin{center}
                     \begin{tikzpicture}
                         \node (D) at (0, 0) [rectangle, draw] {
-                            \begin{tabular}{c}
+                            \begin{tabular}{l}
                                 Document
                                 \\
                                 \hline
@@ -593,7 +593,7 @@ LIMIT 5 OFFSET 10;\end{lstlisting}
                             \end{tabular}
                         };
                         \node (P) at (8, 0) [rectangle, draw] {
-                            \begin{tabular}{c}
+                            \begin{tabular}{l}
                                 Personne
                                 \\
                                 \hline
@@ -835,11 +835,11 @@ LIMIT 5 OFFSET 10;\end{lstlisting}
                 \begin{indt}{Modèle relationnel associé : on utilise des identifiants numériques pour les clés primaires :}
                     Personne(\underline{id: entier}, nom: texte, prénom: texte, date de naissance: date)
                     
-                    Document(\underline{id Doc: entier}, titre: texte, genre: enuml(...))
+                    Document(\underline{idDoc: entier}, titre: texte, genre: enum(...))
                     
-                    Exemplaire(numéro: entier, imprimerie: texte, id Doc: entier, date d'impression: date)
+                    Exemplaire(numéro: entier, imprimerie: texte, idDoc: entier, date d'impression: date)
                     
-                    \'Ecriture(date: date, \underline{id Doc: entier, id: entier})
+                    \'Ecriture(date: date, \underline{idDoc: entier, id: entier})
                 \end{indt}
             \end{indt}
         \end{indt}
