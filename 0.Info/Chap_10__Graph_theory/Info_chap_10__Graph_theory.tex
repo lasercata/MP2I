@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2022.05.16
+% Last modification     :   2022.05.18
 %
 %------------------------------------------------------------------------
 
@@ -1002,6 +1002,461 @@
                         \draw[->] (0) -- (1);
                     \end{tikzpicture}
                 \end{center}
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Définition (\textit{connexité forte})}}
+                Soit $G = (S, A)$ un GO, et $s, s' \in S$.
+
+                $\bullet$ On dit de $s$ et $s'$ sont \textit{fortement connectés}, noté $s \sim_{\vec G} s$ si il existe un chemin de $s$ à $s'$ et un chemin de $s'$ à $s$ dans $G$.
+
+                $\bullet$ On dit que $G$ est \textit{fortement connexe} $\ssi \forall s, s'\ s \sim_{\vec G} s'$.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Proposition}}
+                Soit $G = (S, A)$ un GO.
+
+                Alors $\sim_{\vec G}$ est une relation d'équivalence.
+
+                Remarque : si $G$ est un GNO, $\sim_G = \sim_{\vec G}$.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Définition (\textit{composantes fortement connexes})}}
+                Soit $G = (S, A)$ un GO, et $s \in S$.
+
+                La \textit{composante fortement connexe} de $G$ contenant $s$ est la clause d'équivalence de $s$ pour $\sim_{\vec G}$.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Exemple}}
+                \begin{center}
+                    \begin{tikzpicture}[scale=1.5]
+                        \node (E) at (0, 0) [circle, draw] {E};
+                        \node (C) at (-1, -1) [circle, draw] {C};
+                        \node (D) at (1, -1) [circle, draw] {D};
+                        \node (A) at (-2, -2) [circle, draw] {A};
+                        \node (B) at (-1, -2) [circle, draw] {B};
+                        \node (F) at (1, -2) [circle, draw] {F};
+                        \node (G) at (2, -2) [circle, draw] {G};
+
+                        \draw[->] (A) to (C);
+                        \draw[->] (C) to (D);
+                        \draw[->] (D) to (E);
+                        \draw[->] (E) to (C);
+                        \draw[->] (B) to (F);
+                        \draw[->] (D) to (F);
+
+                        \draw[->] (A) to [out=10, in=170] (B);
+                        \draw[->] (B) to [out=-170, in=-10] (A);
+
+                        \draw[->] (F) to [out=10, in=170] (G);
+                        \draw[->] (G) to [out=-170, in=-10] (F);
+                        
+                        \draw[color=ff4500] (-2.4, -2.4) rectangle (-0.6, -1.6);
+                        \draw[color=ff4500] (0.6, -2.4) rectangle (2.4, -1.6);
+                        \draw[color=ff4500] (-1.35, -1.35) rectangle (1.35, 0.35);
+                    \end{tikzpicture}
+                \end{center}
+
+                Remarque : le graphe des composantes fortement connexes est un graphe orienté acyclique.
+                Dans un tel graphe, on définit naturellement une relation d'ordre entre sommets : $s \le s' \ssi$ il existe un chemin de $s$ à $s'$ (on dit que $s'$ est accessible à partir de $s$).
+
+                Dans le cas général, cet ordre n'est pas total :
+
+                \begin{center}
+                    \begin{tikzpicture}
+                        \node (0) [circle, draw] {};
+                        \node (1) at (1, 1) [circle, draw] {};
+                        \node (2) at (1, -1) [circle, draw] {};
+                        \node (3) at (2, 0) [circle, draw] {};
+
+                        \draw[->] (0) to (1);
+                        \draw[->] (1) to (3);
+                        \draw[->] (0) to (2);
+                        \draw[->] (2) to (3);
+                    \end{tikzpicture}
+                \end{center}
+
+                On peut choisir un ordre total compatible avec cet ordre partiel en effectuant un tri topologique du graphe (\textit{cf} TD$_{30}$).
+            \end{indt}
+        \end{indt}
+    \end{indt}
+
+    \vspace{12pt}
+    
+    \begin{indt}{\section{Représentation des graphes}}
+        
+        \setcounter{subsection}{-1}
+        
+        \begin{indt}{\subsection{Remarque}}
+
+            Il s'agit d'étudier des implémentations effectives des graphes. On suppose dans la suite qu'une numérotation des sommets a été choisie, donc que $S = \nset{0}{n - 1}$.
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Matrice d'adjacence}}
+            \begin{indt}{\subsubsection{Définition (\textit{matrice d'adjacence})}}
+                Soit $G = (\nset{0}{n - 1}, A)$ un graphe.
+
+                La \textit{matrice d'adjacence entière} (resp. \textit{booléenne}) de $G$ est la matrice $A_G = (a_{i,j})_{i, j \in \nset{0}{n - 1}}$ définie par
+                \[
+                    \forall i, j \in \nset{0}{n - 1},\ a_{i,j} =
+                    \begin{cases}
+                        1\ (\text{resp. V})\ \text{si}\ \set{i, j} \in A\ \text{(resp. $(i, j) \in A$ dans le cas orienté)}
+                        \\
+                        0\ (\text{resp. F})\ \text{sinon}
+                    \end{cases}
+                \]
+                
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Exemples}}
+                \begin{center}
+                    \begin{tabular}{cp{15pt}p{100pt}}
+                        \begin{tikzpicture}[scale=1.5]
+                            \node (0) [circle, draw] {0};
+                            \node (1) at (1, 0) [circle, draw] {1};
+                            \node (2) at (2, 0) [circle, draw] {2};
+                            \node (3) at (0, -1) [circle, draw] {3};
+                            \node (4) at (1, -1) [circle, draw] {4};
+
+                            \draw (0) -- (1) -- (2) -- (4) -- (0) -- (3) -- (4) -- (1);
+                        \end{tikzpicture}
+                        &
+                        \vspace{-30pt}
+                        $\longrightarrow$
+                        &
+                        \vspace{-60pt}
+                        $
+                        \begin{pmatrix}
+                            0 & 1 & 0 & 1 & 1
+                            \\
+                            1 & 0 & 1 & 0 & 1
+                            \\
+                            0 & 1 & 0 & 0 & 1
+                            \\
+                            1 & 0 & 0 & 0 & 1
+                            \\
+                            1 & 1 & 1 & 1 & 0
+                        \end{pmatrix}
+                        $
+                    \end{tabular}
+                \end{center}
+                
+                \begin{center}
+                    \begin{tabular}{cp{15pt}p{100pt}}
+                        \begin{tikzpicture}[scale=1.5, anchor=center]
+                            \node (0) at (0, 0) [circle, draw] {0};
+                            \node (1) at (1, 0) [circle, draw] {1};
+                            \node (2) at (0, -1) [circle, draw] {2};
+                            \node (3) at (1, -1) [circle, draw] {3};
+
+                            \draw[->, >=latex] (1) to (0);
+                            \draw[->, >=latex] (0) to (2);
+                            \draw[->, >=latex] (2) to [out=10, in=170] (3);
+                            \draw[->, >=latex] (3) to [out=-170, in=-10] (2);
+                            \draw[->, >=latex] (2) to (1);
+                            \draw[->, >=latex] (1) to (3);
+                        \end{tikzpicture}
+                        &
+                        \vspace{-30pt}
+                        $\longrightarrow$
+                        &
+                        \vspace{-60pt}
+                        $
+                        \begin{pmatrix}
+                            F & F & V & F
+                            \\
+                            V & F & F & V
+                            \\
+                            F & V & F & V
+                            \\
+                            F & F & V & F
+                        \end{pmatrix}
+                        $
+                    \end{tabular}
+                \end{center}
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Proposition}}
+                Soit $G = (S, A)$ un GNO.
+
+                Alors $A_G$ est symétrique.
+                
+                \vspace{12pt}
+
+                \begin{indt}{$\square$ Démonstration :}
+                    $\forall i, j \in \nset{0}{n - 1},$
+                    \[
+                        \begin{array}{rcl}
+                            a_{i, j} = 1\ \text{(resp. V)}
+                            &\ssi& \set{i, j} \in A
+                            \\
+                            &\ssi& \set{j, i} \in A
+                            \\
+                            &\ssi& a_{j, i} = 1\ \text{(resp. V)}\ \blacksquare
+                        \end{array}
+                    \]
+                \end{indt}
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Proposition}}
+                Soit $G = (\nset{0}{n - 1}, A)$ un graphe, et $A_G$ sa matrice d'adjacence entière.
+
+                Alors, $\forall (i, j) \in \nset{0}{n - 1}^2$, en notant $\forall k \in \N,\ a_{i, j}^{(k)}$ le coefficient $(i, j)$ de $A_G^{(k)}$, $a_{i, j}^{(k)}$ est le nombre de chemins de longueur $k$ de $i$ à $j$.
+                
+                \vspace{12pt}
+
+                \begin{indt}{$\square$ Démonstration}
+                    Par récurrence sur $k$
+
+                    $\bullet$ $k = 0$ : $A_G^k = I_n$
+
+                    $\forall i, j \in \nset{0}{n - 1}$, il existe un chemin de longueur nulle de $i$ à $j$ $\ssi i = j$ : ok.
+                    
+                    \vspace{6pt}
+
+                    $\bullet$ Hérédité : $A_G^{k + 1} = A_G^k A_G$
+
+                    Donc
+                    \[
+                        \forall i, j \in \nset 0 {n - 1},\ a_{i,j}^{(k + 1)}
+                        = \sum_{l = 0}^{n - 1} a_{i,l}^{(k)} a_{l,j}^{(k)}
+                        = \sum_{\substack{l \in \nset0 {n - 1} \\ \set{l, i} \in A}} a_{i,l}^{(k)}
+                    \]
+
+                    Or tout chemin de longueur $k + 1$ de $i$ à $j$ se décompose de manière unique en un chemin de $i$ à un sommet $l$ de longueur $k$ suivit  de l'arc / arête de $l$ à $j$.
+
+                    Donc l'hypothèse de récurrence conclut. $\blacksquare$
+                \end{indt}
+
+                \vspace{12pt}
+                
+                \begin{indt}{\subsubsection{Définition (\textit{matrice d'adjacence pondérée})}}
+                    Soit $G = (S, A, w)$ un graphe pondéré.
+
+                    La \textit{matrice d'adjacence pondérée} de $G$ est la matrice
+                    $A_G = (a_{i,j})_{i,j \in \nset{0}{n - 1}}$ définie par
+                    \[
+                        \forall i, j \in \nset 0 {n - 1},\
+                        \left\{\!\!
+                        \begin{array}{ll}
+                            w(\set{i, j})
+                            &\text{si}\ \set{i, j} \in A
+                            \\
+                            +\infty
+                            & \text{sinon}
+                        \end{array}
+                        \right.
+                    \]
+                \end{indt}
+
+                \vspace{12pt}
+                
+                \begin{indt}{\subsubsection{Implémentation}}
+                    On utilise un tableau à deux dimensions.
+
+                    $\bullet$ En OCaml :
+                    \begin{lstlisting}[language=Caml, xleftmargin=100pt]
+type graphe = int array array\end{lstlisting}
+
+                    $\bullet$ En C : d'après le programme, on n'utilise que des tableaux de taille statiquement connue.
+
+                    Exemple :
+
+                    \begin{lstlisting}[language=C, xleftmargin=100pt]
+typedef int graphe[10][20];
+graphe g;
+g[0][0] = 1;\end{lstlisting}
+
+                    Dans le cas général, on devrait utiliser des pointeurs (\texttt{typedef int** graphe;}), mais cela nécessiterait d'utiliser $n + 1$ fois la fonction \texttt{malloc}.
+
+                    On préférera linéariser le tableau :
+
+                    \begin{lstlisting}[language=C, xleftmargin=100pt]
+typedef int* graphe;
+graphe g = (graphe) malloc(n*n*sizeof(int));
+//la case i, j est g[i*n + j]
+free(g);\end{lstlisting}
+
+                    Avantage : 1 \texttt{malloc}, 1 \texttt{free}.
+
+                    Inconvénient : risque de se tromper dans les accès.
+                \end{indt}
+
+                \vspace{12pt}
+                
+                \begin{indt}{\subsubsection{Complexité}}
+                    $\bullet$ Complexité spatiale : $\mathcal O(n^2)$
+
+                    \begin{indt}{$\bullet$ Complexité temporelle des opérations usuelles :}
+                        $-$ Création du graphe : $\mathcal O(n^2)$ ;
+
+                        $-$ Test de l'existence  d'une arête / d'un arc de $i$ à $j$ : $\mathcal O(1)$ (un accès dans la matrice) ;
+
+                        $-$ Calcul du nombre d'arêtes / d'arcs : $\mathcal O(n^2)$ ;
+
+                        $-$ Calcul de la liste des voisins / successeurs d'un sommet : $\mathcal O(n)$ (parcours de la ligne) ;
+
+                        $-$ Ajout / suppression d'une arête / d'un arc : $\mathcal O(1)$ (Attention au cas non orienté) ;
+
+                        $-$ Ajout / suppression de sommet : $\mathcal O(n^2)$ (reconstruire la matrice).
+
+                        \boxed{\rm Exo} : code.
+                    \end{indt}
+                \end{indt}
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsection{Listes d'adjacences}}
+                \begin{indt}{\subsubsection{Définition (\textit{listes d'adjacence})}}
+                    Soit $G = (\nset 0 {n - 1})$ un graphe.
+
+                    On peut représenter $G$ à l'aide d'un tableau de listes d'adjacence :
+                    $\forall i \in \nset 0 {n - 1}$, la case d'indice $i$ contient la liste des voisins / successeurs de $i$.
+                \end{indt}
+
+                \vspace{12pt}
+                
+                \begin{indt}{\subsubsection{Exemple}}
+                    \begin{center}
+                        \begin{tabular}{ccp{143pt}}
+                            \begin{tikzpicture}[scale=1.5]
+                                \node (0) [circle, draw] {0};
+                                \node (1) at (1, 0) [circle, draw] {1};
+                                \node (2) at (2, 0) [circle, draw] {2};
+                                \node (3) at (0, -1) [circle, draw] {3};
+                                \node (4) at (1, -1) [circle, draw] {4};
+
+                                \draw (0) -- (1) -- (2) -- (4) -- (0) -- (3) -- (4) -- (1);
+                            \end{tikzpicture}
+                            &
+                            \vline
+                            &
+                            \vspace{-60pt}
+                            \begin{tabular}{ccccccccccc}
+                                0 & \fbox{$\phantom x$} & $\rightarrow$ & 1 & $\rightarrow$ & 3 & $\rightarrow$ & 4 & $\rightarrow$ 
+                                \\
+                                1 & \fbox{$\phantom x$} & $\rightarrow$ & 0 & $\rightarrow$ & 2 & $\rightarrow$ & 4 & $\rightarrow$
+                                \\
+                                2 & \fbox{$\phantom x$} & $\rightarrow$ & 1 & $\rightarrow$ & 4 & $\rightarrow$
+                                \\
+                                3 & \fbox{$\phantom x$} & $\rightarrow$ & 0 & $\rightarrow$ & 4 & $\rightarrow$
+                                \\
+                                4 & \fbox{$\phantom x$} & $\rightarrow$ & 0 & $\rightarrow$ & 1 & $\rightarrow$ & 2 & $\rightarrow$ & 3 & $\rightarrow$
+                            \end{tabular}
+                        \end{tabular}
+                    \end{center}
+
+                    \begin{center}
+                        \begin{tabular}{ccp{100pt}}
+                            \begin{tikzpicture}[scale=1.5]
+                                \node (0) at (0, 0) [circle, draw] {0};
+                                \node (1) at (1, 0) [circle, draw] {1};
+                                \node (2) at (0, -1) [circle, draw] {2};
+                                \node (3) at (1, -1) [circle, draw] {3};
+
+                                \draw[->] (1) to (0);
+                                \draw[->] (0) to (2);
+                                \draw[->] (2) to [out=10, in=170] (3);
+                                \draw[->] (3) to [out=-170, in=-10] (2);
+                                \draw[->] (2) to (1);
+                                \draw[->] (1) to (3);
+                            \end{tikzpicture}
+                            &
+                            \vline
+                            &
+                            \vspace{-60pt}
+                            \begin{tabular}{ccccccc}
+                                0 & \fbox{$\phantom x$} & $\rightarrow$ & 2 & $\rightarrow$
+                                \\
+                                1 & \fbox{$\phantom x$} & $\rightarrow$ & 0 & $\rightarrow$ & 3 & $\rightarrow$
+                                \\
+                                2 & \fbox{$\phantom x$} & $\rightarrow$ & 1 & $\rightarrow$ & 3 & $\rightarrow$
+                                \\
+                                3 & \fbox{$\phantom x$} & $\rightarrow$ & 2 & $\rightarrow$
+                            \end{tabular}
+                        \end{tabular}
+                    \end{center}
+                \end{indt}
+
+                \vspace{12pt}
+                
+                \begin{indt}{\subsubsection{Cas des graphes pondérés}}
+                    On peut utiliser des listes d'adjacence pondérées : chaque liste contient des couples (voisin, poids).
+                \end{indt}
+
+                \vspace{12pt}
+                
+                \begin{indt}{\subsubsection{Implémentation}}
+                    On utilise un tableau de listes chaînées.
+
+                    $\bullet$ En OCaml :
+
+                    \begin{lstlisting}[language=Caml, xleftmargin=100pt]
+type graphe = int list array\end{lstlisting}
+
+                    $\bullet$ En C :
+
+                    \begin{lstlisting}[language=C, xleftmargin=100pt]
+struct elem {
+    int val;
+    struct elem* next;
+};
+typedef struct elem* liste;
+
+typedef liste* graphe;\end{lstlisting}
+                    
+                    \vspace{6pt}
+                    
+                    Remarque : on peut se passer des listes en utilisant des tableaux : on peut par exemple utiliser une matrice dont les lignes ne sont pas toutes de même longueur en plaçant dans la première case de chaque ligne ne nombre de voisins (\texttt{g[i][0]} est le nombre de voisins de $i$ et les voisins sont \texttt{g[i][1],$\ldots$, g[i[g[i][0]]]})
+
+                    Problème : la linéarisation de cette matrice n'est pas pratique à manipuler.
+
+                    Solution : on utilise un tableau \texttt{voisins} qui contient dans l'ordre les voisins des différents sommets et deux tableaux \texttt{debut} et \texttt{fin} tel que les voisins de $i$ sont stockés entre les indices \texttt{debut[i]} (inclus) et \texttt{fin[i]} (exclu).
+                \end{indt}
+
+                \vspace{12pt}
+                
+                \begin{indt}{\subsubsection{Complexité}}
+                    On utilise un tableau de listes chaînées.
+
+                    On note $n = \abs S$, $m = \abs A$.
+
+                    $\bullet$ Complexité spatiale : $\mathcal O(n + m)$ ;
+
+                    \begin{indt}{$\bullet$ Complexité temporelle des opérations usuelles :}
+                        $-$ Création de graphe (sans arêtes) : $\mathcal O(n)$ ;
+
+                        $-$ Test d'existence de l'arête $\set{i, j}$ / de l'arc $(i, j)$ : $\mathcal O\!\lr{d_{(+)}(i)}$ (parcours de la liste d'adjacence de $i$) ;
+
+                        $-$ Calcul du calcul d'arêtes / d'arcs : $\mathcal O(n + m)$ (calcul de la somme des longueurs des listes, divisée par 2 dans le cas non orienté) ;
+
+                        $-$ Calcul de la liste des voisins d'un sommet : $\mathcal O(1)$ (accès à la case du sommet) ;
+
+                        $-$ Ajout d'une arête / d'un arc : $\mathcal O(1)$ (ajout en tête de liste) ;
+
+                        $-$ Suppression d'une arête / d'un arc entre $i$ et $j$ : $\mathcal O\!\lr{d_+(i)}$ dans le cas orienté, $\mathcal O\!\lr{d(i) + d(j)}$ dans le cas non orienté ;
+
+                        $-$ Ajout d'un n\oe ud : $\mathcal O(n)$ si tableau statique, $\mathcal O(1)$ amorti si tableau dynamique ;
+
+                        $-$ Suppression d'un n\oe ud : $\mathcal O(n + m)$ (création d'un nouveau tableau + renumérotation des n\oe uds).
+                    \end{indt}
+                \end{indt}
             \end{indt}
         \end{indt}
     \end{indt}
