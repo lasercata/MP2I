@@ -1595,7 +1595,7 @@ typedef liste* graphe;\end{lstlisting}
 
                     \vspace{6pt}
                     
-                    Alors le sous-graphe induit par $\set{\set{s_i, t_i}\ |\ i \in \nset 1 {n - 1}}$ est un abre couvrant de $G$.
+                    Alors le sous-graphe induit par $\set{\set{s_i, t_i}\ |\ i \in \nset 1 {n - 1}}$ est un arbre couvrant de $G$.
 
                     \vspace{6pt}
                     
@@ -1686,7 +1686,7 @@ typedef liste* graphe;\end{lstlisting}
                     \label{4.1.8}
                     Soit $G = (S, A)$ un GNO
 
-                    Si $G$ ne continent aucun cycle de longueur impaire, alors $G$ est biparti.
+                    Si $G$ ne contient aucun cycle de longueur impaire, alors $G$ est biparti.
 
                     \vspace{6pt}
                     
@@ -1717,7 +1717,7 @@ typedef liste* graphe;\end{lstlisting}
 
                         $-$ $V$ est l'ensemble des sommets $s$ tels que la longueur du chemin de $r$ à $s$ dans $T$ est impaire.
 
-                        $U \cap V = \varnothing$, et commet $T$ est couvrant, $U \cup V = S$.
+                        $U \cap V = \varnothing$, et comme $T$ est couvrant, $U \cup V = S$.
 
                         Il reste à montrer que toute arête a une extrémité dans $U$ et l'autre dans $V$.
 
@@ -1746,7 +1746,7 @@ typedef liste* graphe;\end{lstlisting}
 
                         $-$ Sinon, on procède de même avec le premier sommet $r'$ commun aux chemins de $s$ à $r$ et de $s'$ à $r'$.
 
-                        La somme des longueurs des chemins de $s'$ à $r'$ est bien paire car elle sont de même parité (par disjonction de cas selon que $r' \in U$ ou $r' \in V$).
+                        La somme des longueurs des chemins de $s'$ à $r'$ est bien paire car elles sont de même parité (par disjonction de cas selon que $r' \in U$ ou $r' \in V$).
 
                         Ajouter l'arête $\set{s, s'}$ donne un cycle de longueur impaire : absurde. $\blacksquare$
                     \end{indt}
