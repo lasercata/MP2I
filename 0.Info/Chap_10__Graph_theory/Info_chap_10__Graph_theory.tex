@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2022.05.18
+% Last modification     :   2022.05.23
 %
 %------------------------------------------------------------------------
 
@@ -526,11 +526,11 @@
                     
                     (2) Par récurrence sur $\abs A$ :
 
-                    $-$ Si $\abs A = 0,\ \forall s \in S,\ d_+(s) = d_-(s) = 0$ Ok.
+                    $-$ Si $\abs A = 0,\ \forall s \in S,\ d_+(s) = d_-(s) = 0$ : ok.
 
                     $-$ Héréditée : si $\abs A > 0$, alors $\exists (s, s') \in A$.
 
-                    On note $G' = (S,\ a \setminus \set{(s, s')})$.
+                    On note $G' = (S,\ A \setminus \set{(s, s')})$.
 
                     Par hypothèse de récurrence :
                     \[
@@ -599,7 +599,7 @@
                         
                         \draw[->] (C) to [out=0, in=-90] node [above left] {5} (D);
                         
-                        \draw[->] (A) to [out=-135, in=-45, looseness=3] node [below] {-4} (D);
+                        \draw[->] (A) to [out=-135, in=-45, looseness=3] node [below] {$-4$} (D);
                     \end{tikzpicture}
                 \end{center}
 
@@ -611,7 +611,7 @@
             \begin{indt}{\subsubsection{Graphes bipartis}}
                 $\bullet$ Définition (\textit{graphes bipartis}) : Soit $G = (S, A)$ un graphe.
 
-                On dit que $G$ est \textit{biparti} s'il existe une partition de $S$ $(U, V)$ telle que pour toute arête $a$, une extrémité de $a$ appartienne à $U$ et l'autre à $V$.
+                On dit que $G$ est \textit{biparti} s'il existe une partition $(U, V)$ de $S$ telle que pour toute arête $a$, une extrémité de $a$ appartienne à $U$ et l'autre à $V$.
 
                 Exemple ($\textcolor{red}{U}, V$) :
                 \begin{center}
@@ -665,7 +665,7 @@
             \begin{indt}{\subsubsection{Définition (\textit{chemin})}}
                 Soit $G = (S, A)$ un graphe.
 
-                Un chemin dans $G$ est une suite finie de sommets
+                Un \textit{chemin} dans $G$ est une suite finie de sommets
                 \[
                     (s_k)_{k \in \nset 1 n} \subset S\ |\ \forall i \in \nset{0}{n - 1},\ \set{s_i,\ s_{i + 1}} \in A
                 \]
@@ -673,7 +673,7 @@
 
                 \vspace{12pt}
                 
-                La longueur du chemin est le nombre d'arêtes / d'arcs parcourus, ici $n$.
+                La \textit{longueur du chemin} est le nombre d'arêtes / d'arcs parcourus, ici $n$.
             \end{indt}
 
             \vspace{12pt}
@@ -683,7 +683,7 @@
 
                 $\bullet$ $p$ est \textit{fermé} $\ssi$ $s_0 = s_n$
 
-                $\bullet$ $p$ est \textit{élémentaire} si $p$ passe au plus par chaque arête / arc, \textit{i.e}
+                $\bullet$ $p$ est \textit{élémentaire} si $p$ passe au plus une fois par chaque arête / arc, \textit{i.e}
                 \[
                     \forall i, j \in \nset{0}{n - 1},\ i \neq j \Rightarrow \set{s_i,\ s_{i + 1}} \neq \set{s_j,\ s_{j + 1}}
                 \]
@@ -783,6 +783,8 @@
             \vspace{12pt}
             
             \begin{indt}{\subsubsection{Proposition}}
+                \label{2.2.6}
+
                 Soit $G = (S, A)$ un graphe.
 
                 Si $G$ est biparti, alors $G$ ne contient aucun cycle de longueur impaire.
@@ -798,7 +800,7 @@
                         \begin{cases}
                             \forall i \in 2\N \cap \nset 0 n,\ s_i \in U
                             \\
-                            \forall j \in 2\N + 1 \cap \nset 0 n,\ s_j \in V
+                            \forall j \in (2\N + 1) \cap \nset 0 n,\ s_j \in V
                         \end{cases}
                     \]
                     Alors $s_n = s_0 \in U$, donc $n \in 2\N$ $\blacksquare$
@@ -936,6 +938,8 @@
             \vspace{12pt}
             
             \begin{indt}{\subsubsection{Proposition}}
+                \label{2.2.14}
+                
                 Soit $G = (S, A)$ un GNO avec $\abs S = n$ et $\abs A = m$.
 
                 \begin{indt}{Les assertions suivantes sont équivalentes :}
@@ -1009,7 +1013,7 @@
             \begin{indt}{\subsubsection{Définition (\textit{connexité forte})}}
                 Soit $G = (S, A)$ un GO, et $s, s' \in S$.
 
-                $\bullet$ On dit de $s$ et $s'$ sont \textit{fortement connectés}, noté $s \sim_{\vec G} s$ si il existe un chemin de $s$ à $s'$ et un chemin de $s'$ à $s$ dans $G$.
+                $\bullet$ On dit de $s$ et $s'$ sont \textit{fortement connectés}, noté $s \sim_{\vec G} s'$ si il existe un chemin de $s$ à $s'$ et un chemin de $s'$ à $s$ dans $G$.
 
                 $\bullet$ On dit que $G$ est \textit{fortement connexe} $\ssi \forall s, s'\ s \sim_{\vec G} s'$.
             \end{indt}
@@ -1029,7 +1033,7 @@
             \begin{indt}{\subsubsection{Définition (\textit{composantes fortement connexes})}}
                 Soit $G = (S, A)$ un GO, et $s \in S$.
 
-                La \textit{composante fortement connexe} de $G$ contenant $s$ est la clause d'équivalence de $s$ pour $\sim_{\vec G}$.
+                La \textit{composante fortement connexe} de $G$ contenant $s$ est la classe d'équivalence de $s$ pour $\sim_{\vec G}$.
             \end{indt}
 
             \vspace{12pt}
@@ -1072,8 +1076,8 @@
                 \begin{center}
                     \begin{tikzpicture}
                         \node (0) [circle, draw] {};
-                        \node (1) at (1, 1) [circle, draw] {};
-                        \node (2) at (1, -1) [circle, draw] {};
+                        \node (1) at (1, .5) [circle, draw] {};
+                        \node (2) at (1, -.5) [circle, draw] {};
                         \node (3) at (2, 0) [circle, draw] {};
 
                         \draw[->] (0) to (1);
@@ -1216,7 +1220,7 @@
             \begin{indt}{\subsubsection{Proposition}}
                 Soit $G = (\nset{0}{n - 1}, A)$ un graphe, et $A_G$ sa matrice d'adjacence entière.
 
-                Alors, $\forall (i, j) \in \nset{0}{n - 1}^2$, en notant $\forall k \in \N,\ a_{i, j}^{(k)}$ le coefficient $(i, j)$ de $A_G^{(k)}$, $a_{i, j}^{(k)}$ est le nombre de chemins de longueur $k$ de $i$ à $j$.
+                Alors, $\forall (i, j) \in \nset{0}{n - 1}^2$, en notant $\forall k \in \N,\ a_{i, j}^{(k)}$ le coefficient $(i, j)$ de $A_G^k$, $a_{i, j}^{(k)}$ est le nombre de chemins de longueur $k$ de $i$ à $j$.
                 
                 \vspace{12pt}
 
@@ -1234,7 +1238,7 @@
                     Donc
                     \[
                         \forall i, j \in \nset 0 {n - 1},\ a_{i,j}^{(k + 1)}
-                        = \sum_{l = 0}^{n - 1} a_{i,l}^{(k)} a_{l,j}^{(k)}
+                        = \sum_{l = 0}^{n - 1} a_{i,l}^{(k)} a_{l,j}
                         = \sum_{\substack{l \in \nset0 {n - 1} \\ \set{l, i} \in A}} a_{i,l}^{(k)}
                     \]
 
@@ -1324,7 +1328,7 @@ free(g);\end{lstlisting}
             
             \begin{indt}{\subsection{Listes d'adjacences}}
                 \begin{indt}{\subsubsection{Définition (\textit{listes d'adjacence})}}
-                    Soit $G = (\nset 0 {n - 1})$ un graphe.
+                    Soit $G = (\nset 0 {n - 1}, A)$ un graphe.
 
                     On peut représenter $G$ à l'aide d'un tableau de listes d'adjacence :
                     $\forall i \in \nset 0 {n - 1}$, la case d'indice $i$ contient la liste des voisins / successeurs de $i$.
@@ -1460,9 +1464,344 @@ typedef liste* graphe;\end{lstlisting}
             \end{indt}
         \end{indt}
     \end{indt}
+
+    \vspace{12pt}
     
+    \begin{indt}{\section{Parcours de graphes}}
+        \begin{indt}{\subsection{Généralités}}
+            \begin{indt}{\subsubsection{Définition (parcours d'un GNO connexe)}}
+                \label{4.1.1}
+
+                Soit $G = (S, A)$ un GNO connexe.
+
+                \begin{indt}{Un parcours de $G$ partant d'un sommet $s \in S$ est une suite de sommets $s_0 \ldots s_{n - 1}$ tq}
+                    (1) $s_0 = s$
+
+                    (2) $n = \abs S$ et $\set{s_i\ |\ i \in \nset 0 {n - 1}} = S$
+
+                    (3) $\forall i \in \nset{1}{n - 1},\ \exists j < i\ |\ \set{s_i, s_j} \in A$
+                \end{indt}
+
+                \vspace{12pt}
+                
+                \begin{indt}{\subsubsection{Algorithme générique}}
+                    $\bullet$ Définition (\textit{bordure}) : Soit $G = (S, A)$ un GNO, et $T \subseteq S$.
+
+                    On appelle \textit{bordure} de $T$ l'ensemble
+                    \[
+                        B(T) = \set{s \in S \setminus T\ |\ \exists t \in T\ |\ \set{s, t} \in A}
+                    \]
+
+                    Exemple :
+
+                    \begin{center}
+                        \begin{tikzpicture}[scale=1.5]
+                            \node (6) at (0, 0) [circle, draw] {6};
+                            \node (1) at (2, 0) [circle, draw] {1};
+                            \node (4) at (0, -1) [circle, draw] {4};
+                            \node (2) at (1, -1) [circle, draw] {2};
+                            \node (0) at (2, -1) [circle, draw] {0};
+                            \node (5) at (0, -2) [circle, draw] {5};
+                            \node (3) at (2, -2) [circle, draw] {3};
+
+                            \draw (6) -- (1) -- (0) -- (3) -- (5) -- (4) -- (2) -- (0);
+                            \draw (5) -- (2);
+                            \draw (2) -- (1);
+
+                            % T : 4, 2, 5
+                            % B(T) : 1, 0, 3
+                            
+                            \draw[color=ff4500] (-.4, -.6) rectangle (1.4, -2.4);
+                            \node (T) at (-.6, -1.5) {$T$};
+                            
+                            \draw[color=blue] (1.6, .4) rectangle (2.4, -2.4);
+                            \node (B) at (2.8, -1) {$B(T)$};
+                        \end{tikzpicture}
+                    \end{center}
+
+                    Algorithme : entrée : $G = (S, A)$ un GNO connexe, $s \in S$
+
+                    \begin{pseudocode}
+                        $s_0 \leftarrow s$
+
+                        \begin{indt}{Pour $i$ de 1 à $\abs S - 1$ :}
+                            $s_i \leftarrow$ un élément de $B(\set{s_0 \ldots s_{i - 1}})$
+                        \end{indt}
+                        
+                        \vspace{6pt}
+
+                        Renvoyer $s_0 \ldots s_{\abs S - 1}$
+                    \end{pseudocode}
+                \end{indt}
+
+                \vspace{12pt}
+                
+                \begin{indt}{\subsubsection{Proposition}}
+                    Soit $G = (S, A)$ un GNO connexe.
+
+                    Les parcours de $G$ sont exactement les suites produites par l'algorithme générique.
+
+                    \vspace{6pt}
+                    
+                    \begin{indt}{$\square$ Démonstration :}
+                        $\boxed \subseteq$ Soit $s_0 \ldots s_{n - 1}$ un parcours de $G$.
+
+                        Soit $i \in \nset {1}{n - 1}$.
+
+                        $s_i \in B(\set{s_0 \ldots s_{i - 1}})$ car $s_i \notin \set {s_0 \ldots s_{i - 1}}$ (sinon le point (2) de \ref{4.1.1} (page \pageref{4.1.1}) est faux)
+
+                        Et d'après \ref{4.1.1} (3), $\exists j < i\ |\ \set{s_i, s_j} \in A$.
+
+                        Donc l'algorithme produit $s_0 \ldots s_{n - 1}$ en choisissant $s_i$ à l'itération $i \forall i \in \nset{1}{\abs S - 1}$
+
+                        \vspace{12pt}
+                        
+                        $\boxed{\supseteq}$ Soit $s_0 \ldots s_{n - 1}$ une séquence générique produite par l'algorithme générique.
+
+                        $\forall i \in \nset 1 {n - 1}, \exists j < i\ |\ \set{s_i, s_j} \in A$ car $s_i \in B(\set{s_0 \ldots s_{n - 1}})$
+
+                        Les $(s_i)_{i \in \nset{0}{n - 1}}$ sont 2 à 2 distinctes par définition de la bordure.
+
+                        Il reste à montrer que $n = \abs S$, \textit{i.e} que $\forall i \in \nset 1 {n - 1},\ B(\set{s_0 \ldots s_{i - 1}}) \neq \varnothing$.
+
+                        Or si $B(\set{s_0 \ldots s_{i - 1}}) \neq \varnothing$ avec $i < \abs A$, alors il existe un sommet qui n'est pas connecté à $s_0 \ldots s_{i - 1}$ donc le graphe n'est pas connexe. $\blacksquare$
+                    \end{indt}
+                \end{indt}
+
+                \vspace{12pt}
+                
+                \begin{indt}{\subsubsection{Définition (\textit{sous-graphe induit / couvrant})}}
+                    Soit $G = (S, A)$ un graphe.
+
+                    $\bullet$ Le \textit{sous-graphe induit} par $T \subseteq S$ est le graphe $(T, A_t)$, où
+                    \[
+                        A_T = \set{a \in A\ |\ \text{les deux extrémités de $a$ sont dans $T$}}
+                    \]
+
+                    $\bullet$ Le \textit{sous-graphe induit} par $A' \subseteq A$ est le graphe $(S', A')$ où
+                    \[
+                        S' = \set{s \in S\ |\ s\ \text{est une extrémité d'un élément de } A'}
+                    \]
+
+                    $\bullet$ Un \textit{sous-graphe} $(S', A')$ de $G$ est dit \textit{couvrant} $\ssi S' = S$.
+                \end{indt}
+
+                \vspace{12pt}
+                
+                \begin{indt}{\subsubsection{Proposition}}
+                    Soit $G = (S, A)$ un GNO connexe, et $s_0 \ldots s_{n - 1}$ un parcours de $G$.
+
+                    $\forall i \in \nset 1 {n - 1}$, on choisit $t_i \in \set{s_0 \ldots s_{i - 1}}\ |\ \set{s_i, A_i} \in A$ (possible d'après \ref{4.1.1} (3) (page \pageref{4.1.1})).
+
+                    \vspace{6pt}
+                    
+                    Alors le sous-graphe induit par $\set{\set{s_i, t_i}\ |\ i \in \nset 1 {n - 1}}$ est un abre couvrant de $G$.
+
+                    \vspace{6pt}
+                    
+                    \begin{indt}{$\square$ Démonstration :}
+                        $\forall k \in \nset 1 {n - 1}$, on note $G_k$ le sous-graphe induit par $\set{\set{s_i, t_i}\ |\ i \in \nset 1 {k}}$.
+
+                        Il suffit de montrer que $G_{n - 1}$ est un arbre à $n$ sommets.
+
+                        En effet, $n = \abs S$ d'après \ref{4.1.1} (2) (page \pageref{4.1.1}), donc $G_{n - 1}$ serait couvrant.
+
+                        On montre par récurrence finie que $\forall k \in \nset 1 {n - 1},\ G_k$ est un arbre à $k + 1$ sommets.
+
+                        \vspace{6pt}
+                        
+                        $\bullet$ Initialisation : $k = 1$. $G_1$ est le sous-graphe induit par $\set{\set{s_1, t_1}}$.
+
+                        $t_1 = s_0 \neq s_1$ donc $G_1$ est le graphe 
+                        \begin{center}
+                            \begin{tikzpicture}
+                                \node (0) [circle, draw] {$s_0$};
+                                \node (1) at (2, 0) [circle, draw] {$s_1$};
+
+                                \draw (0) -- (1);
+                            \end{tikzpicture}
+                        \end{center}
+
+                        C'est bien un arbre à $2 = 1 + 1$ sommets.
+
+                        \vspace{6pt}
+                        
+                        $\bullet$ Héréditée : Soit $k \in \nset 1 {n - 2}$ tel que $G_k$ est un arbre à $k + 1$ sommets.
+
+                        Montrons que $G_{k + 1}$ est un arbre à $k + 2$ sommets.
+
+                        $G_{k + 1}$ est construit à partir de $G_k$ en ajoutant l'arête $\set{s_{k + 1}, t_{k + 1}}$.
+
+                        $t_{k + 1}$ est un sommet de $G_k$ est pas $s_{k + 1}$, donc $G_{k + 1}$ a exactement 1 sommet et une arête de plus que $G_k$.
+
+                        Or $G_k$ est connexe avec $k + 1$ sommets et $k$ arêtes (\textit{cf} \ref{2.2.14}, page \pageref{2.2.14}).
+
+                        Donc $G_{k + 1}$ est connexe (le seul sommet ajouté au graphe connexe $G_k$ est relié à un sommet de $G_k$ dans $G_{k + 1}$) avec $k + 2$ sommets et $k + 1$ arêtes.
+
+                        Donc $G_{k + 1}$ est un arbre (\textit{cf} \ref{2.2.14}, page \pageref{2.2.14}) à $k + 2$ sommets. $\blacksquare$
+                    \end{indt}
+                \end{indt}
+
+                \vspace{12pt}
+                
+                \begin{indt}{\subsubsection{Exemple}}
+                    \begin{center}
+                        \begin{tikzpicture}[scale=1.5]
+                            \node (0) at (0, 0) [circle, draw] {0};
+                            \node (2) at (1, 0) [circle, draw] {2};
+                            \node (6) at (0, -1) [circle, draw] {6};
+                            \node (3) at (1, -1) [circle, draw] {3};
+                            \node (4) at (2, -1) [circle, draw] {4};
+                            \node (5) at (1, -2) [circle, draw] {5};
+                            \node (1) at (2, -2) [circle, draw] {1};
+
+                            \draw (0) -- (3);
+                            \draw (2) to [out=10, in=45, looseness=1.5] (1);
+                            \draw (2) to (4);
+                            \draw[color=ff4500] (0) to (2) to (3);
+                            \draw[color=ff4500] (0) to (6);
+                            \draw[color=ff4500] (3) to (5) to (1);
+                            \draw[color=ff4500] (4) to (5);
+                        \end{tikzpicture}
+                    \end{center}
+
+                    Parcours : 0, 2, 3, 5, 6, 1, 4.
+
+                    Antécédent : -, 0, 2, 3, 0, 5, 5.
+
+                    \emph{Arbre couvrant}.
+                \end{indt}
+
+                \vspace{12pt}
+                
+                \begin{indt}{\subsubsection{Remarques}}
+                    $\bullet$ Un problème classique est le calcul d'un arbre couvrant de poids minimal dans un graphe pondéré (où le poids d'un arbre est la somme des poids des arêtes), \textit{cf} MPI.
+
+                    $\bullet$ En pratique, on implémente souvent les parcours en déterminant un voisin non visité d'un sommet "courant". Le sommet courant est donc naturellement choisi comme antécédent de ce voisin, ce qui produit un arbre particulier associé au parcours.
+                \end{indt}
+
+                \vspace{12pt}
+                
+                \begin{indt}{\subsubsection{Proposition (réciproque de \ref{2.2.6})}}
+                    \label{4.1.8}
+                    Soit $G = (S, A)$ un GNO
+
+                    Si $G$ ne continent aucun cycle de longueur impaire, alors $G$ est biparti.
+
+                    \vspace{6pt}
+                    
+                    \begin{indt}{$\square$ Démonstration :}
+                        On suppose sans perte de généralité que $G$ est connexe (sinon on travaille séparément sur ses composantes connexes).
+
+                        Alors $G$ possède un arbre couvrant $T$ dont on distingue un sommet $r$.
+
+                        Comme $T$ est un arbre, il existe un unique chemin simple dans $T$ entre toute paire de sommets.
+
+                        \begin{center}
+                            \begin{tikzpicture}
+                                \node (0) at (0, 0) [circle, draw] {$s_1$};
+                                \node (1) at (2, 0) [circle, draw] {};
+                                \node (2) at (4, 0) [circle, draw] {};
+                                \node (3) at (6, 0) [circle, draw] {$s_2$};
+
+                                \draw (0) -- (1) -- (2) -- (3);
+                                \draw (1) to [out=-45, in=-135] (2);
+                            \end{tikzpicture}
+                        \end{center}
+
+                        \boxed{\rm Exo}
+
+                        On peut alors partitionner $S$ en $(U, V)$, où :
+
+                        $-$ $U$ est l'ensemble des sommets $s$ tels que la longueur du chemin de $r$ à $s$ dans $T$ est paire ;
+
+                        $-$ $V$ est l'ensemble des sommets $s$ tels que la longueur du chemin de $r$ à $s$ dans $T$ est impaire.
+
+                        $U \cap V = \varnothing$, et commet $T$ est couvrant, $U \cup V = S$.
+
+                        Il reste à montrer que toute arête a une extrémité dans $U$ et l'autre dans $V$.
+
+                        Supposons qu'il existe une arête $\set{s, s'} \in A$ avec $s \in U$ et $s' \in U$ (le cas $V$ est similaire).
+
+                        Il existe un unique chemin simple de $s$ à $s'$ dans $T$.
+
+                        $-$ Si il passe par $r$ :
+
+                        \begin{center}
+                            \begin{tikzpicture}[scale=1.5]
+                                \node (s) at (0, 0) [circle, draw] {$s$};
+                                \node (r) at (2, 0) [circle, draw] {$r$};
+                                \node (s2) at (4, 0) [circle, draw] {$s'$};
+
+                                \draw (s) -- (r) -- (s2);
+
+                                \draw (s) to [out=-45, in=-135] node [below] {longueur paire} (r);
+                                \draw (r) to [out=-45, in=-135] node [below] {longueur paire} (s2);
+                            \end{tikzpicture}
+                        \end{center}
+
+                        Le tout est de longueur paire.
+
+                        L'ajout de $\set{s, s'}$ à ce chemin donne un cycle de longueur impaire.
+
+                        $-$ Sinon, on procède de même avec le premier sommet $r'$ commun aux chemins de $s$ à $r$ et de $s'$ à $r'$.
+
+                        La somme des longueurs des chemins de $s'$ à $r'$ est bien paire car elle sont de même parité (par disjonction de cas selon que $r' \in U$ ou $r' \in V$).
+
+                        Ajouter l'arête $\set{s, s'}$ donne un cycle de longueur impaire : absurde. $\blacksquare$
+                    \end{indt}
+                \end{indt}
+
+                \vspace{12pt}
+                
+                \begin{indt}{\subsubsection{Généralisation aux graphes non connexes}}
+                    $\bullet$ Définition (parcours d'un GNO) : Soit $G = (S, A)$ un GNO.
+
+                    \begin{indt}{Un parcours de $G$ à partir de $s \in S$ est une suite finie $s_0 \ldots s_{n - 1} \in S$ tq :}
+                        (1) $s_0 = s$
+
+                        (2) $\abs S = n$ et $\set{s_i\ |\ i \in \nset 0 {n - 1}} = S$
+
+                        (3) $\forall i \in \nset 1 {n - 1},\ B(\set{s_0 \ldots s_{i - 1}}) \neq \varnothing \Rightarrow s_i B(\set{s_0 \ldots s_{i - 1}})$.
+                    \end{indt}
+
+                    \vspace{6pt}
+                    
+                    \begin{indt}{$\bullet$ Conséquences :}
+                        $-$ Un parcours est la caractérisation de parcours des composantes connexes ;
+
+                        $-$ On peut tirer d'un tel parcours une forêt couvrante du graphe.
+                    \end{indt}
+                \end{indt}
+
+                \vspace{12pt}
+                
+                \begin{indt}{\subsubsection{Généralisation aux GO}}
+                    On adopte simplement la notion de bordure : si $G = (S, A)$ est un GO, et $T \subseteq S$,
+                    \[
+                        B(T) = \set{s \in S \setminus T\ |\ \exists t \in T\ |\ (t, s) \in A}
+                    \]
+
+                    On peut également sélectionner un antécédent pour chaque sommet du parcours.
+
+                    Si touts les sommets sont accessibles à partir du sommet de départ (\textit{a priori} si $G$ est fortement connexe), alors on obtient une arborescence couvrante de $G$.
+
+                    \vspace{12pt}
+                    
+                    $\bullet$ Définition (\textit{arborescence}) : Soit $G = (S, A)$ un GO.
+
+                    $G$ est une \textit{arborescence} s'il peut être obtenu à partir d'un arbre $(S, A')$ en distinguant un sommet $r \in S$, et en orientant chaque $\set{s, s'} \in A$ en $(s, s')$ si l'unique chemin simple de $r$ à $s'$ passe par $s$, en $(s', s)$ sinon.
+
+                    On parle également \textit{d'arbre enraciné}.
+
+                    On parle aussi de forêt pour un ensemble d'arborescences disjointes et un parcours d'un GO permet de définir une forêt couvrante en sélectionnant des arcs comme dans le cas non orienté.
+
+                    On dit que ce sont des \textit{arcs de liaison} pour les distinguer des autres catégories d'arcs.
+                \end{indt}
+            \end{indt}
+        \end{indt}
+    \end{indt}
     
-    %Add \label{4.1.8}
     
     
 \end{document}
