@@ -1962,13 +1962,16 @@ typedef liste* graphe;\end{lstlisting}
                         
                         %\node (0) at (0, 0) {$+$};
                         
-                        \node [label=right:$s_i$] (s) at (-20:1.6) {$+$};
+                        \node [label=right:$s_i$] (s) at (-20:1.7) {$\bullet$};
                         
                         \node [label=left:$v$] (v) at (-62:3) {$+$};
                         
+                        \node (1) at (-.3, -1) {$+$};
+                        \node (2) at (.2, .5) {$+$};
+                        
                         \draw[->] (s) -- (v);
-                        \draw[->] (s) -- (0, 0);
-                        \draw[->] (s) -- (1, 1);
+                        \draw[->] (s) -- (1);
+                        \draw[->] (s) -- (2);
                     \end{tikzpicture}
                 \end{center}
             \end{indt}
