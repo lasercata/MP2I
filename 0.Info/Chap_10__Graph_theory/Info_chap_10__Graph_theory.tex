@@ -137,6 +137,7 @@
 %\usetikzlibrary{babel}             %Uncomment this to use circuitikz
 %\usetikzlibrary{shapes.geometric}  % To draw triangles in trees
 %\usepackage{circuitikz}            %Electrical circuits drawing
+\usetikzlibrary{patterns, snakes}
 
 
 %------tabular
@@ -1665,9 +1666,11 @@ typedef liste* graphe;\end{lstlisting}
                     \end{tikzpicture}
                 \end{center}
 
-                Parcours : 0, 2, 3, 5, 6, 1, 4.
-
-                Antécédent : -, 0, 2, 3, 0, 5, 5.
+                \begin{tabular}{lccccccc}
+                    Parcours :   & 0, & 2, & 3, & 5, & 6, & 1, & 4.
+                    \\
+                    Antécédent : & -, & 0, & 2, & 3, & 0, & 5, & 5.
+                \end{tabular}
 
                 \emph{Arbre couvrant}.
             \end{indt}
@@ -1735,12 +1738,16 @@ typedef liste* graphe;\end{lstlisting}
 
                             \draw (s) -- (r) -- (s2);
 
-                            \draw (s) to [out=-45, in=-135] node [below] {longueur paire} (r);
-                            \draw (r) to [out=-45, in=-135] node [below] {longueur paire} (s2);
+                            %\draw (s) to [out=-45, in=-135] node [below] {longueur paire} (r);
+                            %\draw (r) to [out=-45, in=-135] node [below] {longueur paire} (s2);
+                            
+                            \draw [decoration={brace, mirror, raise=10pt, amplitude=5pt}, decorate] (s) -- (r) node [pos=.5, anchor=north, yshift=-15pt] {longueur paire};
+                            
+                            \draw [decoration={brace, mirror, raise=10pt, amplitude=5pt}, decorate] (r) -- (s2) node [pos=.5, anchor=north, yshift=-15pt] {longueur paire};
+                            
+                            \draw [decoration={brace, mirror, raise=40pt, amplitude=10pt}, decorate] (s) -- (s2) node [pos=.5, anchor=north, yshift=-50pt] {longueur paire};
                         \end{tikzpicture}
                     \end{center}
-
-                    Le tout est de longueur paire.
 
                     L'ajout de $\set{s, s'}$ à ce chemin donne un cycle de longueur impaire.
 
