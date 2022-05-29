@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2022.05.25
+% Last modification     :   2022.05.29
 %
 %------------------------------------------------------------------------
 
@@ -1015,7 +1015,7 @@
 
                 $\bullet$ On dit de $s$ et $s'$ sont \textit{fortement connectés}, noté $s \sim_{\vec G} s'$ si il existe un chemin de $s$ à $s'$ et un chemin de $s'$ à $s$ dans $G$.
 
-                $\bullet$ On dit que $G$ est \textit{fortement connexe} $\ssi \forall s, s'\ s \sim_{\vec G} s'$.
+                $\bullet$ On dit que $G$ est \textit{fortement connexe} $\ssi \forall s, s' \in S,\ s \sim_{\vec G} s'$.
             \end{indt}
 
             \vspace{12pt}
@@ -1062,9 +1062,9 @@
                         \draw[->] (F) to [out=10, in=170] (G);
                         \draw[->] (G) to [out=-170, in=-10] (F);
                         
-                        \draw[color=ff4500] (-2.4, -2.4) rectangle (-0.6, -1.6);
-                        \draw[color=ff4500] (0.6, -2.4) rectangle (2.4, -1.6);
-                        \draw[color=ff4500] (-1.35, -1.35) rectangle (1.35, 0.35);
+                        \draw[color=ff4500, rounded corners=5pt] (-2.4, -2.4) rectangle (-0.6, -1.6);
+                        \draw[color=ff4500, rounded corners=5pt] (0.6, -2.4) rectangle (2.4, -1.6);
+                        \draw[color=ff4500, rounded corners=5pt] (-1.35, -1.35) rectangle (1.35, 0.35);
                     \end{tikzpicture}
                 \end{center}
 
@@ -1239,7 +1239,7 @@
                     \[
                         \forall i, j \in \nset 0 {n - 1},\ a_{i,j}^{(k + 1)}
                         = \sum_{l = 0}^{n - 1} a_{i,l}^{(k)} a_{l,j}
-                        = \sum_{\substack{l \in \nset0 {n - 1} \\ \set{l, i} \in A}} a_{i,l}^{(k)}
+                        = \sum_{\substack{l \in \nset0 {n - 1} \\ \set{l, j} \in A}} a_{i,l}^{(k)}
                     \]
 
                     Or tout chemin de longueur $k + 1$ de $i$ à $j$ se décompose de manière unique en un chemin de $i$ à un sommet $l$ de longueur $k$ suivit  de l'arc / arête de $l$ à $j$.
@@ -1427,7 +1427,7 @@ typedef liste* graphe;\end{lstlisting}
                     
                     \vspace{6pt}
                     
-                    Remarque : on peut se passer des listes en utilisant des tableaux : on peut par exemple utiliser une matrice dont les lignes ne sont pas toutes de même longueur en plaçant dans la première case de chaque ligne ne nombre de voisins (\texttt{g[i][0]} est le nombre de voisins de $i$ et les voisins sont \texttt{g[i][1],$\ldots$, g[i[g[i][0]]]})
+                    Remarque : on peut se passer des listes en utilisant des tableaux : on peut par exemple utiliser une matrice dont les lignes ne sont pas toutes de même longueur en plaçant dans la première case de chaque ligne ne nombre de voisins (\texttt{g[i][0]} est le nombre de voisins de $i$ et les voisins sont \texttt{g[i][1], $\ldots$, g[i][g[i][0]]})
 
                     Problème : la linéarisation de cette matrice n'est pas pratique à manipuler.
 
@@ -1448,7 +1448,7 @@ typedef liste* graphe;\end{lstlisting}
 
                         $-$ Test d'existence de l'arête $\set{i, j}$ / de l'arc $(i, j)$ : $\mathcal O\!\lr{d_{(+)}(i)}$ (parcours de la liste d'adjacence de $i$) ;
 
-                        $-$ Calcul du calcul d'arêtes / d'arcs : $\mathcal O(n + m)$ (calcul de la somme des longueurs des listes, divisée par 2 dans le cas non orienté) ;
+                        $-$ Calcul du nombre d'arêtes / d'arcs : $\mathcal O(n + m)$ (calcul de la somme des longueurs des listes, divisée par 2 dans le cas non orienté) ;
 
                         $-$ Calcul de la liste des voisins d'un sommet : $\mathcal O(1)$ (accès à la case du sommet) ;
 
@@ -1512,10 +1512,10 @@ typedef liste* graphe;\end{lstlisting}
                         % T : 4, 2, 5
                         % B(T) : 1, 0, 3
                         
-                        \draw[color=ff4500] (-.4, -.6) rectangle (1.4, -2.4);
+                        \draw[color=ff4500, rounded corners=5pt] (-.4, -.6) rectangle (1.4, -2.4);
                         \node (T) at (-.6, -1.5) {$T$};
                         
-                        \draw[color=blue] (1.6, .4) rectangle (2.4, -2.4);
+                        \draw[color=blue, rounded corners=5pt] (1.6, .4) rectangle (2.4, -2.4);
                         \node (B) at (2.8, -1) {$B(T)$};
                     \end{tikzpicture}
                 \end{center}
@@ -1549,11 +1549,10 @@ typedef liste* graphe;\end{lstlisting}
 
                     Soit $i \in \nset {1}{n - 1}$.
 
-                    $s_i \in B(\set{s_0 \ldots s_{i - 1}})$ car $s_i \notin \set {s_0 \ldots s_{i - 1}}$ (sinon le point (2) de \ref{4.1.1} (page \pageref{4.1.1}) est faux)
+                    $s_i \in B(\set{s_0 \ldots s_{i - 1}})$ car $s_i \notin \set {s_0 \ldots s_{i - 1}}$ (sinon le point (2) de \ref{4.1.1} (page \pageref{4.1.1}) est faux),
+                    et d'après \ref{4.1.1} (3), $\exists j < i\ |\ \set{s_i, s_j} \in A$.
 
-                    Et d'après \ref{4.1.1} (3), $\exists j < i\ |\ \set{s_i, s_j} \in A$.
-
-                    Donc l'algorithme produit $s_0 \ldots s_{n - 1}$ en choisissant $s_i$ à l'itération $i,\ \forall i \in \nset{1}{\abs S - 1}$
+                    Donc l'algorithme produit $s_0 \ldots s_{n - 1}$ en choisissant $s_i$ à l'itération $i,\ \forall i \in \nset{1}{\abs S - 1}$.
 
                     \vspace{12pt}
                     
@@ -1565,7 +1564,7 @@ typedef liste* graphe;\end{lstlisting}
 
                     Il reste à montrer que $n = \abs S$, \textit{i.e} que $\forall i \in \nset 1 {n - 1},\ B(\set{s_0 \ldots s_{i - 1}}) \neq \varnothing$.
 
-                    Or si $B(\set{s_0 \ldots s_{i - 1}}) \neq \varnothing$ avec $i < \abs A$, alors il existe un sommet qui n'est pas connecté à $s_0 \ldots s_{i - 1}$ donc le graphe n'est pas connexe. $\blacksquare$
+                    Or si $B(\set{s_0 \ldots s_{i - 1}}) = \varnothing$ avec $i < \abs A$, alors il existe un sommet qui n'est pas connecté à $s_0 \ldots s_{i - 1}$ donc le graphe n'est pas connexe. $\blacksquare$
                 \end{indt}
             \end{indt}
 
@@ -1574,7 +1573,7 @@ typedef liste* graphe;\end{lstlisting}
             \begin{indt}{\subsubsection{Définition (\textit{sous-graphe induit / couvrant})}}
                 Soit $G = (S, A)$ un graphe.
 
-                $\bullet$ Le \textit{sous-graphe induit} par $T \subseteq S$ est le graphe $(T, A_t)$, où
+                $\bullet$ Le \textit{sous-graphe induit} par $T \subseteq S$ est le graphe $(T, A_T)$, où
                 \[
                     A_T = \set{a \in A\ |\ \text{les deux extrémités de $a$ sont dans $T$}}
                 \]
@@ -1592,7 +1591,7 @@ typedef liste* graphe;\end{lstlisting}
             \begin{indt}{\subsubsection{Proposition}}
                 Soit $G = (S, A)$ un GNO connexe, et $s_0 \ldots s_{n - 1}$ un parcours de $G$.
 
-                $\forall i \in \nset 1 {n - 1}$, on choisit $t_i \in \set{s_0 \ldots s_{i - 1}}\ |\ \set{s_i, t_i} \in A$ (possible d'après \ref{4.1.1} (3) (page \pageref{4.1.1})).
+                $\forall i \in \nset 1 {n - 1}$, on choisit $t_i \in \set{s_0, \ldots, s_{i - 1}}\ |\ \set{s_i, t_i} \in A$ (possible d'après \ref{4.1.1} (3) (page \pageref{4.1.1})).
 
                 \vspace{6pt}
                 
