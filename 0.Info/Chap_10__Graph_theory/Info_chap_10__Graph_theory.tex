@@ -411,9 +411,8 @@
                     $\bullet$ $S$ est un ensemble fini de \textit{sommets} ou de \textit{n\oe uds} ;
 
                     \begin{indt}{$\bullet$ $A$ est un ensemble d'associations entre deux sommets, qui peut prendre plusieurs formes :}
-                        $-$ Si $A$ est un ensemble de points de sommets, on dit que $G$ est \textit{non orienté} ;
-
-                        $-$ Si $a = \set{s, s'} \in A$ , on dit que $a$ est une \textit{arête} d'extrémités $s$ et $s'$, que $a$ est \textit{incidente} à $s$ et $s'$, et que $s$ et $s'$ sont \textit{adjacents} ou \textit{voisins} ;
+                        $-$ Si $A$ est un ensemble de points de sommets, on dit que $G$ est \textit{non orienté}.
+                        Si $a = \set{s, s'} \in A$ , on dit que $a$ est une \textit{arête} d'extrémités $s$ et $s'$, que $a$ est \textit{incidente} à $s$ et $s'$, et que $s$ et $s'$ sont \textit{adjacents} ou \textit{voisins} ;
 
                         $-$ Si $A$ est un ensemble de couples de sommets, on dit que $G$ est \textit{orienté}.
                         \newline
@@ -479,7 +478,7 @@
                 $\bullet$ Remarque : la définition \ref{2.1.1} (page \pageref{2.1.1}) empêche la présence de boucles dans les GNO.
                 On peut les autoriser en considérant non pas des paires de sommets, mais des \textit{multi-ensembles} de cardinal 2.
 
-                On pourrait aussi utiliser les \textit{multi-ensembles} pour autoriser les multi-arêtes (plusieurs arêtes entre 2 sommets donnés, comme ent \ref{1.1.1}, page \pageref{1.1.1}, mais c'est H.P : $A$ sera toujours un ensemble).
+                On pourrait aussi utiliser les \textit{multi-ensembles} pour autoriser les multi-arêtes (plusieurs arêtes entre 2 sommets donnés, comme en \ref{1.1.1}, page \pageref{1.1.1}, mais c'est H.P : $A$ sera toujours un ensemble).
             \end{indt}
 
             \vspace{12pt}
@@ -534,7 +533,7 @@
 
                     Par hypothèse de récurrence :
                     \[
-                        \abs A - 1 = \abs{A \setminus \set{(s, s')}} = \sum_{v \in S \setminus \set{s'}} d_-(v) + \underbrace{d_-(s) - 1}_{\text{degré sortant de $s$ dans $G$}}
+                        \abs A - 1 = \abs{A \setminus \set{(s, s')}} = \sum_{v \in S \setminus \set{s}} d_-(v) + \underbrace{d_-(s) - 1}_{\text{degré sortant de $s$ dans $G'$}}
                     \]
                     
                     Donc $\abs A = \displaystyle \sum_{v \in S} d_-(v)$
@@ -551,7 +550,8 @@
                     \[
                         2\N \ni 2\abs A
                         = \sum_{s \in S} d(s)
-                        = \underbrace{\sum_{\substack{s \in S \\ d(s) \in 2\N}} d(s)}_{\in 2\N} + \underbrace{\sum_{\substack{s \in S \\ d(s) \in 2\N + 1}} d(s)}_{\substack{\text{de la parité du nombre} \\ \text{de sommets de degré impair}}}
+                        = \underbrace{\sum_{\substack{s \in S \\ d(s) \in 2\N}} d(s)}_{\in 2\N} \quad
+                        + \underbrace{\sum_{\substack{s \in S \\ d(s) \in 2\N + 1}} d(s)}_{\substack{\text{de la parité du nombre} \\ \text{de sommets de degré impair}}}
                     \]
                     $\blacksquare$
                 \end{indt}
