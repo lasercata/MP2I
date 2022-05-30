@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2022.05.29
+% Last modification     :   2022.05.30
 %
 %------------------------------------------------------------------------
 
@@ -1791,7 +1791,7 @@ typedef liste* graphe;\end{lstlisting}
 
                 On peut également sélectionner un antécédent pour chaque sommet du parcours.
 
-                Si touts les sommets sont accessibles à partir du sommet de départ (\textit{a priori} si $G$ est fortement connexe), alors on obtient une arborescence couvrante de $G$.
+                Si tous les sommets sont accessibles à partir du sommet de départ (\textit{a priori} si $G$ est fortement connexe), alors on obtient une arborescence couvrante de $G$.
 
                 \vspace{12pt}
                 
@@ -2118,7 +2118,7 @@ let composantes_connexes (g : graphe) : int array =
     composante
                 \end{lstlisting}
 
-                Complexité : $\mathcal O(\abs S ^2)$ dans le pire cas (pas d'arêtes) à cause de la création de $v$ dans chaque appel à \texttt{dfs}
+                Complexité : $\mathcal O\!\lr{\abs S ^2}$ dans le pire cas (pas d'arêtes) à cause de la création de $v$ dans chaque appel à \texttt{dfs}
 
                 $\boxed{\rm Exo}$ : on peut obtenir une complexité $\mathcal O(\abs S + \abs A)$ en ne créant pas un tableau à chaque nouveau parcours. (Remarque : \texttt{not v.(s) $\leftrightarrow$ composante.(s) = -1})
             \end{indt}
@@ -2134,7 +2134,7 @@ let composantes_connexes (g : graphe) : int array =
 
                 Remarques :
 
-                $-$ Même complexité : $\mathcal O(\abs S + \abs A)$
+                $-$ Même complexité : $\mathcal O\!\lr{\abs S + \abs A}$
 
                 $-$ On parcourt les sommets par ordre de distance au sommet de départ.
             \end{indt}
@@ -2166,6 +2166,241 @@ let composantes_connexes (g : graphe) : int array =
                 \end{center}
 
                 0, 1, 4, 2, 5, 6, 3, 7
+
+                Les sommets sont parcourus par ordre de distance au premier sommet.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Application : calcul de plus court chemin dans un graphe non pondéré}}
+                Idée : comme les sommets sont parcourus par ordre de distance au sommet de départ, une arborescence bien choisie d'un parcours en largeur donne des plus courts chemins du sommet de départ vers les sommets accessibles depuis ce sommet.
+
+                \begin{center}
+                    \begin{tikzpicture}
+                        \foreach \i in {0, 1, ..., 5} {
+                            \node (\i) at (\i, 0) [circle, draw] {};
+                        }
+
+                        \node (a) at (6, 0) {};
+
+                        \draw (0) -- (1) -- (2) -- (3) -- (4) -- (5);
+
+                        \draw[dashed] (5) -- (a);
+                    \end{tikzpicture}
+                \end{center}
+
+                On représente l'arborescence à l'aide d'un tableau de prédécesseurs : le prédécesseur d'un sommet donné est le père de ce sommet dans l'arborescence choisie.
+
+                \begin{lstlisting}[language=Caml, xleftmargin=80pt]
+let plus_courts_chemins (g : graphe) (s : int) : int array =
+    let pred = Array.make (Array.length g) (-1) in
+    pred.(s) <- s;
+    bfs (
+        fun s -> List.iter (
+            fun s' -> if pred.(s') = -1 then pred.(s') <- s
+        ) g.(s)
+    ) g s\end{lstlisting}
+
+                Complexité : $\mathcal O\!\lr{\abs S + \abs A}$ (au lieu de faire un parcours des voisins de chaque sommet, on en fait 2).
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Proposition (correction de \texttt{plus\_courts\_chemins})}}
+                On suppose sans perte de généralité que $G$ est connexe.
+
+                \begin{indt}{$\forall s' \in S$, on note :}
+                    $-$ $d_{s'}$ la distance de $s$ à $s'$ (\textit{i.e} la longueur d'un plus court chemin de $s$ à $s'$) ;
+
+                    $-$ $l_{s'}$ la longueur du chemin de $s$ à $s'$ obtenu à l'aide du tableau \texttt{pred} ;
+
+                    $-$ $n_{s'}$ le rang d'insertion de $s'$ dans la file (convention : $n_s = 0$).
+                \end{indt}
+
+                Alors
+                \[
+                    \forall s' \in S,\
+                    \begin{array}{l}
+                        (1)\ d_{s'} = l_{s'}
+                        \\
+                        (2)\ \forall s'' \in S,\ d_{s''} < d_{s'} \Rightarrow n_{s''} < n_{s'}
+                    \end{array}
+                \]
+
+                \begin{indt}{$\square$ Démonstration :}
+                    Par récurrence forte sur le rang d'insertion :
+
+                    $\bullet$ $n_{s'} = 0$ : alors $s' = s$, $l_s = 0 = d_s$ et (2) est trivial (il n'existe pas de sommet $s''$ avec $d_{s''} <0$).
+
+                    $\bullet$ Héréditée : on suppose la propriété vraie jusqu'au rang $n$ et on note $s'$ le sommet de rang $n_{s'} = n + 1$.
+
+                    (1) On sait que $d_{s'} \le l_{s'}$ par définition. Supposons $d_{s'} < l_{s'}$ $(*)$.
+
+                    On considère un plus court chemin de $s$ à $s'$, noté $s \rightsquigarrow s'' \rightarrow s'$, et on note $p = \mathtt{pred}.(s')$
+
+                    \begin{indt}{On sait que :}
+                        $-$ $d_{s'} = 1 + d_{s''}$ $(**)$ (sinon le chemin choisi ne serait pas un plus court chemin)
+
+                        $-$ $l_{s'} = 1 + l_p$ $(***)$
+
+                        $-$ $n_p < n_{s'}$ ($s'$ est inséré lorsque $p$ est extrait).
+                    \end{indt}
+
+                    Par H.R, on sait alors que $d_p = l_p$, d'où $d_{s''} < d_p$ (avec $(*), (**), (***)$).
+
+                    Donc par H.R, $n_{s''} < n_p$ donc, lorsque $s''$ est extrait, $s'$ n'a pas encore de prédécesseur et $s''$ devrait être le prédécesseur de $s'$ : absurde.
+
+                    Donc $d_{s'} = l_{s'}$.
+
+                    \vspace{12pt}
+                    
+                    Supposons $\exists s'' \in S\ |\ d_{s''} < d_{s'}$ et $n_{s''} > n_{s'}$ (cas d'égalité impossible)
+
+                    ($\neg \forall x,\ A(x) \Rightarrow B(x) \equiv \exists x\ |\ A(x) \wedge \neg B(x)$)
+                    On considère un plus court chemin $s \rightsquigarrow q \rightarrow s''$ et on note $p = \mathtt{pred}.(s')$.
+
+                    $n_p < n_{s'}$ donc on dispose de l'hypothèse de récurrence pour $p$.
+
+                    Donc $d_p = l_p = l_{s'} - 1 \overset{(1)}{=} d_{s'} - 1 > d_{s''} - 1 = d_q$
+
+                    Donc par H.R, $n_q < n_p$.
+
+                    Alors, comme le prédécesseur de $s''$ est défini au plus tard au moment de l'extraction de $q$, $s''$ est inséré dans la file avant tous les successeurs de $p$, dont $s'$ : absurde. $\blacksquare$
+                \end{indt}
+            \end{indt}
+        \end{indt}
+    \end{indt}
+
+    \vspace{12pt}
+    
+    \begin{indt}{\section{Plus court chemins dans un graphe pondéré}}
+        \begin{indt}{\subsection{Contexte}}
+            \begin{indt}{\subsubsection{Introduction}}
+                Certaines applications nécessitent de travailler dans des graphes pondérés (ex : \ref{1.2.2}, \ref{1.2.4}, page \pageref{1.2.2}).
+                Dans ce contexte, le poids d'un arc représente le coût d'un certain choix et on ne cherche plus à minimiser le nombre d'arcs mais plutôt le coût global des choix.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Définition (\textit{poids d'un chemin})}}
+                Soit $G = (S, A, w)$ un graphe pondéré, et $p = s_0 \ldots s_n$ un chemin dans $G$.
+
+                Le \textit{poids de $p$} est
+                \[
+                    w(p) = \sum_{i = 0}^{n - 1} w\!\lr{\set{s_i, s_{i + 1}}}
+                \]
+                (resp. $w\!\lr{(s_i, s_{i + 1})}$ dans le cas orienté).
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Remarque}}
+                Soit $G = (S, A, w)$ un graphe pondéré.
+
+                Si il existe un cycle $c$ dans $G$ de poids $w(c) < 0$, on ne peut pas vraiment parler de plus courts chemins dans $G$ :
+                $\forall s \in c,\ \forall p = s_0 \ldots s_n\ |\ \exists i \in \nset 0 n\ |\ s_i = s$, on peut construire un chemin $p'$ de poids $w(p') < w(p)$, de $s_0$ à $s_n$ en insérant dans $p$, à la position $i$, le cycle $c$ réordonné pour avoir un cycle de $s$ à lui-même.
+
+                \begin{center}
+                    \begin{tikzpicture}
+                        \node (0) at (0, 0) [label=above:$s_0$] {$+$};
+                        \node (1) at (2, 0) [label=above:{$s_i = s$}] {$+$}; %s_i = s
+                        \node (2) at (4, 0) [label=above:$s_n$] {$+$};
+
+                        \draw (0) -- (1) -- (2);
+                        \draw (1) to [out=-45, in=-135, looseness=10] node [below] {$< 0$} (1);
+                    \end{tikzpicture}
+                \end{center}
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Définition (\textit{plus court chemin / distance})}}
+                \label{5.1.4}
+
+                Soit $G = (S, A, w)$ un graphe pondéré sans cycle de poids $< 0$.
+
+                Un chemin $p = s_0 \ldots s_n$ est un \textit{plus court chemin} de $s_0$ à $s_n$ si $\forall p'$ chemin de $s_0$ à $s_n$, $w(p) \le w(p')$.
+
+                \vspace{12pt}
+                
+                $\forall s, s' \in S$ la distance de $s$ à $s'$ est $d(s, s') = \min\set{w(p)\ |\ p\ \text{chemin de $s$ à $s'$}}$ (ou $+\infty$ si il n'y a pas de chemin de $s$ à $s'$).
+
+                \vspace{12pt}
+                
+                \begin{indt}{$\square$ Démonstration de l'existence du min :}
+                    On note $d = \min\set{w(p)\ |\ p\ \text{chemin simple de $s$ à $s'$}}$ (existe car cet ensemble est fini).
+
+                    Montrons que $d = d(s, s')$, \textit{i.e} $\forall p$ chemin de $s$ à $s'$, $w(p) \ge d$.
+
+                    Si $p$ est simple, c'est vrai par définition.
+
+                    Si $p$ n'est pas simple, alors en notant $p = s_0 \ldots s_n$, $\exists i, j \in \nset 0 n\ |\ i < j$ et $s_i = s_j$.
+
+                    Donc on peut couper le circuit de $s_i$ à $s_j$, de poids $\ge 0$, et obtenir $p' = s_0 \ldots s_i s_{j + 1} \ldots s_n$ tel que
+                    $w(p') \le w(p)$ et $\abs{p'} < \abs p$
+
+                    En procédant par induction bien fondée avec les chemins simples comme cas de base, on montre qu'il existe un chemin simple $p''$ de $s_0$ à $s_n$ tel que
+                    $\underbrace{w(p'')}_{\ge d} \le w(p)$ $\blacksquare$
+                \end{indt}
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Exercice}}
+                Montrer que $d$ satisfait l'inégalité triangulaire.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Problèmes}}
+                \label{5.1.6}
+
+                \begin{indt}{On s'intéresse aux problèmes suivants :}
+                    (1) Déterminer des plus courts chemins entre tous les couples de sommets ;
+
+                    (2) Déterminer des plus courts chemins d'un sommet donné vers tous les sommets.
+                \end{indt}
+                
+                \vspace{6pt}
+
+                Remarque : résoudre l'un de ces problèmes permet de résoudre l'autre, mais il existe des algorithmes spécialisés pour chacun des deux.
+            \end{indt}
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Algorithme de \textsc{Floyd-Warshall}}}
+            \begin{indt}{\subsubsection{Principe}}
+                On cherche à résoudre le problème \ref{5.1.6} (1) (page \pageref{5.1.6}) dans un graphe pondéré $G = (S, A, w)$ sans cycle de poids strictement négatif, en cherchant des chemins simples (possible grâce au point \ref{5.1.4}, page \pageref{5.1.4}).
+
+                L'idée de l'algorithme de \textsc{Floyd-Warshall} est la suivante : on procède par programmation dynamique en cherchant $\forall k \in \nset 0 {\abs S},\ \forall s, s' \in S$, un plus court chemin de $s$ à $s'$ n'utilisant que des sommets intermédiaires d'indice strictement inférieur à $k$ (étant donné une numérotation des sommets).
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Relation de récurrence}}
+                $\bullet$ Cas de base ($k = 0$) : comme il n'y a pas de sommet d'indice strictement négatif, il ne peut pas y avoir de sommet intermédiaire, donc les plus courts chemins sont les arcs / arêtes.
+
+                En notant $\forall s, s' \in S,\ d^{(k)}(s, s')$ la longueur d'un plus court chemin de $s$ à $s'$ n'utilisant que des sommets intermédiaires d'indice $< k$, on sait que $d^{(0)}(s, s') = w(\set{s, s'})$ avec la convention $w(\set{s, s'}) = +\infty$ si $\set{s, s'} \notin A$.
+
+                \vspace{6pt}
+                
+                $\bullet$ Héréditée : Soient $s, s' \in S$.
+
+                Un plus court chemin de $s$ à $s'$ n'utilisant que des sommets intermédiaires d'indice $< k + 1$ peut ne pas passer par le sommet d'indice $k$ et dans ce cas réalise $d^{(k)}(s, s')$.
+
+                Si un tel chemin passe par $k$, on peut supposer qu'il y passe une seule fois puisqu'on cherche des chemins simples.
+
+                Les portions de chemins de $s$ à $k$ et de $k$ à $s'$ sont alors des plus court chemins (sinon le chemin initial ne serait pas un plus court chemin : propriété de sous-structure optimale) n'utilisant que des sommets intermédiaires d'indice $< k$.
+
+                Ainsi,
+                \[
+                    d^{(k + 1)}(s, s') = \min\!\lr{d^{(k)}(s, s'), d^{(k)}(s, k) + d^{(k)}(k, s')}
+                \]
+
+                Résolution du problème : c'est $d^{(\abs S)}$ qui nous intéresse car tous les sommets intermédiaires sont autorisés.
+
+                \boxed{\rm Exo} relation de récurrence sur $p^{(k)}(s, s')$, le prédécesseur de $s'$ sur un plus court chemin de $s$ à $s'$ n'utilisant que des sommets intermédiaires d'indice $< k$.
             \end{indt}
         \end{indt}
     \end{indt}
