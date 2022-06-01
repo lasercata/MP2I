@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2022.05.30
+% Last modification     :   2022.06.01
 %
 %------------------------------------------------------------------------
 
@@ -2400,7 +2400,346 @@ let plus_courts_chemins (g : graphe) (s : int) : int array =
 
                 Résolution du problème : c'est $d^{(\abs S)}$ qui nous intéresse car tous les sommets intermédiaires sont autorisés.
 
+                \vspace{12pt}
+                
                 \boxed{\rm Exo} relation de récurrence sur $p^{(k)}(s, s')$, le prédécesseur de $s'$ sur un plus court chemin de $s$ à $s'$ n'utilisant que des sommets intermédiaires d'indice $< k$.
+
+                $
+                    \begin{cases}
+                        p^{(0)}(s, s') = s
+                        \\
+                        p^{(k + 1)}(s, s') =
+                        \begin{cases}
+                            p^{(k)}(s, s')\ \text{si}\ d^{(k + 1)}(s, s') = d^{(k)}(s, s')
+                            \\
+                            p^{(k)}(k, s')\ \text{sinon}
+                        \end{cases}
+                    \end{cases}
+                $
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Exemple}}
+                \begin{center}
+                    \begin{tikzpicture}[scale=1.5]
+                        \node (0) at (0, 0) [circle, draw] {0};
+                        \node (1) at (-1, -1) [circle, draw] {1};
+                        \node (2) at (1, -1) [circle, draw] {2};
+                        \node (3) at (0, -2) [circle, draw] {3};
+
+                        \draw[->] (0) to node [above right] {$-2$} (2);
+                        \draw[->] (2) to node [below right] {$2$} (3);
+                        \draw[->] (3) to node [below left] {$-1$} (1);
+                        \draw[->] (1) to node [above left] {$4$} (0);
+                        \draw[->] (1) to node [above] {$3$} (2);
+                    \end{tikzpicture}
+                \end{center}
+
+                \[
+                    \begin{array}{cc}
+                        d^{(0)} :
+                        \begin{pmatrix}
+                            +\infty & +\infty & -2 & +\infty
+                            \\
+                            4 & +\infty & 3 & +\infty
+                            \\
+                            +\infty & +\infty & +\infty & 2
+                            \\
+                            +\infty & -1 & +\infty & +\infty
+                        \end{pmatrix}
+                        &
+                        d^{(1)} :
+                        \begin{pmatrix}
+                            +\infty & +\infty & -2 & +\infty
+                            \\
+                            4 & +\infty & \boxed{2} & +\infty
+                            \\
+                            +\infty & +\infty & +\infty & 2
+                            \\
+                            +\infty & -1 & +\infty & +\infty
+                        \end{pmatrix}
+                        \vspace{6pt}
+                        \\
+                        d^{(2)} :
+                        \begin{pmatrix}
+                            +\infty & +\infty & -2 & +\infty
+                            \\
+                            4 & +\infty & 2 & +\infty
+                            \\
+                            +\infty & +\infty & +\infty & 2
+                            \\
+                            \boxed{-3} & -1 & \boxed{1} & +\infty
+                        \end{pmatrix}
+                        &
+                        d^{(3)} :
+                        \begin{pmatrix}
+                            +\infty & +\infty & -2 & \boxed 0
+                            \\
+                            4 & +\infty & 2 & \boxed 4
+                            \\
+                            +\infty & +\infty & +\infty & 2
+                            \\
+                            -3 & -1 & 1 & \boxed 3
+                        \end{pmatrix}
+                    \end{array}
+                \]
+                \[
+                    d^{(4)} :
+                    \begin{pmatrix}
+                        \boxed 3 & \boxed{-1} & -2 & 0
+                        \\
+                        4 & \boxed 3 & 2 & 4
+                        \\
+                        \boxed 5 & \boxed 1 & \boxed 3 & 2
+                        \\
+                        -3 & -1 & 1 & 3
+                    \end{pmatrix}
+                \]
+
+                Remarque : dans la matrice d'adjacence pondérée, on peut choisir de placer des $0$ sur la diagonale puisque le plus court chemin d'un sommet à lui-même est le chemin vide.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Implémentation en C}}
+                $\bullet$ Structures de données : on choisit une matrice pour $d^{(k)}$, $p^{(k)}$ et aussi pour $G$ (matrice d'adjacence pondérée, car c'est directement $d^{(0)}$).
+                On pourrait utiliser des listes d'adjacence car la complexité du calcul de $d^{(0)}$ à partir de ces listes est dominé par la complexité du reste de l'algorithme.
+
+                \vspace{6pt}
+                
+                On supposera que la matrice est linéarisée :
+                \begin{lstlisting}[language=C, xleftmargin=80pt]
+typedef double* graphe;
+
+floyd_warshall(graphe g, int n) {
+    double* d = (double*) malloc(n*n*sizeof(double));
+    int* p = (int*) malloc(n*n*sizeof(int));
+
+    for (int i = 0 ; i < n ; i++)
+        for (int j = 0 ; j < n ; j++) {
+            d[i*n + j] = g[i*n + j];
+            p[i*n + j] = i;
+        }
+
+    for (int k = 0 ; k < n ; k++)
+        for (int i = 0 ; i < n ; i++)
+            for (int j = 0 ; j < n ; j++)
+                if (d[i*n + k] + d[k*n + j] < d[i*n + j]) {
+                    d[i*n + j] = d[i*n + k] + d[k*n + j];
+                    p[i*n + j] = p[k*n + j];
+                }
+
+    free(d);
+    return p;
+}\end{lstlisting}
+
+                Complexité :
+
+                $\bullet$ Temporelle : $\mathcal O\!\lr{\abs S ^3}$
+
+                $\bullet$ Spatiale : $\mathcal O\!\lr{\abs S ^2}$
+            \end{indt}
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Algorithme de \textsc{Dÿkstra}}}
+            \begin{indt}{\subsubsection{Principe}}
+                On cherche à résoudre le problème \ref{5.1.6} (2) (page \pageref{5.1.6}) dans un graphe pondéré $G = (S, A, w)$, où $w : A \longrightarrow \oboxed{\R^+}$. On cherche donc, étant donné $s \in S$, à calculer $d(s, s'),\ \forall s' \in S$.
+
+                L'algorithme de \textsc{Dÿkstra} est un algorithme glouton qui se présente comme une variante du parcours en largeur : on parcourt les sommets par ordre de distance à $s$ croissante, mais ici la distance est définie par la pondération du graphe.
+                La file du parcours en largeur est remplacée par une file de priorité dont les priorité sont des estimations des distances (puisque ces dernières ne sont pas connues).
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Algorithme glouton}}
+                $\forall s' \in S$, on note $w(s')$ l'estimation de $d(s, s')$.
+
+                Initialement,
+                $
+                    \begin{cases}
+                        w(s) = 0
+                        \\
+                        w(s') = +\infty\ \forall s' \neq s
+                    \end{cases}
+                $
+
+                On construit incrémentalement un ensemble $E \subseteq S\ |\ \forall s' \in E,\ w(s') = d(s, s')$.
+
+                Initialement, $E = \varnothing$, puis à chaque itération, on insère dans $E$ un sommet $s' \in S \setminus E\ |\ w(s')$ est minimal (choix glouton).
+                Lors de l'insertion de $s'$ dans $E$, on observe les voisins de $s'$ pour essayer d'améliorer l'estimation pour ces sommets :
+                $\forall s'' \in S \setminus E$ voisin de $s'$, on remplace $w(s'')$ par
+                \[
+                    \min\!\lr{w(s''), d(s, s') + w(\set{s', s''})}
+                \]
+                (resp. $(s', s'')$ dans le cas orienté).
+
+                En parallèle, on met à jour un tableau de prédécesseurs pour représenter les plus courts chemins.
+
+                Remarque : $S \setminus E$ se comporte comme une file de priorité min où $w(s')$ est le priorité de l'élément $s'$.
+
+                Quitte à compléter $G$ avec des arêtes / arcs de poids $+\infty$, c'est aussi la bordure utilisée dans l'algorithme générique de parcours.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Exemple}}
+                \begin{center}
+                    \begin{tikzpicture}[scale=1.5]
+                        \node (0) at (0, 0) [circle, draw] {0};
+                        \node (1) at (1, -1) [circle, draw] {1};
+                        \node (2) at (1, 1) [circle, draw] {2};
+                        \node (3) at (3, -1) [circle, draw] {3};
+                        \node (4) at (3, 1) [circle, draw] {4};
+
+                        \draw[->, color=ff4500] (0) to node [below left] {$5$} (1);
+                        \draw[->, color=ff4500] (0) to node [above left] {$3$} (2);
+                        \draw[->] (1) to node [below] {$6$} (3);
+                        \draw[->] (1) to [out=80, in=-80] node [right] {$1$} (2);
+                        \draw[->] (2) to [out=-100, in=100] node [left] {$2$} (1);
+                        \draw[->] (3) to [out=80, in=-80] node [right] {$7$} (4);
+                        \draw[->, color=ff4500] (4) to [out=-100, in=100] node [left] {$1$} (3);
+                        \draw[->] (1) to node [below right] {$4$} (4);
+                        \draw[->, color=ff4500] (2) to node [above] {$6$} (4);
+                        \draw[->] (3) to [looseness=1.3, out=-135, in=-100] node [below] {$3$} (0);
+                    \end{tikzpicture}
+                \end{center}
+
+                \begin{tabular}{|r|c|c|c|c|c|}
+                    \hline
+                    $s'$ & 0 & 1 & 2 & 3 & 4
+                    \\
+                    \hline
+                    $w(s')$ & 0 & 5 & 3 & 10 & 9
+                    \\
+                    \hline
+                    $p(s')$ & 0 & 0 & 0 & 4 & 2
+                    \\
+                    \hline
+                \end{tabular}
+
+                E : 0, 2, 1, 4, 3
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Correction de l'algorithme de \textsc{Dÿkstra}}}
+                On démontre l'invariant suivant :
+                \[
+                    \begin{cases}
+                        \forall s' \in E,\ w(s') = d(s, s')
+                        \\
+                        \forall s'' \in S \setminus (E \cup \set s),\ w(s'') = \displaystyle \min_{s' \in E}(d(s, s') + w(\set{s', s''}))
+                    \end{cases}
+                \]
+
+                $\bullet$ Initialement : $E = \varnothing,\ \forall s'' \in S \setminus \set s,\ w(s'') = +\infty = \min \varnothing$ (par convention) : l'invariant est vrai.
+
+                \vspace{6pt}
+                
+                $\bullet$ Invariant : on traite la première itération à part.
+
+                $-$ à la première itération, $s' = s$.
+
+                $w(s) = 0 = d(s, s)$ (car les poids sont positifs)
+
+                $\forall s'' \neq s,\ w(s'')$ ne change pas si $s$ et $s''$ ne sont pas adjacents : ok pour le calcul du minimum,
+                et $w(s'')$ devient $w(\set{s, s''})$ si $s$ et $s''$ sont adjacents : encore ok.
+
+                \vspace{6pt}
+                
+                $-$ Aux itérations suivantes : on suppose
+                \[
+                    \begin{cases}
+                        \forall s' \in E,\ w(s') = d(s, s')
+                        \\
+                        \forall s'' \in S \setminus (E \cup \set s),\ w(s'') = \displaystyle \min_{s' \in E}(d(s, s') + w(\set{s', s''}))
+                    \end{cases}
+                \]
+
+                On choisit $s' \in S \setminus E\ |\ w(s')$ est minimal pour l'insérer dans $E$.
+
+                Montrons que $w(s') = d(s, s')$.
+
+                On considère un chemin de poids minimal de $s$ à $s'$.
+
+                Il s'écrit $p = s \rightsquigarrow u \rightarrow v \rightsquigarrow s'$, où $v$ est le premier sommet du chemin tel que $v \notin E$
+
+                \[
+                    \begin{array}{rcl}
+                        d(s, s') =
+                        w(p) &=&
+                        \underbrace{w(s \rightsquigarrow u)}_{= d(s, u)}
+                        + w(\set{u, v})
+                        + \underbrace{w(v \rightsquigarrow s')}_{\ge 0}
+                        \\
+                        &\ge&
+                        \displaystyle \min_{u \in E}(d(s, u) + w(\set{u, v}))
+                        \\
+                        &=& w(v)\ \text{car $v \notin E$ (et $v \neq s$ car $s \in E$)}
+                        \\
+                        &\ge& w(s')\ \text{par définition de $s'$}
+                    \end{array}
+                \]
+
+                Donc $d(s, s') \ge w(s')$
+
+                Or $w(s')$ est le poids d'un chemin de $s$ à $s'$ : $w(s') = \displaystyle \min_{u \in E}(d(s, u) + w(\set{u, s'}))$
+
+                Donc en choisissant $u \in E$ qui réalise ce minimum et en concaténant un plus court chemin de $s$ à $u$ et l'arête $\set{u, s'}$, on obtient un chemin de $s$ à $s'$ de poids $w(s')$.
+
+                Donc $w(s') \ge d(s, s')$ d'où $d(s, s') = w(s')$.
+
+                \vspace{6pt}
+                
+                $\forall s'' \in S \setminus (E \cup \set{s, s'})$, si $s'$ et $s''$ ne sont pas adjacents, alors $w(s'')$ est inchangé : ok pour le calcul du minimum.
+
+                Si $s'$ et $s''$ sont adjacents, $w(s'')$ devient
+                \[
+                    \begin{array}{rcl}
+                        &&\displaystyle \min(w(s''), d(s, s') + w(\set{s', s""}))
+                        \\
+                        &=& \displaystyle \min\!\lr{\min_{u \in E}(d(s, u) + w(\set{u, s''})), d(s, s') + w(\set{s', s''})}
+                        \\
+                        &=& \displaystyle \min_{u \in E \cup \set{s'}} (d(s, u + w(\set{u, s''})))
+                    \end{array}
+                \]
+
+                \vspace{6pt}
+                
+                $\bullet$ Correction : à la fin de l'algorithme, $E = S$, donc l'invariant donne $\forall s' \in S,\ w(s') = d(s, s')$, donc si les mises à jour de prédécesseurs sont cohérents avec le calcul des $w(s')$, alors on obtient des plus court chemins de $s$ vers tous les sommets.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Implémentation}}
+                $\bullet$ Structures de données : on utilise une file de priorité min pour $S \setminus E$ qui doit permettre la mise à jour des priorités. On utilise des tableaux pour $w$ et les prédécesseurs. On représente $G$ par des listes d'adjacence pondérées car à chaque itération on a besoin de parcourir les voisins d'un sommet donné.
+
+                \begin{lstlisting}[language=C, xleftmargin=80pt]
+struct arc {
+    double poids;
+    int cible;
+};
+
+struct elem {
+    struct arc val;
+    struct elem* next;
+};
+
+typedef struct elem* liste;
+typedef liste* graphe;\end{lstlisting}
+
+                \begin{indt}{On suppose implémenté un type \texttt{fp} (file de priorité) proposant les primitives suivantes :}
+                    $-$ \texttt{fp create(double* w, int n)} : crée une file contenant $\nset 0 {n - 1}$ avec les priorités \texttt{w[i]} ;
+
+                    $-$ \texttt{bool is\_empty(fp f)} : test de vacuité ;
+
+                    $-$ \texttt{int take\_min(fp, f)} : extraction de l'élément de priorité min ;
+
+                    $-$ \texttt{void update(fp f, int i, double w)} : définit $w$ comme la nouvelle priorité de $i \in f$.
+                \end{indt}
             \end{indt}
         \end{indt}
     \end{indt}
