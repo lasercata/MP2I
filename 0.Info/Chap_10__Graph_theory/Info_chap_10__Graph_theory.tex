@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2022.06.01
+% Last modification     :   2022.06.07
 %
 %------------------------------------------------------------------------
 
@@ -1751,9 +1751,9 @@ typedef liste* graphe;\end{lstlisting}
 
                     L'ajout de $\set{s, s'}$ à ce chemin donne un cycle de longueur impaire.
 
-                    $-$ Sinon, on procède de même avec le premier sommet $r'$ commun aux chemins de $s$ à $r$ et de $s'$ à $r'$.
+                    $-$ Sinon, on procède de même avec le premier sommet $r'$ commun aux chemins de $s$ à $r$ et de $s'$ à $r$.
 
-                    La somme des longueurs des chemins de $s'$ à $r'$ est bien paire car elles sont de même parité (par disjonction de cas selon que $r' \in U$ ou $r' \in V$).
+                    La somme des longueurs des chemins de $s$ à $r'$ et de $s'$ à $r'$ est bien paire car elles sont de même parité (par disjonction de cas selon que $r' \in U$ ou $r' \in V$).
 
                     Ajouter l'arête $\set{s, s'}$ donne un cycle de longueur impaire : absurde. $\blacksquare$
                 \end{indt}
