@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2022.06.07
+% Last modification     :   2022.06.08
 %
 %------------------------------------------------------------------------
 
@@ -2544,12 +2544,12 @@ floyd_warshall(graphe g, int n) {
 
         \vspace{12pt}
         
-        \begin{indt}{\subsection{Algorithme de \textsc{Dÿkstra}}}
+        \begin{indt}{\subsection{Algorithme de \textsc{Dijkstra}}}
             \begin{indt}{\subsubsection{Principe}}
                 On cherche à résoudre le problème \ref{5.1.6} (2) (page \pageref{5.1.6}) dans un graphe pondéré $G = (S, A, w)$, où $w : A \longrightarrow \oboxed{\R^+}$. On cherche donc, étant donné $s \in S$, à calculer $d(s, s'),\ \forall s' \in S$.
 
-                L'algorithme de \textsc{Dÿkstra} est un algorithme glouton qui se présente comme une variante du parcours en largeur : on parcourt les sommets par ordre de distance à $s$ croissante, mais ici la distance est définie par la pondération du graphe.
-                La file du parcours en largeur est remplacée par une file de priorité dont les priorité sont des estimations des distances (puisque ces dernières ne sont pas connues).
+                L'algorithme de \textsc{Dijkstra} est un algorithme glouton qui se présente comme une variante du parcours en largeur : on parcourt les sommets par ordre de distance à $s$ croissante, mais ici la distance est définie par la pondération du graphe.
+                La file du parcours en largeur est remplacée par une file de priorité dont les priorités sont des estimations des distances (puisque ces dernières ne sont pas connues).
             \end{indt}
 
             \vspace{12pt}
@@ -2625,7 +2625,7 @@ floyd_warshall(graphe g, int n) {
 
             \vspace{12pt}
             
-            \begin{indt}{\subsubsection{Correction de l'algorithme de \textsc{Dÿkstra}}}
+            \begin{indt}{\subsubsection{Correction de l'algorithme de \textsc{Dijkstra}}}
                 On démontre l'invariant suivant :
                 \[
                     \begin{cases}
@@ -2739,6 +2739,105 @@ typedef liste* graphe;\end{lstlisting}
                     $-$ \texttt{int take\_min(fp, f)} : extraction de l'élément de priorité min ;
 
                     $-$ \texttt{void update(fp f, int i, double w)} : définit $w$ comme la nouvelle priorité de $i \in f$.
+                \end{indt}
+
+                \vspace{12pt}
+                
+                Code :
+
+                \begin{lstlisting}[language=C, xleftmargin=80pt]
+int* dijkstra(graphe g, int n, int s) {
+    double* w = (double*) malloc(n * sizeof(double));
+    for (int i = 0 ; i < n ; i++) {
+        if (i == s)
+            w[i] = 0;
+        else
+            w[i] = INFINITY; //in math.h
+    }
+
+    fp f = create(w, n);
+
+    int* p = (int*) malloc(n * sizeof(int));
+    for (int i = 0 ; i < n ; i++)
+        p[i] = -1;
+    
+    while (!is_empty(f)) {
+        int u = take_min(f);
+        liste l = g[u];
+
+        while (l != NULL) {
+            struct arc a = l->val;
+            if(w[u] + a.poids < w[a.cible]) {
+                w[a.cible] = w[u] + a.poids;
+                p[a.cible] = u;
+                update(f, a.cible, w[a.cible]);
+            }
+
+            l = l->next;
+        }
+    }
+
+    free(w);
+    //free memory for f if necessary here
+    return p;
+}\end{lstlisting}
+
+                Complexité :
+
+                $\bullet$ Spatiale : $\mathcal O(\abs S)$
+
+                \begin{indt}{$\bullet$ Temporelle : cela dépend de l'implémentation du type \texttt{fp} :}
+                    \begin{indt}{$-$ Implémentation naïve : tableau \texttt w des priorités + tableau de booléens + nombre d'éléments (pour le test de vacuité en temps constant).}
+                        $*$ Initialisation : $\mathcal O(\abs S)$ ;
+
+                        $*$ Test de vacuité : $\mathcal O(1)$ (répété $n + 1$ fois) ;
+
+                        $*$ Extraction du min : $\mathcal O(\abs S)$ (répété $\abs S$ fois) ;
+
+                        $*$ Mise à jour de priorité : $\mathcal O(1)$ (répété $d_{(+)}(u)$ fois $\forall u \in S$).
+
+                        $*$ Au total :
+                        $
+                            \mathcal O(\abs S)
+                            + \mathcal O(\abs S)
+                            + \mathcal O\!\lr{\abs S ^2}
+                            + \underbrace{
+                                \mathcal O\!\lr{\sum_{u \in S} d_{(+)}(u)}
+                            }_{= \mathcal O(\abs A) = \mathcal O\!\lr{\abs S ^2}}
+                            =
+                            \mathcal O\!\lr{\abs S ^2}
+                        $
+                    \end{indt}
+
+                    \vspace{12pt}
+                    
+                    \begin{indt}{$-$ Implémentation à l'aide d'un tas :}
+                        $*$ Initialisation : $\mathcal O(\abs S)$ (\textit{via} une construction par forêt) ;
+
+                        $*$ Test de vacuité : $\mathcal O(1)$ répété $\abs S + 1$ fois ;
+
+                        $*$ Extraction du min : $\mathcal O(\log \abs S)$ répété $\abs S$ fois ;
+
+                        $*$ Mise à jour de priorité : $\mathcal O(\log \abs S)$ (percolation) répété $d_{(+)}(u)$fois $\forall u \in S$.
+
+                        $*$ Au total :
+                        \[
+                            \mathcal O(\abs S)
+                            + \mathcal O(\abs S)
+                            + \mathcal O(\abs S \log \abs S)
+                            + \underbrace{\mathcal O\!\lr{(\log \abs S) \sum_{u \in S} d_+(u)}}_{= \mathcal O(\abs A \log \abs S)}
+                            =
+                            \mathcal O\!\lr{ \vphantom{\frac a a} (\abs S + \abs A) \log\abs S}
+                        \]
+
+                        \vspace{12pt}
+                        
+                        Si le graphe est \textit{dense}, \textit{i.e}, $\abs A = \Theta\!\lr{\abs S ^2}$, on obtient $\mathcal\!\lr{\abs S^2 \log \abs S}$ : c'est pire.
+
+                        Cela peut être meilleurs s'il y a peu d'arêtes, par exemple si $\abs A = \mathcal O(\abs S)$, ce qui donne $\mathcal O(\abs S \log \abs S)$
+
+                        (H.P) : Avec une implémentation à l'aide de \textit{tas de Fibonacci}, on obtient $\mathcal O\!\lr{\abs S \log \abs S + \abs A}$.
+                    \end{indt}
                 \end{indt}
             \end{indt}
         \end{indt}
