@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2022.06.08
+% Last modification     :   2022.06.09
 %
 %------------------------------------------------------------------------
 
@@ -358,7 +358,7 @@
                             \end{tabular}
                         };
 
-                        \draw[->] (b) to [in=10, out=170] (f);
+                        \draw[-latex] (b) to [in=10, out=170] (f);
                         \draw[<-] (b) to [in=-10, out=-170] (f);
                     \end{tikzpicture}
                 \end{center}
@@ -454,13 +454,13 @@
                         \node (C) [circle, draw, above of = B] {C};
                         \node (D) [circle, draw, right of = B] {D};
 
-                        \draw[->] (A) to [out=10, in=170] (B);
+                        \draw[-latex] (A) to [out=10, in=170] (B);
                         \draw[<-] (A) to [out=-10, in=-170] (B);
-                        \draw[->] (D) -- (B);
-                        \draw[->] (B) -- (C);
-                        \draw[->] (A) to [out=-40, in=-140] (D);
-                        \draw[->] (A) -- (C);
-                        \draw[->] (C) -- (D);
+                        \draw[-latex] (D) -- (B);
+                        \draw[-latex] (B) -- (C);
+                        \draw[-latex] (A) to [out=-40, in=-140] (D);
+                        \draw[-latex] (A) -- (C);
+                        \draw[-latex] (C) -- (D);
                     \end{tikzpicture}
                 \end{center}
 
@@ -589,18 +589,18 @@
                         \node (C) [circle, draw, below right of = A] {C};
                         \node (D) [circle, draw, below right of = B] {D};
                         
-                        \draw[->] (A) to [out=90, in=180] node [above left] {5} (B);
-                        \draw[->] (B) to [out=-90, in=0] node [above left] {10} (A);
+                        \draw[-latex] (A) to [out=90, in=180] node [above left] {5} (B);
+                        \draw[-latex] (B) to [out=-90, in=0] node [above left] {10} (A);
                         
-                        \draw[->] (D) to [out=90, in=0] node [above right] {5} (B);
+                        \draw[-latex] (D) to [out=90, in=0] node [above right] {5} (B);
                         
-                        \draw[->] (B) to [out=-70, in=70] node [left] {3} (C);
+                        \draw[-latex] (B) to [out=-70, in=70] node [left] {3} (C);
                         
-                        \draw[->] (A) to [out=-90, in=180] node [above right] {3} (C);
+                        \draw[-latex] (A) to [out=-90, in=180] node [above right] {3} (C);
                         
-                        \draw[->] (C) to [out=0, in=-90] node [above left] {5} (D);
+                        \draw[-latex] (C) to [out=0, in=-90] node [above left] {5} (D);
                         
-                        \draw[->] (A) to [out=-135, in=-45, looseness=3] node [below] {$-4$} (D);
+                        \draw[-latex] (A) to [out=-135, in=-45, looseness=3] node [below] {$-4$} (D);
                     \end{tikzpicture}
                 \end{center}
 
@@ -668,7 +668,7 @@
 
                 Un \textit{chemin} dans $G$ est une suite finie de sommets
                 \[
-                    (s_k)_{k \in \nset 1 n} \subset S\ |\ \forall i \in \nset{0}{n - 1},\ \set{s_i,\ s_{i + 1}} \in A
+                    (s_k)_{k \in \nset 0 n} \subset S\ |\ \forall i \in \nset{0}{n - 1},\ \set{s_i,\ s_{i + 1}} \in A
                 \]
                 (resp. $(s_i, \ s_{i + 1}) \in A$ dans le cas orienté).
 
@@ -765,8 +765,8 @@
                         \node (0) [circle, draw] {0};
                         \node (1) at (2, 0) [circle, draw] {1};
                         \node (2) at (4, 0) [circle, draw] {2, 5};
-                        \node (4) at (4, 2) [circle, draw] {4};
                         \node (3) at (6, 1) [circle, draw] {3};
+                        \node (4) at (4, 2) [circle, draw] {4};
                         \node (6) at (4, -2) [circle, draw] {6};
 
                         \draw (0) -- (1) -- (2) -- (4) -- (3) -- (2) -- (6);
@@ -778,7 +778,7 @@
                     \end{tikzpicture}
                 \end{center}
 
-                Cela n'est pas toujours possible pour les circuits : le circuit $s_0, s_1, s_2$ dans un graphe non-orienté contenant une arête $\set{s_0, s_1}$ ne peut pas être rendu simple (couper le circuit le rend de longueur nulle : ce n'est plus un circuit).
+                Cela n'est pas toujours possible pour les circuits : le circuit $s_0, s_1, s_0$ dans un graphe non-orienté contenant une arête $\set{s_0, s_1}$ ne peut pas être rendu simple (couper le circuit le rend de longueur nulle : ce n'est plus un circuit).
             \end{indt}
 
             \vspace{12pt}
@@ -1004,7 +1004,7 @@
                         \node (0) [circle, draw] {};
                         \node (1) at (1, 0) [circle, draw] {};
 
-                        \draw[->] (0) -- (1);
+                        \draw[-latex] (0) -- (1);
                     \end{tikzpicture}
                 \end{center}
             \end{indt}
@@ -1050,18 +1050,18 @@
                         \node (F) at (1, -2) [circle, draw] {F};
                         \node (G) at (2, -2) [circle, draw] {G};
 
-                        \draw[->] (A) to (C);
-                        \draw[->] (C) to (D);
-                        \draw[->] (D) to (E);
-                        \draw[->] (E) to (C);
-                        \draw[->] (B) to (F);
-                        \draw[->] (D) to (F);
+                        \draw[-latex] (A) to (C);
+                        \draw[-latex] (C) to (D);
+                        \draw[-latex] (D) to (E);
+                        \draw[-latex] (E) to (C);
+                        \draw[-latex] (B) to (F);
+                        \draw[-latex] (D) to (F);
 
-                        \draw[->] (A) to [out=10, in=170] (B);
-                        \draw[->] (B) to [out=-170, in=-10] (A);
+                        \draw[-latex] (A) to [out=10, in=170] (B);
+                        \draw[-latex] (B) to [out=-170, in=-10] (A);
 
-                        \draw[->] (F) to [out=10, in=170] (G);
-                        \draw[->] (G) to [out=-170, in=-10] (F);
+                        \draw[-latex] (F) to [out=10, in=170] (G);
+                        \draw[-latex] (G) to [out=-170, in=-10] (F);
                         
                         \draw[color=ff4500, rounded corners=5pt] (-2.4, -2.4) rectangle (-0.6, -1.6);
                         \draw[color=ff4500, rounded corners=5pt] (0.6, -2.4) rectangle (2.4, -1.6);
@@ -1081,10 +1081,10 @@
                         \node (2) at (1, -.5) [circle, draw] {};
                         \node (3) at (2, 0) [circle, draw] {};
 
-                        \draw[->] (0) to (1);
-                        \draw[->] (1) to (3);
-                        \draw[->] (0) to (2);
-                        \draw[->] (2) to (3);
+                        \draw[-latex] (0) to (1);
+                        \draw[-latex] (1) to (3);
+                        \draw[-latex] (0) to (2);
+                        \draw[-latex] (2) to (3);
                     \end{tikzpicture}
                 \end{center}
 
@@ -1375,12 +1375,12 @@ free(g);\end{lstlisting}
                                 \node (2) at (0, -1) [circle, draw] {2};
                                 \node (3) at (1, -1) [circle, draw] {3};
 
-                                \draw[->] (1) to (0);
-                                \draw[->] (0) to (2);
-                                \draw[->] (2) to [out=10, in=170] (3);
-                                \draw[->] (3) to [out=-170, in=-10] (2);
-                                \draw[->] (2) to (1);
-                                \draw[->] (1) to (3);
+                                \draw[-latex] (1) to (0);
+                                \draw[-latex] (0) to (2);
+                                \draw[-latex] (2) to [out=10, in=170] (3);
+                                \draw[-latex] (3) to [out=-170, in=-10] (2);
+                                \draw[-latex] (2) to (1);
+                                \draw[-latex] (1) to (3);
                             \end{tikzpicture}
                             &
                             \vline
@@ -1584,7 +1584,7 @@ typedef liste* graphe;\end{lstlisting}
                     S' = \set{s \in S\ |\ s\ \text{est une extrémité d'un élément de } A'}
                 \]
 
-                $\bullet$ Un \textit{sous-graphe} $(S', A')$ de $G$ est dit \textit{couvrant} $\ssi S' = S$.
+                $\bullet$ Un sous-graphe $(S', A')$ de $G$ est dit \textit{couvrant} $\ssi S' = S$.
             \end{indt}
 
             \vspace{12pt}
@@ -1975,9 +1975,9 @@ typedef liste* graphe;\end{lstlisting}
                         \node (1) at (-.3, -1) {$+$};
                         \node (2) at (.2, .5) {$+$};
                         
-                        \draw[->] (s) -- (v);
-                        \draw[->] (s) -- (1);
-                        \draw[->] (s) -- (2);
+                        \draw[-latex] (s) -- (v);
+                        \draw[-latex] (s) -- (1);
+                        \draw[-latex] (s) -- (2);
                     \end{tikzpicture}
                 \end{center}
             \end{indt}
@@ -2045,16 +2045,16 @@ let dfs (traitement : int -> unit) (g : graphe) (s : int) : unit =
                             \node (\i) at (\i-4, -1) [circle, draw] {\i};
                         }
 
-                        \draw[->] (0) -- (1);
-                        \draw[->] (1) -- (2);
-                        \draw[->] (2) -- (3);
-                        \draw[->] (3) -- (7);
-                        \draw[->] (0) -- (4);
-                        \draw[->] (4) -- (5);
-                        \draw[->] (1) -- (5);
-                        \draw[->] (1) -- (6);
-                        \draw[->] (2) -- (6);
-                        \draw[->] (6) -- (7);
+                        \draw[-latex] (0) -- (1);
+                        \draw[-latex] (1) -- (2);
+                        \draw[-latex] (2) -- (3);
+                        \draw[-latex] (3) -- (7);
+                        \draw[-latex] (0) -- (4);
+                        \draw[-latex] (4) -- (5);
+                        \draw[-latex] (1) -- (5);
+                        \draw[-latex] (1) -- (6);
+                        \draw[-latex] (2) -- (6);
+                        \draw[-latex] (6) -- (7);
                     \end{tikzpicture}
                 \end{center}
 
@@ -2152,16 +2152,16 @@ let composantes_connexes (g : graphe) : int array =
                             \node (\i) at (\i-4, -1) [circle, draw] {\i};
                         }
 
-                        \draw[->] (0) -- (1);
-                        \draw[->] (1) -- (2);
-                        \draw[->] (2) -- (3);
-                        \draw[->] (3) -- (7);
-                        \draw[->] (0) -- (4);
-                        \draw[->] (4) -- (5);
-                        \draw[->] (1) -- (5);
-                        \draw[->] (1) -- (6);
-                        \draw[->] (2) -- (6);
-                        \draw[->] (6) -- (7);
+                        \draw[-latex] (0) -- (1);
+                        \draw[-latex] (1) -- (2);
+                        \draw[-latex] (2) -- (3);
+                        \draw[-latex] (3) -- (7);
+                        \draw[-latex] (0) -- (4);
+                        \draw[-latex] (4) -- (5);
+                        \draw[-latex] (1) -- (5);
+                        \draw[-latex] (1) -- (6);
+                        \draw[-latex] (2) -- (6);
+                        \draw[-latex] (6) -- (7);
                     \end{tikzpicture}
                 \end{center}
 
@@ -2428,11 +2428,11 @@ let plus_courts_chemins (g : graphe) (s : int) : int array =
                         \node (2) at (1, -1) [circle, draw] {2};
                         \node (3) at (0, -2) [circle, draw] {3};
 
-                        \draw[->] (0) to node [above right] {$-2$} (2);
-                        \draw[->] (2) to node [below right] {$2$} (3);
-                        \draw[->] (3) to node [below left] {$-1$} (1);
-                        \draw[->] (1) to node [above left] {$4$} (0);
-                        \draw[->] (1) to node [above] {$3$} (2);
+                        \draw[-latex] (0) to node [above right] {$-2$} (2);
+                        \draw[-latex] (2) to node [below right] {$2$} (3);
+                        \draw[-latex] (3) to node [below left] {$-1$} (1);
+                        \draw[-latex] (1) to node [above left] {$4$} (0);
+                        \draw[-latex] (1) to node [above] {$3$} (2);
                     \end{tikzpicture}
                 \end{center}
 
@@ -2572,7 +2572,7 @@ floyd_warshall(graphe g, int n) {
                 Lors de l'insertion de $s'$ dans $E$, on observe les voisins de $s'$ pour essayer d'améliorer l'estimation pour ces sommets :
                 $\forall s'' \in S \setminus E$ voisin de $s'$, on remplace $w(s'')$ par
                 \[
-                    \min\!\lr{w(s''), d(s, s') + w(\set{s', s''})}
+                    \min\!\lr{ \vphantom{\frac a a} w(s''),\ d(s, s') + w(\set{s', s''})}
                 \]
                 (resp. $(s', s'')$ dans le cas orienté).
 
@@ -2594,16 +2594,16 @@ floyd_warshall(graphe g, int n) {
                         \node (3) at (3, -1) [circle, draw] {3};
                         \node (4) at (3, 1) [circle, draw] {4};
 
-                        \draw[->, color=ff4500] (0) to node [below left] {$5$} (1);
-                        \draw[->, color=ff4500] (0) to node [above left] {$3$} (2);
-                        \draw[->] (1) to node [below] {$6$} (3);
-                        \draw[->] (1) to [out=80, in=-80] node [right] {$1$} (2);
-                        \draw[->] (2) to [out=-100, in=100] node [left] {$2$} (1);
-                        \draw[->] (3) to [out=80, in=-80] node [right] {$7$} (4);
-                        \draw[->, color=ff4500] (4) to [out=-100, in=100] node [left] {$1$} (3);
-                        \draw[->] (1) to node [below right] {$4$} (4);
-                        \draw[->, color=ff4500] (2) to node [above] {$6$} (4);
-                        \draw[->] (3) to [looseness=1.3, out=-135, in=-100] node [below] {$3$} (0);
+                        \draw[-latex, color=ff4500] (0) to node [below left] {$5$} (1);
+                        \draw[-latex, color=ff4500] (0) to node [above left] {$3$} (2);
+                        \draw[-latex] (1) to node [below] {$6$} (3);
+                        \draw[-latex] (1) to [out=80, in=-80] node [right] {$1$} (2);
+                        \draw[-latex] (2) to [out=-100, in=100] node [left] {$2$} (1);
+                        \draw[-latex] (3) to [out=80, in=-80] node [right] {$7$} (4);
+                        \draw[-latex, color=ff4500] (4) to [out=-100, in=100] node [left] {$1$} (3);
+                        \draw[-latex] (1) to node [below right] {$4$} (4);
+                        \draw[-latex, color=ff4500] (2) to node [above] {$6$} (4);
+                        \draw[-latex] (3) to [looseness=1.3, out=-135, in=-100] node [below] {$3$} (0);
                     \end{tikzpicture}
                 \end{center}
 
@@ -2778,7 +2778,7 @@ int* dijkstra(graphe g, int n, int s) {
     }
 
     free(w);
-    //free memory for f if necessary here
+    //free memory for f here if necessary
     return p;
 }\end{lstlisting}
 
@@ -2822,22 +2822,28 @@ int* dijkstra(graphe g, int n, int s) {
 
                         $*$ Au total :
                         \[
-                            \mathcal O(\abs S)
-                            + \mathcal O(\abs S)
-                            + \mathcal O(\abs S \log \abs S)
-                            + \underbrace{\mathcal O\!\lr{(\log \abs S) \sum_{u \in S} d_+(u)}}_{= \mathcal O(\abs A \log \abs S)}
-                            =
-                            \mathcal O\!\lr{ \vphantom{\frac a a} (\abs S + \abs A) \log\abs S}
+                            \begin{array}{c}
+                                \mathcal O(\abs S)
+                                + \mathcal O(\abs S)
+                                + \mathcal O(\abs S \log \abs S)
+                                + \underbrace{\mathcal O\!\lr{(\log \abs S) \sum_{u \in S} d_+(u)}}_{= \mathcal O(\abs A \log \abs S)}
+                                \\
+                                =
+                                \mathcal O\!\lr{ \vphantom{\frac a a} (\abs S + \abs A) \log\abs S}
+                            \end{array}
                         \]
-
-                        \vspace{12pt}
-                        
-                        Si le graphe est \textit{dense}, \textit{i.e}, $\abs A = \Theta\!\lr{\abs S ^2}$, on obtient $\mathcal\!\lr{\abs S^2 \log \abs S}$ : c'est pire.
-
-                        Cela peut être meilleurs s'il y a peu d'arêtes, par exemple si $\abs A = \mathcal O(\abs S)$, ce qui donne $\mathcal O(\abs S \log \abs S)$
-
-                        (H.P) : Avec une implémentation à l'aide de \textit{tas de Fibonacci}, on obtient $\mathcal O\!\lr{\abs S \log \abs S + \abs A}$.
                     \end{indt}
+
+                    \vspace{12pt}
+                    
+                    Si le graphe est \textit{dense}, \textit{i.e}, $\abs A = \Theta\!\lr{\abs S ^2}$, on obtient $\mathcal\!\lr{\abs S^2 \log \abs S}$ : c'est pire.
+
+                    Cela peut être meilleur s'il y a peu d'arêtes, par exemple si $\abs A = \mathcal O(\abs S)$, ce qui donne $\mathcal O(\abs S \log \abs S)$
+
+                    (H.P) : Avec une implémentation à l'aide de \textit{tas de Fibonacci}, on obtient
+                    \[
+                        \mathcal O\!\lr{\abs S \log \abs S + \abs A}
+                    \]
                 \end{indt}
             \end{indt}
         \end{indt}
