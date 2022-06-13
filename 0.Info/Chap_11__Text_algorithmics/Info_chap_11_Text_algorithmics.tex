@@ -1,0 +1,749 @@
+\documentclass[a4paper, 12pt, twoside]{article}
+
+
+%------------------------------------------------------------------------
+%
+% Author                :   Lasercata
+% Last modification     :   2022.06.13
+%
+%------------------------------------------------------------------------
+
+
+%------ini
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+%\usepackage[english]{babel}
+
+
+%------geometry
+\usepackage[textheight=700pt, textwidth=500pt]{geometry}
+
+
+%------color
+\usepackage{xcolor}
+\definecolor{ff4500}{HTML}{ff4500}
+\definecolor{00f}{HTML}{0000ff}
+\definecolor{0ff}{HTML}{00ffff}
+\definecolor{656565}{HTML}{656565}
+
+\renewcommand{\emph}{\textcolor{ff4500}}
+\renewcommand{\em}{\color{ff4500}}
+
+\newcommand{\strong}[1]{\textcolor{ff4500}{\bf #1}}
+\newcommand{\st}{\color{ff4500}\bf}
+
+
+%------Code highlighting
+%---listings
+\usepackage{listings}
+
+\definecolor{cbg}{HTML}{272822}
+\definecolor{cfg}{HTML}{ececec}
+\definecolor{ccomment}{HTML}{686c58}
+\definecolor{ckw}{HTML}{f92672}
+\definecolor{cstring}{HTML}{e6db72}
+\definecolor{cstringlight}{HTML}{98980f}
+\definecolor{lightwhite}{HTML}{fafafa}
+
+\lstdefinestyle{DarkCodeStyle}{
+    backgroundcolor=\color{cbg},
+    commentstyle=\itshape\color{ccomment},
+    keywordstyle=\color{ckw},
+    numberstyle=\tiny\color{cbg},
+    stringstyle=\color{cstring},
+    basicstyle=\ttfamily\footnotesize\color{cfg},
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=4,
+    xleftmargin=\leftskip
+}
+
+\lstdefinestyle{LightCodeStyle}{
+    backgroundcolor=\color{lightwhite},
+    commentstyle=\itshape\color{ccomment},
+    keywordstyle=\color{ckw},
+    numberstyle=\tiny\color{cbg},
+    stringstyle=\color{cstringlight},
+    basicstyle=\ttfamily\footnotesize\color{cbg},
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=10pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=4,
+    frame=L,
+    xleftmargin=\leftskip
+}
+
+%\lstset{style=DarkCodeStyle}
+\lstset{style=LightCodeStyle}
+%Usage : \begin{lstlisting}[language=Caml] ... \end{lstlisting}
+
+%---tcolorbox
+\usepackage[many]{tcolorbox}
+\DeclareTColorBox{pseudocode}{O{black}O{lightwhite}}{
+    breakable,
+    outer arc=0pt,
+    arc=0pt,
+    top=0pt,
+    toprule=-.5pt,
+    right=0pt,
+    rightrule=-.5pt,
+    bottom=0pt,
+    bottomrule=-.5pt,
+    colframe=#1,
+    colback=#2,
+    enlarge left by=10pt,
+    width=\linewidth-\leftskip-10pt,
+}
+
+
+%-------make the table of content clickable
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=black
+}
+%Uncomment this and comment above for dark mode
+% \hypersetup{
+%     colorlinks,
+%     citecolor=white,
+%     filecolor=white,
+%     linkcolor=white,
+%     urlcolor=white
+% }
+
+
+%------pictures
+\usepackage{graphicx}
+%\usepackage{wrapfig}
+
+\usepackage{tikz}
+%\usetikzlibrary{babel}             %Uncomment this to use circuitikz
+%\usetikzlibrary{shapes.geometric}  % To draw triangles in trees
+%\usepackage{circuitikz}            %Electrical circuits drawing
+
+
+%------tabular
+%\usepackage{color}
+%\usepackage{colortbl}
+%\usepackage{multirow}
+
+
+%------Physics
+%---Packages
+%\usepackage[version=4]{mhchem} %$\ce{NO4^2-}$
+
+%---Commands
+\newcommand{\link}[2]{\mathrm{#1} \! - \! \mathrm{#2}}
+\newcommand{\pt}[1]{\cdot 10^{#1}} % Power of ten
+\newcommand{\dt}[2][t]{\dfrac{\mathrm d #2}{\mathrm d #1}} % Derivative
+
+
+%------math
+%---Packages
+%\usepackage{textcomp}
+%\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools} % For abs
+\usepackage{stmaryrd} %for \llbracket and \rrbracket
+\usepackage{mathrsfs} %for \mathscr{x} (different from \mathcal{x})
+
+%---Commands
+%-Sets
+\newcommand{\N}{\mathbb{N}} %set N
+\newcommand{\Z}{\mathbb{Z}} %set Z
+\newcommand{\Q}{\mathbb{Q}} %set Q
+\newcommand{\R}{\mathbb{R}} %set R
+\newcommand{\C}{\mathbb{C}} %set C
+\newcommand{\U}{\mathbb{U}} %set U
+\newcommand{\seg}[2]{\left[ #1\ ;\ #2 \right]}
+\newcommand{\nset}[2]{\left\llbracket #1\ ;\ #2 \right\rrbracket}
+
+%-Exponantial / complexs
+\newcommand{\e}{\mathrm{e}}
+\newcommand{\cj}[1]{\overline{#1}} %overline for the conjugate.
+
+%-Vectors
+\newcommand{\vect}{\overrightarrow}
+\newcommand{\veco}[3]{\displaystyle \vect{#1}\binom{#2}{#3}} %vector + coord
+
+%-Limits
+\newcommand{\lm}[2][{}]{\lim\limits_{\substack{#2 \\ #1}}} %$\lm{x \to a} f$ or $\lm[x < a]{x \to a} f$
+\newcommand{\Lm}[3][{}]{\lm[#1]{#2} \left( #3 \right)} %$\Lm{x \to a}{f}$ or $\Lm[x < a]{x \to a}{f}$
+\newcommand{\tendsto}[1]{\xrightarrow[#1]{}}
+
+%-Integral
+\newcommand{\dint}[4][x]{\displaystyle \int_{#2}^{#3} #4 \mathrm{d} #1} %$\dint{a}{b}{f(x)}$ or $\dint[t]{a}{b}{f(t)}$
+
+%-left right
+\newcommand{\lr}[1]{\left( #1 \right)}
+\newcommand{\lrb}[1]{\left[ #1 \right]}
+\newcommand{\lrbb}[1]{\left\llbracket #1 \right\rrbracket}
+\newcommand{\set}[1]{\left\{ #1 \right\}}
+\newcommand{\abs}[1]{\left\lvert #1 \right\rvert}
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
+\newcommand{\lrangle}[1]{\left\langle #1 \right\rangle}
+
+%-Others
+\newcommand{\para}{\ /\!/\ } %//
+\newcommand{\ssi}{\ \Leftrightarrow \ }
+\newcommand{\eqsys}[2]{\begin{cases} #1 \\ #2 \end{cases}}
+
+\newcommand{\med}[2]{\mathrm{med} \left[ #1\ ;\ #2 \right]}  %$\med{A}{B} -> med[A ; B]$
+\newcommand{\Circ}[2]{\mathscr{C}_{#1, #2}}
+
+\renewcommand{\le}{\leqslant}
+\renewcommand{\ge}{\geqslant}
+
+\newcommand{\oboxed}[1]{\textcolor{ff4500}{\boxed{\textcolor{black}{#1}}}} %orange boxed
+
+
+%------commands
+%---to quote french text
+\newcommand{\simplecit}[1]{\guillemotleft$\;$#1$\;$\guillemotright}
+\newcommand{\cit}[1]{\simplecit{\textcolor{656565}{#1}}}
+\newcommand{\quo}[1]{\cit{\it #1}}
+
+%---to indent
+\newcommand{\ind}[1][20pt]{\advance\leftskip + #1}
+\newcommand{\deind}[1][20pt]{\advance\leftskip - #1}
+
+%---to indent a text
+\newcommand{\indented}[2][20pt]{\par \ind[#1] #2 \par \deind[#1]}
+\newenvironment{indt}[2][20pt]{#2 \par \ind[#1]}{\par \deind} %Titled indented env
+
+%---title
+\newcommand{\thetitle}[2]{\begin{center}\textbf{{\LARGE \underline{\emph{#1} :}} {\Large #2}}\end{center}}
+
+
+%------Sections
+% To change section numbering :
+% \renewcommand\thesection{\Roman{section}}
+% \renewcommand\thesubsection{\arabic{subsection}}
+% \renewcommand\thesubsubsection{\textit \alph{subsubsection}}
+
+% To start numbering from 0
+% \setcounter{section}{-1}
+
+
+%------page style
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+
+\setlength{\headheight}{18pt}
+\setlength{\footskip}{50pt}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE, RO]{\textit{\textcolor{black}{\today}}}
+\fancyhead[RE, LO]{\large{\textsl{\emph{\texttt{\jobname}}}}}
+
+\fancyfoot[RO, LE]{\textit{\texttt{\textcolor{black}{Page \thepage /}\pageref{LastPage}}}} %Change 'black' to 'white' for dark mode
+\fancyfoot[LO, RE]{\includegraphics[scale=0.12]{/home/lasercata/Pictures/1.images_profil/logo/mieux/lasercata_logo_fly_fond_blanc.png}}
+
+% For dark mode :
+%/home/lasercata/Pictures/1.images_profil/logo/mieux/lasercata_logo_fly.png
+
+
+%------init lengths
+\setlength{\parindent}{0pt} %To avoid using \noindent everywhere.
+\setlength{\parskip}{3pt}
+
+
+%---------------------------------Begin Document
+\begin{document}
+    
+    %For dark mode :
+    % \pagecolor{black}
+    % \color{white}
+    
+    \thetitle{Chapitre 11}{Algorithmique du texte}
+    
+    \tableofcontents
+    \newpage
+    
+    
+    \begin{indt}{\section{Recherche dans un texte}}
+        
+        \begin{indt}{\subsection{Introduction}}
+            \begin{indt}{\subsubsection{Problème}}
+                \'Etant donné un texte (un fichier / une chaîne de caractères) $t$, et un motif (une chaîne de caractères) $x$, on veut trouver toutes les occurrences de $x$ dans $t$ (\textit{i.e} on veut les positions (indices)).
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Algorithme naïf}}
+                On teste toutes les positions dans $t$ pour déterminer si ce sont des positions d'occurrences de $x$ :
+
+                \begin{lstlisting}[language=Caml, xleftmargin=80pt]
+let recherche_naive (x : string) (t : string) : int list =
+    let l = ref []in
+    let n = String.length t
+    and m = String.length x in
+
+    for i = 0 to n - m do
+        let j = ref 0 in
+        while !j < m && x.[!j] = t.[i + !j] do
+            incr j
+        done;
+
+        if !j = m then l := i::!l
+    done;
+    !l\end{lstlisting}
+
+                Complexité : dans le pire cas, la boucle \texttt{while} s'arrête au dernier indice dans $x$ (exemple : $t = a^n = \underbrace{a \cdots a}_{n\ \text{fois}\ a}$, et $x = a^{m - 1}b$) : $\mathcal O((n - m + 1)m) = \mathcal O(nm)$ si $m$ est petit devant $n$.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Remarque}}
+                Cet algorithme fait partie d'une famille d'algorithmes, dits de \textit{fenêtre glissante} : on fait glisser une fenêtre sur le texte en notant toutes les positions auxquelles la fenêtre contient le motif.
+
+                \begin{center}
+                    \begin{tikzpicture}
+                        \draw (0, 0) -- (4, 0);
+                        \draw (0, -.5) -- (4, -.5);
+
+                        \draw (1, 0) rectangle (3, -.5);
+
+                        \node (t) at (-.3, -.25) {$t$};
+                        \node (i) at (1, .3) {$i$};
+
+                        \node (e) at (2, -.7) {$=$ ?};
+
+                        \draw (1, -1) rectangle (3, -1.5);
+                        \node (x) at (.7, -1.25) {$x$};
+                    \end{tikzpicture}
+                \end{center}
+
+                Le côté naïf de cet algorithme vient du fait que l'on fait systématiquement glisser la fenêtre d'un rang, quel que soit son contenu. En analysant les raisons de l'échec d'une comparaison, on peut espérer décaler la fenêtre de plusieurs rangs.
+            \end{indt}
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Algorithme de \textsc{Boyer-Moore}}}
+            \begin{indt}{\subsubsection{Introduction}}
+                L'algorithme de \textsc{Boyer-Moore} est un algorithme de fenêtre glissante, mais la comparaison entre le contenu de la fenêtre et le motif se fait de la droite vers la gauche, afin de repérer en cas d'échec le caractère le plus à droite qui ne correspond pas au motif. \`A partir de cette position qui entraîne l'échec de la comparaison, on peut calculer un décalage pour la fenêtre.
+
+                En pratique le décalage est précalculé pour toutes les positions du motif et il existe de nombreuses variantes suivant la manière dont le décalage est calculé.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Algorithmique de \textsc{Boyer-Moore-Horspool}}}
+                \label{1.2.2}
+                
+                Dans cette variante, si la comparaison de $x_0 \ldots x_{m - 1}$ et $t_i \ldots t_{i + m - 1}$ (la fenêtre) échoue à l'indice $j$, \textit{i.e} $x_{j + 1} \ldots x_{m - 1} = t_{i + j + 1} \ldots t_{i + m - 1}$ et $x_j \neq t_{i + j}$, on cherche à aligner $t_{i + m - 1}$ avec son occurrence la plus à droite dans $x$ (sauf $x_{m - 1}$)
+                \begin{center}
+                    \begin{tikzpicture}
+                        \draw (0, 0) -- (6, 0);
+                        \draw (0, -.5) -- (6, -.5);
+
+                        \draw (1, 0) rectangle (2, -.5);
+                        \draw (3, 0) rectangle (3.5, -.5);
+
+                        \draw (1, 0) rectangle (5, -.5);
+
+                        \node (t) at (-.3, -.25) {$t$};
+                        \node (i) at (1, .3) {$i$};
+                        \node at (3, .3) {$i + j$};
+
+                        \node at (4, -.25) {$u$};
+                        \node at (4.75, -.25) {$c$};
+                        \draw[dashed] (4.5, 0) -- (4.5, -.5);
+
+                        \node at (3.25, -.75) {$\neq$};
+                        
+                        \draw (3, -1) rectangle (3.5, -1.5);
+
+                        \draw (1, -1) rectangle (5, -1.5);
+                        \draw (2, -1) rectangle (2.5, -1.5);
+
+                        \node at (2.25, -1.25) {$c$};
+                        \node (x) at (.7, -1.25) {$x$};
+                        \node at (3, -1.75) {$j$};
+                        
+                        \draw[->] (2, -2.5) -- (3.5, -2.5);
+                        
+                        \draw (3, -3) rectangle (6, -3.5);
+                        \draw (3.5, -3) rectangle (4, -3.5);
+                        \node at (3.75, -3.25) {$c$};
+                        
+                        \draw (4.5, -3) rectangle (4.75, -3.5);
+                        \node at (4.5, -3.8) {$j$};
+                        
+                        \node at (5.5, -3.25) {$u$};
+                    \end{tikzpicture}
+                \end{center}
+
+                Exemple : $x = aababab$ et $t = aabbbababacaabbaba$
+
+                $aab\underset{\times} a bab$
+
+                $a \underset \times a babab$
+
+                $aababa\underset \times b$
+
+                \vspace{12pt}
+                
+                Algorithme : pour toute lettre $a$, on note $d(a)$ le décalage à effectuer pour aligner cette lettre avec don occurrence la plus à droite  dans $x$ (sauf la dernière lettre) en cas d'échec d'une comparaison avec une fenêtre dont la dernière lettre est $a$.
+                \[
+                    d(a) =
+                    \begin{cases}
+                        \abs u\ \text{si $u$ est les plus petit suffixe non vide de $x$ tq $au$ est suffixe de $x$}
+                        \\
+                        \abs x\ \text{si $u$ n'existe pas, \textit{i.e} si $x$ ne contient pas $a$, ou alors seulement en dernière position}
+                    \end{cases}
+                \]
+
+                Pseudo-code :
+                \begin{pseudocode}
+                    $i \leftarrow 0$
+
+                    \begin{indt}{Tant que $i \le n - m$ :}
+                        $j \leftarrow m - 1$
+                        
+                        \vspace{6pt}
+
+                        \begin{indt}{Tant que $j \ge 0$ et $x_j = t_{i + j}$ :}
+                            $j \leftarrow j - 1$
+                        \end{indt}
+                        
+                        \vspace{6pt}
+
+                        \begin{indt}{Si $j = -1$ :}
+                            $i$ est la position d'une occurrence de $x$
+
+                            $i \leftarrow i + 1$
+                        \end{indt}
+                        
+                        \vspace{6pt}
+
+                        \begin{indt}{Sinon :}
+                            $i \leftarrow i + d(t_{i + m - 1})$
+                        \end{indt}
+                    \end{indt}
+                \end{pseudocode}
+
+                Précalcul de $d$ :
+
+                \begin{pseudocode}
+                    Pour toute lettre $a$, $d(a) \leftarrow m$
+                        
+                    \vspace{6pt}
+
+                    \begin{indt}{Pour $i$ de 0 à $m - 2$ :}
+                        $d(x_i) \leftarrow m - 1 - i$
+                    \end{indt}
+                \end{pseudocode}
+
+                \begin{center}
+                    \begin{tikzpicture}
+                        \draw (0, 0) rectangle (5, -.5);
+
+                        \draw (2, 0) rectangle (2.5, -.5);
+
+                        \node (i) at (2, .3) {$i$};
+                        \draw[<->] (2.5, .2) -- (5, .2);
+                        \node at (3.75, .5) {$m - i - 1$};
+                    \end{tikzpicture}
+                \end{center}
+
+                Complexité :
+
+                $-$ Précalcul : $\mathcal O\!\lr{\abs A + m}$ où $A$ est l'alphabet, \textit{i.e} l'ensemble des symboles possibles dans un texte.
+
+                $-$ Algorithme : dans le pire cas, on décale toujours d'un rang (exemple : $t = a^n$ et $x = ba^{m - 1}$) : même complexité que l'algorithme naïf.
+
+                En pratique, c'est plus efficace : $\mathcal O(n)$ en moyenne (admis).
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Algorithme de \textsc{Boyer-Moore} (simplifié)}}
+                \label{1.2.3}
+                
+                L'algorithme de \textsc{Boyer-Moore-Horspool} ne tient pas compte de ce qu'il se passe lors de la lecture de la fenêtre, mais seulement de son dernier caractère.
+
+                Par exemple : si $x = aababab$ et la fenêtre vaut $aabcbab$, le décalage calculé vaut 2 alors que l'absence de $c$ dans $x$ permet un décalage de 4 rangs.
+
+                L'idée de \textsc{Boyer} et \textsc{Moore} est d'aligner plutôt de caractère qui provoque l'échec de la comparaison avec son occurrence la plus à droite dans $x$ (sauf la dernière lettre).
+
+                Plus précisément, si $x_j \neq t_{i + j}$ et $x_{j + 1} \ldots t_{i + j + 1} \ldots t_{i + m - 1}$, alors on décale la fenêtre de $d(t_{i + j}) - (m - 1 - j)$
+
+                \begin{center}
+                    \begin{tikzpicture}
+                        \draw (0, 0) -- (6, 0);
+                        \draw (0, -.5) -- (6, -.5);
+
+                        \draw (1, 0) rectangle (2, -.5);
+                        \draw (3.5, 0) rectangle (4, -.5);
+
+                        \draw (1, 0) rectangle (5, -.5);
+
+                        \node (t) at (-.3, -.25) {$t$};
+                        \node (i) at (1, .3) {$i$};
+                        \node at (3.5, .3) {$i + j$};
+
+                        \node at (3.75, -.25) {$c$};
+
+                        \node at (4.5, -.25) {$u$};
+
+                        \node at (3.75, -.75) {$\neq$};
+
+                        \draw (3.5, -1) rectangle (4, -1.5);
+                        \draw (1, -1) rectangle (5, -1.5);
+                        \draw (2, -1) rectangle (2.5, -1.5);
+
+                        \node at (2.25, -1.25) {$c$};
+                        \node (x) at (.7, -1.25) {$x$};
+                        \node at (4.5, -1.25) {$u$};
+
+                        \node at (3.5, -1.75) {$j$};
+
+                        \draw[<->] (2.5, -2) to node [below] {$d(c)$} (5, -2);
+                        
+                        \draw[<->] (2.5, -3) to node [below] {décalage $= d(c) - u = d(c) - (m - 1 - j)$} (3.5, -3);
+                    \end{tikzpicture}
+                \end{center}
+
+                Attention : cela ne fait pas toujours progresser la recherche :
+
+                \begin{center}
+                    \begin{tikzpicture}
+                        \draw (0, 0) -- (6, 0);
+                        \draw (0, -.5) -- (6, -.5);
+
+                        \draw (1, 0) rectangle (2, -.5);
+                        \draw (3.5, 0) rectangle (4, -.5);
+
+                        \draw (1, 0) rectangle (5, -.5);
+
+                        \node (t) at (-.3, -.25) {$t$};
+                        \node (i) at (1, .3) {$i$};
+                        \node at (3.5, .3) {$i + j$};
+                        
+                        \node at (3.75, -.25) {$c$};
+                        
+                        \node at (3.75, -.75) {$\neq$};
+                        
+                        \node at (4.5, -.25) {$u$};
+
+                        \draw (3.5, -1) rectangle (4, -1.5);
+                        \draw (1, -1) rectangle (5, -1.5);
+                        \draw (2, -1) rectangle (2.5, -1.5);
+                        
+                        \node at (2.25, -1.25) {$c$};
+                        \node at (4.5, -1.25) {$u$};
+                        
+                        \node at (3.5, -1.75) {$j$};
+                    \end{tikzpicture}
+                \end{center}
+
+                On obtient un décalage négatif !
+                Dans ce cas, on décale seulement d'un rang par sécurité.
+
+                %Exemple ....
+
+                Algorithme :
+
+                \begin{pseudocode}
+                    $i \leftarrow 0$ 
+
+                    \begin{indt}{Tant que $i \le n - m$ :}
+                        $j \leftarrow m - 1$
+                        
+                        \vspace{6pt}
+
+                        \begin{indt}{Tant que $j \ge 0$ et $x_j = t_{i + j}$ :}
+                            $j \leftarrow j + 1$
+                        \end{indt}
+                        
+                        \vspace{6pt}
+
+                        \begin{indt}{Si $j = -1$ :}
+                            Occurrence de $x$ à la position $i$
+                            
+                            $i \leftarrow i + 1$
+                        \end{indt}
+                        
+                        \vspace{6pt}
+
+                        \begin{indt}{Sinon : }
+                            $i \leftarrow i + \max(1,\ d(t_{i+j}) - (n - 1 - j))$
+                        \end{indt}
+                    \end{indt}
+                \end{pseudocode}
+
+                Complexité : dans le pire cas, $\mathcal O(nm)$ avec le même exemple qu'en \ref{1.2.2} (page \pageref{1.2.2}).
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Algorithme de \textsc{Boyer-Moore}}}
+                La version complète de l'algorithme de \textsc{Boyer-Moore} utilise une seconde fonction de décalage.
+
+                Celle de \ref{1.2.3} (page \pageref{1.2.3}) correspond à la règle du \textit{mauvais caractère} : si un caractère de la fenêtre fait échouer la comparaison avec le motif, on essaie de l'aligner avec sa dernière occurrence dans le motif (sauf la dernière lettre).
+
+                Il y a aussi la règle du \textit{bon suffixe} : lorsqu'un caractère fait échouer la comparaison, on a réussi à lire un suffixe de $x$ dans la fenêtre. On peut essayer d'aligner ce suffixe dans le texte avec son occurrence la plus à droite dans $x$ à condition qu'elle soit précédée d'un caractère différent.
+
+                \begin{center}
+                    \begin{tikzpicture}
+                        \draw (-1, 0) -- (7, 0);
+                        \draw (-1, -.5) -- (7, -.5);
+
+                        \node (t) at (-1.3, -.25) {$t$};
+
+                        \draw (1, 0) rectangle (5, -.5);
+                        \node at (1, .3) {$i$};
+
+                        \draw (3, 0) rectangle (3.3, -.5);
+                        \node at (3, .3) {$i + j$};
+
+                        \node at (4.15, -.25) {$u$};
+
+                        \node at (3.2, -.75) {$\neq$};
+
+                        \draw (1, -1) rectangle (5, -1.5);
+                        \draw (3, -1) rectangle (3.3, -1.5);
+                        \node at (4, -1.25) {$u$};
+                        
+                        \draw (1.5, -1) rectangle (1.8, -1.5);
+                        \node at (1.5, -.75) {$k$};
+                        \node at (2.1, -1.25) {$u$};
+                        \draw (2.4, -1) -- (2.4, -1.5);
+                        
+                        \node at (3, -1.8) {$j$};
+                        
+                        \draw[->] (1.6, -1.5) to [out=-45, in=-135, looseness=1] node [below] {$\neq$} (2.7, -1.5);
+                        
+                        \draw[->] (2, -2.4) to (4, -2.4);
+
+                        \draw (2.5, -3) rectangle (6.5, -3.5);
+                        \draw (4.5, -3) rectangle (4.8, -3.5);
+                        \node at (5.5, -3.25) {$u$};
+                        
+                        \draw (3, -3) rectangle (3.3, -3.5);
+                        \node at (3, -2.75) {$k$};
+                        \node at (3.6, -3.25) {$u$};
+                        \draw (3.9, -3) -- (3.9, -3.5);
+                        
+                        \node at (4.5, -2.75) {$j$};
+                        
+                        \draw[<->] (3.3, -4) to node [below] {$d_2(j)$} (6.5, -4);
+                    \end{tikzpicture}
+                \end{center}
+
+                $d_2(j) =$ longueur du plus court suffixe de $x$ qui a $x_{j + 1} \ldots x_{m - 1}$ comme suffixe et préfixe et qui n'est pas précédé dans $x$ de $x_j$.
+
+                Si un tel suffixe n'existe pas, on peut chercher le plus long suffixe de $u$ qui est préfixe de $x$ et l'aligner avec le $u$ de la fenêtre.
+                
+                \begin{center}
+                    \begin{tikzpicture}
+                        \draw (-1, 0) -- (8, 0);
+                        \draw (-1, -.5) -- (8, -.5);
+
+                        \node (t) at (-1.3, -.25) {$t$};
+
+                        \draw (1, 0) rectangle (5, -.5);
+                        \node at (1, .3) {$i$};
+
+                        \draw (3, 0) rectangle (3.3, -.5);
+                        \node at (3, .3) {$i + j$};
+
+                        \node at (4.15, -.25) {$u$};
+
+                        \node at (3.2, -.75) {$\neq$};
+
+                        %---
+                        \draw (1, -1) rectangle (5, -1.5);
+                        \draw (3, -1) rectangle (3.3, -1.5);
+                        \node at (4.15, -1.25) {$u$};
+                        
+                        \node at (3, -1.8) {$j$};
+                        
+                        \draw[dashed, color=ff4500] (.5, -1) rectangle (1.3, -1.5);
+                        \node at (.75, -1.25) {\textcolor{ff4500}{$u$}};
+
+                        %---
+                        \draw (4, -2) rectangle (8, -2.5);
+                        \draw (6, -2) rectangle (6.3, -2.5);
+                        \node at (7.15, -2.25) {$u$};
+                        
+                        \node at (6, -2.8) {$j$};
+                        
+                        \draw[dashed, color=ff4500] (3.5, -2) rectangle (4.3, -2.5);
+                        \node at (3.75, -2.25) {\textcolor{ff4500}{$u$}};
+                        
+                        \draw[<->] (3.5, -3) to node [below] {$d_2(j)$} (8, -3);
+                    \end{tikzpicture}
+                \end{center}
+
+                $d_2(j) =$ longueur de plus court mot $w$ qui a $u$ comme préfixe et $x$ comme suffixe.
+
+                Remarque : $\abs w \le \abs u + \abs x$.
+
+                Remarque : $\forall j,\ d_2(j) \ge 1 + m - j - 1 = m - j$
+
+                \vspace{12pt}
+                
+                L'algorithme de \textsc{Boyer-Moore} utilise le décalage maximal entre ceux calculés à partir de $d$ et $d_2$.
+
+                Remarque : si on trouve une occurrence de $x$ ($u = x$), alors on tombe dans le deuxième cas du calcul de $d_2$ : on cherche le plus long suffixe de $x$ qui est aussi préfixe de $x$, que l'on appelle le \textit{bord} de $x$.
+
+                Algorithme :
+
+                \begin{pseudocode}
+                    $i \leftarrow 0$
+
+                    \begin{indt}{Tant que $i \le n + m$ :}
+                        $j \leftarrow m - 1$
+                        
+                        \vspace{6pt}
+                        
+                        \begin{indt}{Tant que $j \ge 0$ et $x_j = t_{i + j}$ :}
+                            $j \leftarrow j - 1$
+                        \end{indt}
+                        
+                        \vspace{6pt}
+                        
+                        \begin{indt}{Si $j = -1$ :}
+                            Occurrence de $x$ à la position $i$
+                            
+                            $i \leftarrow i + d_2(j) - m$
+                        \end{indt}
+                        
+                        \vspace{6pt}
+                        
+                        \begin{indt}{Sinon :}
+                            $i \leftarrow i + \max\!\lr{d(t_{i + j}) - (m - j - 1),\ d_2(j) - (m - j - 1)}$
+                        \end{indt}
+                    \end{indt}
+                \end{pseudocode}
+            \end{indt}
+        \end{indt}
+        
+    \end{indt}
+    
+    
+    
+\end{document}
+%--------------------------------------------End
