@@ -1045,7 +1045,7 @@ let harp_rabin (t : string) (x : string) : int list =
 
                 \vspace{6pt}
                 
-                Remarque : pour pouvoir décompresser sans ambiguïté un encodage de taille variable, one ne peut pas encoder un caractère avec un préfixe du code d'un autre caractère. On appelle cela un \textit{code préfixe}.
+                Remarque : pour pouvoir décompresser sans ambiguïté un encodage de taille variable, on ne peut pas encoder un caractère avec un préfixe du code d'un autre caractère. On appelle cela un \textit{code préfixe}.
 
                 L'algorithme de \textsc{Huffman} est un algorithme qui, étant donné un texte, produit un code préfixe optimal pour la compression de ce texte, en termes de la taille du texte compressé.
             \end{indt}
@@ -1195,7 +1195,7 @@ let decode (l : bool list) (t : arbre) : char list =
                 $\bullet$ Pour encoder un texte, étant donné un arbre représentant un encodage pour chacun des caractères du texte, on ne veut pas parcourir l'arbre à chaque caractère pour déterminer son code. On calcule d'abord une table d'encodage associant à chaque caractère son code. On peut la calculer avec un unique parcours de l'arbre :
 
                 \begin{lstlisting}[language=Caml, xleftmargin=80pt]
-let codes (t : arbre) : boll list array =
+let codes (t : arbre) : bool list array =
     let a = Array.make 256 [] in (*on travaille sur les octets*)
     let rec aux (t : arbre) (acc : bool list) : unit =
         match t with
