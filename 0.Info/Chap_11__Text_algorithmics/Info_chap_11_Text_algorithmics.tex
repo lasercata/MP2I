@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2022.06.13
+% Last modification     :   2022.06.20
 %
 %------------------------------------------------------------------------
 
@@ -137,6 +137,7 @@
 %\usetikzlibrary{babel}             %Uncomment this to use circuitikz
 %\usetikzlibrary{shapes.geometric}  % To draw triangles in trees
 %\usepackage{circuitikz}            %Electrical circuits drawing
+\usetikzlibrary{patterns, snakes}
 
 
 %------tabular
@@ -738,9 +739,573 @@ let recherche_naive (x : string) (t : string) : int list =
                         \end{indt}
                     \end{indt}
                 \end{pseudocode}
+
+                \vspace{12pt}
+                
+                Exemple :
+
+                \vspace{6pt}
+                
+                $x = aababab$
+
+                \vspace{6pt}
+                
+                \begin{tabular}{r|cccccccc}
+                    $j$ & $-1$ & 0 & 1 & 2 & 3 & 4 & 5 & 6
+                    \\
+                    \hline
+                    $x$ & & $a$ & $a$ & $b$ & $a$ & $b$ & $a$ & $b$
+                    \\
+                    \hline
+                    $d_2(j)$ & 14 & 13 & 12 & 6 & 10 & 6 & 8 & 1
+                \end{tabular}
+
+                \vspace{12pt}
+                
+                $
+                    \begin{array}{rcccccccccccccccccc|}
+                        t =
+                        & a & a & b & b & b & a & b & a & b & a & c & a & a & b & b & a & b & a
+                        \\
+                        & a & a & b & \underset\times a & b & a & b &&&&&&&&&&&
+                        \\
+                        & &&&&&&& a & a & b & a & \underset \times b & a & b &&&&
+                        \\
+                        & &&&&&&&&&& & a & a & b & a & b & a & \underset \times b
+                    \end{array}
+                $
+
+                \vspace{12pt}
+                
+                Complexité : on admet que $d_2$ peut être précalculée en temps $\mathcal O(n)$.
+                Dans le pire des cas, la recherche est encore en $\mathcal O(mn)$ (exemple : $x = a^m$ et $t = a^n$)
+
+                Remarque : il existe une version plus complexe avec un prétraitement qui permet une complexité $\mathcal O(n + m)$ (H.P).
+            \end{indt}
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Algorithme de \textsc{Karp-Rabin}}}
+            \begin{indt}{\subsubsection{Principe}}
+                L'idée de l'algorithme de \textsc{Karp-Rabin} est d'éviter les comparaisons en temps linéaire entre le motif et le contenu d'une fenêtre en utilisant une fonction de hachage.
+                On parle d'empreinte pour désigner le haché d'une fenêtre d'une chaîne de caractère par la fonction de hachage choisie et on compare les empreintes du motif et du contenu de la fenêtre. Pour contrer le problème des collisions, en cas d'égalité des empreintes, on compare aussi les deux chaînes de caractères.
+
+                \vspace{12pt}
+                
+                Algorithme :
+
+                Entrées :
+                \begin{tabular}{r|l}
+                    Texte & $t = t_0 \ldots t_{n - 1}$
+                    \\
+                    Motif & $x = x_0 \ldots x_{m - 1}$
+                \end{tabular}
+                (+ fonction de hachage $h$ choisie à l'avance)
+
+                \begin{pseudocode}
+                    $h_x \leftarrow h(x_0 \ldots x_{m - 1})$
+
+                    $h_t \leftarrow h(t_0 \ldots t_{m - 1})$
+
+                    \vspace{6pt}
+                    
+                    \begin{indt}{Pour $i$ de 0 à $n - m$ :}
+                        \begin{indt}{Si $h_x = h_t$ et (paresseux) $x_0 \ldots x_{m - 1} = t_i \ldots t_{i + m - 1}$ :}
+                            Occurrence de $x$ à la position $i$
+                        \end{indt}
+
+                        \vspace{6pt}
+                        
+                        \begin{indt}{Si $i < n - m$ :}
+                            $h_t \leftarrow h(t_{i + 1} \ldots t_{i + m})$
+                        \end{indt}
+                    \end{indt}
+                \end{pseudocode}
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Choix de la fonction de hachage}}
+            
+                Plusieurs contraintes :
+
+                $\bullet$ On doit pouvoir comparer des empreintes en temps constant : en pratique, les empreintes sont des entiers machine, donc ce n'est pas un problème.
+
+                $\bullet$ Il doit y avoir peu de collisions avec le haché du motif.
+
+                $\bullet$ On doit pouvoir calculer l'empreinte de la fenêtre à l'itération suivante sans lire tous ses caractères (sinon on retrouve la complexité de l'algorithme naïf).
+
+                On peut par exemple utiliser une fonction de hachage déroulante, \textit{i.e} une fonction $h$ telle qu'il est possible de calculer en temps constant $h(u_1 \ldots u_m)$ à partir de $h(u_0 \ldots u_{m - 1})$
+
+                \begin{center}
+                    \begin{tikzpicture}
+                        \node (0) at (0, 0) {$u_0 u_1 \ldots u_{m - 1} u_m$};
+
+                        \draw [decoration={brace, mirror, raise=-5pt, amplitude=5pt}, decorate] (-1.5, -.3) -- (1, -.3);
+                        \draw [decoration={brace, mirror, raise=-3pt, amplitude=5pt}, decorate] (-1, -.4) -- (1.5, -.4);
+
+                        \node (s) at (-1.5, -1) {$s$};
+                        \node (s2) at (1.5, -1) {$s'$};
+
+                        \draw[->] (-.275, -.3) -- (s);
+                        \draw[->] (.275, -.5) -- (s2);
+
+                        \node (h) at (-1.5, -2.5) {$h(s)$};
+                        \node (h2) at (1.5, -2.5) {$h(s')$};
+
+                        \draw[->] (s) -- (h);
+                        \draw[->] (s2) -- (h2);
+
+                        \draw[->] (h) to node [above] {$\delta(u_0, u_m)$} (h2);
+                    \end{tikzpicture}
+                \end{center}
+
+                Exemple : on considère que les caractères sont codés sur un octet, \textit{i.e} on les assimiles à des entiers compris entre 0 et $r - 1$ (avec $r = 2^8$).
+                On peut voir une chaîne de caractères de longueur $m$ comme l'écriture en base $r$ d'un entier compris entre 0 et $r^m - 1$.
+
+                \vspace{12pt}
+                
+                $
+                    P(u_0 \ldots u_{m - 1}) = \displaystyle
+                    \sum_{i = 0}^{n - 1} u_i r^{m - 1 - i}
+                    = u_0r^{m - 1} + u_1 r^{m - 2} + \cdots + u_{m - 1}
+                $
+
+                On choisit un nombre premier $p$ et on définit $h(u) = P(u) \mod p$
+
+                \[
+                    \begin{array}{rcl}
+                        h(u_1 \cdots u_m)
+                        &=& \displaystyle
+                        \sum_{i = 1}^m u_i r^{m - 1 - i + 1} \mod p
+                        \vspace{6pt}
+                        \\
+                        &=& \displaystyle
+                        \lr{\sum_{i = 1}^{m - 1} u_i r^{m - i} + u_m} \mod p
+                        \vspace{6pt}
+                        \\
+                        &=& \displaystyle
+                        \lr{r\sum_{i = 1}^{m - 1} u_i r^{m - 1 - i} + u_m} \mod p
+                        \vspace{6pt}
+                        \\
+                        &=& \displaystyle
+                        \lr{r\lr{\sum_{i = 0}^{m - 1} u_i r^{m - 1 - i} - u_0 r^{m - 1}} + u_m} \mod p
+                        \vspace{6pt}
+                        \\
+                        &=& \displaystyle
+                        \lr{r\lr{h(u_0 \ldots u_{m - 1}) - u_0 r^{m - 1}} + u_m} \mod p
+                    \end{array}
+                \]
+                
+                Donc
+                \[
+                    \delta(u_0, u_m) : e \longmapsto \lr{r \lr{e - u_0 r^{m - 1}} + u_m} \mod p
+                \]
+
+                Remarque : si on précalcule $r^{m - 1}$ alors $\delta(u_0, u_m)$ est bien calculable en temps constant.
+
+                Complexité du précalcul : $\mathcal O(\log m)$ avec l'exponentiation rapide (modulaire).
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Implémentation en OCaml}}
+                \begin{lstlisting}[language=Caml, xleftmargin=80pt]
+let hash (r : int) (p : int) (s : string) : int =
+    let e = ref 0 in
+    for i = 0 to String.length s - 1 do
+        e := (r * !e + (Char.code s.[i])) mod p
+        (*Schema de Horner*)
+    done;
+    !e;;
+
+let delta (r : int) (p : int) (rm : int) (u0 : char) (um : char) (e : int) : int =
+    (r * (e - (Char.code u0) * rm) + Char.code um) mod p;;
+
+let harp_rabin (t : string) (x : string) : int list =
+    let n = String.length t
+    and m = String.length x in
+    let l = ref [] in
+    let r = 256
+    and p = 0x7fffffff in (*p = 2^31 - 1*)
+    let rm = fast_exp_mod r (m - 1) p in (*r^(m - 1) mod p*)
+    let hx = hash r p x
+    and e = ref (hash r p (String.sub 0 m t)) in
+
+    for i = 0 to n - m do
+        if hx = !e && x = String.sub i n t then
+            l := i::!l;
+
+        if i < n - m then
+            e := delta r p rm t.[i] t.[i + m] !e
+    done;
+    !l\end{lstlisting}
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{\'Etude de la complexité}}
+                \begin{indt}{$\bullet$ Complexité de l'initialisation :}
+                    $-$ Complexité de $r_m$ (\texttt{rm}) : $\mathcal O(\log m)$
+
+                    $-$ Calcul de $h_x$ et $e = h(t_0 \ldots t_{n - 1})$ : $\mathcal O(m)$
+
+                    \vspace{6pt}
+                    
+                    $\rightarrow$ $\mathcal O(m)$ au total pour l'initialisation ;
+                \end{indt}
+
+                \vspace{12pt}
+                
+                \begin{indt}{$\bullet$ Complexité de la boucle :}
+                    $-$ \`A chaque itération :  une comparaison et un calcul de delta en $\mathcal O(1)$ ;
+
+                    $-$ En cas d'égalité d'empreintes : une extraction et une comparaison de chaîne de taille $m$ : $\mathcal O(m)$
+                \end{indt}
+
+                \vspace{12pt}
+                
+                Au total : $\mathcal O(m) + (n - m) \mathcal O(1) + \#\mathrm{collisions} \cdot \mathcal O(m) = \mathcal O(n + m \cdot \#\mathrm{collisions})$
+
+                Avec $t = a^n$ et $x = a^m$, on a égalité à chaque itération et on obtient une complexité $\mathcal O((n - m)m)$.
+
+                \vspace{6pt}
+                
+                Exemple de cas où le pire cas est atteint sans occurrence de $x$ dans $t$ :
+                $x = aa$, $t = arar \ldots ar$, $p = 17$, $r = 26$.
+
+                $h(aa) = 0 = h(ar) = h(ra)$.
+
+                \vspace{12pt}
+                
+                Remarque : dans la publication de \textsc{Karp} et \textsc{Rabin}, l'idée est de choisir un nombre premier $p$ au hasard parmi un ensemble prédéfini pour limiter le risque de collisions.
+
+                \vspace{12pt}
+                
+                Admis : si on choisit deux chaînes de taille $m$ aléatoirement, uniformément, la probabilité de collision avec la fonction de hachage choisie est de l'ordre de $\dfrac 1 p$ (qui est $< 10^{-9}$ si $p = 2^{31} - 1$)
+
+                Attention, en pratique les chaînes étudiées ne sont pas du tout choisies uniformément.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Extension à la recherche de plusieurs motifs}}
+                Même si cet algorithme est moins efficace que l'algorithme de \textsc{Boyer-Moore} pour la recherche d'un seul motif, il devient plus intéressant pour la recherche de plusieurs motifs car on peut l'adapter pour éviter de lancer une recherche par motif.
+
+                En choisissant une structure d'ensemble adaptée, il est possible de vérifier en temps constant si l'empreinte d'une sous-chaîne est égale à l'empreinte de l'un des motifs (test d'appartenance).
+
+                Il suffit de remplacer le test d'égalité par un test d'appartenance à l'ensemble des empreintes des motifs (précalculées) dans l'algorithme de \textsc{Karp-Rabin}
             \end{indt}
         \end{indt}
         
+    \end{indt}
+
+    \vspace{12pt}
+    
+    \begin{indt}{\section{Algorithmes de compression}}
+        \begin{indt}{\subsection{Contexte}}
+            \begin{indt}{\subsubsection{Principe}}
+                On dispose d'un texte (en fait, d'un fichier, quel que soit son contenu, puisque c'est une séquence finie d'octets) et on souhaite réduire l'espace mémoire qu'il occupe \textit{via} un changement d'encodage.
+                On s'intéresse ici à la compression sans perte, \textit{i.e} on doit pouvoir retrouver l'intégralité de l'information initiale à partir du texte compressé.
+
+                Formellement, on note $\Sigma$ l'ensemble des symboles autorisés dans le texte, appelé alphabet (en pratique, $\Sigma = \set{0, 1}$), et $\Sigma^*$ l'ensemble des séquences finies d'éléments de $\Sigma$.
+                On cherche alors une fonction de $\Sigma^*$ dans $\Sigma^*$, nommée \texttt{compression}, telle qu'il existe $\mathtt{decompression} : \Sigma^* \longrightarrow \Sigma^* \ |\ \forall t \in \Sigma^*, \mathtt{decompression}(\mathtt{compression}(t)) = t$
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Remarque}}
+                On ne peut pas avoir $\forall t \in \Sigma^*,\ \abs{\mathtt{compression}(t)} < \abs t$.
+
+                En effet, la condition $\mathtt{decompression} \circ \mathtt{compression} = \mathrm{id}$ impose que \texttt{compression} soit injective.
+                Mais dans ce cas, on aurait une fonction injective de l'ensemble des textes d'une taille donnée vers l'ensemble des textes de taille strictement inférieure : impossible car le cardinal du second ensemble est strictement inférieur à celui du premier.
+
+                Il existe donc toujours des textes dont la version compressée est plus grande que la version décompressée.
+
+                L'important est alors de trouver des algorithmes qui compressent efficacement les textes qui sont pertinents pour l'utilisateur.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Algorithmes au programme}}
+                On va étudier l'algorithme de \textsc{Huffman}, qui exploite des données sur la fréquence d'apparition des caractères dans le texte pour déterminer un encodage, et l'algorithme de \textsc{Lenpel-Ziv-Welch}, qui ne nécessite pas la connaissance de l'intégrité du texte pour calculer un encodage car il construit incrémentalement un dictionnaire de codes pour les motifs apparaissant dans le texte.
+            \end{indt}
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Algorithme de \textsc{Huffman}}}
+            \begin{indt}{\subsubsection{Principe}}
+                L'idée principale de cet algorithme est d'associer un code plus court aux caractères les plus fréquents pour diminuer la taille du texte.
+
+                \vspace{12pt}
+                
+                Exemple : \texttt{abaabc} nécessite 12 bits avec un code de taille fixe (3 lettres avec 2 bits par caractère) mais seulement 9 bits avec un code de taille variable (ex : \texttt a = 0, \texttt b = 10, \texttt c = 11).
+
+                \vspace{6pt}
+                
+                Remarque : pour pouvoir décompresser sans ambiguïté un encodage de taille variable, one ne peut pas encoder un caractère avec un préfixe du code d'un autre caractère. On appelle cela un \textit{code préfixe}.
+
+                L'algorithme de \textsc{Huffman} est un algorithme qui, étant donné un texte, produit un code préfixe optimal pour la compression de ce texte, en termes de la taille du texte compressé.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Représentation de l'encodage des symboles}}
+                \label{2.2.2}
+
+                On s'intéresse uniquement à des encodages binaires.
+                
+                Un code préfixe binaire peut être représenté à l'aide d'un arbre binaire (strict) : dans cet arbre, les caractères sont placés aux feuilles, et le chemin de la racine vers une feuille donne le code du caractère correspondant (descendre à gauche correspond au bit 0, et descendre à droite au bit 1).
+
+                \vspace{12pt}
+                
+                Exemple : le code
+                \begin{tabular}{|c|c|c|}
+                    \hline
+                    $a$ & $b$ & $c$
+                    \\
+                    \hline
+                    0 & 10 & 11
+                    \\
+                    \hline
+                \end{tabular}
+                est représenté par :
+
+                \begin{center}
+                    \begin{tikzpicture}
+                        \node {$\bullet$}
+                            child {node {$a$}}
+                            child {node {$\bullet$}
+                                child {node {$b$}}
+                                child {node {$c$}}
+                            }
+                        ;
+                    \end{tikzpicture}
+                \end{center}
+
+                Autre exemple :
+                \begin{center}
+                    \begin{tabular}{cp{100pt}}
+                        \begin{tikzpicture}
+                            \node {$\bullet$}
+                                child {node [xshift=-10pt] {$\bullet$}
+                                    child {node {$a$}}
+                                    child {node {$b$}}
+                                }
+                                child {node [xshift=10pt] {$\bullet$}
+                                    child {node {$c$}}
+                                    child {node {$d$}}
+                                }
+                            ;
+                        \end{tikzpicture}
+                        &
+                        \vspace{-60pt}
+                        \begin{tabular}{|c|c|c|c|}
+                            \hline
+                            $a$ & $b$ & $c$ & $d$
+                            \\
+                            \hline
+                            00 & 01 & 10 & 11
+                            \\
+                            \hline
+                        \end{tabular}
+                    \end{tabular}
+                \end{center}
+                
+                \vspace{12pt}
+                
+                \begin{center}
+                    \begin{tikzpicture}
+                        \node at (0, 0) {$\bullet$}
+                            child {node [xshift=-20pt] {$\bullet$}
+                                child {node {$\bullet$}}
+                                child {node {$\bullet$}}
+                            }
+                            child {node [xshift=20pt, circle, draw, color=ff4500] {}
+                                child {node [xshift=20pt] {$\bullet$}
+                                    child {node {$\bullet$}}
+                                    child {node {$\bullet$}}
+                                }
+                            }
+                        ;
+                        
+                        \draw[->] (2.5, -2) -- (3.5, -2);
+                        
+                        \node at (6, 0) {$\bullet$}
+                            child {node [xshift=-20pt] {$\bullet$}
+                                child {node {$\bullet$}}
+                                child {node {$\bullet$}}
+                            }
+                            child {node [xshift=20pt] {$\bullet$}
+                                child {node {$\bullet$}}
+                                child {node {$\bullet$}}
+                            }
+                        ;
+                    \end{tikzpicture}
+                \end{center}
+
+                Pour avoir un code optimal, l'arbre doit être binaire strict.
+
+                \vspace{12pt}
+                
+                Remarque : la longueur du code d'un caractère est la profondeur de la feuille correspondante dans l'arbre représentant l'encodage. Déterminer un code préfixe optimal revient à chercher un minimum pour
+                \[
+                    \varphi(t) = \sum_{x \in \mathrm{feuilles}(t)} f(x) \cdot p(x, t)
+                \]
+                où $p(x, t)$ est la profondeur de la feuille $x$ dans l'arbre $t$, et $f(x)$ est la fréquence du caractère $x$ dans le texte.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Encodage et décodage}}
+                On considère un arbre binaire $t$ représentant un code préfixe et on suppose que l'on travaille sur l'alphabet des octets (type \texttt{char}).
+
+                \vspace{6pt}
+                
+                $\bullet$ Pour décoder une séquence de bits, il suffit de descendre dans l'arbre selon les bits lus et, lorsque l'on atteint une feuille, de produire le caractère correspondant et de poursuivre la lecture en repartant de la racine.
+
+                \vspace{6pt}
+                
+                Code (on représente un bit par un booléen (0 : \texttt{false}, 1 : \texttt{true})) :
+                
+                \vspace{12pt}
+
+                \begin{lstlisting}[language=Caml, xleftmargin=80pt]
+type arbre =
+    | Feuille of char
+    | Noeud of arbre*arbre\end{lstlisting}
+                
+                \newpage
+                
+                \begin{lstlisting}[language=Caml, xleftmargin=80pt]
+let decode (l : bool list) (t : arbre) : char list =
+    let rec aux (l : bool list) (a : arbre) : char list =
+        match l, a with
+        | _, Feuille c -> c :: aux l t
+        | [], _ -> [] (*match order is important here*)
+        | b::q, Noeud(g, d) -> if b then aux q d else aux q g
+    in aux l t\end{lstlisting}
+
+                Complexité : $\mathcal O(\text{nombre de bits dans le texte compressé})$.
+
+                \vspace{12pt}
+                
+                $\bullet$ Pour encoder un texte, étant donné un arbre représentant un encodage pour chacun des caractères du texte, on ne veut pas parcourir l'arbre à chaque caractère pour déterminer son code. On calcule d'abord une table d'encodage associant à chaque caractère son code. On peut la calculer avec un unique parcours de l'arbre :
+
+                \begin{lstlisting}[language=Caml, xleftmargin=80pt]
+let codes (t : arbre) : boll list array =
+    let a = Array.make 256 [] in (*on travaille sur les octets*)
+    let rec aux (t : arbre) (acc : bool list) : unit =
+        match t with
+        | Feuille c -> a.(Char.code c) <- List.rev acc
+        | Noeud(g, d) -> aux g (false::acc) ; aux d (true::acc)
+    in aux t [];
+    a\end{lstlisting}
+
+                Complexité : chaque n\oe ud interne est traité en $\mathcal O(1)$, et chaque feuille $x$ en $\mathcal O(p(x ,t))$.
+
+                En notant $n$ le nombre de caractères encodés ($n \le \abs \Sigma$), il y a $n$ feuilles, et $n - 1$ n\oe uds internes car l'arbre est binaire strict (\textit{cf} chapitre 6,  §1.1.10). La hauteur de l'arbre est comprise entre $\ceil{\log_2(n)}$ et $n$.
+
+                Donc la complexité est en $\Omega(n\log n)$ et $\mathcal O(n^2)$.
+
+                \vspace{6pt}
+                
+                Une fois la table d'encodage calculée, il suffit de remplacer chaque caractère par son code :
+
+                \begin{lstlisting}[language=Caml, xleftmargin=80pt]
+let encode (l : char list) (t : arbre) : bool list =
+    let a = codes t in
+    List.flatten (List.map (fun c -> a.(Char.code c)) l)\end{lstlisting}
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Arbre de \textsc{Huffman}}}
+                Il reste à déterminer comment calculer un arbre représentant un code préfixe adapté à la compression d'un texte donné.
+                L'algorithme de \textsc{Huffman} est un algorithme glouton déterminant un arbre optimal.
+
+                Cet algorithme part d'une forêt de feuilles et les fusionne deux à deux jusqu'à l'obtention d'un unique arbre.
+                La fusion de deux arbres la construction d'un nouveau n\oe ud dont les deux arbres sont les fils.
+                
+                \vspace{12pt}
+
+                Exemple :
+                
+                \begin{center}
+                    \begin{tikzpicture}
+                        \node at (-.35, 0) {$a$};
+                        \node at (.35, 0) {$b$};
+                        \node at (1, 0) {$c$};
+                        
+                        \draw[->] (1.5, 0) -- (2.5, 0);
+                        
+                        \node at (3, 0) {$a$};
+                        
+                        \node at (4.1, .75) {$\bullet$}
+                            child {node {$b$}}
+                            child {node {$c$}}
+                        ;
+                        
+                        \draw[->] (5, 0) -- (6, 0);
+                        
+                        \node at (7.5, 1.8) {$\bullet$}
+                            child {node {$a$}}
+                            child {node {$\bullet$}
+                                child {node {$b$}}
+                                child {node {$c$}}
+                            }
+                        ;
+                    \end{tikzpicture}
+                \end{center}
+
+                L'idée du choix glouton est la suivante : la fusion incrémente la longueur du code des feuilles des deux arbres concernés donc les arbres contenant les caractères les moins fréquents doivent subir le plus de fusion donc être fusionnés en priorité.
+
+                On généralise la fonction $f$ de \ref{2.2.2} (page \pageref{2.2.2}) aux arbres en définissant :
+                \[
+                    f(t) = \sum_{x \in \mathrm{feuilles}(t)} f(x)
+                \]
+
+                L'algorithme de \textsc{Huffman} s'écrit alors ainsi :
+
+                Entrée : texte $s$
+
+                \begin{pseudocode}
+                    $\mathtt{occ} \leftarrow$ table des occurrences des caractères de $s$
+
+                    $F \leftarrow$ ensemble des Feuille $c$ où $c$ est tel que $\mathtt{occ}(c) > 0$
+
+                    \vspace{6pt}
+                    
+                    \begin{indt}{Tant que $\abs F \ge 2$ :}
+                        Extraire $t_1$ de $F$ tel que $f(t_1)$ est minimale
+
+                        Extraire $t_2$ de $F$ tel que $f(t_2)$ est minimale
+
+                        $F \leftarrow F \cup \set{\mathtt{fusion}(t_1, t_2)}$
+                    \end{indt}
+
+                    \vspace{6pt}
+                    
+                    Renvoyer l'unique élément de $F$
+                \end{pseudocode}
+
+                \vspace{6pt}
+                
+                Implémentation : la forêt $F$ se comporte comme une file de priorité min où la priorité d'un arbre $t$ est $f(t)$.
+
+                \begin{indt}{On suppose donné un type \texttt{fp} associé aux primitives suivantes :}
+                    $-$ \texttt{create : unit -> fp} qui crée une file de priorité vide ;
+
+                    $-$ \texttt{add : arbre -> int -> fp -> unit} qui insère un arbre avec la priorité (entière) donnée dans la file ;
+
+                    $-$ \texttt{take\_min : fp -> arbre*int} qui extrait un arbre de priorité min et qui renvoie aussi sa priorité ;
+
+                    $-$ \texttt{size : fp -> int} qui renvoie la taille de la file
+                \end{indt}
+            \end{indt}
+        \end{indt}
     \end{indt}
     
     
