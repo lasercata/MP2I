@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2022.06.20
+% Last modification     :   2022.06.22
 %
 %------------------------------------------------------------------------
 
@@ -1195,7 +1195,7 @@ let decode (l : bool list) (t : arbre) : char list =
                 $\bullet$ Pour encoder un texte, étant donné un arbre représentant un encodage pour chacun des caractères du texte, on ne veut pas parcourir l'arbre à chaque caractère pour déterminer son code. On calcule d'abord une table d'encodage associant à chaque caractère son code. On peut la calculer avec un unique parcours de l'arbre :
 
                 \begin{lstlisting}[language=Caml, xleftmargin=80pt]
-let codes (t : arbre) : boll list array =
+let codes (t : arbre) : bool list array =
     let a = Array.make 256 [] in (*on travaille sur les octets*)
     let rec aux (t : arbre) (acc : bool list) : unit =
         match t with
@@ -1304,6 +1304,301 @@ let encode (l : char list) (t : arbre) : bool list =
 
                     $-$ \texttt{size : fp -> int} qui renvoie la taille de la file
                 \end{indt}
+
+                \begin{lstlisting}[language=Caml, xleftmargin=80pt]
+let huffmann (s : char list) : arbre =
+    let occ = Array.make 256 0 in (*On travaille sur des octets*)
+    List.iter (fun c -> occ.(Char.code c) <- 1 + occ.(Char.code c)) s;
+    let f = create () in
+    for i = 0 to 255 do
+        if occ.(i) <> 0 then
+            add (Feuille (Char.chr i)) occ.(i) f
+    done;
+    while size f > 1 do
+        let t1, f1 = take_min f in
+        let t2, f2 = take_min f in
+        add (Noeud(t1, t2)) (f1 + f2) f
+    done;
+    fst (take_min f)\end{lstlisting}
+
+                Complexité : on note $n(s)$ le nombre de caractères distincts de $s$
+
+                \vspace{6pt}
+                
+                $\bullet$ Le comptage des occurrences : $\mathcal O(\abs s)$
+
+                $\bullet$ Création de la file : avec une implémentation par tas : $\mathcal O\!\lr{n(s) \log(n(s))}$ (insertion en $\mathcal O(\log(n(s)))$)
+
+                $\bullet$ Une itération de la boucle : $\mathcal O(\log(n(s)))$.
+
+                Il y a $\mathcal O(n(s))$ itérations.
+
+                Au total : $\mathcal O(\abs s + n(s)\log(n(s))) = \mathcal O(\abs s)$ car $n(s) \le 256$ car on travaille sur des octets.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Optimalité de l'arbre de \textsc{Huffman}}}
+                Rappel : on cherche à trouver un arbre $t$ minimisant
+                \[
+                    \varphi(t) = \displaystyle \sum_{x \in \mathrm{feuille}(t)} f(x) p(x, t)
+                \]
+                où $f(x)$ est la fréquence d'apparition de $x$ dans le texte et $p(x, t)$ la profondeur de $x$ dans $t$.
+                On généralise $f$ aux arbres par
+                \[
+                    f(t) = \sum_{x \in \mathrm{feuille}(t)} f(x)
+                \]
+                et on généralise $\varphi$ aux forêts par
+                \[
+                    \varphi(F) = \sum_{t \in F} \varphi(t)
+                \]
+
+                \vspace{6pt}
+                
+                \begin{pseudocode}
+                    \textit{Lemme} :
+                    en notant $F'$ la forêt obtenue après un tour de boucle appliquée à $F$, \textit{i.e}
+                    $F' = (F \setminus \set{t_1, t_2}) \cup \set{\mathrm{Noeud}(t_1, t_2)}$
+                    où $t_1$ et $t_2$ sont deux éléments de $F$ qui minimisent $f$, on a :
+                    \[
+                        \varphi(F') = \varphi(F) + f(t_1) + f(t_2)
+                    \]
+                \end{pseudocode}
+
+                \vspace{12pt}
+                
+                \begin{indt}{$\square$ Démonstration :}
+                    On a :
+                    \[
+                        \begin{array}{rcl}
+                            \varphi(F')
+                            &=&
+                            \displaystyle
+                            \sum_{t \in F'} \varphi(t)
+                            \vspace{6pt}
+                            \\
+                            &=& \displaystyle
+                            \underbrace{\sum_{t \in F} \varphi(t)}_{\varphi(F)}
+                            - \varphi(t_1) - \varphi(t_2)
+                            + \varphi(\mathrm{Noeud}(t_1, t_2))
+                        \end{array}
+                    \]
+
+                    Or
+                    \[
+                        \begin{array}{rcl}
+                            && \varphi(\mathrm{Noeud}(t_1, t_2))
+                            \vspace{6pt}
+                            \\
+                            &=& \displaystyle
+                            \sum_{\substack{x \in \mathrm{feuille}(t_1) \cup \mathrm{feuille}(t_2)}} f(x) p(x, \mathrm{Noeud}(t_1, t_2))
+                            \vspace{12pt}
+                            \\
+                            &=& \displaystyle
+                            \underbrace{\sum_{x \in \mathrm{feuilles}(t_1)} f(x)
+                            \underbrace{p(x, \mathrm{Noeud}(t_1, t_2))}_{1 + p(x, t_1)}}_{
+                                \displaystyle
+                                \underbrace{\sum_{x \in \mathrm{feuilles}(t_1)} f(x)}_{f(t_1)}
+                                + \underbrace{\sum_{x \in \mathrm{feuilles}(t_1)} f(x) p(x, t_1)}_{\varphi(t_1)}
+                            }
+                            +
+                            \underbrace{\sum_{x \in \mathrm{feuilles}(t_2)} f(x) p(x, \mathrm{Noeud}(t_1, t_2))}_{f(t_2) + \varphi(t_2)}
+                        \end{array}
+                    \]
+
+                    d'où $\varphi(F') = \varphi(F) + f(t_1) + f(t_2)$ $\blacksquare$
+                \end{indt}
+
+                \vspace{12pt}
+                
+                \begin{pseudocode}
+                    \textit{Proposition} :
+                    Si les lettres les moins fréquentes sont $a$ et $b$, alors il existe un arbre optimal tel que les feuilles associées à $a$ et $b$ sont s\oe urs dans l'arbre et de profondeur maximale.
+                \end{pseudocode}
+                
+                \vspace{6pt}
+
+                \begin{indt}{$\square$ Démonstration :}
+                    On considère un arbre optimal $t_{\mathrm{opt}}$ et on note $c$ et $d$ deux feuilles s\oe urs de profondeur maximale dans $t_{\rm opt}$ (possible car $t_{\rm opt}$ est binaire \textit{strict}).
+
+                    Sans perte de généralité, on suppose
+                    $f(a) \le f(b)$ et
+                    $f(c) \le f(d)$.
+
+                    Par définition de $a$ et $b$, on sait que
+                    $f(a) \le f(c)$ et
+                    $f(b) \le f(d)$
+
+                    En échangeant dans $t_{\rm opt}$ la feuille $a$ et $c$, on obtient $t$ tel que
+                    \[
+                        \begin{array}{rcl}
+                            \varphi(t)
+                            &=&
+                            \varphi(t_{\rm opt})
+                            - f(a) p(a, t_{\rm opt})
+                            - f(c) p(c, t_{\rm opt})
+                            + f(a) p(c, t_{\rm opt})
+                            + f(c) p(a, t_{\rm opt})
+                            \vspace{6pt}
+                            \\
+                            &=&
+                            \varphi(t_{\rm opt})
+                            + \underbrace{(f(a) - f(c))}_{\le 0}
+                            \underbrace{(p(c, t_{\rm opt}) - p(a, t_{\rm opt}))}_{\ge 0}
+                        \end{array}
+                    \]
+
+                    Donc $\varphi(t) \le \varphi(t_{\rm opt})$.
+
+                    En échangeant de même les feuilles $b$ et $d$ dans $t$, on obtient $t'$ avec $a$ et $b$ feuilles s\oe urs de profondeur maximale et telles que
+                    $\varphi(t') \le \varphi(t) \le \varphi(t_{\rm opt})$
+                    donc telle que $t'$ est optimal. $\blacksquare$
+                \end{indt}
+
+                \vspace{12pt}
+                
+                \begin{pseudocode}
+                    \textit{Théorème} :
+                    l'algorithme de \textsc{Huffman} renvoie un arbre optimal.
+                \end{pseudocode}
+
+                \vspace{12pt}
+                
+                \begin{indt}{$\square$ Démonstration :}
+                    On procède par récurrence sur le nombre de caractères distincts dans le texte :
+
+                    $-$ Si le texte est écrit à l'aide d'un unique caractère, il n'y a qu'un seul arbre possible donc l'algorithme est optimal.
+
+                    $-$ Si l'algorithme est optimal pour les textes à $n$ caractères distincts, considérons un texte à $n + 1 \ge 2$ caractères distincts.
+                    Notons $a$ et $b$ les deux caractères les moins fréquents dans le texte.
+
+                    La première étape de l'algorithme de \textsc{Huffman} consiste à fuisonner les feuilles associées à $a$ et $b$.
+                    Cela revient à considérer un nouveau texte où $a$ et $b$ sont remplacés par un nouveau caractère $z$ dont la fréquence d'apparition est donc $f(a) + f(b) = f(\mathrm{Noeud}(a, b))$.
+
+                    Ce nouveau texte ayant $n$ caractères distincts, on sait que l'algorithme de \textsc{Huffman} produit un arbre $t_{\rm opt}$ optimal pour ce texte par hypothèse de récurrence.
+
+                    L'arbre obtenu par l'algorithme de \textsc{Huffman} pour le texte initial est $t_{\rm opt}$ où la feuille associée à $z$ est remplacée par le $\mathrm{Noeud}(a, b)$.
+                    \[
+                        \begin{array}{rcl}
+                            \varphi(t)
+                            &=& \displaystyle
+                            \varphi(t_{\rm opt})
+                            + f(a)
+                            + f(b)
+                        \end{array}
+                    \]
+                    (même démonstration que le lemme)
+
+                    On sait qu'il existe une solution optimale $t_{\rm opt}$ telle que $a$ et $b$ sont des feuilles s\oe urs de profondeur maximale.
+
+                    On construit $t'$ en remplaçant dans $t_{\rm opt}$ $\mathrm{Noeud}(a, b)$ par $\mathrm{Feuille}(z)$.
+
+                    Donc
+                    $
+                        \varphi(t_{\rm opt})
+                        =
+                        \varphi(t') + f(a) + f(b)
+                        \underset{\text{de}\ t_{\rm opt}}{\overset{\text{optimalité}}{\ge}
+}
+                        \varphi(t_{\rm opt}) + f(a) + f(b)
+                        =
+                        \varphi(t)
+                    $, et ainsi $t$ est optimal $\blacksquare$
+                \end{indt}
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Aspects pratiques}}
+                $\bullet$ Lectures / écritures : en pratique, on lit et on écrit dans un fichier octet par octet.
+                Or le codage calculé par l'algorithme de \textsc{Huffman} n'est pas de taille fixe, donc on aurait plutôt besoin de lire / écrire bit par bit.
+
+                Une solution simple pour l'écriture consiste à accumuler les bits en attendant d'en avoir assez.
+                Il suffit d'un entier pour implémenter cet accumulateur :
+                si $n = \lrangle{b_1 \ldots b_k}_2$ avec $k < 8$, on peut ajouter le bit $b_{k + 1}$ en calculant
+                $
+                    \lrangle{b_1 \ldots b_k b_{k + 1}}_2
+                    = 2\lrangle{b_1 \ldots b_k}_2
+                    + b_{k + 1}
+                    = 2n + b_{k + 1}
+                $
+
+                \vspace{6pt}
+                
+                Problème s'il n'y a pas assez de bits pour construire un octet en fin de fichier.
+
+                Solution : on complète avec des $0$ à la fin pour finir l'octet (cela s'appelle du \textit{padding}).
+
+                \vspace{6pt}
+                
+                Problème : comment ne pas confondre ces $0$ avec le code d'un caractère ?
+
+                Solution : on ajoute un octet supplémentaire en fin de fichier qui représente le nombre de $0$ ajoutés.
+
+                \vspace{6pt}
+                
+                Pour la décompression, il faut déterminer quand on arrive à l'avant-dernier octet pour savoir qu'il faut lire l'octet suivant afin de connaître le nombre de $0$ à ignorer dans cet avant-dernier octet.
+
+                Pour cela, on peut lire le fichier avec 2 octets d'avance pour repérer la fin du fichier, ou alors on peut déterminer à l'avance la taille du fichier et compter le nombre d'octets lus.
+
+                \vspace{12pt}
+                
+                $\bullet$ Stockage de l'arbre : la connaissance de l'arbre de \textsc{Huffman} est nécessaire pour pouvoir décompresser le fichier. Il faut donc pouvoir le stocker sous la forme d'un fichier, qui sera transmis avec le fichier compressé.
+
+                La transformation de l'arbre en fichier s'appelle \textit{sérialisation de l'arbre}.
+                Comme l'arbre de \textsc{Huffman} est binaire strict, il est aisé de la sérialiser : on définit $\mathrm{repr}(t)$ par induction structurelle sur $t$ :
+                \[
+                    \mathrm{repr}(\mathrm{Feuille c}) = 0 \underbrace{\mathrm{code}(c)}_{\text{octet représentant $c$}}
+                \]
+                \[
+                    \mathrm{repr}(\mathrm{Noeud}(g, d)) = 1 \mathrm{repr}(g) \mathrm{repr}(d)
+                \]
+                
+                \vspace{6pt}
+
+                \begin{lstlisting}[language=Caml, xleftmargin=80pt]
+let rec output_tree (f : out_channel) (t : arbre) : unit =
+    match t with
+    | Feuille c ->
+        output_byte f 0;
+        output_byte f (Char.code c)
+    | Noeud(g, d) ->
+        output_byte f 1;
+        out_tree f g;
+        output_tree f d
+
+let rec input_tree (f : in_channel) : arbre =
+    match input_byte f with
+    | 0 -> Feuille (Char.chr (input_byte f))
+    | _ ->
+        let g = input_tree f in
+        let d = input_tree f in
+        Noeud(g, f)\end{lstlisting}
+
+                Remarque : la sérialisation est bien sûr plus générale que son application aux arbres binaires.
+
+                Contrainte importante : il faut connaître \textit{a priori} l'encodage utilisé dans la sérialisation pour être capable de désérialiser.
+
+                Il existe des formats standards pour la sérialisation, qui peuvent être génériques, par exemple le format JSON, ou bien dédiés à certaines applications, comme le format DIMACS CNF ou le language DOT pour représenter les graphes.
+
+                Exemple pour le language DOT :
+
+                \begin{lstlisting}[xleftmargin=80pt]
+graph G {
+    a -- b -- c;
+    a -- d;
+}\end{lstlisting}
+                
+                \begin{center}
+                    \begin{tikzpicture}
+                        \node [circle, draw] {a}
+                            child {node [circle, draw] {b}
+                                child {node [circle, draw] {c}}
+                            }
+                            child {node [circle, draw] {d}}
+                        ;
+                    \end{tikzpicture}
+                \end{center}
             \end{indt}
         \end{indt}
     \end{indt}
