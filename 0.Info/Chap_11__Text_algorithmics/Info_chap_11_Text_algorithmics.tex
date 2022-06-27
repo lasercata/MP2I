@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2022.06.22
+% Last modification     :   2022.06.27
 %
 %------------------------------------------------------------------------
 
@@ -1599,6 +1599,211 @@ graph G {
                         ;
                     \end{tikzpicture}
                 \end{center}
+            \end{indt}
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Algorithme de \textsc{Lempel-Ziv-Welch} (LZW)}}
+            \begin{indt}{\subsubsection{Introduction}}
+                L'algorithme de \textsc{Huffman} a deux inconvénients principaux : il est nécessaire de connaître à l'avance l'intégrité du texte pour construire l'encodage, et le texte compressé seul ne suffit pas pour effectuer la décompression : il est nécessaire de l'accompagner par un fichier représentant l'arbre d'encodage.
+                L'algorithme de LZW répond à ces deux problèmes : il est possible de compresser un flux de données \textit{via} la construction incrémentale d'un dictionnaire de codes pour les motifs apparaissant dans le texte, et il n'y a pas besoin d'informations supplémentaires pour décompresser car il est possible de reconstruire le dictionnaire à la volée lors de la lecture du flux compressé.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Principe}}
+                On construit incrémentalement le dictionnaire en garantissant que pour chaque motif introduit, tous ses préfixes sont déjà présents dans le dictionnaire.
+                En particulier, le dictionnaire est initialisé en stockant un code pour chaque caractère possible (\textit{via} la table ASCII). Les codes choisis pour les motifs sont consécutifs et ne dépendent que de l'ordre d'apparition des motifs dans le texte.
+                C'est ce qui permet de reconstruire le dictionnaire lors de la décompression en fonction de l'ordre d'apparition des codes.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Compression}}
+                On note $t_0 \ldots t_{n - 1}$ le texte.
+
+                \begin{pseudocode}
+                    $d \leftarrow$ dictionnaire construit à partir de la table ASCII (entier entre 0 et 255 associé à chaque caractère, \textit{i.e} octet possible)
+
+                    $m \leftarrow t_0$
+
+                    \vspace{6pt}
+                    
+                    \begin{indt}{Pour $i$ de 1 à $ n - 1$ :}
+                        \begin{indt}{Si $d(m t_i)$ est défini :}
+                            $m \leftarrow m t_i$
+                        \end{indt}
+
+                        \vspace{6pt}
+                        
+                        \begin{indt}{Sinon :}
+                            Produire $d(m)$ en sortie
+
+                            Ajouter $m t_i$ à $d$ (avec le dernier code dans $d$ plus 1)
+
+                            $m \leftarrow t_i$
+                        \end{indt}
+                    \end{indt}
+
+                    \vspace{6pt}
+                    
+                    Produire $d(m)$ en sortie
+                \end{pseudocode}
+
+                \vspace{12pt}
+                
+                Exemple :
+
+                $t = aababaaab$.
+                Rappel : table ASCII :
+                \begin{tabular}{|c|c|c|c|}
+                    \hline
+                    $a$ & $b$ & $\cdots$ & $z$
+                    \\
+                    \hline
+                    97 & 98 & $\cdots$ & 122
+                    \\
+                    \hline
+                \end{tabular}
+
+                \vspace{6pt}
+                
+                \begin{tabular}{r|ccccccccc}
+                    $i$ & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8
+                    \\
+                    $m$ & $a$ & $a$ & $b$ & $a$ & $ab$ & $a$ & $aa$ & $a$ & $ab$
+                    \\
+                    Sortie & 97 & 97 & 98 & & 257 & & 256 & & 257
+                \end{tabular}
+
+                Dictionnaire : $\set{(aa, 256), (ab, 257), (ba, 258), (aba, 259), (aaa, 260)}$
+
+                \vspace{6pt}
+                
+                Attention : ce n'est pas un code préfixe, donc les code doivent être de taille fixe pour permettre la décompression.
+
+                Problème : si tous les codes sont sur $k$ bits, le dictionnaire peut contenir au plus $2^k$ entrées, donc il y a un risque de saturation.
+
+                \vspace{6pt}
+                
+                \begin{indt}{Pour résoudre ce problème, il y a plusieurs options :}
+                    $-$ On efface le dictionnaire lorsqu'il arrive à saturation et on repart de zéro comme si on travaillait sur un nouveau fichier. On produit un code spécial pour signaler l'effacement.
+                    Un code pet donc représenter plusieurs motifs selon sa position dans le texte compressé.
+
+                    $-$ On ajoute un bit aux codes, ce qui revient à doubler la taille du dictionnaire (comme un tableau dynamique). Comme l'algorithme de décompression reconstruit incrémentalement le dictionnaire, la saturation est détectée et on sait quand il faut lire des codes de taille $k + 1$.
+                \end{indt}
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Décompression}}
+                On reconstruit le dictionnaire en parallèle de la lecture des codes.
+
+                Le premier code est nécessairement le code ASCII du premier caractère du fichier.
+                Pour les codes suivants, on a besoin de se souvenir du dernier code lu : notons $c_0$ le dernier code lu, et $c_1$ le code en cours de lecture. Le code $c_1$ correspond à un mot de la forme $xs$, où $x$ est un caractère, et $s$ un mot potentiellement vide, et $c_0$ correspond à un certain mot $u$.
+                Au moment de la production de $c_0$, le motif $m$ vaut $u$ et est remplacé par le caractère $t_i$ au cours de la lecture.
+                Comme ce caractère est le premier du motif associé au prochain code produit, \textit{i.e} $c_1$, on sait que $t_i = x$.
+                On sait alors que le motif $ux$ doit être inséré dans le dictionnaire.
+                Ainsi, on effectue les mêmes opérations sur le dictionnaire que l'algorithme de compression, mais avec un temps de retard.
+
+                \vspace{12pt}
+                
+                Exemple :
+
+                \begin{tabular}{r|cccccc}
+                    & 97 & 97 & 98 & 257 & 256 & 257
+                    \\
+                    $i$ & 0 & 1 & 2 & 3 & 4 & 5
+                    \\
+                    $u$ & $a$ & $a$ & $b$ & $ab$ & $aa$ & $ab$
+                \end{tabular}
+
+                \vspace{6pt}
+                
+                \begin{tabular}{lcl}
+                    Sortie &:& $aababaaab$
+                    \\
+                    Dictionnaire &:& $\set{(aa, 256), (ab, 257), (ba, 258), (aba, 259), (aaa, 260)}$
+                \end{tabular}
+
+                \vspace{18pt}
+                
+                Problème : comme on construit le dictionnaire avec un temps de retard, il est possible que le dernier code lu ne soit pas encore dans le dictionnaire.
+
+                \vspace{12pt}
+                
+                Exemple : $t = aaa$
+
+                \begin{tabular}{ccc}
+                    \begin{tabular}{r|ccc}
+                        $i$ & 0 & 1 & 2
+                        \\
+                        $m$ & $a$ & $a$ & $aa$
+                        \\
+                        Sortie & 97 & & 256
+                    \end{tabular}
+                    &&
+                    Dictionnaire : $\set{(aa, 256)}$
+                \end{tabular}
+
+                \newpage
+                
+                Décompression :
+
+                \begin{tabular}{ccp{200pt}}
+                    \begin{tabular}{r|cc}
+                        & 97 & 256
+                        \\
+                        $i$ & 0 & 1
+                        \\
+                        $u$ & $a$
+                    \end{tabular}
+                    &&
+                    Sortie : $a?$
+                    \newline
+                    Dictionnaire : $\varnothing$ (la table ASCII)
+                \end{tabular}
+
+                \vspace{12pt}
+                
+                Remarque : le code qui pose problème vaut nécessairement la taille du dictionnaire, donc correspond au dernier code inséré dans le dictionnaire par l'algorithme de compression à ce stade de la lecture.
+
+                Solution : en reprenant les notations précédentes, $c_1 = \abs d$ est le code inséré dans le dictionnaire par l'algorithme de compression au moment de la production de $c_0$. Donc le motif associé à $c_1$ s'écrit $ux$ où $u$ est associé à $c_0$ et $x$ est la lettre lue à ce moment.
+                Or, comme l'algorithme de compression repart du motif $m = x$ au moment de la production de $c_0$, $x$ est la première lettre du motif associé à $c_1$, \textit{i.e} $ux$.
+                Comme $u$ est non vide, $x$ est donc aussi la première lettre de $u$ et on peut reconstruire le motif $ux$ associé à $c_1$.
+
+                \vspace{12pt}
+                
+                Algorithme (code $c_0 \ldots c_{m - 1}$) :
+
+                \begin{pseudocode}
+                    $d \leftarrow$ dictionnaire construit à partir de la table ASCII
+
+                    Produire $d(c_0)$ en sortie
+
+                    \vspace{6pt}
+                    
+                    \begin{indt}{Pour $i$ de 1 à $m - 1$ :}
+                        \begin{indt}{Si $c_i < \abs d$ :}
+                            Produire $d(c_i)$ en sortie
+
+                            $x \leftarrow$ première lettre de $d(c_i)$
+                        \end{indt}
+
+                        \vspace{6pt}
+                        
+                        \begin{indt}{Sinon (on sait que $c_i = \abs d$) :}
+                            $x \leftarrow$ première lettre de $d(c_{i - 1})$
+
+                            Produire $d(c_{i - 1}) x$ en sortie
+                        \end{indt}
+
+                        \vspace{6pt}
+                        
+                        Ajouter $d(c_{i - 1})x$ au dictionnaire
+                    \end{indt}
+                \end{pseudocode}
             \end{indt}
         \end{indt}
     \end{indt}
