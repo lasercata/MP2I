@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2022.06.27
+% Last modification     :   2022.07.01
 %
 %------------------------------------------------------------------------
 
@@ -698,7 +698,7 @@ let recherche_naive (x : string) (t : string) : int list =
                     \end{tikzpicture}
                 \end{center}
 
-                $d_2(j) =$ longueur de plus court mot $w$ qui a $u$ comme préfixe et $x$ comme suffixe.
+                $d_2(j) =$ longueur du plus court mot $w$ qui a $u$ comme préfixe et $x$ comme suffixe.
 
                 Remarque : $\abs w \le \abs u + \abs x$.
 
@@ -1115,6 +1115,8 @@ let harp_rabin (t : string) (x : string) : int list =
                 \end{center}
                 
                 \vspace{12pt}
+
+                Pour avoir un code optimal, l'arbre doit être binaire strict :
                 
                 \begin{center}
                     \begin{tikzpicture}
@@ -1145,8 +1147,6 @@ let harp_rabin (t : string) (x : string) : int list =
                         ;
                     \end{tikzpicture}
                 \end{center}
-
-                Pour avoir un code optimal, l'arbre doit être binaire strict.
 
                 \vspace{12pt}
                 
@@ -1681,7 +1681,7 @@ graph G {
 
                 \vspace{6pt}
                 
-                Attention : ce n'est pas un code préfixe, donc les code doivent être de taille fixe pour permettre la décompression.
+                Attention : ce n'est pas un code préfixe, donc les codes doivent être de taille fixe pour permettre la décompression.
 
                 Problème : si tous les codes sont sur $k$ bits, le dictionnaire peut contenir au plus $2^k$ entrées, donc il y a un risque de saturation.
 
