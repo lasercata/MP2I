@@ -1,0 +1,1728 @@
+\documentclass[a4paper, 12pt, twoside]{article}
+
+
+%------------------------------------------------------------------------
+%
+% Author                :   Lasercata
+% Last modification     :   2022.07.03
+%
+%------------------------------------------------------------------------
+
+
+%------ini
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+%\usepackage[french]{babel}
+%\usepackage[english]{babel}
+
+
+%------geometry
+\usepackage[textheight=700pt, textwidth=500pt]{geometry}
+
+
+%------color
+\usepackage{xcolor}
+\definecolor{ff4500}{HTML}{ff4500}
+\definecolor{00f}{HTML}{0000ff}
+\definecolor{0ff}{HTML}{00ffff}
+\definecolor{656565}{HTML}{656565}
+
+\renewcommand{\emph}{\textcolor{ff4500}}
+\renewcommand{\em}{\color{ff4500}}
+
+\newcommand{\strong}[1]{\textcolor{ff4500}{\bf #1}}
+\newcommand{\st}{\color{ff4500}\bf}
+
+
+%------Code highlighting
+%---listings
+\usepackage{listings}
+
+\definecolor{cbg}{HTML}{272822}
+\definecolor{cfg}{HTML}{ececec}
+\definecolor{ccomment}{HTML}{686c58}
+\definecolor{ckw}{HTML}{f92672}
+\definecolor{cstring}{HTML}{e6db72}
+\definecolor{cstringlight}{HTML}{98980f}
+\definecolor{lightwhite}{HTML}{fafafa}
+
+\lstdefinestyle{DarkCodeStyle}{
+    backgroundcolor=\color{cbg},
+    commentstyle=\itshape\color{ccomment},
+    keywordstyle=\color{ckw},
+    numberstyle=\tiny\color{cbg},
+    stringstyle=\color{cstring},
+    basicstyle=\ttfamily\footnotesize\color{cfg},
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=4,
+    xleftmargin=\leftskip
+}
+
+\lstdefinestyle{LightCodeStyle}{
+    backgroundcolor=\color{lightwhite},
+    commentstyle=\itshape\color{ccomment},
+    keywordstyle=\color{ckw},
+    numberstyle=\tiny\color{cbg},
+    stringstyle=\color{cstringlight},
+    basicstyle=\ttfamily\footnotesize\color{cbg},
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=10pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=4,
+    frame=L,
+    xleftmargin=\leftskip
+}
+
+%\lstset{style=DarkCodeStyle}
+\lstset{style=LightCodeStyle}
+%Usage : \begin{lstlisting}[language=Caml] ... \end{lstlisting}
+
+%---tcolorbox
+\usepackage[many]{tcolorbox}
+\DeclareTColorBox{pseudocode}{O{black}O{lightwhite}}{
+    breakable,
+    outer arc=0pt,
+    arc=0pt,
+    top=0pt,
+    toprule=-.5pt,
+    right=0pt,
+    rightrule=-.5pt,
+    bottom=0pt,
+    bottomrule=-.5pt,
+    colframe=#1,
+    colback=#2,
+    enlarge left by=10pt,
+    width=\linewidth-\leftskip-10pt,
+}
+
+
+%-------make the table of content clickable
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=black
+}
+%Uncomment this and comment above for dark mode
+% \hypersetup{
+%     colorlinks,
+%     citecolor=white,
+%     filecolor=white,
+%     linkcolor=white,
+%     urlcolor=white
+% }
+
+
+%------pictures
+\usepackage{graphicx}
+%\usepackage{wrapfig}
+
+\usepackage{tikz}
+%\usetikzlibrary{babel}             %Uncomment this to use circuitikz
+%\usetikzlibrary{shapes.geometric}  % To draw triangles in trees
+%\usepackage{circuitikz}            %Electrical circuits drawing
+
+
+%------tabular
+%\usepackage{color}
+%\usepackage{colortbl}
+%\usepackage{multirow}
+
+
+%------Physics
+%---Packages
+%\usepackage[version=4]{mhchem} %$\ce{NO4^2-}$
+
+%---Commands
+\newcommand{\link}[2]{\mathrm{#1} \! - \! \mathrm{#2}}
+\newcommand{\pt}[1]{\cdot 10^{#1}} % Power of ten
+\newcommand{\dt}[2][t]{\dfrac{\mathrm d #2}{\mathrm d #1}} % Derivative
+
+
+%------math
+%---Packages
+%\usepackage{textcomp}
+%\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools} % For abs
+\usepackage{stmaryrd} %for \llbracket and \rrbracket
+\usepackage{mathrsfs} %for \mathscr{x} (different from \mathcal{x})
+
+%---Commands
+%-Sets
+\newcommand{\N}{\mathbb{N}} %set N
+\newcommand{\Z}{\mathbb{Z}} %set Z
+\newcommand{\Q}{\mathbb{Q}} %set Q
+\newcommand{\R}{\mathbb{R}} %set R
+\newcommand{\C}{\mathbb{C}} %set C
+\newcommand{\U}{\mathbb{U}} %set U
+\newcommand{\seg}[2]{\left[ #1\ ;\ #2 \right]}
+\newcommand{\nset}[2]{\left\llbracket #1\ ;\ #2 \right\rrbracket}
+
+%-Exponantial / complexs
+\newcommand{\e}{\mathrm{e}}
+\newcommand{\cj}[1]{\overline{#1}} %overline for the conjugate.
+
+%-Vectors
+\newcommand{\vect}{\overrightarrow}
+\newcommand{\veco}[3]{\displaystyle \vect{#1}\binom{#2}{#3}} %vector + coord
+
+%-Limits
+\newcommand{\lm}[2][{}]{\lim\limits_{\substack{#2 \\ #1}}} %$\lm{x \to a} f$ or $\lm[x < a]{x \to a} f$
+\newcommand{\Lm}[3][{}]{\lm[#1]{#2} \left( #3 \right)} %$\Lm{x \to a}{f}$ or $\Lm[x < a]{x \to a}{f}$
+\newcommand{\tendsto}[1]{\xrightarrow[#1]{}}
+
+%-Integral
+\newcommand{\dint}[4][x]{\displaystyle \int_{#2}^{#3} #4 \mathrm{d} #1} %$\dint{a}{b}{f(x)}$ or $\dint[t]{a}{b}{f(t)}$
+
+%-left right
+\newcommand{\lr}[1]{\left( #1 \right)}
+\newcommand{\lrb}[1]{\left[ #1 \right]}
+\newcommand{\lrbb}[1]{\left\llbracket #1 \right\rrbracket}
+\newcommand{\set}[1]{\left\{ #1 \right\}}
+\newcommand{\abs}[1]{\left\lvert #1 \right\rvert}
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
+\newcommand{\lrangle}[1]{\left\langle #1 \right\rangle}
+
+%-Others
+\newcommand{\para}{\ /\!/\ } %//
+\newcommand{\ssi}{\ \Leftrightarrow \ }
+\newcommand{\eqsys}[2]{\begin{cases} #1 \\ #2 \end{cases}}
+
+\newcommand{\med}[2]{\mathrm{med} \left[ #1\ ;\ #2 \right]}  %$\med{A}{B} -> med[A ; B]$
+\newcommand{\Circ}[2]{\mathscr{C}_{#1, #2}}
+
+\renewcommand{\le}{\leqslant}
+\renewcommand{\ge}{\geqslant}
+
+\newcommand{\oboxed}[1]{\textcolor{ff4500}{\boxed{\textcolor{black}{#1}}}} %orange boxed
+
+\newcommand{\ep}{\varepsilon}
+
+
+%------commands
+%---to quote french text
+\newcommand{\simplecit}[1]{\guillemotleft$\;$#1$\;$\guillemotright}
+\newcommand{\cit}[1]{\simplecit{\textcolor{656565}{#1}}}
+\newcommand{\quo}[1]{\cit{\it #1}}
+
+%---to indent
+\newcommand{\ind}[1][20pt]{\advance\leftskip + #1}
+\newcommand{\deind}[1][20pt]{\advance\leftskip - #1}
+
+%---to indent a text
+\newcommand{\indented}[2][20pt]{\par \ind[#1] #2 \par \deind[#1]}
+\newenvironment{indt}[2][20pt]{#2 \par \ind[#1]}{\par \deind} %Titled indented env
+
+%---title
+\newcommand{\thetitle}[2]{\begin{center}\textbf{{\LARGE \underline{\emph{#1} :}} {\Large #2}}\end{center}}
+
+
+%------Sections
+% To change section numbering :
+% \renewcommand\thesection{\Roman{section}}
+% \renewcommand\thesubsection{\arabic{subsection}}
+% \renewcommand\thesubsubsection{\textit \alph{subsubsection}}
+
+% To start numbering from 0
+% \setcounter{section}{-1}
+
+
+%------page style
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+
+\setlength{\headheight}{18pt}
+\setlength{\footskip}{50pt}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE, RO]{\textit{\textcolor{black}{\today}}}
+\fancyhead[RE, LO]{\large{\textsl{\emph{\texttt{\jobname}}}}}
+
+\fancyfoot[RO, LE]{\textit{\texttt{\textcolor{black}{Page \thepage /}\pageref{LastPage}}}} %Change 'black' to 'white' for dark mode
+\fancyfoot[LO, RE]{\includegraphics[scale=0.12]{/home/lasercata/Pictures/1.images_profil/logo/mieux/lasercata_logo_fly_fond_blanc.png}}
+
+% For dark mode :
+%/home/lasercata/Pictures/1.images_profil/logo/mieux/lasercata_logo_fly.png
+
+
+%------init lengths
+\setlength{\parindent}{0pt} %To avoid using \noindent everywhere.
+\setlength{\parskip}{3pt}
+
+
+%---------------------------------Begin Document
+\begin{document}
+    
+    %For dark mode :
+    % \pagecolor{black}
+    % \color{white}
+    
+    \thetitle{Maths}{Analyse}
+    
+    \tableofcontents
+    \newpage
+    
+    
+    \begin{indt}{\section{Limites}}
+        
+        \begin{indt}{\subsection{Suites}}
+            \begin{indt}{\subsubsection{Définition (\textit{suite convergente})}}
+                Soit $(u_n)_{n \in \N} \subset \R$ une suite.
+
+                On dit que la suite $(u_n)$ est \textit{convergente} (ou admet une limite finie), si :
+                \[
+                    \exists \ell \in \R\ |\ \forall \varepsilon \in \R^*_+,\ \exists n_0 \in \N\ |\ \forall n \in \N,\ n \ge n_0 \Rightarrow \abs{u_n - \ell} \le \varepsilon
+                \]
+
+                Dans ce cas, $\ell$ est unique, et est la limite de la suite $(u_n)$. On dit que la suite $(u_n)$ \textit{converge} vers $\ell$, et on note :
+                \[
+                    u_n \tendsto{n \to +\infty} \ell
+                \]
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Définition (\textit{suite divergente})}}
+                Soit $(u_n)_{n \in \N} \subset \R$ une suite.
+
+                La suite $(u_n)$ est \textit{divergente} si elle ne converge pas, \textit{i.e} si :
+                \[
+                    \forall \ell \in \R,\ \exists \ep \in \R^*_+\ |\ \forall n_0 \in \N,\ \exists n \in \N, n \ge n_0\ |\ \abs{u_n - \ell} \ge \ep
+                \]
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Divergence vers l'infini}}
+                Soit $(u_n)_{n \in \N} \subset \R$.
+
+                $\bullet$ La suite $(u_n)$ tend vers $+\infty$, noté $u_n \tendsto{n \to +\infty} +\infty$, si :
+                \[
+                    \forall A \in \R,\ \exists n_0 \in \N\ |\ \forall n \in \N,\ n \ge n_0 \Rightarrow u_n \ge A
+                \]
+
+                $\bullet$ La suite $(u_n)$ tend vers $-\infty$, noté $u_n \tendsto{n \to +\infty} -\infty$, si :
+                \[
+                    \forall A \in \R,\ \exists n_0 \in \N\ |\ \forall n \in \N,\ n \ge n_0 \Rightarrow u_n \le A
+                \]
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Définition (\textit{suites adjacentes})}}
+                Soient $(u_n)_{n \in \N}, (v_n)_{n \in \N} \subset \R$ deux suites.
+
+                \begin{indt}{Les suites $(u_n)$ et $(v_n)$ sont \textit{adjacentes} si :}
+                    (1) $v_n - u_n \tendsto{n \to +\infty} 0$ ;
+
+                    (2) $(u_n)$ et $(v_n)$ sont monotones de sens opposé.
+                \end{indt}
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Propriétés}}
+                Soient $(u_n)_{n \in \N}, (v_n)_{n \in \N} \subset \R$ deux suites adjacentes.
+
+                Alors ces suites sont convergentes de même limite $\ell$, et si $(u_n)$ est croissante, on a :
+                \[
+                    \forall n \in \N,\ u_n \le \ell \le v_n
+                \]
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Théorème des segments emboités}}
+                Soient $(u_n)_{n \in \N}, (v_n)_{n \in \N} \subset \R$ deux suites adjacentes, avec $(u_n)$ croissante.
+
+                Soit $\forall n \in \N,\ I_n = [u_n ; v_n]$
+
+                $(I_n)_{n \in \N}$ est une suite de segments de $\R$ dont la longueur tends vers $0$ et telle que $\forall n \in \N,\ I_{n + 1} \subset I_n$.
+
+                \vspace{12pt}
+                
+                Alors
+                \[
+                    \displaystyle \exists \ell \in \R\ |\ \bigcup_{n \in \N} I_n = \set \ell
+                \]
+
+                et :
+                \[
+                    \forall (w_n)_{n \in \N}\ |\ \forall n \in \N,\ w_n \in I_n,\ w_n \tendsto{n \to +\infty} \ell
+                \]
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Théorème de Bolzano-Weierstrass}}
+                Toute suite réelle bornée admet une sous-suite convergente.
+            \end{indt}
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Fonctions}}
+            \begin{indt}{\subsubsection{Définition (\textit{voisinage})}}
+                Soit $a \in \R$.
+
+                $\bullet$ Un voisinage de $a$ est un ensemble qui contient l'intervalle $]a - \ep\ ;\ a + \ep[$, où $\ep \in \R_+^*$.
+
+                $\bullet$ Un voisinage de $a^+$ (ou voisinage à droite de $a$) est un ensemble contenant l'intervalle $[a\ ;\ a + \ep[$, où $\ep \in \R_+^*$.
+
+                $\bullet$ Un voisinage de $a^-$ (ou voisinage à gauche de $a$) est un ensemble contenant l'intervalle $]a - \ep\ ;\ a]$, où $\ep \in \R_+^*$.
+
+                $\bullet$ Un voisinage de $+\infty$ est un ensemble contenant l'intervalle $]h\ ;\ +\infty[$, où $h \in \R$.
+
+                $\bullet$ Un voisinage de $-\infty$ est un ensemble contenant l'intervalle $]-\infty\ ;\ h[$, où $h \in \R$.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Définition (\textit{fonction définie au voisinage d'un point})}}
+                Une fonction est définie au voisinage d'un point $a \in \cj \R$ si elle est définie sur un voisinage de $a$, sauf peut-être en $a$.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Limite en un point réel}}
+                \label{1.2.3}
+
+                Soit $a \in \R$, et $f$ une fonction définie sur $\mathcal D_f$, un voisinage de $a$, et à valeurs réelles.
+
+                \vspace{6pt}
+                
+                $\bullet$ La fonction $f$ admet une limite finie $\ell \in \R$ en $a$ si :
+                \[
+                    \exists \ell \in \R\ |\ \forall \ep \in \R_+^*,\ \exists \delta \in \R_+^*\ |\ \forall x \in \mathcal D_f,\ \abs{x - a} \le \delta \Rightarrow \abs{f(x) - \ell} \le \ep
+                \]
+                On note alors $f(x) \tendsto{x \to a} \ell$, ou $\displaystyle \lim_{x \to a}f(x) = \ell$, ou $\displaystyle \lim_a f = \ell$.
+
+                \vspace{6pt}
+                
+                $\bullet$ La fonction $f$ admet $+\infty$ comme limite en $a$ si :
+                \[
+                    \forall A \in \R, \exists \delta \in \R_+^*\ |\ \forall x \in \mathcal D_f,\ \abs{x - a} \le \delta \Rightarrow f(x) \ge A
+                \]
+                On note alors $f(x) \tendsto{x \to a} +\infty$, ou $\displaystyle \lim_a f = +\infty$.
+
+                \vspace{6pt}
+                
+                $\bullet$ La fonction $f$ admet $-\infty$ comme limite en $a$ si :
+                \[
+                    \forall A \in \R, \exists \delta \in \R_+^*\ |\ \forall x \in \mathcal D_f,\ \abs{x - a} \le \delta \Rightarrow f(x) \le A
+                \]
+                On note alors $f(x) \tendsto{x \to a} -\infty$, ou $\displaystyle \lim_a f = -\infty$.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Limite en $+\infty$}}
+                Soit $f$ une fonction définie sur $\mathcal D_f$, un voisinage de $+\infty$, et à valeurs dans $\R$.
+
+                \vspace{6pt}
+                
+                $\bullet$ La fonction $f$ admet une limite finie $\ell \in \R$ en $+\infty$ si :
+                \[
+                    \exists \ell \in \R\ |\ \forall \ep \in \R_+^*,\ \exists B \in \R\ |\ \forall x \in \mathcal D_f,\ x \ge B \Rightarrow \abs{f(x) - \ell} \le \ep
+                \]
+                On note alors $f(x) \tendsto{x \to +\infty} \ell$, ou $\displaystyle \lim_{+\infty} f = \ell$.
+
+                \vspace{6pt}
+                
+                $\bullet$ La fonction $f$ admet $+\infty$ comme limite en $+\infty$ si :
+                \[
+                    \forall A \in \R,\ \exists B \in \R\ |\ \forall x \in \mathcal D_f,\ x \ge B \Rightarrow f(x) \ge A
+                \]
+                On note alors $f(x) \tendsto{x \to +\infty} +\infty$, ou $\displaystyle \lim_{+\infty} f = +\infty$.
+
+                \vspace{6pt}
+                
+                $\bullet$ La fonction $f$ admet $-\infty$ comme limite en $+\infty$ si :
+                \[
+                    \forall A \in \R,\ \exists B \in \R\ |\ \forall x \in \mathcal D_f,\ x \ge B \Rightarrow f(x) \le A
+                \]
+                On note alors $f(x) \tendsto{x \to +\infty} -\infty$, ou $\displaystyle \lim_{+\infty} f = -\infty$.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Limite en $-\infty$}}
+                Soit $f$ une fonction définie sur $\mathcal D_f$, un voisinage de $-\infty$, et à valeurs dans $\R$.
+
+                \vspace{6pt}
+                
+                $\bullet$ La fonction $f$ admet une limite finie $\ell \in \R$ en $-\infty$ si :
+                \[
+                    \exists \ell \in \R\ |\ \forall \ep \in \R_+^*,\ \exists B \in \R\ |\ \forall x \in \mathcal D_f,\ x \le B \Rightarrow \abs{f(x) - \ell} \le \ep
+                \]
+                On note alors $f(x) \tendsto{x \to -\infty} \ell$, ou $\displaystyle \lim_{-\infty} f = \ell$.
+
+                \vspace{6pt}
+                
+                $\bullet$ La fonction $f$ admet $+\infty$ comme limite en $-\infty$ si :
+                \[
+                    \forall A \in \R,\ \exists B \in \R\ |\ \forall x \in \mathcal D_f,\ x \le B \Rightarrow f(x) \ge A
+                \]
+                On note alors $f(x) \tendsto{x \to -\infty} +\infty$, ou $\displaystyle \lim_{-\infty} f = +\infty$.
+
+                \vspace{6pt}
+                
+                $\bullet$ La fonction $f$ admet $-\infty$ comme limite en $-\infty$ si :
+                \[
+                    \forall A \in \R,\ \exists B \in \R\ |\ \forall x \in \mathcal D_f,\ x \le B \Rightarrow f(x) \le A
+                \]
+                On note alors $f(x) \tendsto{x \to -\infty} -\infty$, ou $\displaystyle \lim_{-\infty} f = -\infty$.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Limite à droite et à gauche}}
+                \label{1.2.6}
+                
+                Soit $a \in \R$, et $f$ une fonction définie sur un voisinage $\mathcal D_f$ de $a$, et à valeurs dans $\R$.
+
+                \vspace{6pt}
+                
+                $\bullet$ La fonction $f$ admet une limite finie $\ell \in \R$ à droite si :
+                \[
+                    \exists \ell \in \R\ |\
+                    \forall \ep \in \R_+^*,\ \exists \delta \in \R_+^*\ |\
+                    \forall x \in \mathcal D_f\, \cap\; ]\!-\infty\ ;\ a],\
+                    \abs{x - a} \le \delta \Rightarrow \abs{f(x) - \ell} \le \ep
+                \]
+                On note alors : $f(x) \tendsto{x \to a^+} \ell$, ou $\displaystyle \lim_{a^+} f = \ell$.
+
+                \vspace{6pt}
+                
+                Resp. pour la limite à gauche :
+                \[
+                    \exists \ell \in \R\ |\
+                    \forall \ep \in \R_+^*,\ \exists \delta \in \R_+^*\ |\
+                    \forall x \in \mathcal D_f \cap [a\ ; +\infty[,\
+                    \abs{x - a} \le \delta \Rightarrow \abs{f(x) - \ell} \le \ep
+                \]
+                On note alors : $f(x) \tendsto{x \to a^-} \ell$, ou $\displaystyle \lim_{a^-} f = \ell$.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Propriété}}
+                Soit $f$ une fonction définie sur $] a - h\ ;\ a + h[ \setminus \set a$, où $h \in \R_+^*$.
+
+                Alors :
+                \[
+                    \exists \ell \in \R\ |\ f(x) \tendsto{x \to a} \ell
+                    \ssi
+                    \exists \ell' \in \R\
+                    \begin{array}{|l}
+                        f(x) \tendsto{x \to a^+} \ell'
+                        \\
+                        f(x) \tendsto{x \to a^-} \ell'
+                    \end{array}
+                \]
+
+                Et dans ce cas, $\ell = \ell'$.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Propriétés locales}}
+                Soit $a \in \R$, et $f$ une fonction définie sur un voisinage $\mathcal D_f$ de $a$, à valeurs réelles.
+
+                \vspace{6pt}
+                
+                $\bullet$ Si $\exists \ell \in \R\ |\ f(x) \tendsto{x \to a} \ell$, alors $f$ est bornée au voisinage de $a$, \textit{i.e} pour $h \in \R_+^*$ :
+                \[
+                    \exists m, M \in \R\ |\
+                    \forall x \in ]a - h\ ;\ a + h[,\
+                    m \le f(x) \le M
+                \]
+
+                \vspace{6pt}
+                
+                $\bullet$ Si $\exists \ell \in \R_+^*\ |\ f(x) \tendsto{x \to a} \ell$, alors $f$ est minorée par un réel strictement positif au voisinage de $a$, \textit{i.e} pour $h \in \R_+^*$, on a :
+                \[
+                    \exists m \in \R_+^*\ |\ \forall x \in ]a - h\ ;\ a + h[,\ m \le f(x)
+                \]
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Opérations algébriques sur les limites}}
+                Soit $a \in \cj \R$, $I$ un voisinage de $a$, et $f, g \in \R^I$ admettant des limites finies en $a$.
+
+                Alors $\forall \lambda, \mu \in \R$,
+                \[
+                    \lim_a(\lambda f + \mu g) = \lambda \lim_a f + \mu \lim_a g
+                \]
+
+                Et :
+                \[
+                    \lim_a(fg) = (\lim_a f) (\lim_a g)
+                \]
+
+                De plus, si $\displaystyle \lim_a f \in \R^*$, alors $\dfrac 1 f$ est définie au voisinage de $a$, et :
+                \[
+                    \lim_a\!\lr{\dfrac 1 f} = \dfrac{1}{\lim_a f}
+                \]
+
+                \vspace{12pt}
+                
+                \textbf{Remarque} :
+                \[
+                    \begin{array}{ccccc}
+                        \varphi_a & : & E_a & \longrightarrow & \R
+                        \\
+                        && f & \longmapsto & \displaystyle \lim_a f
+                    \end{array}
+                \]
+                où $E_a = \set{f \in \R^I\ |\ \exists \ell \in \R\ |\ f(x) \tendsto{x \to a} \ell}$
+
+                est une forme linéaire.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Théorème de comparaison}}
+                Soit $a \in \cj \R$, et soient $f, g$ deux fonctions définies au voisinage $I$ de $a$, telles que $\forall x \in I,\ f(x) \le g(x)$.
+
+                \vspace{6pt}
+                
+                $\bullet$ Si $f(x) \tendsto{x \to a} +\infty$, alors $g(x) \tendsto{x \to a} +\infty$.
+
+                $\bullet$ Si $g(x) \tendsto{x \to a} -\infty$, alors $f(x) \tendsto{x \to a} -\infty$.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Passage à la limite dans une inégalité large}}
+                Soit $a \in \cj \R$, et soient $f, g$ deux fonctions définies au voisinage $I$ de $a$ telles que
+                \[
+                    \exists \ell, \ell' \in \R\
+                    \begin{array}{|l}
+                        f(x) \tendsto{x \to a} \ell
+                        \\
+                        g(x) \tendsto{x \to a} \ell'
+                    \end{array}
+                \]
+                et telles que $\forall x \in I,\ f(x) \le g(x)$.
+
+                \vspace{6pt}
+                
+                Alors :
+                \[
+                    \ell \le \ell'
+                \]
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Théorème d'encadrement}}
+                Soit $a \in \cj \R$, et soient $f, g, h$ trois fonctions définies au voisinage $I$ de $a$, telles que $\forall x \in I,\ f(x) \le g(x) \le h(x)$.
+
+                \vspace{6pt}
+                
+                Si
+                $
+                    \exists \ell \in \R\
+                    \begin{array}{|l}
+                        f(x) \tendsto{x \to a} \ell
+                        \\
+                        h(x) \tendsto{x \to a} \ell
+                    \end{array}
+                $, alors $g$ admet une limite en $a$, et
+                \[
+                    g(x) \tendsto{x \to a} \ell
+                \]
+            \end{indt}
+
+            \vspace{6pt}
+            
+            \begin{indt}{\subsubsection{Limites d'une fonction composée}}
+                Soient $f \in \R^{\mathcal D_f}$ et $g \in \R^{\mathcal D_g}$ tel que $f(\mathcal D_f) \subset \mathcal D_g$
+
+                Si $\exists a, b, c \in \cj \R$ tel que
+                \[
+                    \begin{array}{|l}
+                        f(x) \tendsto{x \to a} b
+                        \\
+                        g(y) \tendsto{y \to b} c
+                    \end{array}
+                \]
+
+                Alors $(g \circ f)(x) \tendsto{x \to a} c$
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Définition (\textit{bornes inférieure et supérieure d'une fonction})}}
+                Soit $D \subset \R$, et $f \in \R^D$.
+
+                \begin{indt}{On définit :}
+                    $\bullet$ $\displaystyle \sup_D(f) = \sup\set{f(x)\ |\ x \in D}$
+
+                    $\bullet$ $\displaystyle \inf_D(f) = \inf\set{f(x)\ |\ x \in D}$
+                \end{indt}
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Théorème de la limite monotone}}
+                Soit $I$ un intervalle de $\R$,
+                $
+                    \begin{array}{|l}
+                        m = \inf(I)
+                        \\
+                        M = \sup(I)
+                    \end{array}
+                $
+                Soit $f \in \R^I$ une fonction monotone sur $I$.
+
+                \vspace{12pt}
+                
+                Alors
+                \[
+                    \forall a \in I,\ \exists \ell, \ell' \in \cj \R\
+                    \begin{array}{|l}
+                        f(x) \tendsto{x \to a^-} \ell
+                        \\
+                        f(x) \tendsto{x \to a^+} \ell'
+                    \end{array}
+                \]
+
+                \begin{indt}{De plus, si $f$ est croissante, on a :}
+                    $\bullet$ $\displaystyle f(x) \tendsto{x \to m^+} \inf_{]m ; M[}(f)$
+
+                    $\bullet$ $\displaystyle f(x) \tendsto{x \to M^-} \sup_{]m ; M[}(f)$
+
+                    $\bullet$ $\displaystyle \exists c \in \R\ |\ \forall x \in I,\ f(x) \ge c \ssi \lim_{m^-}(f) \neq -\infty$
+
+                    $\bullet$ $\displaystyle \exists C \in \R\ |\ \forall x \in I,\ f(x) \le C \ssi \lim_{M^+}(f) \neq +\infty$
+
+                    $\bullet$ $\displaystyle \forall x \in ]m ; M[,\ \lim_{m^+}(f) \le f(x) \le \lim_{M^-}(f)$
+                \end{indt}
+            \end{indt}
+        \end{indt}
+        
+    \end{indt}
+
+    \vspace{12pt}
+    
+    \begin{indt}{\section{Continuité}}
+        \begin{indt}{\subsection{En un point}}
+            \begin{indt}{\subsubsection{Définition (\textit{continuité en un point})}}
+                Soit $f \in \R^{\mathcal D_f}$, et $a \in \mathcal D_f$.
+
+                La fonction $f$ est continue en $a$ si elle y admet une limite finie, \textit{i.e} si (\textit{cf} \ref{1.2.3}, page \pageref{1.2.3})
+                \[
+                    \exists \ell \in \R\ |\
+                    \forall \ep \in \R_+^*,\
+                    \exists \delta \in \R_+^*\ |\
+                    \forall x \in \mathcal D_f,\
+                    \abs{x - a} \le \delta
+                    \Rightarrow
+                    \abs{f(x) - \ell} \le \ep
+                \]
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Propriétés}}
+                Soit $f \in \R^{\mathcal D_f}$, et $a \in \mathcal D_f$.
+
+                $\bullet$ Si $f$ est continue en $a$, alors
+                \[
+                    f(x) \tendsto{x \to a} f(a)
+                \]
+
+                $\bullet$ La fonction $f$ est continue en $a$ $\ssi$
+                \[
+                    f_{|\mathcal D_f \setminus \set a}(x) \tendsto{x \to a} f(a)
+                \]
+
+                Remarque : par abus d'écriture, on abrège souvent cela par : $f$ continue en $a$ $\ssi f(x) \tendsto{x \to a} f(a)$.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Prolongement par continuité}}
+                Soit $I$ un intervalle de $\R$, $a \in I$, et $f \in \R^{I \setminus \set a}$.
+
+                La fonction $f$ est \textit{prolongeable par continuité} en $a$ si elle admet une limite finie en $a$, et dans ce cas, son \textit{prolongement par continuité} est la fonction
+                \[
+                    \begin{array}{ccc}
+                        I & \longrightarrow & \R
+                        \\
+                        x & \longmapsto &
+                        \left\{\!\!
+                        \begin{array}{ll}
+                            f(x) & \text{si}\ x \neq a
+                            \vspace{6pt}
+                            \\
+                            \displaystyle \lim_a(f) & \text{sinon}
+                            %\vspace{-3pt}
+                        \end{array}
+                        \right.
+                    \end{array}
+                \]
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Définition (\textit{continuité à droite et à gauche})}}
+                Soit $D$ un sous-ensemble de $\R$, $a \in D$, et $f \in \R^D$.
+
+                La fonction $f$ est continue à \textit{gauche} (resp. à \textit{droite}) en $a$ si elle admet une limite à gauche (resp. à droite) en $a$ (\textit{cf} \ref{1.2.6}, page \pageref{1.2.6}), \textbf{et} si cette limite est $f(a)$.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Propriétés}}
+                Soit $D$ un sous-ensemble de $\R$, $a \in D$, et $f \in \R^D$.
+
+                $\bullet$ La fonction $f$ est continue en $a$ $\ssi$
+                \[
+                    \begin{cases}
+                        f(x) \tendsto{x \to a^-} f(a)
+                        \\
+                        f(x) \tendsto{x \to a^+} f(a)
+                    \end{cases}
+                \]
+
+                $\bullet$ Si $f$ est continue en $a$, alors elle est bornée au voisinage de $a$.
+            \end{indt}
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Sur un intervalle}}
+            \begin{indt}{\subsubsection{Définition (\textit{Continuité sur un intervalle})}}
+                Soit $I$ un intervalle de $\R$, et $f \in \R^I$.
+
+                La fonction $f$ est continue sur l'intervalle $I$ si elle est continue en tout point de $I$, \textit{i.e} si :
+                \[
+                    \forall a \in I,\ f_{|I \setminus \set a}(x) \tendsto{x \to a} f(a)
+                \]
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Définition}}
+                Soient $I, J$ des intervalles de $\R$.
+
+                On note $\mathcal C^0(I, J)$ l'ensemble des fonctions continues de $J^I$ :
+                \[
+                    \mathcal C^0(I, J) = \set{f \in J^I\ |\ \forall a \in I,\ f_{| I \setminus \set a}(x) \tendsto{x \to a} f(a)}
+                \]
+
+                Dans le cas où $J = \R$, on note plus simplement $\mathcal C^0(I) = \mathcal C^0(I, \R)$.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Propriétés}}
+                $\bullet$ Soit $I$ un intervalle de $\R$, et $f, g \in \mathcal C^0(I)$.
+
+                On a :
+                \[
+                    \forall \lambda, \mu \in \R,\ \lambda f + \mu g \in \mathcal C^0(I)
+                \]
+                \[
+                    fg \in \mathcal C^0(I)
+                \]
+
+                \vspace{6pt}
+                
+                $\bullet$ Soient $I, J$ des intervalles de $\R$, $f \in \mathcal C^0(I, J)$, et $g \in \mathcal C^0(J, \R)$.
+
+                Alors :
+                \[
+                    g \circ f \in \mathcal C^0(I)
+                \]
+            \end{indt}
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Théorème des valeurs intermédiaires}}
+            \begin{indt}{\subsubsection{Cas particulier}}
+                Soient $a, b \in \R\ |\ a < b$, $I = [a, b]$, et $f \in \mathcal C^0(I)$ telle que
+                \[
+                    f(a)f(b) \le 0
+                \]
+
+                Alors
+                \[
+                    \exists x \in I\ |\ f(x) = 0
+                \]
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Théorème des valeurs intermédiaires (cas général)}}
+                Soient $a, b \in \R\ |\ a < b$, $I = [a, b]$, et $f \in \mathcal C^0(I)$.
+
+                On a :
+                \[
+                    \forall d \in \seg{\inf_I(f)}{\sup_I(f)},\
+                    \exists x \in I\ |\
+                    d = f(x)
+                \]
+
+                Autrement dit :
+                \[
+                    \seg{\inf_I(f)}{\sup_I(f)} \subseteq f(I)
+                \]
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Corollaire}}
+                Soit $I$ un intervalle de $\R$ et $f \in \mathcal C^0(I)\ |\ \forall x \in I,\ f(x) \neq 0$.
+
+                Alors $f$ est de signe constant sur $I$.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Corollaire}}
+                Soit $I$ un intervalle de $\R$, $f \in \mathcal C^0(I)$, et
+                $
+                    \left|
+                    \begin{array}{l}
+                        \displaystyle a = \inf_I(f)
+                        \\
+                        \displaystyle b = \sup_I(f)
+                        \vspace{-3pt}
+                    \end{array}
+                    \right.
+                $.
+
+                On a :
+                \[
+                    \exists \ell, \ell' \in \cj \R\
+                    \begin{cases}
+                        f(x) \tendsto{x \to a} \ell
+                        \\
+                        f(x) \tendsto{x \to b} \ell'
+                        \\
+                        \ell \ell' < 0
+                    \end{cases}
+                    \Rightarrow \exists x \in I\ |\ f(x) = 0
+                \]
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Théorème}}
+                Soit $I$ un intervalle de $\R$, et $f \in \mathcal C^0(I)$.
+
+                Alors $f(I)$ est un intervalle.
+            \end{indt}
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Sur un segment}}
+            \begin{indt}{\subsubsection{Définition (\textit{segment})}}
+                Un segment de $\R$ est un intervalle fermé, \textit{i.e} un intervalle du type $\seg a b$, où $a, b \in \R,\ a < b$.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Théorème}}
+                Soit $I$ un segment de $\R$, et $f \in \mathcal C^0(I)$.
+
+                Alors :
+                \[
+                    \exists a, b \in I\ |\
+                    \forall x \in I,\
+                    f(a) \le f(x) \le f(b)
+                \]
+
+                \vspace{6pt}
+                
+                et par définition,
+                $
+                    \left|
+                    \begin{array}{l}
+                        f(a) = \displaystyle \inf_I(f) = \min_I(f)
+                        \\
+                        f(b) = \displaystyle \sup_I(f) = \max_I(f)
+                        \vspace{-3pt}
+                    \end{array}
+                    \right.
+                $.
+
+                \vspace{6pt}
+                
+                On dit aussi qu'une fonction continue sur un segment est bornée et atteint ses bornes.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Propriété}}
+                Soient $a, b \in \R\ |\ a < b$, $I = \seg a b$, et $f \in \mathcal C^0(I)$.
+
+                Alors :
+                \[
+                    f(I) = \seg{\min_I(f)}{\max_I(f)}
+                \]
+            \end{indt}
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Monotonie et bijection}}
+            \begin{indt}{\subsubsection{Propriété}}
+                Soit $I$ un intervalle de $\R$, et $f \in \R^I$ une fonction monotone telle que $f(I)$ soit un intervalle.
+
+                Alors :
+                \[
+                    f \in \mathcal C^0(I)
+                \]
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Propriété}}
+                Soit $I$ un intervalle de $\R$, et $f \in \mathcal C^0(I)$.
+
+                Alors :
+                \[
+                    f\ \text{injective} \ssi f\ \text{strictement monotone}
+                \]
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Théorème (\textit{continuité de la fonction réciproque})}}
+                Soient $I, J$ des intervalles de $\R$, et $f \in \mathcal C^0(I, J)$ une fonction bijective.
+
+                On a alors :
+                \[
+                    f^{-1} \in \mathcal C^0(J, I)
+                \]
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Théorème de la bijection}}
+                Soient $a, b \in \R\ |\ a < b$, $I = \seg a b$, et $f \in \mathcal C^0(I)$ une fonction strictement monotone.
+
+                \begin{indt}{Alors :}
+                    $\bullet$ $f$ réalise une bijection de $I$ sur
+                    $
+                        J = 
+                        \begin{cases}
+                            \seg{f(a)}{f(b)}
+                            & \text{si $f$ croissante}
+                            \\
+                            \seg{f(b)}{f(a)}
+                            & \text{sinon}
+                        \end{cases}
+                    $
+
+                    \vspace{6pt}
+                    
+                    $\bullet$ Sa fonction réciproque $f^{-1} : J \longrightarrow I$ est continue, strictement monotone, et de même sens de variations que $f$.
+                \end{indt}
+
+                \vspace{12pt}
+                
+                Remarque : on peut ouvrir un / les crochets de $I$, et dans ce cas, on ouvre le / les crochets correspondant dans $J$, en remplaçant $f(x)$  par $\displaystyle \lim_x f$ (où $x \in \set{a, b}$).
+            \end{indt}
+        \end{indt}
+        
+    \end{indt}
+
+    \vspace{12pt}
+    
+    \begin{indt}{\section{Dérivation}}
+        On fixe un intervalle $I$ de $\R$ non trivial.
+
+        \begin{indt}{\subsection{Dérivée en un point}}
+            \begin{indt}{\subsubsection{Définition (\textit{dérivée en un point})}}
+                Soit $f \in \R^I$, et $a \in I$
+
+                Soit $\tau_a$ le taux d'accroissement de $f$ en $a$ :
+                \[
+                    \begin{array}{rcccc}
+                        \tau_a & : & I \setminus \set a & \longrightarrow & \R
+                        \\
+                        && x & \longmapsto & \dfrac{f(x) - f(a)}{x - a}
+                    \end{array}
+                \]
+
+                \vspace{6pt}
+                
+                La fonction $f$ est \textit{dérivable} (resp. \textit{dérivable à gauche}, \textit{à droite}) en $a$ si $\tau_a$ admet une limite (resp. limite à gauche, droite) finie en $a$, et on note :
+                \[
+                    f'(a) = \lim_{x \to a} \tau_a(x)
+                    \quad \lr{\text{resp.}\ \
+                        \begin{array}{|l}
+                            f_{\rm g}'(a) = \displaystyle \lim_{x \to a^-} \tau_a(x)
+                            \\
+                            f_{\rm r}'(a) = \displaystyle \lim_{x \to a^+} \tau_a(x)
+                        \end{array}
+                    }
+                \]
+
+                Remarque : on note aussi $\dfrac{\mathrm d f}{\mathrm dx}(a)$ la dérivée de $f$ en $a$ par rapport à $x$.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Propriété (\textit{équation de la tangente})}}
+                Soit $a \in I$, et $f \in \R^I$ une fonction dérivable en $a$.
+
+                La tangente au graphe de $f$ en $a$ a pour équation :
+                \[
+                    y = f'(a)(x - a) + f(a)
+                \]
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Propriété (\textit{CNS de dérivabilité en un point})}}
+                Soit $a \in I \setminus \set{\inf(I), \sup(I)}$, et $f \in \R^I$.
+
+                La fonction $f$ est dérivable en $a$
+                $
+                    \ssi
+                    \begin{cases}
+                        \text{$f$ est dérivable à droite et à gauche en $a$}
+                        \\
+                        f_{\rm g}'(a) = f_{\rm d}'(a)
+                    \end{cases}
+                $
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Propriété (\textit{continuité des fonctions dérivables})}}
+                Soit $f \in \R^I$, et $a \in I$.
+
+                Si $f$ est dérivable (resp. dérivable à gauche, droite) en $a$, alors $f$ est continue (resp. continue à gauche, droite) en $a$.
+            \end{indt}
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Sur un intervalle}}
+            \begin{indt}{\subsubsection{Définition (\textit{fonction dérivée})}}
+                Soit $f \in \R^I$.
+
+                La fonction $f$ est dérivable sur $I$ si elle est dérivable en tout point de $I$, et la \textit{dérivée} de $f$ est la fonction
+                \[
+                    \begin{array}{rcccc}
+                        f' & : & I & \longrightarrow & \R
+                        \\
+                           && x & \longmapsto & f'(x)
+                    \end{array}
+                \]
+
+                On note $\mathcal D(I, J)$ l'ensemble des fonctions dérivables sur $I$ à valeurs dans $\R$. On omet $J$ lorsque celui-ci est $\R$.
+
+                Remarque : on note aussi $\dfrac{\mathrm df}{\mathrm dx} = f'$.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Propriété (\textit{continuité des fonctions dérivables})}}
+                Soit $f \in \R^I$.
+
+                On a
+                \[
+                    f \in \mathcal D(I)
+                    \Rightarrow
+                    f \in \mathcal C^0(I)
+                \]
+
+                \textit{i.e}
+                \[
+                    \mathcal C^0(I) \subset \mathcal D(I)
+                \]
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Propriété (\textit{linéarité de la dérivation})}}
+                Soit l'application
+                \[
+                    \begin{array}{rcccc}
+                        \varphi & : & \mathcal D(I) & \longrightarrow & \R^I
+                        \\
+                        && f & \longmapsto & f'
+                    \end{array}
+                \]
+
+                Alors $\varphi$ est une application linéaire, \textit{i.e} :
+                \[
+                    \forall \lambda, \mu \in \R, \forall f, g \in \mathcal D(I),\
+                    \varphi(\lambda f + \mu g) = \lambda \varphi(f) + \mu \varphi(g)
+                \]
+                \textit{i.e} :
+                \[
+                    \forall \lambda, \mu \in \R, \forall f, g \in \mathcal D(I),\
+                    (\lambda f + \mu g)' = \lambda f' + \mu g'
+                \]
+
+                \vspace{12pt}
+                
+                Remarque : $\forall a \in I, \forall f \in \mathcal D(I)$, soit $\varphi_a(f) = \varphi(f)(a)$.
+                Alors $\varphi_a$ est une forme linéaire.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Propriété (\textit{produit de dérivées})}}
+                Soient $f, g \in \mathcal D(I)$.
+
+                Alors $fg \in \mathcal D(I)$, et :
+                \[
+                    (fg)' = f'g + g'f
+                \]
+            \end{indt}
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Dérivées d'ordre supérieur}}
+            \begin{indt}{\subsubsection{Définition (\textit{Dérivée $n$-ème})}}
+                Soit $f \in \R^I$.
+
+                On définit par récurrence, pour $n \in \N$, la \textit{dérivée $n$-ème} $f^{(n)}$ de $f$, si elle existe, par :
+                \[
+                    \begin{cases}
+                        f^{(0)} = f
+                        \\
+                        f^{(n)} = \lr{f^{(n - 1)}}'
+                    \end{cases}
+                \]
+
+                En cas d'existence, on dit que $f$ est $n$-fois dérivable.
+
+                \vspace{6pt}
+                
+                Remarque : on note aussi $\dfrac{\mathrm d^n f}{\mathrm dx^n} = f^{(n)}$.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Définition (\textit{Fonctions de classe $\mathcal C^n$})}}
+                $\bullet$ On note $\mathcal C^n(I, J)$ l'ensemble des fonctions $n$-fois dérivables sur $I$ à valeurs dans $J$, et dont la dérivée $n$-ème est continue.
+                On omet $J$ si celui-ci est $\R$.
+
+                Si $f \in \mathcal C^n(I)$, on dit que $f$ est de classe $\mathcal C^n$ sur $I$.
+
+                \vspace{6pt}
+                
+                $\bullet$ On note
+                $
+                    \mathcal C^\infty(I, J)
+                    = \set{f \in J^I\ |\ \forall n \in \N,\ f \in \mathcal C^n(I, J)}
+                $,
+                \textit{i.e} l'ensemble des fonctions dérivables à tout ordre.
+                De même que précédemment, on omet $J$ dans le cas $J = \R$.
+
+                Si $f \in \mathcal C^\infty(I)$, on dit que $f$ est de classe $\mathcal C^\infty$ sur $I$.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Propriétés}}
+                $\bullet$ Soient $n, p \in \N\ |\ p \le n$.
+
+                Alors
+                \[
+                    \mathcal C^n(I) \subset \mathcal C^p(I)
+                \]
+
+                \vspace{6pt}
+                
+                $\bullet$ Soit $n \in \N^*$, et $f \in \R^I$ une fonction $n$-fois dérivable.
+
+                Alors
+                \[
+                    \forall p \in \nset{0}{n - 1},\ f \in \mathcal C^p(I)
+                \]
+
+                \vspace{6pt}
+                
+                $\bullet$ On a
+                \[
+                    \mathcal C^\infty(I) = \bigcap_{n \in \N} \mathcal C^n(I)
+                \]
+
+                \vspace{6pt}
+                
+                $\bullet$ Soit $n \in \N$, et $f \in \mathcal D(I)$.
+
+                Alors
+                \[
+                     f \in \mathcal C^n(I) \ssi f' \in \mathcal C^{n - 1}(I)
+                \]
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Propriété (\textit{linéarité de la dérivation $n$-ème})}}
+                Soit $n \in \N$.
+
+                L'application
+                \[
+                    \begin{array}{rcccc}
+                        \varphi_n & : & \mathcal C^n(I) & \longrightarrow & \R^I
+                        \\
+                        && f & \longmapsto & f^{(n)}
+                    \end{array}
+                \]
+                est linéaire, \textit{i.e} :
+                \[
+                    \forall \lambda, \mu \in \R, \forall f, g \in \mathcal C^n(I),\
+                    (\lambda f + \mu g)^{(n)} = \lambda f^{(n)} + \mu g^{(n)}
+                \]
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Propriété (\textit{Produit de dérivées $n$-èmes})}}
+                Soient $n \in \N$, et $f, g \in \mathcal C^n(I)$.
+
+                Alors $fg \in \mathcal C^n(I)$, et :
+                \[
+                    (fg)^{(n)} =
+                    \sum_{k = 0}^n \binom n k f^{(k)} g^{(n - k)}
+                \]
+                (formule de \textsc{Leibniz}).
+
+                \vspace{12pt}
+                
+                Remarque : $\mathcal C^n(I)$ est un sous-anneau de $(\R^I, +, \times)$.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Propriété (\textit{dérivée $n$-ème des monômes})}}
+                $\bullet$ Soit $p \in \N$.
+
+                On a :
+                $x \longmapsto x^p \in \mathcal C^\infty(\R)$, et :
+                \[
+                    \forall n \in \N,\
+                    \dfrac{\mathrm d^n \! \left[ x^p \right]}{\mathrm dx^n} =
+                    \begin{cases}
+                        \dfrac{p!}{(p - n)!}x^{p - n}
+                        & \text{si}\ n \le p
+                        \vspace{6pt}
+                        \\
+                        0 & \text{sinon}
+                    \end{cases}
+                \]
+
+                \vspace{12pt}
+                
+                $\bullet$ On a : $x \longmapsto \dfrac 1 x \in \mathcal C^\infty(\R^*)$, et :
+                \[
+                    \forall n \in \N,\
+                    \dfrac{\mathrm d^n \! \left[ \dfrac 1 x \right]}{\mathrm dx^n} =
+                    (-1)^n \dfrac{n!}{x^{n + 1}}
+                \]
+            \end{indt}
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Quotient}}
+            \begin{indt}{\subsubsection{Propriété (\textit{dérivée de l'inverse en un point})}}
+                Soit $a \in I$, et $f \in \R^I$ une fonction dérivable en $a$ et telle que $\forall x \in I,\ f(x) \neq 0$.
+
+                Alors $\dfrac 1 f$ est dérivable en $a$, et :
+                \[
+                    \lr{\dfrac 1 f}'(a) = -\dfrac{f'(a)}{\lr{f(a)}^2}
+                \]
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Propriété (\textit{dérivée de l'inverse sur un intervalle})}}
+                $\bullet$ Soit $f \in \mathcal D(I)\ |\ \forall x \in I,\ f(x) \neq 0$.
+
+                Alors $\dfrac 1 f \in \mathcal D(I)$, et
+                \[
+                    \lr{\dfrac 1 f}' = - \dfrac{f'}{f^2}
+                \]
+
+                \vspace{6pt}
+                
+                $\bullet$ Soit $f \in \mathcal C^n(I, \R^*)$.
+
+                Alors $\dfrac 1 f \in \mathcal C^n(I)$.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Corollaire (\textit{dérivé d'un quotient})}}
+                $\bullet$ Soient $f, g \in \mathcal D(I)\ |\ \forall x \in I,\ g(x) \neq 0$.
+
+                Alors $\dfrac f g \in \mathcal D(I)$, et
+                \[
+                    \lr{\dfrac f g}' = \dfrac{f'g - g'f}{g^2}
+                \]
+
+                \vspace{12pt}
+                
+                $\bullet$ Soient $f, g \in \mathcal C^n(I)\ |\ \forall x \in I,\ g(x) \neq 0$.
+
+                Alors $\dfrac f g \in \mathcal C^n(I)$.
+            \end{indt}
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Composée}}
+            \begin{indt}{\subsubsection{Propriété (\textit{dérivée d'une fonction composée en un point})}}
+                Soient $I, J$ des intervalles de $\R$, $a \in I$, et
+                $
+                    \left| \!
+                    \begin{array}{l}
+                        f \in J^I
+                        \\
+                        g \in \R^J
+                    \end{array}
+                    \right.
+                $
+                telles que $f$ soit dérivable en $a$ et $g$ en $f(a)$.
+
+                Alors $g \circ f$ est dérivable en $a$, et :
+                \[
+                    (g \circ f)'(a) = f'(a) \cdot g'\!\lr{f(a)}
+                \]
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Propriété (\textit{dérivée d'une fonction composée sur un intervalle})}}
+                Soient $I, J$ des intervalles de $\R$, et
+                $
+                    \begin{array}{|l}
+                        f \in \mathcal D(I, J)
+                        \\
+                        g \in \mathcal D(J, \R)
+                    \end{array}
+                $.
+
+                Alors $g \circ f \in \mathcal D(I)$, et
+                \[
+                    (g \circ f)' = f' \cdot (g' \circ f)
+                \]
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Propriété (\textit{Classe $\mathcal C^n$})}}
+                Soient $I, J$ des intervalles de $\R$, $n \in \N$, et
+                $
+                    \begin{array}{|l}
+                        f \in \mathcal C^n(I, J)
+                        \\
+                        g \in \mathcal C^n(J, \R)
+                    \end{array}
+                $.
+
+                Alors $g \circ f \in \mathcal C^n(I)$.
+            \end{indt}
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Fonction réciproque}}
+            \begin{indt}{\subsubsection{Propriété (\textit{dérivée de la fonction réciproque en un point})}}
+                Soit $a \in I$, et $f \in \mathcal C^0(I)$ une fonction bijective de $I$ sur $J = f(I)$, dérivable en $a$, telle que $f'(a) \neq 0$.
+
+                Alors $f^{-1}$ est dérivable en $f(a)$, et
+                \[
+                    \lr{f^{-1}}'\!\lr{f(a)} = \dfrac{1}{f'(a)}
+                \]
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Propriété (\textit{dérivée de la fonction réciproque sur un intervalle})}}
+                Soit $f \in \mathcal D(I)$ une fonction bijective de $I$ sur $J = f(I)$, telle que $\forall x \in I,\ f'(x) \neq 0$.
+
+                Alors $f^{-1} \in \mathcal D(J)$, et
+                \[
+                    \lr{f^{-1}}' = \dfrac{1}{f' \circ f^{-1}}
+                \]
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Corollaire}}
+                Soit $f \in \mathcal D(I)$ une fonction bijective de $I$ sur $J = f(I)$.
+
+                Alors
+                \[
+                    f^{-1} \in \mathcal D\!\lr{\set{
+                        f(x) \in J\
+                        \left|
+                        \begin{array}{l}
+                            x \in I
+                            \\
+                            f'(x) \neq 0
+                        \end{array}
+                        \right.
+                    }}
+                \]
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Propriété}}
+                Soit $n \in \N^*$, et $f \in \mathcal C^n(I)\ |\ \forall x \in I,\ f'(x) \neq 0$.
+
+                Alors $f$ réalise une bijection de $I$ sur $f(I)$, et $f^{-1} \in \mathcal C^n(f(I))$.
+
+                \vspace{6pt}
+                
+                Remarque : un telle fonction s'appelle un \textit{$\mathcal C^n$-difféomorphisme}.
+            \end{indt}
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Théorème de Rolle}}
+            \begin{indt}{\subsubsection{Propriété}}
+                Soit $a \in I \setminus \set{\inf(I), \sup(I)}$, et $f \in \mathcal D(I)$.
+
+                Si $f$ admet un extremum en $a$, alors $f'(a) = 0$.
+
+                \vspace{12pt}
+                
+                Remarques : un tel point est un point critique.
+                La réciproque est fausse ($x \longmapsto x^3$ en 0).
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Théorème de Rolle}}
+                Soient $a, b \in \R\ |\ a < b$, et $f \in \mathcal C^0\!\lr{\seg a b} \cap \mathcal D\!\lr{]a\ ;\ b[}\ |\ f(a) = f(b)$.
+
+                Alors
+                \[
+                    \exists c \in ]a\ ;\ b[\ |\ f'(c) = 0
+                \]
+            \end{indt}
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{\'Egalité des accroissements finis}}
+            \begin{indt}{\subsubsection{Théorème (\textit{égalité des accroissements finis})}}
+                Soient $a, b \in \R\ |\ a < b$, et soit $f \in \mathcal C^0\!\lr{\seg a b} \cap \mathcal D\!\lr{]a\ ;\ b[}$.
+
+                Alors
+                \[
+                    \exists c \in ]a\ ;\ b[\ |\ f'(c) = \dfrac{f(b) - f(a)}{b - a}
+                \]
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Définition (\textit{fonction lipschitzienne})}}
+                Soit $f \in \R^I$.
+
+                La fonction $f$ est \textit{lipschitzienne} si
+                \[
+                    \exists k \in \R\ |\
+                    \forall x, y \in I,\
+                    \abs{f(x) - f(y)} \le k\abs{x - y}
+                \]
+
+                Dans ce cas, on dit que $f$ est $k$-lipschitzienne.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Propriété}}
+                Une fonction lipschitzienne est continue.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Corollaire (\textit{Inégalité des accroissements finis})}}
+                Soient $a, b \in \R\ |\ a < b$, et $f \in \mathcal C^0\!\lr{\seg a b} \cap \mathcal D\!\lr{]a\ ;\ b[}$ telle que
+                \[
+                    \exists m, M \in \R\ |\
+                    \forall x \in ]a\ ;\ b[,\
+                    m \le f'(x) \le M.
+                \]
+
+                Alors
+                \[
+                    \forall x, y \in \seg a b,\
+                    x \le y \Rightarrow
+                    m(y - x) \le f(y) - f(x) \le M(y - x)
+                \]
+
+                \textit{i.e} $f$ est $\max\!\lr{\abs m,\ \abs M}$-lipschitzienne.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Propriétés}}
+                $\bullet$ Soit $f \in \mathcal D(I)$ une fonction lipschitzienne sur $I$.
+
+                Alors $f'$ est bornée.
+
+                \vspace{12pt}
+                
+                $\bullet$ Soient $a, b \in \R\ |\ a < b$, et $f \in \mathcal C^1(\seg a b)$.
+
+                Alors $f$ est lipschitzienne.
+            \end{indt}
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Monotonie et dérivabilité}}
+            \begin{indt}{\subsubsection{Propriété (\textit{CNS de monotonie avec la dérivabilité})}}
+                Soit $I$ un intervalle de $\R$, $\widetilde I$ l'intérieur de $I$, et $f \in \mathcal C^0(I) \cap \mathcal D\!\lr{\widetilde I}$.
+
+                Alors :
+                \[
+                    \begin{array}{c}
+                        f \nearrow \ssi f' \ge 0
+                        \\
+                        f \searrow \ssi f' \le 0
+                        \\
+                        \exists a \in \R\ |\ \forall x \in I,\ f(x) = a \ssi f' = 0
+                    \end{array}
+                \]
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Propriété (\textit{conditions suffisantes de stricte monotonie})}}
+                Soit $I$ un intervalle de $\R$, $\widetilde I$ l'intérieur de $I$, et $f \in \mathcal C^0(I) \cap \mathcal D\!\lr{\widetilde I}$.
+
+                \vspace{6pt}
+                
+                $\bullet$ Si
+                \[
+                    \forall x \in \widetilde I,\ f'(x) > 0\ (\text{resp.}\ f'(x) < 0),
+                \]
+                alors $f$ est strictement croissante (resp. strictement décroissante) sur $I$.
+
+                \vspace{12pt}
+                
+                $\bullet$ Si
+                \[
+                    \begin{cases}
+                        \forall x \in \widetilde I,\ f'(x) \ge 0\ (\text{resp.}\ f'(x) \le 0)
+                        \vspace{6pt}
+                        \\
+                        \mathrm{card}\set{x \in \widetilde I\ |\ f'(x) = 0} < +\infty
+                    \end{cases}
+                \]
+                alors $f$ est strictement croissante (resp. strictement décroissante) sur $I$
+                (corollaire du théorème suivant).
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Théorème (\textit{CNS de stricte monotonie})}}
+                Soit $I$ un intervalle de $\R$, $\widetilde I$ l'intérieur de $I$, et $f \in \mathcal C^0(I) \cap \mathcal D\!\lr{\widetilde I}$.
+
+                Alors
+                $f$ est strictement croissante sur $I$ $\ssi$
+                \[
+                    \begin{cases}
+                        \forall x \in \widetilde I,\ f(x) \ge 0
+                        \\
+                        \forall x, y \in \widetilde I\ |\ x < y,\ f'(x) = 0 = f'(y)
+                        \Rightarrow \exists x_0 \in\ ]x\ ;\ y[\ \ |\ f'(x_0) \neq 0
+                    \end{cases}
+                \]
+
+                Et $f$ est strictement décroissante sur $I$ $\ssi$
+                \[
+                    \begin{cases}
+                        \forall x \in \widetilde I,\ f(x) \le 0
+                        \\
+                        \forall x, y \in \widetilde I\ |\ x < y,\ f'(x) = 0 = f'(y)
+                        \Rightarrow \exists x_0 \in\ ]x\ ;\ y[\ \ |\ f'(x_0) \neq 0
+                    \end{cases}
+                \]
+            \end{indt}
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Théorème de la limite de la dérivée}}
+            \begin{indt}{\subsubsection{Théorème de la limite de la dérivée}}
+                Soit $c \in I$, et $f \in \mathcal C^0(I) \cap \mathcal D\!\lr{I \setminus \set c}$.
+
+                \vspace{6pt}
+                
+                $\bullet$ Si $\exists \ell \in \R\ |\ f'(x) \tendsto{x \to c} \ell$, alors $f \in \mathcal D(I)$,
+                \[
+                    f'(c) = \ell
+                \]
+                et $f'$ est continue en $c$.
+
+                De plus, si $f \in \mathcal C^1\!\lr{I \setminus \set c}$, alors $f \in \mathcal C^1(I)$.
+
+                \vspace{12pt}
+                
+                $\bullet$ Si $f'(x) \tendsto{x \to c} \pm \infty$, alors la courbe représentative de $f$ admet une tangente verticale au point d'abscisse $c$.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Théorème de classe $\mathcal C^k$ par prolongement}}
+                Soient $a \in I$, $n \in \N$, et $f \in \mathcal C^n\!\lr{I \setminus \set a}$ telle que
+                \[
+                    \forall k \in \nset 0 n,\
+                    \exists \ell_k \in \R\ |\
+                    f^{(k)}(x) \tendsto{x \to a} \ell_k.
+                \]
+
+                Alors $f$ est prolongeable par continuité en $a$, et en notant $\widetilde f$ son prolongement, on a :
+                \[
+                    \widetilde f \in \mathcal C^n(I)
+                \]
+                et :
+                \[
+                    \forall k \in \nset 0 n,\
+                    {\widetilde f}^{(k)}(a) = \ell_k.
+                \]
+            \end{indt}
+        \end{indt}
+    \end{indt}
+    
+    
+    
+\end{document}
+%--------------------------------------------End
