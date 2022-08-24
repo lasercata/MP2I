@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2022.03.23
+% Last modification     :   2022.08.24
 %
 %------------------------------------------------------------------------
 
@@ -520,7 +520,7 @@
                 
                 \vspace{12pt}
                 
-                $\bullet$ Une famille $(x_k)_{k \in I} \subset E$ est liée $\ssi \exists i \in I\ |\ x_i = \mathrm{vect}(x_k)_{k \in I \setminus J}$
+                $\bullet$ Une famille $(x_k)_{k \in I} \subset E$ est liée $\ssi \exists i \in I\ |\ x_i \in \mathrm{vect}(x_k)_{k \in I \setminus \set i}$
                 
                 \vspace{12pt}
                 
@@ -666,7 +666,7 @@
                     \]
                 
                 Remarque : la condition
-                    $\displaystyle \bigcup_{k \in \nset 1 n} E_k = \set 0 $
+                    $\displaystyle \bigcap_{k = 1}^n E_k = \set 0 $
                 ne suffit pas (exemple : trois droites dans le plan).
             \end{indt}
         \end{indt}
@@ -694,12 +694,12 @@
             $\bullet$ Soient $n \in \N^*$, $(E_k)_{k \in \nset 1 n}$ des sous-espaces vectoriels de $E$, et $(\mathcal F_k)_{k \in \nset 1 n}$ des familles génératrices respectives de $E_1, \ldots, E_n$.
             
             Alors : %$\mathcal F \cup \mathcal G$ est une famille génératrice de $A + B$, \textit{i.e}
-                \[ \sum_{k = 1}^n E_k = \mathrm{vect}\lr{\bigcup_{k \in \nset 1 n} \mathcal F_k} \]
-            \textit{i.e} $\displaystyle \bigcup_{k \in \nset 1 n} \mathcal F_k$ est une famille génératrice de $\displaystyle \sum_{k = 1}^n E_k$.
+                \[ \sum_{k = 1}^n E_k = \mathrm{vect}\lr{\bigcup_{k = 1}^n \mathcal F_k} \]
+            \textit{i.e} $\displaystyle \bigcup_{k = 1}^n \mathcal F_k$ est une famille génératrice de $\displaystyle \sum_{k = 1}^n E_k$.
             
             \vspace{12pt}
             
-            De plus, si $\displaystyle \sum_{k = 1}^n E_k = \bigoplus_{k = 1}^n E_k$, alors la famille $\displaystyle \bigcup_{k \in \nset 1 n} \mathcal F_k$ est libre (et génératrice de la somme).
+            De plus, si $\displaystyle \sum_{k = 1}^n E_k = \bigoplus_{k = 1}^n E_k$, alors la famille $\displaystyle \bigcup_{k = 1}^n \mathcal F_k$ est libre (et génératrice de la somme).
             
             %Et si $A + B = A \oplus B$, alors la famille $\mathcal F \cup \mathcal G$ est libre (et génératrice de $A \oplus B$).
             
@@ -709,7 +709,7 @@
             
             \vspace{6pt}
             
-            Alors $\displaystyle \bigcup_{k \in \nset 1 n} \mathcal F_k$ est une base de $\displaystyle \bigoplus_{k = 1}^n E_k$.
+            Alors $\displaystyle \bigcup_{k = 1}^n \mathcal F_k$ est une base de $\displaystyle \bigoplus_{k = 1}^n E_k$.
         \end{indt}
         
     \end{indt}
@@ -885,7 +885,7 @@
                     \right.
                 \]
             
-            ($x_k \propto x_i \ssi \exists \lambda \in K^*\ |\ x_k = \lambda x_i$)
+            ($x_k \propto x_i \ssi \exists \lambda \in K^*\ |\ x_k = \lambda x_i\ \text{ou}\ x_i = 0$)
             
             \vspace{18pt}
             
@@ -1078,7 +1078,7 @@
                         (A_k)_{k \in \nset 1 m} \subset \mathcal P(E)\ \text{des s-ev de $E$}\ |\ \displaystyle E = \bigoplus_{k = 1}^m A_k
                         \vspace{3pt}
                         \\
-                        (p_k)_{k \in \nset 1 m} \subset N\ |\ \forall k \in \nset 1 m,\ p_k = \dim(A_k)
+                        (p_k)_{k \in \nset 1 m} \subset \N\ |\ \forall k \in \nset 1 m,\ p_k = \dim(A_k)
                         \vspace{3pt}
                         \\
                         \forall i \in \nset 1 m,\ (e_{k,i})_{k \in \nset{1}{p_i}} \subset A_i\ \text{une base de $A_i$}
