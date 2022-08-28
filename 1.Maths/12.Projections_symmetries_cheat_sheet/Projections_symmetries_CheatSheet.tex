@@ -1,0 +1,517 @@
+\documentclass[a4paper, 12pt, twoside]{article}
+
+
+%------------------------------------------------------------------------
+%
+% Author                :   Lasercata
+% Last modification     :   2022.08.28
+%
+%------------------------------------------------------------------------
+
+
+%------ini
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+%\usepackage[french]{babel}
+%\usepackage[english]{babel}
+
+
+%------geometry
+\usepackage[textheight=700pt, textwidth=500pt]{geometry}
+
+
+%------color
+\usepackage{xcolor}
+\definecolor{ff4500}{HTML}{ff4500}
+\definecolor{00f}{HTML}{0000ff}
+\definecolor{0ff}{HTML}{00ffff}
+\definecolor{656565}{HTML}{656565}
+
+\renewcommand{\emph}{\textcolor{ff4500}}
+\renewcommand{\em}{\color{ff4500}}
+
+\newcommand{\strong}[1]{\textcolor{ff4500}{\bf #1}}
+\newcommand{\st}{\color{ff4500}\bf}
+
+
+%------Code highlighting
+%---listings
+\usepackage{listings}
+
+\definecolor{cbg}{HTML}{272822}
+\definecolor{cfg}{HTML}{ececec}
+\definecolor{ccomment}{HTML}{686c58}
+\definecolor{ckw}{HTML}{f92672}
+\definecolor{cstring}{HTML}{e6db72}
+\definecolor{cstringlight}{HTML}{98980f}
+\definecolor{lightwhite}{HTML}{fafafa}
+
+\lstdefinestyle{DarkCodeStyle}{
+    backgroundcolor=\color{cbg},
+    commentstyle=\itshape\color{ccomment},
+    keywordstyle=\color{ckw},
+    numberstyle=\tiny\color{cbg},
+    stringstyle=\color{cstring},
+    basicstyle=\ttfamily\footnotesize\color{cfg},
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=4,
+    xleftmargin=\leftskip
+}
+
+\lstdefinestyle{LightCodeStyle}{
+    backgroundcolor=\color{lightwhite},
+    commentstyle=\itshape\color{ccomment},
+    keywordstyle=\color{ckw},
+    numberstyle=\tiny\color{cbg},
+    stringstyle=\color{cstringlight},
+    basicstyle=\ttfamily\footnotesize\color{cbg},
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=10pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=4,
+    frame=L,
+    xleftmargin=\leftskip
+}
+
+%\lstset{style=DarkCodeStyle}
+\lstset{style=LightCodeStyle}
+%Usage : \begin{lstlisting}[language=Caml] ... \end{lstlisting}
+
+%---tcolorbox
+\usepackage[many]{tcolorbox}
+\DeclareTColorBox{pseudocode}{O{black}O{lightwhite}}{
+    breakable,
+    outer arc=0pt,
+    arc=0pt,
+    top=0pt,
+    toprule=-.5pt,
+    right=0pt,
+    rightrule=-.5pt,
+    bottom=0pt,
+    bottomrule=-.5pt,
+    colframe=#1,
+    colback=#2,
+    enlarge left by=10pt,
+    width=\linewidth-\leftskip-10pt,
+}
+
+
+%-------make the table of content clickable
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=black
+}
+%Uncomment this and comment above for dark mode
+% \hypersetup{
+%     colorlinks,
+%     citecolor=white,
+%     filecolor=white,
+%     linkcolor=white,
+%     urlcolor=white
+% }
+
+
+%------pictures
+\usepackage{graphicx}
+%\usepackage{wrapfig}
+
+\usepackage{tikz}
+%\usetikzlibrary{babel}             %Uncomment this to use circuitikz
+%\usetikzlibrary{shapes.geometric}  % To draw triangles in trees
+%\usepackage{circuitikz}            %Electrical circuits drawing
+
+
+%------tabular
+%\usepackage{color}
+%\usepackage{colortbl}
+%\usepackage{multirow}
+
+
+%------Physics
+%---Packages
+%\usepackage[version=4]{mhchem} %$\ce{NO4^2-}$
+
+%---Commands
+\newcommand{\link}[2]{\mathrm{#1} \! - \! \mathrm{#2}}
+\newcommand{\pt}[1]{\cdot 10^{#1}} % Power of ten
+\newcommand{\dt}[2][t]{\dfrac{\mathrm d #2}{\mathrm d #1}} % Derivative
+
+
+%------math
+%---Packages
+%\usepackage{textcomp}
+%\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools} % For abs
+\usepackage{stmaryrd} %for \llbracket and \rrbracket
+\usepackage{mathrsfs} %for \mathscr{x} (different from \mathcal{x})
+
+%---Commands
+%-Sets
+\newcommand{\N}{\mathbb{N}} %set N
+\newcommand{\Z}{\mathbb{Z}} %set Z
+\newcommand{\Q}{\mathbb{Q}} %set Q
+\newcommand{\R}{\mathbb{R}} %set R
+\newcommand{\C}{\mathbb{C}} %set C
+\newcommand{\U}{\mathbb{U}} %set U
+\newcommand{\seg}[2]{\left[ #1\ ;\ #2 \right]}
+\newcommand{\nset}[2]{\left\llbracket #1\ ;\ #2 \right\rrbracket}
+
+%-Exponantial / complexs
+\newcommand{\e}{\mathrm{e}}
+\newcommand{\cj}[1]{\overline{#1}} %overline for the conjugate.
+
+%-Vectors
+\newcommand{\vect}{\overrightarrow}
+\newcommand{\veco}[3]{\displaystyle \vect{#1}\binom{#2}{#3}} %vector + coord
+
+%-Limits
+\newcommand{\lm}[2][{}]{\lim\limits_{\substack{#2 \\ #1}}} %$\lm{x \to a} f$ or $\lm[x < a]{x \to a} f$
+\newcommand{\Lm}[3][{}]{\lm[#1]{#2} \left( #3 \right)} %$\Lm{x \to a}{f}$ or $\Lm[x < a]{x \to a}{f}$
+\newcommand{\tendsto}[1]{\xrightarrow[#1]{}}
+
+%-Integral
+\newcommand{\dint}[4][x]{\displaystyle \int_{#2}^{#3} #4 \mathrm{d} #1} %$\dint{a}{b}{f(x)}$ or $\dint[t]{a}{b}{f(t)}$
+
+%-left right
+\newcommand{\lr}[1]{\left( #1 \right)}
+\newcommand{\lrb}[1]{\left[ #1 \right]}
+\newcommand{\lrbb}[1]{\left\llbracket #1 \right\rrbracket}
+\newcommand{\set}[1]{\left\{ #1 \right\}}
+\newcommand{\abs}[1]{\left\lvert #1 \right\rvert}
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
+\newcommand{\lrangle}[1]{\left\langle #1 \right\rangle}
+
+%-Others
+\newcommand{\para}{\ /\!/\ } %//
+\newcommand{\ssi}{\ \Leftrightarrow \ }
+\newcommand{\eqsys}[2]{\begin{cases} #1 \\ #2 \end{cases}}
+
+\newcommand{\med}[2]{\mathrm{med} \left[ #1\ ;\ #2 \right]}  %$\med{A}{B} -> med[A ; B]$
+\newcommand{\Circ}[2]{\mathscr{C}_{#1, #2}}
+
+\renewcommand{\le}{\leqslant}
+\renewcommand{\ge}{\geqslant}
+
+\newcommand{\oboxed}[1]{\textcolor{ff4500}{\boxed{\textcolor{black}{#1}}}} %orange boxed
+
+
+%------commands
+%---to quote french text
+\newcommand{\simplecit}[1]{\guillemotleft$\;$#1$\;$\guillemotright}
+\newcommand{\cit}[1]{\simplecit{\textcolor{656565}{#1}}}
+\newcommand{\quo}[1]{\cit{\it #1}}
+
+%---to indent
+\newcommand{\ind}[1][20pt]{\advance\leftskip + #1}
+\newcommand{\deind}[1][20pt]{\advance\leftskip - #1}
+
+%---to indent a text
+\newcommand{\indented}[2][20pt]{\par \ind[#1] #2 \par \deind[#1]}
+\newenvironment{indt}[2][20pt]{#2 \par \ind[#1]}{\par \deind} %Titled indented env
+
+%---title
+\newcommand{\thetitle}[2]{\begin{center}\textbf{{\LARGE \underline{\emph{#1} :}} {\Large #2}}\end{center}}
+
+
+%------Sections
+% To change section numbering :
+% \renewcommand\thesection{\Roman{section}}
+% \renewcommand\thesubsection{\arabic{subsection}}
+% \renewcommand\thesubsubsection{\textit \alph{subsubsection}}
+
+% To start numbering from 0
+% \setcounter{section}{-1}
+
+
+%------page style
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+
+\setlength{\headheight}{18pt}
+\setlength{\footskip}{50pt}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE, RO]{\textit{\textcolor{black}{\today}}}
+\fancyhead[RE, LO]{\large{\textsl{\emph{\texttt{\jobname}}}}}
+
+\fancyfoot[RO, LE]{\textit{\texttt{\textcolor{black}{Page \thepage /}\pageref{LastPage}}}} %Change 'black' to 'white' for dark mode
+\fancyfoot[LO, RE]{\includegraphics[scale=0.12]{/home/lasercata/Pictures/1.images_profil/logo/mieux/lasercata_logo_fly_fond_blanc.png}}
+
+% For dark mode :
+%/home/lasercata/Pictures/1.images_profil/logo/mieux/lasercata_logo_fly.png
+
+
+%------init lengths
+\setlength{\parindent}{0pt} %To avoid using \noindent everywhere.
+\setlength{\parskip}{3pt}
+
+
+%---------------------------------Begin Document
+\begin{document}
+    
+    %For dark mode :
+    % \pagecolor{black}
+    % \color{white}
+    
+    \thetitle{Maths}{Projections et symétries}
+    
+    \tableofcontents
+    \newpage
+    
+    
+    Dans tout ce qui suit, $K$ désigne un corps, et $E$ un $K$-espace vectoriel.
+
+
+    \begin{indt}{\section{Projections}}
+        
+        \begin{indt}{\subsection{Définition (\textit{projection})}}
+            \label{1.1}
+
+            Soient $A, B$ deux sous-espaces vectoriels supplémentaires de $E$ (\textit{i.e} $E = A \oplus B$).
+
+            La \textit{projection} (ou le \textit{projecteur}) sur $A$ parallèlement à $B$ est l'application
+            \[
+                \begin{array}{ccccc}
+                    p & : & E & \longrightarrow & E
+                    \\
+                    && a + b & \longmapsto & a
+                \end{array}
+            \]
+            où $(a, b) \in A \times B$.
+
+            On appelle $A$ et $B$ les \textit{éléments caractéristiques} de $p$.
+
+            \vspace{12pt}
+            
+            Remarque :
+            cette application est bien définie puisque $E = A \oplus B$ (donc $\forall x \in E,\ \exists! (a, b) \in A \times B\ |\ x = a + b$).
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Exemple}}
+            Prenons $E = \R^2$, et $A, B$ deux droites vectorielles non parallèles (\textit{i.e} $E = A \oplus B$).
+
+            Soit $p$ la projection sur $A$ parallèlement à $B$, et $x = a + b \in E$, où $(a, b) \in A \times B$.
+
+            \begin{center}
+                \begin{tikzpicture}
+                    \draw (-5, 0) to (5, 0);
+                    \draw (-3, -3) to (3, 3);
+
+                    \node (A) at (5.3, -.3) {$A$};
+                    \node (B) at (3.3, 3.3) {$B$};
+
+                    \node [label=above right:$x$] (x) at (3.5, 1.5) {};
+                    \node [label=below:${a = p(x)}$] (a) at (2, 0) {};
+                    \node [label=left:$b$] (b) at (1.5, 1.5) {};
+
+                    \draw[-latex] (0, 0) to (3.5, 1.5);
+                    \draw[-latex] (0, 0) to (2, 0);
+
+                    \draw [dashed] (2, 0) -- (x) -- (1.5, 1.5);
+                \end{tikzpicture}
+            \end{center}
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Propriété (\textit{linéarité, idempotence})}}
+            Soit $p$ une projection de $E$.
+
+            Alors :
+
+            $\bullet$ $p \in \mathcal L(E)$
+
+            $\bullet$ $p \circ p = p$ (idempotence)
+
+            \vspace{12pt}
+            
+            Remarque :
+            Comme on travaille dans l'anneau $(\mathcal L(E), +, \circ)$, on note $p^2 = p \circ p$.
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Propriété}}
+            Soit $f \in \mathcal L(E)\ |\ f^2 = f$.
+
+            Alors $f$ est une projection.
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Propriété (\textit{éléments caractéristiques})}}
+            Soit $p$ une projection de $E$.
+
+            Alors :
+
+            $\bullet$ $E = \mathrm{Im}(p) \oplus \mathrm{Ker}(p)$
+
+            $\bullet$ $p$ est la projection sur $\mathrm{Im}(p)$ et parallèlement à $\mathrm{Ker}(p)$.
+
+            Autrement dit, avec les notations de la définition \ref{1.1}, on a :
+            \[
+                \begin{cases}
+                    A = \mathrm{Im}(p)
+                    \\
+                    B = \mathrm{Ker}(p)
+                \end{cases}
+            \]
+
+            $\bullet$ $\mathrm{Im}(p) = \set{x \in E\ |\ x = p(x)} = \mathrm{Ker}(p - \mathrm{id}_E)$
+        \end{indt}
+        
+    \end{indt}
+
+    \vspace{12pt}
+    
+    \begin{indt}{\section{Symétries}}
+        \begin{indt}{\subsection{Définition (\textit{symétrie})}}
+            \label{2.1}
+
+            Soient $A, B$ deux sous-espaces vectoriels supplémentaires de $E$ (\textit{i.e} $E = A \oplus B$).
+
+            La \textit{symétrie} par rapport à $A$ et parallèlement à $B$ est l'application
+            \[
+                \begin{array}{ccccc}
+                    s & : & E & \longrightarrow & E
+                    \\
+                    && a + b & \longmapsto & a - b
+                \end{array}
+            \]
+            où $(a, b) \in A \times B$.
+
+            On appelle $A$ et $B$ les \textit{éléments caractéristiques} de $s$.
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Exemple}}
+            Prenons $E = \R^2$, et $A, B$ deux droites vectorielles non parallèles (\textit{i.e} $E = A \oplus B$).
+
+            Soit $s$ la symétrie par rapport à $A$ et parallèlement à $B$, et $x = a + b \in E$, où $(a, b) \in A \times B$.
+
+            \begin{center}
+                \begin{tikzpicture}
+                    \draw (-5, 0) to (5, 0);
+                    \draw (-3, -3) to (3, 3);
+
+                    \node (A) at (5.3, -.3) {$A$};
+                    \node (B) at (3.3, 3.3) {$B$};
+
+                    \node [label=above right:$x$] (x) at (3.5, 1.5) {};
+                    \node [label=below right:$a$] (a) at (2, 0) {};
+                    \node [label=left:$b$] (b) at (1.5, 1.5) {};
+                    \node [label=left:$-b$] (b2) at (-1.5, -1.5) {};
+
+                    \node [label=below right:$s(x)$] (s) at (.5, -1.5) {};
+
+                    \draw[-latex] (0, 0) to (3.5, 1.5);
+                    \draw[-latex] (0, 0) to (.5, -1.5);
+
+                    \draw [dashed] (-1.5, -1.5) -- (s) -- (a) -- (x) -- (1.5, 1.5);
+                \end{tikzpicture}
+            \end{center}
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Propriété (\textit{automorphisme, involution})}}
+            Soit $s$ une symétrie de $E$.
+
+            Alors :
+
+            $\bullet$ $s \in GL(E)$ (automorphisme)
+
+            $\bullet$ $s^2 = \mathrm{id}_E$ (involution)
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Propriété}}
+            Soit $f \in \mathcal L(E)\ |\ f^2 = \mathrm{id}_E$.
+
+            Alors $f$ est une symétrie de $E$.
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Propriété (\textit{éléments caractéristiques})}}
+            Soit $s$ une symétrie de $E$.
+
+            Alors :
+
+            $\bullet$ $E = \mathrm{Ker}(s - \mathrm{id}_E) \oplus \mathrm{Ker}(s + \mathrm{id}_E)$
+
+            $\bullet$ $s$ est la symétrie par rapport à $\mathrm{Ker}(s - \mathrm{id}_E)$ et parallèlement à $\mathrm{Ker}(s + \mathrm{id}_E)$.
+
+            Autrement dit, avec les notations de la définition \ref{2.1}, on a :
+            \[
+                \begin{cases}
+                    A = \mathrm{Ker}(s - \mathrm{id}_E)
+                    \\
+                    B = \mathrm{Ker}(s + \mathrm{id}_E)
+                \end{cases}
+            \]
+
+            \vspace{12pt}
+            
+            Remarque :
+            \[
+                \mathrm{Ker}(s - \mathrm{id}_E) = \set{x \in E\ |\ s(x) = x}
+            \]
+            \[
+                \mathrm{Ker}(s + \mathrm{id}_E) = \set{x \in E\ |\ s(x) = -x}
+            \]
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Propriété (\textit{relation projection / symétrie})}}
+            Soient $p, s \in \mathcal L(E)\ |\ s = 2p - \mathrm{id}_E$.
+
+            On a alors :
+            \[
+                p\ \text{projection}
+                \ssi
+                s\ \text{symétrie}
+            \]
+
+            Et dans ce cas, on a :
+            \[
+                \begin{cases}
+                    \mathrm{Im}(p) = \mathrm{Ker}(s - \mathrm{id}_E)
+                    \\
+                    \mathrm{Ker}(p) = \mathrm{Ker}(s + \mathrm{id}_E)
+                \end{cases}
+            \]
+            \textit{i.e} $p$ et $s$ ont les mêmes éléments caractéristiques.
+        \end{indt}
+    \end{indt}
+    
+    
+    
+\end{document}
+%--------------------------------------------End
