@@ -1,0 +1,755 @@
+\documentclass[a4paper, 12pt, twoside]{article}
+
+
+%------------------------------------------------------------------------
+%
+% Author                :   Lasercata
+% Last modification     :   2022.09.10
+%
+%------------------------------------------------------------------------
+
+
+%------ini
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+%\usepackage[french]{babel}
+%\usepackage[english]{babel}
+
+
+%------geometry
+\usepackage[textheight=700pt, textwidth=500pt]{geometry}
+
+
+%------color
+\usepackage{xcolor}
+\definecolor{ff4500}{HTML}{ff4500}
+\definecolor{00f}{HTML}{0000ff}
+\definecolor{0ff}{HTML}{00ffff}
+\definecolor{656565}{HTML}{656565}
+
+\renewcommand{\emph}{\textcolor{ff4500}}
+\renewcommand{\em}{\color{ff4500}}
+
+\newcommand{\strong}[1]{\textcolor{ff4500}{\bf #1}}
+\newcommand{\st}{\color{ff4500}\bf}
+
+
+%------Code highlighting
+%---listings
+\usepackage{listings}
+
+\definecolor{cbg}{HTML}{272822}
+\definecolor{cfg}{HTML}{ececec}
+\definecolor{ccomment}{HTML}{686c58}
+\definecolor{ckw}{HTML}{f92672}
+\definecolor{cstring}{HTML}{e6db72}
+\definecolor{cstringlight}{HTML}{98980f}
+\definecolor{lightwhite}{HTML}{fafafa}
+
+\lstdefinestyle{DarkCodeStyle}{
+    backgroundcolor=\color{cbg},
+    commentstyle=\itshape\color{ccomment},
+    keywordstyle=\color{ckw},
+    numberstyle=\tiny\color{cbg},
+    stringstyle=\color{cstring},
+    basicstyle=\ttfamily\footnotesize\color{cfg},
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=4,
+    xleftmargin=\leftskip
+}
+
+\lstdefinestyle{LightCodeStyle}{
+    backgroundcolor=\color{lightwhite},
+    commentstyle=\itshape\color{ccomment},
+    keywordstyle=\color{ckw},
+    numberstyle=\tiny\color{cbg},
+    stringstyle=\color{cstringlight},
+    basicstyle=\ttfamily\footnotesize\color{cbg},
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=10pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=4,
+    frame=L,
+    xleftmargin=\leftskip
+}
+
+%\lstset{style=DarkCodeStyle}
+\lstset{style=LightCodeStyle}
+%Usage : \begin{lstlisting}[language=Caml] ... \end{lstlisting}
+
+%---tcolorbox
+\usepackage[many]{tcolorbox}
+\DeclareTColorBox{pseudocode}{O{black}O{lightwhite}}{
+    breakable,
+    outer arc=0pt,
+    arc=0pt,
+    top=0pt,
+    toprule=-.5pt,
+    right=0pt,
+    rightrule=-.5pt,
+    bottom=0pt,
+    bottomrule=-.5pt,
+    colframe=#1,
+    colback=#2,
+    enlarge left by=10pt,
+    width=\linewidth-\leftskip-10pt,
+}
+
+
+%-------make the table of content clickable
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=black
+}
+%Uncomment this and comment above for dark mode
+% \hypersetup{
+%     colorlinks,
+%     citecolor=white,
+%     filecolor=white,
+%     linkcolor=white,
+%     urlcolor=white
+% }
+
+
+%------pictures
+\usepackage{graphicx}
+%\usepackage{wrapfig}
+
+\usepackage{tikz}
+%\usetikzlibrary{babel}             %Uncomment this to use circuitikz
+%\usetikzlibrary{shapes.geometric}  % To draw triangles in trees
+%\usepackage{circuitikz}            %Electrical circuits drawing
+
+
+%------tabular
+%\usepackage{color}
+%\usepackage{colortbl}
+%\usepackage{multirow}
+
+
+%------Physics
+%---Packages
+%\usepackage[version=4]{mhchem} %$\ce{NO4^2-}$
+
+%---Commands
+\newcommand{\link}[2]{\mathrm{#1} \! - \! \mathrm{#2}}
+\newcommand{\pt}[1]{\cdot 10^{#1}} % Power of ten
+\newcommand{\dt}[2][t]{\dfrac{\mathrm d #2}{\mathrm d #1}} % Derivative
+
+
+%------math
+%---Packages
+%\usepackage{textcomp}
+%\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools} % For abs
+\usepackage{stmaryrd} %for \llbracket and \rrbracket
+\usepackage{mathrsfs} %for \mathscr{x} (different from \mathcal{x})
+
+%---Commands
+%-Sets
+\newcommand{\N}{\mathbb{N}} %set N
+\newcommand{\Z}{\mathbb{Z}} %set Z
+\newcommand{\Q}{\mathbb{Q}} %set Q
+\newcommand{\R}{\mathbb{R}} %set R
+\newcommand{\C}{\mathbb{C}} %set C
+\newcommand{\U}{\mathbb{U}} %set U
+\newcommand{\seg}[2]{\left[ #1\ ;\ #2 \right]}
+\newcommand{\nset}[2]{\left\llbracket #1\ ;\ #2 \right\rrbracket}
+
+%-Exponantial / complexs
+\newcommand{\e}{\mathrm{e}}
+\newcommand{\cj}[1]{\overline{#1}} %overline for the conjugate.
+
+%-Vectors
+\newcommand{\vect}{\overrightarrow}
+\newcommand{\veco}[3]{\displaystyle \vect{#1}\binom{#2}{#3}} %vector + coord
+
+%-Limits
+\newcommand{\lm}[2][{}]{\lim\limits_{\substack{#2 \\ #1}}} %$\lm{x \to a} f$ or $\lm[x < a]{x \to a} f$
+\newcommand{\Lm}[3][{}]{\lm[#1]{#2} \left( #3 \right)} %$\Lm{x \to a}{f}$ or $\Lm[x < a]{x \to a}{f}$
+\newcommand{\tendsto}[1]{\xrightarrow[#1]{}}
+
+%-Integral
+\newcommand{\dint}[4][x]{\displaystyle \int_{#2}^{#3} #4 \mathrm{d} #1} %$\dint{a}{b}{f(x)}$ or $\dint[t]{a}{b}{f(t)}$
+
+%-left right
+\newcommand{\lr}[1]{\left( #1 \right)}
+\newcommand{\lrb}[1]{\left[ #1 \right]}
+\newcommand{\lrbb}[1]{\left\llbracket #1 \right\rrbracket}
+\newcommand{\set}[1]{\left\{ #1 \right\}}
+\newcommand{\abs}[1]{\left\lvert #1 \right\rvert}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
+\newcommand{\lrangle}[1]{\left\langle #1 \right\rangle}
+
+%-Others
+\newcommand{\para}{\ /\!/\ } %//
+\newcommand{\ssi}{\ \Leftrightarrow \ }
+\newcommand{\eqsys}[2]{\begin{cases} #1 \\ #2 \end{cases}}
+
+\newcommand{\med}[2]{\mathrm{med} \left[ #1\ ;\ #2 \right]}  %$\med{A}{B} -> med[A ; B]$
+\newcommand{\Circ}[2]{\mathscr{C}_{#1, #2}}
+
+\renewcommand{\le}{\leqslant}
+\renewcommand{\ge}{\geqslant}
+
+\newcommand{\oboxed}[1]{\textcolor{ff4500}{\boxed{\textcolor{black}{#1}}}} %orange boxed
+
+
+%------commands
+%---to quote french text
+\newcommand{\simplecit}[1]{\guillemotleft$\;$#1$\;$\guillemotright}
+\newcommand{\cit}[1]{\simplecit{\textcolor{656565}{#1}}}
+\newcommand{\quo}[1]{\cit{\it #1}}
+
+%---to indent
+\newcommand{\ind}[1][20pt]{\advance\leftskip + #1}
+\newcommand{\deind}[1][20pt]{\advance\leftskip - #1}
+
+%---to indent a text
+\newcommand{\indented}[2][20pt]{\par \ind[#1] #2 \par \deind[#1]}
+\newenvironment{indt}[2][20pt]{#2 \par \ind[#1]}{\par \deind} %Titled indented env
+
+%---title
+\newcommand{\thetitle}[2]{\begin{center}\textbf{{\LARGE \underline{\emph{#1} :}} {\Large #2}}\end{center}}
+
+%---Maths environments
+%-Proofs
+\newenvironment{proof}[1][{}]{\begin{indt}{$\square$ #1}}{$\blacksquare$ \end{indt}}
+
+%-Maths parts (proposition, definition, ...)
+\newenvironment{mathspart}[1]{\begin{indt}{\boxed{\text{\textbf{#1}}}}}{\end{indt}}
+\newenvironment{mathbox}[1]{\boxed{\text{\textbf{#1}}}\begin{pseudocode}}{\end{pseudocode}}
+\newenvironment{mathul}[1]{\begin{indt}{\underline{\textbf{#1}}}}{\end{indt}}
+
+\newenvironment{theo}{\begin{mathspart}{Théorème}}{\end{mathspart}}
+\newenvironment{Theo}{\begin{mathbox}{Théorème}}{\end{mathbox}}
+\newenvironment{theodef}{\begin{mathspart}{Théorème-définition}}{\end{mathspart}}
+
+\newenvironment{prop}{\begin{mathspart}{Proposition}}{\end{mathspart}}
+\newenvironment{Prop}{\begin{mathbox}{Proposition}}{\end{mathbox}}
+\newenvironment{props}{\begin{mathspart}{Propriétés}}{\end{mathspart}}
+
+\newenvironment{defi}{\begin{mathspart}{Définition}}{\end{mathspart}}
+\newenvironment{meth}{\begin{mathspart}{Méthode}}{\end{mathspart}}
+
+\newenvironment{Rq}{\begin{mathul}{Remarque :}}{\end{mathul}}
+\newenvironment{Rqs}{\begin{mathul}{Remarques :}}{\end{mathul}}
+
+\newenvironment{Ex}{\begin{mathul}{Exemple :}}{\end{mathul}}
+\newenvironment{Exs}{\begin{mathul}{Exemples :}}{\end{mathul}}
+
+
+%------Sections
+% To change section numbering :
+% \renewcommand\thesection{\Roman{section}}
+% \renewcommand\thesubsection{\arabic{subsection})}
+% \renewcommand\thesubsubsection{\textit \alph{subsubsection})}
+
+% To start numbering from 0
+% \setcounter{section}{-1}
+
+
+%------page style
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+
+\setlength{\headheight}{18pt}
+\setlength{\footskip}{50pt}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE, RO]{\textit{\textcolor{black}{\today}}}
+\fancyhead[RE, LO]{\large{\textsl{\emph{\texttt{\jobname}}}}}
+
+\fancyfoot[RO, LE]{\textit{\texttt{\textcolor{black}{Page \thepage /}\pageref{LastPage}}}} %Change 'black' to 'white' for dark mode
+\fancyfoot[LO, RE]{\includegraphics[scale=0.12]{/home/lasercata/Pictures/1.images_profil/logo/mieux/lasercata_logo_fly_fond_blanc.png}}
+
+% For dark mode :
+%/home/lasercata/Pictures/1.images_profil/logo/mieux/lasercata_logo_fly.png
+
+
+%------init lengths
+\setlength{\parindent}{0pt} %To avoid using \noindent everywhere.
+\setlength{\parskip}{3pt}
+
+
+%---------------------------------Begin Document
+\begin{document}
+    
+    \thetitle{Physics}{Mechanics theorems}
+    
+    \tableofcontents
+    \newpage
+    
+    \begin{indt}{\section{Principe fondamental de la dynamique}}
+        \begin{indt}{\subsection{Définitions}}
+            \begin{indt}{\subsubsection{Définition (\textit{quantité de mouvement})}}
+                Soit $M$ un point de masse $m$, de vitesse $\vec v$ dans un référentiel $\mathscr R$.
+
+                La \textit{quantité de mouvement} du point $M$ est la grandeur suivante :
+                \[
+                    \vec p = m \vec v
+                \]
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Propriété}}
+                Soit $\Sigma = \set{M_k\ |\ k \in I}$ un système, où $\forall k \in I$ $M_k$ est de masse $m_k$.
+
+                La quantité de mouvement de $\Sigma$ est :
+                \[
+                    \vec p = \sum_{k \in I} m_k \vec v
+                \]
+            \end{indt}
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Lois de \textsc{Newton}}}
+            \begin{indt}{\subsubsection{Première loi de \textsc{Newton}}}
+                Il existe des référentiels privilégiés dans lesquels le mouvement d'un point matériel isolé est rectiligne uniforme.
+
+                Ces référentiels sont appelés \textit{référentiels galiléens}.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Deuxième loi de \textsc{Newton}}}
+                Soit $M$ un point matériel de masse $m$ dans un référentiel galiléen $\mathscr R$.
+
+                Soit $\vec F$ la résultante des forces s'exerçant sur $M$, et $\vec p$ la quantité de mouvement de $M$.
+
+                Alors :
+                \[
+                    \vec F = \dt{\vec p}
+                \]
+
+                et si $m$ est constante, on a :
+                \[
+                    \vec F = m\vec a
+                \]
+                avec $\vec a$ l'accélération de $M$ dans $\mathscr R$.
+
+                \vspace{12pt}
+                
+                \textit{Remarques :}
+
+                $\bullet$ Cette loi est aussi appelée \textit{principe fondamental de la dynamique}.
+
+                $\bullet$ Cette loi est un postulat, elle ne se démontre pas, mais se vérifie expérimentalement.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Troisième loi de \textsc{Newton}}}
+                Soient $A, B$ deux points matériels.
+
+                On a :
+                \[
+                    \vect{f_{A/B}} + \vect{f_{B/A}} = \vect 0
+                \]
+
+                De plus, ces deux forces sont portées par la droite $(AB)$.
+
+                \vspace{12pt}
+                
+                \textit{Remarque :}
+
+                $\bullet$ On appelle aussi cette loi le \textit{principe des actions réciproques}.
+            \end{indt}
+        \end{indt}
+    \end{indt}
+
+    \vspace{12pt}
+    
+    \begin{indt}{\section{\'Energie}}
+        \begin{indt}{\subsection{Travail}}
+            \begin{indt}{\subsubsection{Définition (\textit{travail d'une force constante})}}
+                Soient $A, B$ deux points, et soit $\vec f$ une force constante.
+
+                \vspace{6pt}
+                
+                Le \textit{travail} de $\vec f$ est :
+                \[
+                    W\!\lr{\vec f} = \vec f \cdot \vect{AB}
+                \]
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Définition (\textit{travail élémentaire})}}
+                Soit $M$ un point mobile, et $\vec f$ une force.
+
+                \vspace{6pt}
+                
+                On définit le \textit{travail élémentaire} de $\vec f$ dans le déplacement $\vect{\mathrm d M}$ par :
+                \[
+                    \delta W\!\lr{\vec f} = \vec f \cdot \vect{\mathrm d M}
+                \]
+
+                \vspace{12pt}
+                
+                \textit{Remarque :}
+
+                Si on se place dans un référentiel $\mathscr R$, avec $O$ un point fixe de $\mathscr R$, on a $\vec v = \dt{\vect{OM}}$, donc $\vect{\mathrm d M} = \mathrm d \vect{OM} = \vec v \mathrm dt$, et :
+                \[
+                    \delta W\!\lr{\vec f} = \vec f \cdot \vec v \mathrm dt
+                \]
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Définition (\textit{travail le long d'une courbe})}}
+                Soient $A, B$ deux points d'un référentiel $\mathscr R$, $M$ un point mobile se déplaçant de $A$ à $B$ le long d'une courbe $(\mathscr C)$, et soit $\vec f$ une force s'exerçant sur $M$.
+
+                Le \textit{travail} de $\vec f$ entre $A$ et $B$ sur $(\mathscr C)$ est :
+                \[
+                    W_{A \rightarrow B, (\mathscr C)}\!\lr{\vec f}
+                    = \int_{A\ (\mathscr C)}^B \delta W\!\lr{\vec f}
+                \]
+
+                \vspace{12pt}
+                
+                \textit{Remarque :}
+
+                En cas de parcours fermé (\textit{i.e} $A = B$), on note $\displaystyle W = \oint_{(\mathscr C)} \delta W$.
+            \end{indt}
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Puissance}}
+            \begin{indt}{\subsubsection{Définition (\textit{puissance d'une force})}}
+                Soit $M$ un point de vitesse $\vec v$ dans un référentiel $\mathscr R$, et soit $\vec f$ une force s'exerçant sur $M$.
+
+                Alors la \textit{puissance} de $\vec f$ est :
+                \[
+                    P = \vec f \cdot \vec v
+                \]
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Propriétés}}
+                Soit $M$ un point de vitesse $\vec v$ dans un référentiel $\mathscr R$, et soit $\vec f$ une force s'exerçant sur $M$.
+
+                Comme $\delta W = \vec f \cdot \vec v \mathrm dt$, on a
+                \[
+                    \delta W = P\mathrm dt
+                \]
+            \end{indt}
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Énergie cinétique}}
+            \begin{indt}{\subsubsection{Définition (\textit{énergie cinétique})}}
+                Soit $M$ un point matériel de masse $m$ et de vitesse $\vec v$ (de norme $v$) dans un référentiel $\mathscr R$.
+
+                Alors l'\textit{énergie cinétique} de $M$ est :
+                \[
+                    E_{\rm c} = \dfrac 1 2 mv^2
+                \]
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Théorème de la puissance cinétique}}
+                Soit $M$ un point matériel de masse $m$ et de vitesse $\vec v$ (de norme $v$) dans un référentiel galiléen $\mathscr R$, et $\vec F$ la résultantes des forces s'exerçant sur $M$.
+
+                Alors on a :
+                \[
+                    P = \dt{E_{\rm c}}
+                \]
+
+                Conséquence : si $\vec F$ est normale à $\vec v$, alors $v = \norm{\vec v}$ est constante.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Théorème de l'énergie cinétique}}
+                Soit $M$ un point matériel de masse $m$ dans un référentiel galiléen $\mathscr R$, deux points $A, B$, et $\vec F$ la résultante de toutes les forces s'exerçant sur $M$.
+
+                Alors on a :
+                \[
+                    \Delta_{A \to B} E_{\rm c} = W_{A \to B}\!\lr{\vec F}
+                \]
+
+                où $\Delta_{A \to B} E_{\rm c} = E_{\rm c}(B) - E_{\rm c}(A)$.
+            \end{indt}
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Énergie potentielle}}
+            \begin{indt}{\subsubsection{Définition (\textit{\'Energie potentielle})}}
+                Soit $M$ un point matériel soumis à un champ de forces $\vec f(M)$.
+
+                \begin{indt}{Si $\exists U\ |\ \delta W\!\!\lr{\vec f} = -\mathrm dU$, alors on dit que :}
+                    $\bullet$ La force $\vec f$ est \textit{conservative} ;
+
+                    $\bullet$ La force $\vec f$ \textit{dérive} du potentiel $U$ ;
+
+                    $\bullet$ $U$ est le potentiel de la force $\vec f$ ;
+
+                    $\bullet$ $U(M)$ est l'\textit{énergie potentielle} du point $M$ dans le champ de forces $\vec f(M)$.
+                \end{indt}
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Propriétés}}
+                Soit $M$ un point matériel soumis à un champ de forces $\vec f(M)$ conservatif de potentiel $U$.
+
+                \vspace{6pt}
+                
+                $\bullet$ $U$ n'est connue que par $\mathrm dU$, donc $U$ est définie à une constante additive près.
+
+                \vspace{6pt}
+                
+                $\bullet$ On a $\delta W = -\mathrm dU$, donc :
+                \[
+                    \int_A^B \delta W = -\int_A^B \mathrm dU
+                \]
+                Donc :
+                \[
+                    W_{A \to B} = U(A) - U(B)
+                    = - \Delta_{A \to B} U
+                \]
+                \textit{I.e} le travail ne dépend pas du chemin suivi par $M$, et si le parcours est fermé, le travail est nul.
+
+                \vspace{6pt}
+                
+                $\bullet$ Si le point $M$ a une vitesse $\vec v$ dans le référentiel $\mathscr R$, on a
+                \[
+                    -\mathrm dU = \delta W
+                    = \vec f \cdot \vect{\mathrm dM}
+                    = \vec f \cdot \vec v \mathrm dt
+                \]
+                Donc :
+                \[
+                    \dt U = -\vec f \cdot \vec v
+                \]
+            \end{indt}
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Énergie mécanique}}
+            \begin{indt}{\subsubsection{Définition (\textit{\'Energie mécanique})}}
+                Soit un point $M$ soumis à un champ de forces $\vec f(M) = \vec{f_1}(M) + \vec{f_2}(M)$ dans un référentiel $\mathscr R$, où $\vec{f_1}$ est conservatif de potentiel $U$.
+
+                \vspace{6pt}
+                
+                Alors l'\textit{énergie mécanique} du point $M$ est :
+                \[
+                    E = E_{\rm c} + U
+                \]
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Propriété}}
+                Soit $M$ un point matériel soumis à un champ de forces $\vec f(M)$ conservatif de potentiel $U$, dans un référentiel galiléen $\mathscr R$.
+
+                \vspace{6pt}
+                
+                Alors l'énergie mécanique $E$ est constante.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Théorème de l'énergie mécanique}}
+                \label{2.5.3}
+
+                Soit un point matériel $M$ dans un référentiel galiléen $\mathscr R$, et soit $\vec f = \vec{f_{\rm c}} + \vec{f_{\rm nc}}$ la résultante des forces s'exerçant sur $M$, où $\vec{f_{\rm c}}$ est conservative et $\vec{f_{\rm nc}}$ est non conservative.
+
+                \vspace{6pt}
+                
+                Alors :
+                \[
+                    \Delta_{A \to B} E = W_{A \to B}\!\lr{\vec{f_{\rm nc}}}
+                \]
+
+                \vspace{6pt}
+                
+                Forme infinitésimale du théorème de l'énergie mécanique :
+                \[
+                    \mathrm dE = \delta W\!\lr{\vec{f_{\rm nc}}}
+                \]
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Théorème de la puissance mécanique}}
+                On reprend les notations du point précédant (\ref{2.5.3}).
+
+                On a :
+                \[
+                    \dt E = P\!\lr{\vec{f_{\rm nc}}}
+                \]
+            \end{indt}
+        \end{indt}
+    \end{indt}
+
+    \vspace{12pt}
+    
+    \begin{indt}{\section{Moment}}
+        \begin{indt}{\subsection{Moment d'une force}}
+            \begin{indt}{\subsubsection{Par rapport à un point}}
+                Soit $M$ un point soumis à une force $\vec f$, et $A$ un point quelconque.
+
+                \vspace{6pt}
+                
+                Le \textit{moment} de $\vec f$ par rapport à $A$ est :
+                \[
+                    \vect{\mathscr M_A}\!\lr{\vec f} = \vect{AM} \wedge \vec f
+                \]
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Par rapport à un axe orienté}}
+                Soit $M$ un point soumis à une force $\vec f$, $A$ un point quelconque, $\Delta$ un axe passant par $A$ et orienté par un vecteur unitaire $\vect{u_\Delta}$.
+
+                \vspace{6pt}
+                
+                Le \textit{moment} de $\vec f$ par rapport à $\Delta$ est :
+                \[
+                    \mathscr M_\Delta\!\lr{\vec f} = \vect{\mathscr M_A}\!\lr{\vec f} \cdot \vect{u_\Delta}
+                \]
+
+                \vspace{6pt}
+                
+                \textit{Remarque} : cette grandeur est bien définie, car pour $A' \in \Delta$, on a :
+                \[
+                    \begin{array}{rcl}
+                        \vect{\mathscr M_{A'}}\!\lr{\vec f} \cdot \vect{u_\Delta}
+                        &=& \lr{\vect{A'M} \wedge \vec f} \cdot \vect{u_\Delta}
+                        \vspace{3pt}
+                        \\
+                        &=& \lr{\vect{A'A} \wedge \vec f + \vect{AM} \wedge \vec f} \cdot \vect{u_\Delta}
+                        \vspace{3pt}
+                        \\
+                        &=& \underbrace{\lr{\vect{A'A} \wedge \vec f}}_{\perp \Delta} \cdot \vect{u_\Delta} + \lr{\vect{AM} \wedge \vec f} \cdot \vect{u_\Delta}
+                        \vspace{3pt}
+                        \\
+                        &=& \vect{\mathscr M_A}\!\lr{\vec f} \cdot \vect{u_\Delta}
+                    \end{array}
+                \]
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Bras de levier}}
+                Soit $M$ un point soumis à une force $\vec f$, $A$ un point quelconque, et $\Delta$ l'axe passant par $A$ perpendiculaire au plan formé par $\vect{AM}$ et $\vec f$, orienté par un vecteur unitaire $\vect{u_\Delta}$.
+
+                \vspace{6pt}
+                
+                On a alors :
+                \[
+                    \vect{\mathscr M_A}\!\lr{\vec f} = \mathscr M_\Delta\!\lr{\vec f} \cdot \vect{u_\Delta}
+                \]
+            \end{indt}
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Moment cinétique d'un point}}
+            \begin{indt}{\subsubsection{Par rapport à un point}}
+                Soit $M$ un point matériel de masse $m$, de vitesse $\vec v$ dans un référentiel $\mathscr R$, de quantité de mouvement $\vec p = m\vec v$, et soit $A$ un point quelconque.
+
+                \vspace{6pt}
+                
+                Le \textit{moment cinétique} de $M$ par rapport à $A$ est :
+                \[
+                    \begin{array}{rcl}
+                        \vect{\sigma_A}(M)
+                        &=& \vect{\mathscr M_A}\!\lr{\vec p}
+                        \vspace{3pt}
+                        \\
+                        &=& \vect{AM} \wedge \vec p
+                        \vspace{3pt}
+                        \\
+                        &=& m \vect{AM} \wedge \vec v
+                    \end{array}
+                \]
+
+                \textit{Remarque} : on note aussi $\vect{L_A}(M) = \vect{\sigma_A}(M)$
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Par rapport à un axe orienté}}
+                Soit $M$ un point matériel, $A$ un point quelconque, et $\Delta$ un axe passant par $A$ et orienté par un vecteur unitaire $\vect{u_\Delta}$.
+
+                \vspace{6pt}
+                
+                Le \textit{moment cinétique} de $M$ par rapport à $\Delta$ est :
+                \[
+                    \sigma_\Delta(M) = \vect{\sigma_A}(M) \cdot \vect{u_\Delta}
+                \]
+            \end{indt}
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Théorème du moment cinétique}}
+            \begin{indt}{\subsubsection{En un point fixe}}
+                Soit $M$ un point de masse $m$, de vitesse $\vec v$ dans un référentiel galiléen $\mathscr R$, $A$ un point \textbf{fixe} de $\mathscr R$, et $\displaystyle \vec F = \sum_{k \in I} \vec{f_k}$ la résultante des forces $\vec{f_k}$ s'exerçant sur $M$.
+
+                \vspace{6pt}
+                
+                Alors :
+                \[
+                    \dt{\vect{\sigma_A}} = \vect{\mathscr M_A}\!\lr{\vec F}
+                    = \sum_{k \in I} \vect{\mathscr M_A}\!\lr{\vec{f_k}}
+                \]
+
+                \textit{Remarque} : on appelle aussi ce théorème le \textit{théorème vectoriel du moment cinétique}
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Par rapport à un axe fixe}}
+                Soit $M$ un point de masse $m$, de vitesse $\vec v$ dans un référentiel galiléen $\mathscr R$, $A$ un point \textbf{fixe} de $\mathscr R$, et $\Delta$ un axe \textbf{fixe} passant par $A$, et orienté par un vecteur unitaire $\vect{u_\Delta}$.
+                On note $\vec F$ la résultante des forces s'exerçant sur $M$.
+
+                \vspace{6pt}
+                
+                Alors :
+                \[
+                    \dt{\sigma_\Delta} = \mathscr M_\Delta\!\lr{\vec F}
+                \]
+
+                \textit{Remarque} : On appelle ce théorème le \textit{théorème scalaire du moment cinétique}
+            \end{indt}
+        \end{indt}
+    \end{indt}
+    
+    
+    
+\end{document}
+%--------------------------------------------End
