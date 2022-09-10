@@ -1,0 +1,2010 @@
+\documentclass[a4paper, 12pt, twoside]{article}
+
+
+%------------------------------------------------------------------------
+%
+% Author                :   Lasercata
+% Last modification     :   2022.09.09
+%
+%------------------------------------------------------------------------
+
+
+%------ini
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+%\usepackage[english]{babel}
+
+
+%------geometry
+\usepackage[textheight=700pt, textwidth=500pt]{geometry}
+
+
+%------color
+\usepackage{xcolor}
+\definecolor{ff4500}{HTML}{ff4500}
+\definecolor{00f}{HTML}{0000ff}
+\definecolor{0ff}{HTML}{00ffff}
+\definecolor{656565}{HTML}{656565}
+
+\renewcommand{\emph}{\textcolor{ff4500}}
+\renewcommand{\em}{\color{ff4500}}
+
+\newcommand{\strong}[1]{\textcolor{ff4500}{\bf #1}}
+\newcommand{\st}{\color{ff4500}\bf}
+
+
+%------Code highlighting
+%---listings
+\usepackage{listings}
+
+\definecolor{cbg}{HTML}{272822}
+\definecolor{cfg}{HTML}{ececec}
+\definecolor{ccomment}{HTML}{686c58}
+\definecolor{ckw}{HTML}{f92672}
+\definecolor{cstring}{HTML}{e6db72}
+\definecolor{cstringlight}{HTML}{98980f}
+\definecolor{lightwhite}{HTML}{fafafa}
+
+\lstdefinestyle{DarkCodeStyle}{
+    backgroundcolor=\color{cbg},
+    commentstyle=\itshape\color{ccomment},
+    keywordstyle=\color{ckw},
+    numberstyle=\tiny\color{cbg},
+    stringstyle=\color{cstring},
+    basicstyle=\ttfamily\footnotesize\color{cfg},
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=4,
+    xleftmargin=\leftskip
+}
+
+\lstdefinestyle{LightCodeStyle}{
+    backgroundcolor=\color{lightwhite},
+    commentstyle=\itshape\color{ccomment},
+    keywordstyle=\color{ckw},
+    numberstyle=\tiny\color{cbg},
+    stringstyle=\color{cstringlight},
+    basicstyle=\ttfamily\footnotesize\color{cbg},
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=10pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=4,
+    frame=L,
+    xleftmargin=\leftskip
+}
+
+%\lstset{style=DarkCodeStyle}
+\lstset{style=LightCodeStyle}
+%Usage : \begin{lstlisting}[language=Caml] ... \end{lstlisting}
+
+%---tcolorbox
+\usepackage[many]{tcolorbox}
+\DeclareTColorBox{pseudocode}{O{black}O{lightwhite}}{
+    breakable,
+    outer arc=0pt,
+    arc=0pt,
+    top=0pt,
+    toprule=-.5pt,
+    right=0pt,
+    rightrule=-.5pt,
+    bottom=0pt,
+    bottomrule=-.5pt,
+    colframe=#1,
+    colback=#2,
+    enlarge left by=10pt,
+    width=\linewidth-\leftskip-10pt,
+}
+
+
+%-------make the table of content clickable
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=black
+}
+%Uncomment this and comment above for dark mode
+% \hypersetup{
+%     colorlinks,
+%     citecolor=white,
+%     filecolor=white,
+%     linkcolor=white,
+%     urlcolor=white
+% }
+
+
+%------pictures
+\usepackage{graphicx}
+%\usepackage{wrapfig}
+
+\usepackage{tikz}
+%\usetikzlibrary{babel}             %Uncomment this to use circuitikz
+%\usetikzlibrary{shapes.geometric}  % To draw triangles in trees
+%\usepackage{circuitikz}            %Electrical circuits drawing
+
+
+%------tabular
+%\usepackage{color}
+%\usepackage{colortbl}
+%\usepackage{multirow}
+
+
+%------Physics
+%---Packages
+%\usepackage[version=4]{mhchem} %$\ce{NO4^2-}$
+
+%---Commands
+\newcommand{\link}[2]{\mathrm{#1} \! - \! \mathrm{#2}}
+\newcommand{\pt}[1]{\cdot 10^{#1}} % Power of ten
+\newcommand{\dt}[2][t]{\dfrac{\mathrm d #2}{\mathrm d #1}} % Derivative
+
+
+%------math
+%---Packages
+%\usepackage{textcomp}
+%\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools} % For abs
+\usepackage{stmaryrd} %for \llbracket and \rrbracket
+\usepackage{mathrsfs} %for \mathscr{x} (different from \mathcal{x})
+
+%---Commands
+%-Sets
+\newcommand{\N}{\mathbb{N}} %set N
+\newcommand{\Z}{\mathbb{Z}} %set Z
+\newcommand{\Q}{\mathbb{Q}} %set Q
+\newcommand{\R}{\mathbb{R}} %set R
+\newcommand{\C}{\mathbb{C}} %set C
+\newcommand{\U}{\mathbb{U}} %set U
+\newcommand{\seg}[2]{\left[ #1\ ;\ #2 \right]}
+\newcommand{\nset}[2]{\left\llbracket #1\ ;\ #2 \right\rrbracket}
+
+%-Exponantial / complexs
+\newcommand{\e}{\mathrm{e}}
+\newcommand{\cj}[1]{\overline{#1}} %overline for the conjugate.
+
+%-Vectors
+\newcommand{\vect}{\overrightarrow}
+\newcommand{\veco}[3]{\displaystyle \vect{#1}\binom{#2}{#3}} %vector + coord
+
+%-Limits
+\newcommand{\lm}[2][{}]{\lim\limits_{\substack{#2 \\ #1}}} %$\lm{x \to a} f$ or $\lm[x < a]{x \to a} f$
+\newcommand{\Lm}[3][{}]{\lm[#1]{#2} \left( #3 \right)} %$\Lm{x \to a}{f}$ or $\Lm[x < a]{x \to a}{f}$
+\newcommand{\tendsto}[1]{\xrightarrow[#1]{}}
+
+%-Integral
+\newcommand{\dint}[4][x]{\displaystyle \int_{#2}^{#3} #4 \mathrm{d} #1} %$\dint{a}{b}{f(x)}$ or $\dint[t]{a}{b}{f(t)}$
+
+%-left right
+\newcommand{\lr}[1]{\left( #1 \right)}
+\newcommand{\lrb}[1]{\left[ #1 \right]}
+\newcommand{\lrbb}[1]{\left\llbracket #1 \right\rrbracket}
+\newcommand{\set}[1]{\left\{ #1 \right\}}
+\newcommand{\abs}[1]{\left\lvert #1 \right\rvert}
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
+\newcommand{\lrangle}[1]{\left\langle #1 \right\rangle}
+
+%-Others
+\newcommand{\para}{\ /\!/\ } %//
+\newcommand{\ssi}{\ \Leftrightarrow \ }
+\newcommand{\eqsys}[2]{\begin{cases} #1 \\ #2 \end{cases}}
+
+\newcommand{\med}[2]{\mathrm{med} \left[ #1\ ;\ #2 \right]}  %$\med{A}{B} -> med[A ; B]$
+\newcommand{\Circ}[2]{\mathscr{C}_{#1, #2}}
+
+\renewcommand{\le}{\leqslant}
+\renewcommand{\ge}{\geqslant}
+
+\newcommand{\oboxed}[1]{\textcolor{ff4500}{\boxed{\textcolor{black}{#1}}}} %orange boxed
+
+
+%------commands
+%---to quote french text
+\newcommand{\simplecit}[1]{\guillemotleft$\;$#1$\;$\guillemotright}
+\newcommand{\cit}[1]{\simplecit{\textcolor{656565}{#1}}}
+\newcommand{\quo}[1]{\cit{\it #1}}
+
+%---to indent
+\newcommand{\ind}[1][20pt]{\advance\leftskip + #1}
+\newcommand{\deind}[1][20pt]{\advance\leftskip - #1}
+
+%---to indent a text
+\newcommand{\indented}[2][20pt]{\par \ind[#1] #2 \par \deind[#1]}
+\newenvironment{indt}[2][20pt]{#2 \par \ind[#1]}{\par \deind} %Titled indented env
+
+%---title
+\newcommand{\thetitle}[2]{\begin{center}\textbf{{\LARGE \underline{\emph{#1} :}} {\Large #2}}\end{center}}
+
+%---Maths environments
+%-Proofs
+\newenvironment{proof}[1][{Démonstration :}]{\begin{indt}{$\square$ #1}}{$\blacksquare$ \end{indt}}
+
+%-Maths parts (proposition, definition, ...)
+\newenvironment{mathspart}[1]{\begin{indt}{\boxed{\text{\textbf{#1}}}}}{\end{indt}}
+
+\newenvironment{theo}{\begin{mathspart}{Théorème}}{\end{mathspart}}
+\newenvironment{theodef}{\begin{mathspart}{Théorème-définition}}{\end{mathspart}}
+\newenvironment{Theo}{\boxed{\text{\textbf{Théorème}}}\begin{pseudocode}}{\end{pseudocode}}
+
+\newenvironment{prop}{\begin{mathspart}{Proposition}}{\end{mathspart}}
+\newenvironment{props}{\begin{mathspart}{Propriétés}}{\end{mathspart}}
+
+\newenvironment{defi}{\begin{mathspart}{Définition}}{\end{mathspart}}
+\newenvironment{meth}{\begin{mathspart}{Méthode}}{\end{mathspart}}
+
+\newenvironment{Rq}{\begin{indt}{\underline{Remarque :}}}{\end{indt}}
+\newenvironment{Rqs}{\begin{indt}{\underline{Remarques :}}}{\end{indt}}
+
+\newenvironment{Ex}{\begin{indt}{\underline{Exemple :}}}{\end{indt}}
+\newenvironment{Exs}{\begin{indt}{\underline{Exemples :}}}{\end{indt}}
+
+
+%------Sections
+% To change section numbering :
+% \renewcommand\thesection{\Roman{section}}
+% \renewcommand\thesubsection{\arabic{subsection}}
+% \renewcommand\thesubsubsection{\textit \alph{subsubsection}}
+
+% To start numbering from 0
+% \setcounter{section}{-1}
+
+
+%------page style
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+
+\setlength{\headheight}{18pt}
+\setlength{\footskip}{50pt}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE, RO]{\textit{\textcolor{black}{\today}}}
+\fancyhead[RE, LO]{\large{\textsl{\emph{\texttt{\jobname}}}}}
+
+\fancyfoot[RO, LE]{\textit{\texttt{\textcolor{black}{Page \thepage /}\pageref{LastPage}}}} %Change 'black' to 'white' for dark mode
+\fancyfoot[LO, RE]{\includegraphics[scale=0.12]{/home/lasercata/Pictures/1.images_profil/logo/mieux/lasercata_logo_fly_fond_blanc.png}}
+
+% For dark mode :
+%/home/lasercata/Pictures/1.images_profil/logo/mieux/lasercata_logo_fly.png
+
+
+%------init lengths
+\setlength{\parindent}{0pt} %To avoid using \noindent everywhere.
+\setlength{\parskip}{3pt}
+
+
+%---------------------------------Begin Document
+\begin{document}
+    
+    %For dark mode :
+    % \pagecolor{black}
+    % \color{white}
+    
+    \thetitle{Chapitre 12}{Compléments de théorie des graphes}
+    
+    \tableofcontents
+    \newpage
+    
+    
+    \begin{indt}{\section{Composantes fortement connexes}}
+        
+        \begin{indt}{\subsection{Algorithme de \textsc{Kosaraju}}}
+            \begin{indt}{\subsubsection{Rappels (\textit{cf} chap 10, 2.2.2)}}
+                $\bullet$ Définition (\textit{connexité forte}) :
+                Soit $G = (S, A)$ un GO, et $s, s' \in S$.
+
+                On dit que $s$ et $s'$ sont \textit{fortement connectés}, noté $s \sim_G s'$, $\ssi$ il existe un chemin de $s$ à $s'$ et un chemin de $s'$ à $s$.
+
+                $G$ est dit \textit{fortement connexe} $\ssi \forall s, s' \in S, s \sim_G s'$.
+
+                \vspace{12pt}
+                
+                $\bullet$ Définition (\textit{composantes fortement connexes}) :
+                Soit $G = (S, A)$ un GO, et $s \in S$.
+
+                La \textit{composante fortement connexe} de $G$ contenant $s$ est la classe d'équivalence de $s$ pour $\sim_G$.
+
+                \vspace{12pt}
+                
+                $\bullet$ Exemple :
+                
+                \begin{center}
+                    \begin{tikzpicture}[scale=1.5]
+                        \node (E) at (0, 0) [circle, draw] {E};
+                        \node (C) at (-1, -1) [circle, draw] {C};
+                        \node (D) at (1, -1) [circle, draw] {D};
+                        \node (A) at (-2, -2) [circle, draw] {A};
+                        \node (B) at (-1, -2) [circle, draw] {B};
+                        \node (F) at (1, -2) [circle, draw] {F};
+                        \node (G) at (2, -2) [circle, draw] {G};
+
+                        \draw[-latex] (A) to (C);
+                        \draw[-latex] (C) to (D);
+                        \draw[-latex] (D) to (E);
+                        \draw[-latex] (E) to (C);
+                        \draw[-latex] (B) to (F);
+                        \draw[-latex] (D) to (F);
+
+                        \draw[-latex] (A) to [out=10, in=170] (B);
+                        \draw[-latex] (B) to [out=-170, in=-10] (A);
+
+                        \draw[-latex] (F) to [out=10, in=170] (G);
+                        \draw[-latex] (G) to [out=-170, in=-10] (F);
+                        
+                        \draw[color=ff4500, rounded corners=5pt] (-2.4, -2.4) rectangle (-0.6, -1.6);
+                        \draw[color=ff4500, rounded corners=5pt] (0.6, -2.4) rectangle (2.4, -1.6);
+                        \draw[color=ff4500, rounded corners=5pt] (-1.35, -1.35) rectangle (1.35, 0.35);
+                    \end{tikzpicture}
+                \end{center}
+
+                \begin{center}
+                    \begin{tikzpicture}
+                        \node (a) at (90 : 1) [circle, draw] {$\phantom 1$};
+                        \node (b) at (210 : 1) [circle, draw] {$\phantom 1$};
+                        \node (c) at (-30 : 1) [circle, draw] {$\phantom 1$};
+
+                        %\node at (0, 0) {$\cdot$};
+
+                        \draw[-latex] (b) -- (a);
+                        \draw[-latex] (b) -- (c);
+                        \draw[-latex] (a) -- (c);
+                    \end{tikzpicture}
+                \end{center}
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Remarque}}
+                Soit $G = (S, A)$ un GO.
+
+                On peut définir le graphe des composantes fortement connexes de $G$ en plaçant un n\oe ud par composante et en définissant l'ensemble des arcs comme l'ensemble des $(C, C')$ avec $C, C'$ des composantes distinctes telles que $\exists s \in C,\ s' \in C'\ |\ (s, s') \in A$.
+
+                \vspace{12pt}
+                
+                \boxed{\rm Exo} Mq le graphe des composantes fortement connexes est acyclique.
+
+                \vspace{12pt}
+                
+                On en déduit par le TD$_{30}$ que l'on peut effectuer un tri topologique de ce graphe.
+
+                Rappel : un tri topologique est un ordre sur les n\oe uds tel que $\forall (s, s')$ arc, $s \le s'$.
+
+                \vspace{6pt}
+                
+                Question : que se passe-t-il si on parcourt $G$ en choisissant les points de départ successifs selon leur appartenance aux composantes fortement connexes dans l'odre topologique inverse ?
+
+                L'ensemble des sommets accessibles à partir d'un point de départ donné est constitué de la composante fortement connexe du point de départ et de sommets de composante déjà parcourus.
+
+                Les parcours successifs donnent les composantes.
+
+                Remarque :
+                l'idée de l'algorithme de \textsc{Kosaraju} est de déterminer cet ordre de parcours sans connaître les composantes, en exploitant les propriétés du parcours en profondeur.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Algorithme de \textsc{Kosaraju}}}
+                Découvert de manière indépendante par \textsc{Kosaraju} (1978) et \textsc{Shamir} (1981), cet algorithme permet de déterminer les composantes fortement connexes d'un GO en seulement deux parcours en profondeur.
+
+                Idée : l'ordre de traitement des sommets du premier parcours permet de déterminer le choix des points de départ pour le second, qui est effectué dans le graphe transposé.
+
+                \vspace{12pt}
+                
+                $\bullet$ Définition (\textit{graphe transposé}) :
+                Soit $G = (S, A)$ un GO.
+
+                Le \textit{graphe transposé} de $G$ est le graphe $G^T = (S, A^T)$
+                où $A^T = \set{(s', s)\ |\ (s, s') \in A}$.
+
+                \vspace{12pt}
+                
+                $\bullet$ Algorithme :
+
+                Entrée : $G = (S, A)$ un GO
+
+                \begin{pseudocode}
+                    Ranger $S$ par ordre de fin de traitement décroissante dans un parcours en profondeur de $G$
+
+                    Déterminer $G^T$
+
+                    Effectuer un parcours en profondeur de $G^T$ en choisissant les points de départ successifs dans leur ordre d'apparition dans le tri à la première étape
+                \end{pseudocode}
+
+                Résultat : pour chaque point de départ, l'ensemble des sommets atteints constitue sa composante fortement connexe.
+
+                \vspace{12pt}
+                
+                $\bullet$ Exemple :
+                \begin{center}
+                    \begin{tikzpicture}
+                        \node (8) at (0, 0) [circle, draw] {$8$};
+                        \node (7) at (0, -2) [circle, draw] {$7$};
+                        \node (3) at (1, -1) [circle, draw] {$3$};
+                        \node (0) at (2, 0) [circle, draw] {$0$};
+                        \node (1) at (2, -2) [circle, draw] {$1$};
+                        \node (4) at (4, 0) [circle, draw] {$4$};
+                        \node (5) at (4, -2) [circle, draw] {$5$};
+                        \node (6) at (6, -1) [circle, draw] {$6$};
+                        \node (2) at (8, -1) [circle, draw] {$2$};
+
+                        \draw[->] (8) to (7);
+                        \draw[->] (7) to (3);
+                        \draw[->] (3) to (0);
+                        \draw[->] (3) to (1);
+                        \draw[->] (3) to (8);
+                        \draw[->] (1) to (0);
+                        \draw[->] (0) to (4);
+                        \draw[->] (0) to (5);
+                        \draw[->] (5) to (1);
+                        \draw[->] (5) to (6);
+                        \draw[->] (4) to (1);
+                        \draw[->] (6) to [out=-20, in=-160] (2);
+                        \draw[->] (2) to [out=160, in=20] (6);
+                    \end{tikzpicture}
+                \end{center}
+
+                (1) 387056241 (parcours en profondeur)
+
+                (3) (378)(0145)(62)
+
+                \vspace{12pt}
+                
+                $\bullet$ Code OCaml (code C dans le TD$_{30}$) :
+
+                On utilise la représentation par listes d'adjacence :
+
+                \newpage
+
+                \begin{lstlisting}[language=Caml, xleftmargin=80pt]
+type graphe = int list array
+
+let rec visite (g : graphe) (l : int list) (acc : int list) (vu : bool array) : int list =
+    match l with
+    | [] -> acc
+    | s::q when vu.(s) -> visite g q acc vu
+    | s::q ->
+        vu.(s) <- true;
+        visite g q (s::visite g g.(s) acc vu) vu
+
+let post_dfs (g : graphe) : int list =
+    let vu = Array.make (Array.length g) false in
+    let acc = ref [] in
+
+    for i = 0 to Array.length g - 1 do
+        if not vu.(i) then
+            acc := visite g [i] !acc vu
+    done;
+    !acc;;
+
+let transpose (g : graphe) : graphe =
+    let gT = Array.make (Array.length g) [] in
+    Array.iteri (
+        fun i vi -> List.iter (
+            fun j -> gT.(j) <- i::gT.(j)
+        ) vi
+    ) g;
+    gT
+
+(*Fonction Arry.iteri HP, iter + indice accessible*)
+
+let kosaraju (g : graphe) : int list list =
+    let l = ref (post_dfs g) in
+    let gT = transpose g in
+    let vu = Array.make (Array.length g) false in
+    let res = ref []
+    in
+    while !l <> [] do
+        if not vu.(List.hd !l) then
+            res := (visite gT [List.hd !l] [] vu) :: !res;
+        l := List.tl !l
+    done;
+    !res
+                \end{lstlisting}
+
+                \vspace{12pt}
+                
+                $\bullet$ Complexité :
+                deux parcours en $\mathcal O(\abs S + \abs A)$ + le calcul du graphe transposé en $\mathcal O(\abs S + \abs A)$.
+
+                Au total : $\mathcal O(\abs S + \abs A)$.
+            \end{indt}
+
+            \begin{indt}{\subsubsection{Correction de l'algorithme de \textsc{Kosaraju}}}
+                Soit $G = (S, A)$ un GO.
+
+                $\bullet$ Pour chaque composante fortement connexes $C$ de $G$, on note $\mathrm{fin}(C)$ le maximum des dates de fin de traitement de ses éléments dans le premier parcours.
+
+                \vspace{12pt}
+                
+                \begin{pseudocode}
+                    \textit{Lemme} : Soient $C, C'$ des composantes fortement connexes de $G$ distinctes.
+
+                    Si $\exists (s, s') \in A\ |\ (s, s') \in C \times C'$, alors $\mathrm{fin}(C) > \mathrm{fin}(C')$.
+                \end{pseudocode}
+
+                \vspace{12pt}
+                
+                \begin{indt}{$\square$ Démonstration :}
+                    On note $u \in C \cup C'$ le premier sommet parmi ceux de $C \cup C'$ rencontré lors du parcours.
+
+                    Si $u \in C$ : par définition de $C$, tout sommet de $C$ est accessible depuis $u$.
+
+                    En particulier $s$.
+
+                    Comme $(s, s') \in A$ et comme tout sommet de $C'$ est accessible depuis $s'$, tout sommet de $C'$ est aussi accessible depuis $u$.
+
+                    Comme aucun sommet de $(C \cup C') \setminus \set u$ n'a été vu lorsqu'on atteint la date de fin de traitement de $u$ est supérieure à celle de tous les autres sommets de $C \cap C'$ donc $\mathrm{fin}(C) > \mathrm{fin}(C')$.
+
+                    \vspace{6pt}
+                    
+                    Si $u \in C'$ :
+
+                    Comme  le graphe des composantes fortement connexes est acyclique, aucun sommet de $C$ n'est accessible à partir de $u$.
+
+                    Donc tous les sommets de $C'$ sont traités avant même d'avoir atteint un sommet de $C$ donc $\mathrm{fin}(C) > \mathrm{fin}(C')$ $\blacksquare$
+                \end{indt}
+
+                \vspace{12pt}
+                
+                $\bullet$ \boxed{\rm Exo} $G^T$ et $G$ on les mêmes composantes connexes.
+
+                \vspace{12pt}
+                
+                $\bullet$ Théorème :
+
+                \begin{pseudocode}
+                    \textit{Théorème} : les arborescences du second parcours en profondeur dans l'algorithme de \textsc{Kosaraju} donnent les composantes fortement connexes de $G$.
+                \end{pseudocode}
+
+                \begin{indt}{$\square$ Démonstration :}
+                    On montre par récurrence finie forte que les $k$ premiers sous-parcours sont des composantes fortement connexes de $G$.
+
+                    \vspace{6pt}
+                    
+                    $\bullet$ Initialisation : $k = 0 \rightarrow 0\ \text{ensemble} \rightarrow$ ok.
+
+                    \vspace{6pt}
+                    
+                    $\bullet$ Hérédité : on suppose que les $k$ premiers parcours sont des composantes fortement connexes, on note $s$ le point de départ du $(k + 1)$-ème parcours, et $C$ la composante fortement connexe de $G$ contenant $s$.
+
+                    Par hypothèse de récurrence, on n'a visité que des composantes fortement connexes de $G$, donc aucun sommet de $C$ n'a déjà été rencontré.
+
+                    Donc $C$ est inclus dans le parcours lancé à partir de $s$.
+
+                    Si $\exists s' \in S \setminus C$ dans l'ensemble des sommets atteints, alors il existe un chemin $s \rightsquigarrow u \rightarrow v \rightsquigarrow s'$ constitué uniquement de sommets pas encore rencontrés dont on distingue les sommets $u$ et $v$ tels que $u \in C,\ v \notin C$ et $(u, v)$ est le premier arc à sortir de $C$.
+
+                    Comme $(v, u) \in A$ ($(u, v) \in A^T$), le lemme donne $\mathrm{fin}(C') > \mathrm{fin}(C)$.
+
+                    Donc selon l'ordre de traitement des sommets dans le parcours, un sommet de $C'$ a déjà été considéré avant de choisir $s$.
+
+                    Donc $C'$ a déjà été parcourue et $v$ a déjà été vu : absurde.
+
+                    \vspace{12pt}
+                    
+                    $\bullet$ Comme tous les sommets sont rencontrés dans le parcours, toutes les composantes fortement connexes on bien été visitées. $\blacksquare$
+                \end{indt}
+            \end{indt}
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Application : résolution de 2-SAT}}
+            \begin{indt}{\subsubsection{Rappels (\textit{cf} chap.8)}}
+                $\bullet$ Un \textit{littéral} est une variable ou la négation d'une variable ;
+
+                $\bullet$ Une \textit{clause disjonctive} est une disjonction de littéraux ;
+
+                $\bullet$ Une formule est en FNC (Forme Normale Conjonctive) si c'est une conjonction de clauses ;
+
+                $\bullet$ 2-SAT est le problème de décision suivant : étant donné une FNC dont les clauses ont deux littéraux, est-elle satisfiable ?
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Objectif}}
+                Nous allons étudier un algorithme permettant de résoudre 2-SAT en temps polynomial en la taille de la formule.
+
+                Idée : on étudie les composantes fortement connexes du graphe d'implication de la formule.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Définition (\textit{graphe d'implication})}}
+                Soit $\varphi$ une FNC.
+
+                Le \textit{graphe d'implication} de $\varphi$ est le graphe $G_\varphi = (S_\varphi, A_\varphi)$ défini comme suit :
+                \[
+                    S_\varphi = \bigcup_{x \in \mathrm{Vars}(\varphi)} \set{x, \neg x}
+                \]
+                \[
+                    A_\varphi = \set{(l, l')\ |\ l, l'\ \text{littéraux tel qu'il existe une clause de $\varphi$ équivalente à $l \rightarrow l'$}}
+                \]
+
+                \vspace{6pt}
+                
+                Remarque :
+                
+                $x \vee y \equiv \neg x \rightarrow y \equiv \neg y \rightarrow x$
+
+                $\neg x \vee y \equiv x \rightarrow y \equiv \neg y \rightarrow \neg x$
+
+                $\neg x \vee \neg y \equiv x \rightarrow \neg y \equiv y \rightarrow \neg x$
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Résolution de 2-SAT}}
+                $\bullet$ Algorithme :
+
+                Entrée : une 2-FNC $\varphi$
+
+                Pseudo-code :
+                \begin{pseudocode}
+                    $V \leftarrow \mathrm{Vars}(\varphi)$
+
+                    $S_\varphi \leftarrow \bigcup_{x \in V} \set{x, \neg x}$
+
+                    $A_\varphi \leftarrow \varnothing$
+
+                    \vspace{6pt}
+                    
+                    \begin{indt}{Pour chaque clause $c$ dans $\varphi$ :}
+                        Ajouter dans $A_\varphi$ les deux arcs équivalents à $c$
+                    \end{indt}
+
+                    \vspace{6pt}
+                    
+                    Déterminer les composantes fortement connexes de $G_\varphi = (S_\varphi, A_\varphi)$
+
+                    \vspace{6pt}
+                    
+                    \begin{indt}{Pour chaque $x \in V$ :}
+                        \begin{indt}{Si $x$ et $\neg x$ appartient à la même composante fortement connexe :}
+                            Renvoyer \cit{Impossible}
+                        \end{indt}
+                    \end{indt}
+
+                    \vspace{6pt}
+                    
+                    Renvoyer \cit{Satisfiable}
+                \end{pseudocode}
+
+                \vspace{12pt}
+                
+                $\bullet$ Exemple :
+                \[
+                    (p_3 \vee \neg p_4) \wedge (p_2 \vee \neg p_3) \wedge (p_4 \vee \neg p_2) \wedge (\neg p_1 \vee p_2) \wedge (\neg p_4 \vee p_3) \wedge (p_3 \vee p_2)
+                \]
+
+                \begin{center}
+                    \begin{tikzpicture}
+                        \node (1) at (0, 0) {$p_1$};
+                        \node (2) at (0, -1) {$p_2$};
+                        \node (3) at (0, -2) {$p_3$};
+                        \node (4) at (0, -3) {$p_4$};
+
+                        \node (1') at (2, 0) {$\neg p_1$};
+                        \node (2') at (2, -1) {$\neg p_2$};
+                        \node (3') at (2, -2) {$\neg p_3$};
+                        \node (4') at (2, -3) {$\neg p_4$};
+
+                        \draw[->] (3) to (4');
+                        \draw[->] (4) to (3');
+
+                        \draw[->] (1) to (2);
+                        \draw[->] (3) to (2);
+                        \draw[->] (4) to (3);
+
+                        \draw[->] (2') to (1');
+                        \draw[->] (2') to (3');
+                        \draw[->] (3') to (4');
+
+                        \draw[->] (3) to (2');
+                        \draw[->] (3') to (2);
+
+                        \draw[->] (2) to [out=-135, in=135, looseness=1] (4);
+                        \draw[->] (4') to [out=45, in=-45, looseness=1] (2');
+
+                        \draw[color=ff4500, rounded corners=3pt] (-.3, -.3) rectangle (.3, .3);
+                        \draw[color=ff4500, rounded corners=3pt] (1.6, -.3) rectangle (2.4, .3);
+
+                        \draw[color=ff4500, rounded corners=3pt] (-1, -.5) rectangle (3, -3.5);
+                    \end{tikzpicture}
+                \end{center}
+
+                Donc insatisfiable.
+
+                \vspace{12pt}
+                
+                $\bullet$ Complexité :
+                si $\varphi$ a $n$ variables et $m$ clauses, on calcule $V$, $S_\varphi, A_\varphi$ en temps $\mathcal O(n + m)$.
+
+                $\abs{A_\varphi} = 2n$, $\abs{A_\varphi} = 2m$, donc le calcul des composantes fortement connexes se fait en temps $\mathcal O(n + m)$ (par l'algorithme de \textsc{Kosaraju}).
+
+                Modulo un prétraitement en $\mathcal O(n)$, la dernière boucle s'exécute en temps $\mathcal O(n)$.
+
+                Au total, la complexité de l'algorithme est en $\mathcal O(n + m)$.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Correction de l'algorithme}}
+                Soit $\varphi$ une 2-FNC.
+
+                On veut montrer que $\varphi$ est satisfiable ssi $\nexists x\ |\ x$ et $\neg x$ sont dans la même composante fortement connexe de $g_\varphi$.
+
+                \begin{pseudocode}
+                    \textit{Lemme} :
+                    Si $\varphi$ est satisfiable et si $v$ est une valuation telle que $\lrbb{\varphi}_v = \top$
+
+                    Alors pour toute composante fortement connexe $C$ de $G_\varphi$ et $\forall l, l' \in C,\ \lrbb l_v = \lrbb{l'}_v$.
+                \end{pseudocode}
+
+                \begin{proof}
+                    Il existe dans $G_\varphi$ un chemin $l \rightsquigarrow l'$ et un chemin $l' \rightsquigarrow l$.
+
+                    Notons $l_0 \ldots l_k$ un chemin $l \rightsquigarrow l'$.
+
+                    Par définition, $\forall i \in \nset 0 {k - 1},\ \exists c_i \in \varphi$ une clause équivalente à $l_i \rightarrow l_{i + 1}$.
+
+                    Or $\lrbb \varphi _v = \top$, donc $\lrbb{c_i}_v = \top$ donc $\lrbb{l_i \rightarrow l_{i + 1}}_v = \top$.
+
+                    Par transitivité, $\lrbb{l' \rightarrow l}_v = \top$, donc $\lrbb{l \leftrightarrow l'}_v = \top$.
+
+                    D'où $\lrbb l _v = \lrbb{l'}_v$
+                \end{proof}
+
+                \vspace{12pt}
+                
+                \begin{pseudocode}
+                    \textit{Corollaire} :
+                    Si $\varphi$ est satisfiable, alors il n'existe pas de variable $x$ telle que $x$ et $\neg x$ sont dans la même composante fortement connexe de $G_\varphi$.
+                \end{pseudocode}
+
+                \begin{proof}
+                    Par contraposée, si $x$ et $\neg x$ sont dans la même composante, $\forall v$ valuation telle que $\lrbb \varphi _v = \top,\ \underbrace{\lrbb{x}_v = \lrbb{\neg x}_v}_{\text{impossible}}$ d'après le lemme.
+
+                    Donc il n'existe pas de valuation $v$ telle que $\lrbb \varphi _v = \top$.
+
+                    Donc $\varphi$ n'est pas satisfiable
+                \end{proof}
+
+                \vspace{12pt}
+                
+                \begin{pseudocode}
+                    \textit{Proposition} :
+                    S'il n'existe pas $x$ tel que $x$ et $\neg x$ sont dans la même composante fortement connexe de $G_\varphi$, alors $\varphi$ est satisfiable.
+                \end{pseudocode}
+
+                \begin{proof}
+                    On remarque que si $C = \set{l_i\ |\ i \in \nset 1 k}$ est une composante fortement connexe de $G_\varphi$, alors $\neg C = \set{\neg l_i\ |\ i \in \nset 1 k}$ en est une aussi \boxed{\rm Exo}.
+
+                    On note aussi que si il existe un arc $C \rightarrow C'$ dans le graphe des composantes fortement connexe, alors il existe aussi un arc $\neg C' \rightarrow \neg C$.
+
+                    \vspace{12pt}
+                    
+                    On construit alors un modèle $v$ de $\varphi$ en considérant les composantes dans l'ordre topologique inverse : lorsqu'on considère une composante $C$ dont les littéraux sont sans valeur par $v$, on prolonge $v$ de telle sorte que tous les littéraux de $C$ prennent la valeur $\top$ (donc ceux de $\neg C$ prennent la valeur $\bot$).
+
+                    \vspace{12pt}
+                    
+                    Par choix de l'ordre topologique inverse, pour toute composante $C$ dont les littéraux ont la valeur $\top$, on ne peut atteindre depuis $C$ que des composantes dont les littéraux ont la valeur $\top$ et pour toute composante $C$ dont les littéraux ont la valeur $\bot$, $C$ ne peut être atteinte que depuis des composantes dont les littéraux ont la valeur $\bot$.
+
+                    \vspace{12pt}
+                    
+                    On le montre par induction bien fondée :
+                    lorsque l'on fixe la valeur des littéraux de $C$ à $\top$, on ne peut pas atteindre depuis $C$ une composante $C'$ dont les littéraux ont la valeur $\bot$.
+
+                    En effet, un chemin $C \rightsquigarrow C'$ implique un chemin $\neg C' \rightsquigarrow \neg C$.
+
+                    Lorsque $\neg C'$ a été choisie, cela contredit l'ordre topologique inverse car $\neg C$ n'avait pas de valeur.
+
+                    De même, il est impossible d'atteindre une composante dont les littéraux sont sans valeur depuis $C$.
+
+                    Par symétrie, on ne peut atteindre $\neg C$ que depuis des composantes dont les littéraux ont la valeur $\bot$.
+
+                    Ainsi, $v$ est choisie de telle sorte que toute implication déduite de $\varphi$ est de la forme $\bot \rightarrow \bot \qquad \bot \rightarrow \top \quad\text{ou}\quad \top \rightarrow \top$ donc toutes les clauses sont satisfaites.
+
+                    On remarque que $v$ est bien une valuation : chaque prolongement définit simultanément une valeur de vérité pour un ensemble de littéraux qui sont non contradictoires car on ne peut avoir une variable et sa négation dans le même ensemble.
+                \end{proof}
+            \end{indt}
+        \end{indt}
+        
+    \end{indt}
+
+    \vspace{12pt}
+    
+    \begin{indt}{\section{Arbres couvrant de poids minimum}}
+        \begin{indt}{\subsection{Problème}}
+            \begin{indt}{\subsubsection{Rappels (\textit{cf} chap.10 4.1)}}
+                \begin{indt}{$\bullet$ Définition (\textit{sous-graphe induit / couvrant}) :
+}                    Soit $G = (S, A)$ un graphe.
+
+                    $-$ Le sous-graphe de $G$ induit par $T \subseteq S$ est le graphe $G_T = (T, A_T)$ où
+                    \[
+                        A_T = \set{a \in A\ |\ \text{les extrémités de $a$ sont dans $T$}}
+                    \]
+
+                    $-$ Le sous-graphe de $G$ induit par $A' \subseteq A$ est le graphe $G_{A'} = (S', A')$, où 
+                    \[
+                        S' = \set{s \in S\ |\ \exists a \in A'\ |\ s\ \text{est une extrémité de $a$}}
+                    \]
+
+                    $-$ Un sous-graphe $(S', A')$ de $G$ est \textit{couvrant} $\ssi S' = S$.
+                \end{indt}
+
+                \vspace{12pt}
+                
+                $\bullet$ Remarque :
+                un parcours d'un graphe permet de définir une forêt couvrante du graphe, cette forêt est une arbre si le graphe est connexe.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Objectif}}
+                Soit $G = (S, A, w)$ un GNO pondéré connexe.
+
+                On veut déterminer un sous-arbre $T = (S, A')$ qui minimise $w(T) = \displaystyle \sum_{a \in A'} w(a)$.
+
+                Exemple :
+                \begin{center}
+                    \begin{tikzpicture}[scale=2]
+                        \node (A) at (0, 0) [circle, draw] {A};
+                        \node (B) at (1, 0) [circle, draw] {B};
+                        \node (C) at (2, 0) [circle, draw] {C};
+                        \node (D) at (0, -1) [circle, draw] {D};
+                        \node (E) at (1, -1) [circle, draw] {E};
+                        \node (F) at (2, -1) [circle, draw] {F};
+
+                        \draw (A) to node [above] {$1$} (B);
+                        \draw (A) to (E);
+                        \node at (.25, -.4) {$3$};
+                        \draw (A) to node [left] {$4$} (D);
+
+                        \draw (E) to node [below] {$4$} (D);
+                        \draw (E) to node [right] {$2$} (B);
+                        \draw (D) to (B);
+                        \node at (0.75, -.4) {$4$};
+
+                        \draw (E) to node [below] {$7$} (F);
+                        \draw (E) to node [above left] {$4$} (C);
+
+                        \draw (F) to node [right] {$5$} (C);
+                    \end{tikzpicture}
+                \end{center}
+                
+                \begin{center}
+                    \begin{tikzpicture}[scale=2]
+                        \node (A) at (0, 0) [circle, draw] {A};
+                        \node (B) at (1, 0) [circle, draw] {B};
+                        \node (C) at (2, 0) [circle, draw] {C};
+                        \node (D) at (0, -1) [circle, draw] {D};
+                        \node (E) at (1, -1) [circle, draw] {E};
+                        \node (F) at (2, -1) [circle, draw] {F};
+
+                        \draw (A) to node [above] {$1$} (B);
+
+                        \draw (E) to node [below] {$4$} (D);
+                        \draw (E) to node [right] {$2$} (B);
+
+                        \draw (E) to node [above left] {$4$} (C);
+
+                        \draw (F) to node [right] {$5$} (C);
+                    \end{tikzpicture}
+                \end{center}
+
+                \begin{center}
+                    \begin{tikzpicture}[scale=2]
+                        \node (A) at (0, 0) [circle, draw] {A};
+                        \node (B) at (1, 0) [circle, draw] {B};
+                        \node (C) at (2, 0) [circle, draw] {C};
+                        \node (D) at (0, -1) [circle, draw] {D};
+                        \node (E) at (1, -1) [circle, draw] {E};
+                        \node (F) at (2, -1) [circle, draw] {F};
+
+                        \draw (A) to node [above] {$1$} (B);
+                        \draw (A) to node [left] {$4$} (D);
+
+                        \draw (E) to node [right] {$2$} (B);
+
+                        \draw (E) to node [above left] {$4$} (C);
+
+                        \draw (F) to node [right] {$5$} (C);
+                    \end{tikzpicture}
+                \end{center}
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Proposition}}
+                Soit $G = (S, A, w)$ un GNO pondéré connexe.
+
+                Si $w$ est injective, alors $G$ admet un unique arbre couvrant de poids minimal.
+
+                \begin{proof}
+                    Par contraposée, supposons deux arbres couvrants de poids minimum distincs.
+
+                    $T_0 = (S, A_0)$ et $T_1 = (S, A_1)$
+
+                    $\varnothing \neq A_0 \Delta A_1 = (A_0 \setminus A_1) \cup (A_1 \setminus A_0)$ (différence symétrique).
+
+                    Donc $\exists e \in A_0 \Delta A_1$ de poids minimum.
+
+                    Sans perte de généralité, on suppose $e \in A_0$.
+
+                    $T_1 \cup \set e = (S, A_1 \cup \set e)$ contient un cycle car $T_1$ est un arbre (\textit{cf} chap 10 2.1.14)
+
+                    En retirant une arête de ce cycle, on obtient de nouveau un arbre couvrant.
+
+                    Comme $T_0$ est un arbre, ce cycle contient une arête $e' \in A_1 \setminus A_0 \subseteq A_0 \Delta A_1$ donc $w(e) \le w(e')$.
+
+                    Le nouvel arbre obtenu est alors de poids $w(T_1) + w(e) - w(e') \le w(T_1)$
+
+                    Par minimalité de $T_1$, on en déduit $w(e) = w(e')$, donc $w$ n'est pas injective ($e \neq e'$ par définition).
+                \end{proof}
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Remarques}}
+                $\bullet$ La réciproque est fausse :
+
+                \begin{center}
+                    \begin{tikzpicture}[scale=2]
+                        \node (0) at (0, 0) [circle, draw] {$0$};
+                        \node (1) at (1, 0) [circle, draw] {$1$};
+                        \node (2) at (1, -1) [circle, draw] {$2$};
+                        \node (3) at (0, -1) [circle, draw] {$3$};
+
+                        \draw (0) to node [above] {$1$} (1);
+                        \draw (0) to node [left] {$42$} (3);
+                        \draw (0) to node [above right] {$42$} (2);
+                        \draw (2) to node [below] {$3$} (3);
+                        \draw (2) to node [right] {$2$} (1);
+                    \end{tikzpicture}
+                \end{center}
+
+                \vspace{12pt}
+                
+                $\bullet$ Si $G$ est un arbre, il admet un unique arbre couvrant, à savoir $G$ lui-même.
+
+                $\bullet$ Il existe plusieurs algorithmes permettant de déterminer un arbre couvrant de poids minimum d'un graphe donné. Ces algorithmes sont souvent gloutons et reposent sur une idée commune : on sélectionne une à une, par des choix gloutons, les arêtes qui appartiennent à l'arbre :
+                on peut le faire de plusieurs manières : on peut par exemple se focaliser sur la connexité du sous-graphe en cours de construction, ou alors sur la minimalité du poids des arêtes sélectionnées.
+
+                L'algorithme de \textsc{Kruskal} (le seul au programme) repose sur la seconde idée.
+
+                On construit une forêt couvrante du graphe qui devient progressivement un unique arbre par sélection d'arêtes.
+
+                L'ajout d'une arête pouvant créer un cycle, il faut pouvoir le détecter efficacement. Il existe une structure de données adaptée pour cela : cette structure permet de représenter une forêt et de vérifier efficacement si deux sommets appartiennent au même sous-arbre.
+            \end{indt}
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Structure \textit{union et trouver} (\textit{union-find})}}
+            \begin{indt}{\subsubsection{Définition (\textit{union et trouver})}}
+                Soit $E$ un ensemble.
+
+                Une structure \textit{union et trouver} sur $E$ est une structure de données servant à représenter une famille finie de sous-ensembles finis et disjoints de $E$, chacun muni d'un représentant unique.
+                Un telle structure est munie des opérations suivantes :
+
+                \begin{indt}{}
+                    $\bullet$ \texttt{create} : étant donné $x \in E$ qui n'appartiennent à aucun des ensembles de la structure, crée l'ensemble $\set x$ (représentant de $x$) ;
+
+                    \vspace{6pt}
+                    
+                    $\bullet$  \texttt{union} : étant donné $x, y \in E$ appartenant aux ensembles $E_x$ et $E_y$, remplace $E_x$ et $E_y$ par $E_x \cup E_y$ et choisit un représentant pour cet ensemble ;
+
+                    \vspace{6pt}
+                    
+                    $\bullet$ \texttt{find} : étant donné $x \in E$ appartenant à l'ensemble $E_x$, renvoie le représentant de $E_x$.
+                \end{indt}
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Remarques}}
+                $\bullet$ Cette structure est adaptée pour construire incrémentalement une partition d'un ensemble ou alors une relation d'équivalence, comme par exemple les composantes connexes d'un graphe, que l'on peut calculer ainsi : on utilise l'opération \texttt{create} sur chaque sommet, puis on parcourt les arêtes et pour chaque arête, si les représentants de ses extrémités sont distincts, alors on fusionne les classes. Cela revient à maintenir l'ensemble des composantes connexes d'un sous-graphe couvrant qui n'a pas d'arête initialement et auquel on ajoute progressivement toutes les arêtes du graphe.
+
+                \vspace{6pt}
+                
+                $\bullet$ Pour évaluer l'efficacité d'une implémentation d'une telle structure, on étudie en général la complexité totale d'un ensemble de $m$ opérations sur une famille d'ensembles contenant en tout $n$ éléments.
+                Cela signifie qu'il y a exactement $n$ opérations \texttt{create} et que $m \ge n$.
+                On pourra supposer que les opérations \texttt{create} sont effectuées avant les autres.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Première implémentation}}
+                On présente chaque ensemble par la liste chaînée de ses éléments. Le représentant d'un ensemble est la tête de la liste associée.
+                L'union se fait par concaténation des listes.
+                On utilise des listes doublement chaînées pour pouvoir remonter jusqu'à la tête.
+
+                \begin{lstlisting}[language=C, xleftmargin=80pt]
+typedef struct maillon {
+    int val;
+    struct maillon* prev;
+    struct maillon* next;
+} element ;
+
+typedef element* ensemble;\end{lstlisting}
+
+                La création d'un ensemble se fait en temps constant par allocation d'un unique maillon.
+
+                La recherche du représentant d'un élément se fait en temps linéaire en la taille de l'ensemble parce qu'il faut remonter les pointeurs jusqu'à la tête.
+
+                L'union se fait en mettant à jour mes pointeurs du dernier élément d'un ensemble et du premier de l'autre.
+
+                \begin{lstlisting}[language=C, xleftmargin=80pt]
+void union(element* x, element* y) {
+    element* last_x, first_y;
+    last_x = x->next;
+
+    while (last_x != NULL) {
+        x = last_x;
+        last_x = x->next;
+    }
+
+    first_y = y->prev;
+
+    while (first_y != NULL) {
+        y = first_y;
+        first_y = y->prev;
+    }
+
+    x->next = y;
+    y->prev = x;
+}\end{lstlisting}
+
+                Ici le représentant de l'union est le représentant de $x$.
+
+                La fonction \texttt{union} est de complexité $\mathcal O(\abs{E_x} + \abs{E_y})$
+
+                \vspace{6pt}
+                
+                Remarque : on peut construire une séquence de $2n - 1$ opérations de complexité totale $\mathcal O(n^2)$ \boxed{\rm Exo}
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Optimisation}}
+                On peut obtenir une opération find de complexité $\mathcal O(1)$ en construisant une structure pointant vers le premier et le dernier élément de la liste et en gardant un pointeur de chaque élément vers la structure.
+
+                \begin{center}
+                    \begin{tikzpicture}
+                        \draw (0, 0) rectangle (1, -2);
+                        \draw (0, -1) -- (1, -1);
+
+                        \draw (2, -.5) rectangle (3, -1.5);
+                        \draw (2, -.75) -- (3, -.75);
+                        \draw (2, -1.25) -- (3, -1.25);
+                        \node (1) at (2.5, -1) {val$_1$};
+
+                        \draw[->] (2.8, -1.365) to (3.8, -1.365);
+
+                        \draw (3.5, -.5) rectangle (4.5, -1.5);
+                        \draw (3.5, -.75) -- (4.5, -.75);
+                        \draw (3.5, -1.25) -- (4.5, -1.25);
+                        \node (1) at (4, -1) {val$_2$};
+
+                        \draw[->] (4.3, -1.365) to (5.3, -1.365);
+
+                        \draw (5, -.5) rectangle (6, -1.5);
+                        \draw (5, -.75) -- (6, -.75);
+                        \draw (5, -1.25) -- (6, -1.25);
+                        \node (1) at (5.5, -1) {$\cdots$};
+
+                        \draw[->] (5.8, -1.365) to (6.8, -1.365);
+
+                        \draw (6.5, -.5) rectangle (7.5, -1.5);
+                        \draw (6.5, -.75) -- (7.5, -.75);
+                        \draw (6.5, -1.25) -- (7.5, -1.25);
+                        \node (1) at (7, -1) {val$_n$};
+                        
+                        \draw[->] (7.3, -1.365) to (8.3, -1.365);
+
+                        \draw[->] (.5, -1.5) to (2.3, -1.365);
+
+                        \draw[->] (2.5, -.65) to [out=160, in=25] (.5, -.5);
+                        \draw[->] (4, -.65) to [out=160, in=25] (.5, -.5);
+                        \draw[->] (5.5, -.65) to [out=160, in=25] (.5, -.5);
+                        \draw[->] (7, -.65) to [out=160, in=25] (.5, -.5);
+                    \end{tikzpicture}
+                \end{center}
+
+                L'opération find se fait en temps constant en suivant deux pointeurs (le premier vers l'ensemble et le second vers la tête de la liste).
+
+                L'union se fait encore par concaténation. On accède bien au premier élément d'un ensemble et au dernier de l'autre en temps constant, mais il faut mettre à jour tous les pointeurs des éléments de l'ensemble qui finit en queue de liste pour pointer vers l'autre ensemble.
+
+                \boxed{\rm Exo} On peut encore construire une séquence de $2n - 1$ opérations de complexité totale $\mathcal O(n^2)$.
+
+                Remarque : on peut faire mieux en utilisant l'heuristique de l'union pondérée qui consiste à toujours placer en queue de liste l'ensemble de plus petit cardinal.
+
+                \vspace{12pt}
+                
+                Théorème :
+                \begin{pseudocode}
+                    \textit{Théorème} :
+                    avec l'heuristique de l'union pondérée, une séquence de $m$ opérations sur des ensembles totalisant $n$ éléments est de complexité $\mathcal O(m + n\log n)$
+                \end{pseudocode}
+
+                \begin{proof}
+                    On remarque qu'il y a au plus $n - 1$ opérations d'union, car il y a en tout $n$ éléments.
+
+                    Le coût d'une union est défini oar la mise à jour des pointeurs des éléments du plus petit des deux ensembles vers le premier ensemble.
+
+                    \'Etant donné un élément $x$, évaluons le nombre de fois que ce pointeur sera mis à jour.
+                    Lors d'une mise à jour, le pointeur de $x$ n'est mis à jour que s'il appartient au plus petit des deux ensembles.
+
+                    Donc dans une telle union, le cardinal de l'ensemble contenant $x$ double (au moins).
+
+                    Or un ensemble contient au plus $n$ éléments.
+
+                    Donc le pointeur de $x$ est mis à jour au plus $\mathcal O(\log n)$ fois.
+
+                    La totalité des unions est donc de complexité $\mathcal O(n\log n)$.
+
+                    Il reste les opérations \texttt{create} et \texttt{find}, de complexité $\mathcal O(1)$, qui sont répétées au plus $m$ fois.
+
+                    D'où une complexité $\mathcal O(m + n\log n)$
+                \end{proof}
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Implémentation par forêt}}
+                \label{2.2.5}
+
+                On utilise des arbres pour représenter les ensembles, la racine de l'arbre étant le représentant de l'ensemble.
+
+                La création d'un ensemble est la création d'un arbre à un seul n\oe ud.
+
+                L'opération \texttt{find} consiste à remonter les ancêtres d'un n\oe ud donné jusqu'à la racine.
+
+                L'opération d'union consiste à placer l'une des deux racines comme fille de l'autre.
+
+                Remarque : sans plus de précision, on peut construire une séquence d'opérations faisant que les arbres sont tous des listes chaînées, donc ce n'est pas mieux que les essais précédents.
+
+                \vspace{12pt}
+                
+                On peut utiliser deux heuristiques pour améliorer la situation.
+
+                La première, appelée \textit{compression de chemin}, consiste à remplacer le père de chaque n\oe ud rencontré lors d'une opération \texttt{find} par la racine.
+
+                \begin{center}
+                    \begin{tikzpicture}
+                        \node at (0, 0) [circle, draw] {}
+                            child {node {}
+                                child [dashed] {node {}}
+                            }
+                            child {node {}
+                                child [dashed] {node {}}
+                            }
+                            child {node [circle, draw] {}
+                                child {node [circle, draw] {}
+                                    child {node [circle, draw] {}
+                                        child [dashed] {node {}}
+                                    }
+                                }
+                            }
+                        ;
+                    \end{tikzpicture}
+                \end{center}
+
+                \begin{center}
+                    \begin{tikzpicture}
+                        \node [circle, draw] {}
+                            child {node {}
+                                child [dashed] {node {}}
+                            }
+                            child {node {}
+                                child [dashed] {node {}}
+                            }
+                            child {node [circle, draw] {}}
+                            child {node [circle, draw] {}}
+                            child {node [circle, draw] {}}
+                        ;
+                    \end{tikzpicture}
+                \end{center}
+
+                La seconde, appelée \textit{union par rang}, est semblable à l'union pondérée des listes.
+
+                La différence est qu'on n'utilise pas le cardinal de l'ensemble mais le rang des racines pour déterminer laquelle sera fille de l'autre.
+
+                Le rang est un majorant de la hauteur de l'arbre.
+                On n'utilise pas la valeur exacte de la hauteur pour limiter le nombre d'opérations à effectuer lors de la compression de chemin.
+
+                Code :
+
+                \begin{lstlisting}[language=C, xleftmargin=80pt]
+struct noeud {
+    struct noeud* pere;
+    int val;
+    int rang;
+};
+
+typedef struct noeud* element;
+
+element create (int x) {
+    element e = (element) malloc(sizeof(struct(noeud)));
+
+    e->pere = NULL;
+    e->val = x;
+    e->rang = 0;
+
+    return e;
+}
+
+element find(element e) {
+    if (e->pere == NULL)
+        return e;
+
+    e->pere = find(e->pere);
+
+    return e->pere;
+}
+
+void link(element x, element y) {
+    // On suppose que x et y sont des racines
+
+    if (x->rang > y->rang)
+        y->pere = x;
+
+    else if (x->rang < y->rang)
+        x->pere = y;
+
+    else
+        y->pere = x;
+        x->rang++;
+}
+
+void union(element x, element y) {
+    link(find(x), find(y));
+}\end{lstlisting}
+
+                Complexité de \texttt{create} : $\mathcal O(1)$
+
+                Complexité de \texttt{find} : $\mathcal O(p_e)$ où $p_e$ est la profondeur du n\oe ud $e$.
+
+                Complexité de \texttt{link} : $\mathcal O(1)$
+
+                Complexité de \texttt{union} : $\mathcal O(p_x + p_y)$
+
+                \vspace{12pt}
+                
+                Théorème (admis) :
+                \begin{pseudocode}
+                    \textit{Théorème} :
+                    avec les heuristiques de l'union par rang et de la compression de chemin, une séquence de $m$ opérations dont $n$ \texttt{create} est de complexité totale
+                    \[
+                        \mathcal O(m \alpha(n))
+                    \]
+                    où $\alpha$ est définie comme suit :
+                    \[
+                        \forall n \in \N,\
+                        \alpha(n) = \min\set{k \in \N\ |\ A_k(1) \ge n}
+                    \]
+                    où
+                    \[
+                        \forall (k, j) \in \N^2,\
+                        A_k(j) =
+                        \begin{cases}
+                            j + 1 & \text{si}\ k = 0
+                            \\
+                            A_{k - 1} \circ A_{k - 1} \circ \cdots \circ A_{k - 1}(j)
+                                  & \text{sinon}
+                        \end{cases}
+                    \]
+                \end{pseudocode}
+
+                Remarque : en pratique, c'est linéaire en le nombre d'opérations.
+
+                En effet, $A_k(1) \gg 2^{2048} \gg 10^{80}$ (nombre d'atomes dans l'univers)
+
+                Donc $\alpha(n) \le 4$ pour toutes les valeurs ``pratiques'' de $n$.
+            \end{indt}
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Algorithme de \textsc{Kruskal}}}
+            \begin{indt}{\subsubsection{Rappel}}
+                L'algorithme de \textsc{Kruskal} est un algorithme glouton qui permet de calculer un arbre couvrant de poids minimum dans un graphe non orienté pondéré connexe (une forêt couvrante de poids min si le graphe n'est pas connexe).
+
+                Le principe de l'algorithme est de construire une forêt couvrante et de la faire évoluer en un unique arbre par sélection gloutonne d'arêtes.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Algorithme}}
+                Entrée : $G = (S, A, w)$ un GNO pondéré (connexe)
+
+                Pseudo-code :
+                \begin{pseudocode}
+                    $A' \leftarrow \varnothing$
+
+                    \begin{indt}{Pour tout $a \in A$ choisie par $w(a)$ croissant :}
+                        \begin{indt}{Si $(S, A' \cup \set a)$ est acyclique :}
+                            $A' \leftarrow A' \cup \set a$
+                        \end{indt}
+                    \end{indt}
+
+                    \vspace{6pt}
+                    
+                    Renvoyer $(S, A')$
+                \end{pseudocode}
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Exemple}}
+                \begin{center}
+                    \begin{tikzpicture}[scale=1.5]
+                        \node (A) at (0, 0) [circle, draw] {$A$};
+                        \node (B) at (1, -1) [circle, draw] {$B$};
+                        \node (C) at (2, 0) [circle, draw] {$C$};
+                        \node (D) at (0, -2) [circle, draw] {$D$};
+                        \node (E) at (2, -2) [circle, draw] {$E$};
+                        \node (F) at (1, -3) [circle, draw] {$F$};
+                        \node (G) at (2, -4) [circle, draw] {$G$};
+
+                        \draw [color=ff4500] (A) to node [above right] {$7$} (B);
+                        \draw [color=ff4500] (A) to node [left] {$5$} (D);
+                        \draw [color=ff4500] (D) to node [above right] {$6$} (F);
+                        \draw [color=ff4500] (B) to node [above right] {$7$} (E);
+                        \draw [color=ff4500] (C) to node [right] {$5$} (E);
+                        \draw [color=ff4500] (E) to node [right] {$9$} (G);
+
+                        \draw (B) to node [above left] {$8$} (C);
+                        \draw (D) to node [above left] {$9$} (B);
+                        \draw (F) to node [above left] {$8$} (E);
+                        \draw (D) to node [above] {$15$} (E);
+                        \draw (F) to node [below left] {$11$} (G);
+                    \end{tikzpicture}
+                \end{center}
+            \end{indt}
+
+            \begin{indt}{\subsubsection{Proposition}}
+                \label{2.3.4}
+
+                Soit $G = (S, A, w)$ un GNO pondéré connexe.
+
+                Le sous-graphe de $G$ produit par l'algorithme de \textsc{Kruskal} est un arbre couvrant de $G$
+
+                \vspace{12pt}
+                
+                \begin{proof}
+                    Il est couvrant par définition.
+
+                    On note $(S, A')$ le résultat de l'algorithme.
+
+                    Montrons que $(S, A')$ est un arbre, \textit{i.e} que c'est un GNO connexe acyclique.
+
+                    ``$(S, A')$ est acyclique'' est clairement un invariant de l'algorithme.
+
+                    Soient $s, s' \in S$. Comme $G$ est connexe, il existe un chemin $s_0 s_1 \ldots s_n$ de $s$ à $s'$ dans $G$.
+
+                    $\forall i \in \nset 0 {n - 1}$, si $\set{s_i, s_{i + 1}} \in A$, on la conserve.
+
+                    Sinon, en notant $A''$ la valeur de la variable $A'$ au moment où $\set{s_i, s_{i + 1}}$ est rejetée, on sait que l'ajout de $\set{s_i, s_{i + 1}}$ à $A''$ crée un cycle.
+
+                    Donc il existe dans $(S, A'')$ (donc aussi dans $(S, A')$ car $A'' \subseteq A'$) un chemin de $s_i$ à $s_{i + 1}$.
+
+                    On remplace alors dans le chemin initial $\set{s_i, s_{i + 1}}$ par ce chemin.
+
+                    \vspace{6pt}
+                    
+                    Résultat : on a construit un chemin de $s$ à $s'$ dans $(S, A')$, donc $(S, A')$ est connexe
+                \end{proof}
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Proposition}}
+                Soit $G = (S, A, w)$ un GNO pondéré connexe.
+
+                L'arbre couvrant de $G$ produit par l'algorithme de \textsc{Kruskal} est de poids minimum.
+
+                \vspace{12pt}
+                
+                \begin{proof}
+                    On note $(S, A')$ le résultat de l'algorithme.
+
+                    On va démontrer l'invariant ``\textit{il existe $A_{\rm min} \subseteq A\ |\ (S, A_{\rm min})$ est un arbre couvrant de poids minimum et $A' \subseteq A_{\rm min}$}''
+
+                    \vspace{6pt}
+                    
+                    $\bullet$ Initialisation : au début, $A' = \varnothing$, donc tout arbre couvrant de poids minimum convient.
+
+                    Il en existe un car $G$ est connexe.
+
+                    \vspace{6pt}
+                    
+                    $\bullet$ Invariance : on suppose qu'à un certain point, $\exists A_{\rm min} \subseteq A\ |\ (S, A_{\rm min})$ est un arbre couvrant de poids minimum et $A' \subseteq A_{\rm min}$.
+
+                    On note $a \in A$ la prochaine arête considérée par l'algorithme.
+
+                    $-$ Si $(S, A' \cup \set a)$ contient un cycle, on a toujours $A' \subseteq A_{\rm min}$ et l'invariant reste vrai.
+
+                    \begin{indt}{$-$ Si $(S, A' \cup \set a)$ est acyclique :}
+                        $+$ Si $a \in A_{\rm min}$, alors $A_{\rm min}$ convient encore pour $A' \cup \set a$.
+
+                        $+$ Si $a \notin A_{\rm min}$ : $(S, A_{\rm min \cup \set a})$ contient un cycle car $(S, A_{\rm min})$ est un arbre (d'après chap.10 2.2.14.)
+
+                        Retirer une arête de ce cycle donne de nouveau un arbre (couvrant).
+
+                        Les arêtes de ce cycle n'appartiennent pas toutes à $A' \cup \set a$ (sinon $(S, A' \cup \set a)$ ne serait pas acyclique)
+
+                        On note $a'$ une arête du cycle telle que $a' \notin A' \cup \set a$.
+
+                        Si on démontre que $w(a) \ge w(a)$, alors $(A_{\rm min} \cup \set a) \setminus \set{a'}$ conviendra pour démontrer l'invariant.
+
+                        Si $w(a') < w(a)$, alors on a considéré $a'$ avant $a$ dans l'algorithme.
+
+                        On note $A''$ la valeur de la variable $A'$ à ce moment.
+
+                        $a' \notin A'$, donc $(S, A'' \cup \set {a'})$ contient un cycle.
+
+                        Or $A'' \subseteq A' \subseteq A_{\rm min}$ et $a' \in A_{\rm min}$.
+
+                        Donc $A'' \cup \set {a'} \subset A_{\rm min}$ et $(S, A_{\rm min})$ contient un cycle.
+
+                        Absurde car c'est un arbre !
+                    \end{indt}
+
+                    \vspace{12pt}
+                    
+                    $\bullet$ Optimalité de l'algorithme : l'invariant assure qu'en fin d'algorithme, il existe $A_{\rm min} \subseteq A\ |\ (S, A_{\rm min})$ est un arbre couvrant de poids minimum, et $A' \subseteq A_{\rm min}$.
+
+                    Or par \ref{2.3.4}, $(S, A')$ est un arbre couvrant.
+
+                    Alors $A' = A_{\rm min}$ et $(S, A')$ est un arbre couvrant de poids minimum.
+
+                    En effet, si $A' \neq A_{\rm min}$, comme $A' \subseteq A_{\rm min}$, $\exists a \in A_{\rm min} \setminus A'$.
+
+                    Comme $a$ n'a pas été sélectionnée par l'algorithme, comme avant on sait que $(S, A' \cup \set a)$ contient un cycle.
+
+                    Donc comme $A' \cup \set a \subseteq A_{\rm min},\ (S, A_{\rm min})$ ne peut être un arbre : absurde.
+                \end{proof}
+            \end{indt}
+
+            \begin{indt}{\subsubsection{Implémentation}}
+                Pour parcourir les arêtes par poids croissant, on peut commencer par les trier (complexité $\mathcal O(\abs A \log \abs A)$) pour les parcourir ensuite, ou alors les insérer dans une file de priorité min où les priorités sont les poids et les extraire une à une (complexité $\mathcal O(\abs A \log \abs A)$).
+
+                Si on implémente l'algorithme naïvement, en testant l'algorithme du sous-graphe à chaque étape : il y a $\abs A$ tests de complexité $\mathcal O(\abs S + \abs{A'})$.
+
+                $\abs{A'}$ vaut au plus $\abs S - 1$ car un arbre à $n$ sommets a $n - 1$ arêtes.
+
+                La complexité totale des tests est donc $\mathcal O(\abs A \abs S)$.
+
+                Au total, une telle implémentation serait de complexité $\mathcal O(\abs A \log \abs A + \abs A \abs S) = \mathcal O(\abs A \log \abs S + \abs A \abs S) = \mathcal O(\abs A \abs S)$ car $\abs A = \mathcal O(\abs S ^2)$.
+
+                \vspace{12pt}
+                
+                On peut essayer de faire mieux à l'aide d'une structure union et trouver.
+                En effet, avec une implémentation par forêt, on représente directement $(S, A')$.
+
+                Test d'acyclicité : Soit $\set{u, v} \in A$.
+
+                $(S, A' \cup \set{u, v})$ est acyclique $\ssi$ $u, v$ appartiennent au même arbre $\ssi$ $u, v$ ont le même représentant.
+
+                \vspace{6pt}
+                
+                On peut donc réécrire ainsi l'algorithme de \textsc{Kruskal} :
+
+                \begin{pseudocode}
+                    \begin{indt}{Pour tout $s \in S$ :}
+                        \texttt{créer} $\set s$
+                    \end{indt}
+
+                    \vspace{6pt}
+                    
+                    \begin{indt}{Pour tout $\set{u, v} \in A$ choisie par $w(\set{u, v})$ croissant :}
+                        \begin{indt}{Si \texttt{find($u$)} $\neq$ \texttt{find($v$)} :}
+                            \texttt{union($\set{u ,v}$)}
+                        \end{indt}
+                    \end{indt}
+
+                    \vspace{6pt}
+                    
+                    Renvoyer l'état de la structure union et trouver.
+                \end{pseudocode}
+
+                \vspace{12pt}
+                
+                Complexité totale des opérations de la structure union et trouver :
+
+                On a $n = \abs S$ opérations \texttt{create},
+                $2 \abs A$ opérations \texttt{find},
+                au plus $\abs S - 1$ opérations \texttt{union}.
+
+                Il y a donc au plus
+                \[
+                    \begin{array}{rcl}
+                        m
+                        &=&
+                        \abs S + 2\abs A + \abs S - 1
+                        \\
+                        &=& 2(\abs S + \abs A) - 1
+                        \\
+                        &=& \mathcal O(\abs S + \abs A)
+                    \end{array}
+                \]
+                opérations.
+
+                Or $G$ est connexe, donc $\abs A \ge \abs A - 1$, donc $n = \mathcal O(\abs A)$.
+
+                Au total, les opérations sur la structure union et trouver sont de complexité $\mathcal O(\abs A \alpha(\abs S))$.
+
+                la complexité globale est alors $\mathcal O(\abs A \log \abs A + \abs A \alpha(\abs S)) = \mathcal(\abs A \log \abs S)$ car $\alpha(\abs S) = \mathcal O(\log \abs S)$.
+
+                \vspace{12pt}
+                
+                Code : on utilise la représentation par liste d'adjacences pondérées pour le graphe.
+
+                \begin{lstlisting}[language=C, xleftmargin=80pt]
+typedef struct {
+    int target;
+    double weight;
+} neighbour;
+
+struct item {
+    neighbour val;
+    struct item* next;
+};
+
+typedef struct item* neigh_list;
+typedef neight_list* graphe;
+
+typedef struct {
+    int source, target;
+    double weight;
+} edge;\end{lstlisting}
+
+                \vspace{12pt}
+                
+                \boxed{\rm Exo} coder une fonction de prototype :
+                \begin{lstlisting}[language=C, xleftmargin=80pt]
+void sort_edges(graphe g, int n, int* m, edge** edges);\end{lstlisting}
+
+                qui prend un graphe \texttt g à $n$ sommets et calcule le nombre d'arêtes et trie les arêtes dans le tableau pointé par \texttt{edges}.
+
+                On utilise le type \texttt{element} et les fonctions \texttt{create}, \texttt{find}, \texttt{union} vues en \ref{2.2.5}.
+
+                \begin{lstlisting}[language=C, xleftmargin=80pt]
+element* kruskal(graphe g, int n) {
+    element* forest = (element*) malloc(n * sizeof(element));
+
+    for (int i = 0 ; i < n ; i++)
+        forest[i] = create(i);
+
+    int m;
+    edge* edges;
+
+    sort_edges(g, n, &m, &edges);
+
+    for (int i = 0 ; i < m ; i++) {
+        int u = edges[i].source, v = edges[i].target;
+
+        if (find(forest[u]) != find(forest[v]))
+            union(forest[u], forest[v]);
+    }
+
+    free(edges);
+
+    return forest;
+}
+                \end{lstlisting}
+            \end{indt}
+        \end{indt}
+    \end{indt}
+
+    \vspace{12pt}
+    
+    \begin{indt}{\section{Couplages}}
+        \begin{indt}{\subsection{Définitions et problème}}
+            \begin{indt}{\subsubsection{Définition (\textit{couplage})}}
+                Soit $G = (S, A)$ un GNO, et $M \subseteq A$.
+
+                $M$ est un \textit{couplage} dans $G$ $\ssi$
+                \[
+                    \forall a, a' \in M\ |\ a \neq a',\ a \cap a' = \varnothing
+                \]
+                \textit{i.e} $\ssi$ les arêtes de $M$ sont deux à deux non adjacentes.
+
+                \vspace{6pt}
+                
+                Un couplage $M$ est \textit{maximum} $\ssi M$ est de cardinal maximum.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Remarques}}
+                $\bullet$ Ne pas confondre maximum et maximal (au sens de l'inclusion)
+
+                \begin{center}
+                    \begin{tikzpicture}
+                        \node (0) at (0, 0) [circle, draw] {};
+                        \node (1) at (0, -1) [circle, draw] {};
+                        \node (2) at (0, -2) [circle, draw] {};
+
+                        \node (3) at (1, -1) [circle, draw] {};
+                        \node (4) at (2, -1) [circle, draw] {};
+
+                        \node (5) at (3, 0) [circle, draw] {};
+                        \node (6) at (3, -1) [circle, draw] {};
+                        \node (7) at (3, -2) [circle, draw] {};
+
+                        \draw (0) -- (3) -- (4) -- (5);
+                        \draw (1) -- (3) -- (4) -- (6);
+                        \draw (2) -- (3) -- (4) -- (7);
+
+                        \draw [color=ff4500] (3) -- (4);
+                        \draw [color=blue] (1) -- (3);
+                        \draw [color=blue] (6) -- (4);
+                    \end{tikzpicture}
+                \end{center}
+
+                \textcolor{ff4500}{$M$ maximal}
+
+                \textcolor{blue}{$M'$ maximum}
+
+                \vspace{12pt}
+                
+                $\bullet$ La recherche d'un couplage maximum a plusieurs applications, comme l'étude de la structure chimique de certaines molécules (liaisons doubles), la résolution du problème d'affectation (associer de manière optimale des agents à des tâches), la résolution approchée du problème du voyageur de commerce (trouver un plus court chemin passant exactement une fois par chaque ville d'un plan) par l'algorithme de \textsc{Christofides} qui nécessite aussi la recherche d'un arbre couvrant de poids minimum.
+
+                \vspace{6pt}
+                
+                $\bullet$ Le programme se limite à la recherche d'un couplage maximum dans un GNO biparti.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Définition (\textit{chemin alternant / augmentant})}}
+                Soit $G = (S, A)$ un GNO, $M \subset A$ un couplage de $G$, et $s_0 \ldots s_n$ un chemin.
+
+                \vspace{6pt}
+                
+                $\bullet$ On dit que $s_0 \ldots s_n$ est \textit{alternant} $\ssi$ ce chemin alterne entre des arêtes de $M$ et des arêtes de $A \setminus M$, \textit{i.e} soit $\forall i \in \nset 0 {n - 1},\ \set{s_i, s_{i + 1}} \in M \ssi i \in 2\N$, soit $\forall i \in \nset 0 {n - 1}, \set{s_i, s_{i + 1}} \notin M$.
+
+                \vspace{6pt}
+                
+                $\bullet$ On dit que $s_0 \ldots s_n$ est \textit{augmentant} $\ssi$ ce chemin est alternant et $s_0$ et $s_n$ sont libres, \textit{i.e} $\forall a \in M,\ s_0 \notin a$, et $s_n \notin a$.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Exemple}}
+                \begin{center}
+                    \begin{tikzpicture}
+                        \node (0) at (0, 0) [circle, draw] {$a_1$};
+                        \node (1) at (0, -1) [circle, draw] {$a_2$};
+                        \node (2) at (0, -2) [circle, draw] {$a_3$};
+                        \node (3) at (0, -3) [circle, draw] {$a_4$};
+                        \node (4) at (0, -4) [circle, draw] {$a_5$};
+
+                        \node (5) at (2, 0) [circle, draw] {$b_1$};
+                        \node (6) at (2, -1) [circle, draw] {$b_2$};
+                        \node (7) at (2, -2) [circle, draw] {$b_3$};
+                        \node (8) at (2, -3) [circle, draw] {$b_4$};
+                        \node (9) at (2, -4) [circle, draw] {$b_5$};
+
+                        \draw (5) -- (0) -- (6) -- (1) -- (7) -- (2) -- (8) -- (3) -- (9) -- (4);
+
+                        \draw [color=ff4500] (1) -- (6);
+                        \draw [color=ff4500] (2) -- (7);
+                    \end{tikzpicture}
+                \end{center}
+
+                $M = \set{\set{a_2, b_2}, \set{a_3, b_3}}$
+
+                $a_1, b_1, a_4, b_4, a_5, b_5$ sont libres.
+
+                $a_2 b_2, a_1 b_2 a_2, a_1 b_2 a_2 b_3$ sont alternant
+
+                $a_1 b_2 a_2 b_1 a_3 b_4, a_4 b_4$ sont augmentant.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Exercice}}
+                \label{3.1.5}
+
+                Soit $G = (S, A)$ un GNO, $M \subseteq A$ un couplage, et $s_0, \ldots, s_n$ un chemin augmentant.
+
+                Alors $n$ est impair, et on si note $E = \set{\set{s_i, s_{i + 1}}\ |\ i \in \nset 0 {n - 1}}$, on a
+                \[
+                    \abs{E \setminus M} = 1 + \abs{E \cap M}
+                \]
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Théorème}}
+                \label{3.1.6}
+
+                Soit $G = (S, A)$ un GNO, et $M \subseteq A$ un couplage.
+
+                \begin{pseudocode}
+                    $M$ est maximum $\ssi$ $M$ n'admet aucun chemin augmentant.
+                \end{pseudocode}
+
+                \vspace{12pt}
+                
+                \begin{proof}
+                    On montre plutôt que $M$ n'est pas maximum $\ssi$ $M$ admet un chemin augmentant.
+
+                    \vspace{6pt}
+                    
+                    \boxed{\Rightarrow} On considère $M'$ un couplage maximum (existe car il existe un nombre fini non nul de couplages).
+
+                    On considère le sous-graphe $G' = (S', A')$ induit par $A' = M \Delta M'$.
+
+                    Chaque sommet de $G'$ est de degré au plus 2 car il ne peut être extrémité que d'une seule arête de $M$ et d'une arête de $M'$.
+
+                    Tout chemin élémentaire dans $G'$ alterne entre des arêtes de $M$ et de $M'$, donc est un chemin alternant dans $G$ pour $M$.
+
+                    Les composantes connexes de $G'$ sont de plus soit des cycles simples de longueur paire, soit des chemins simples.
+
+                    \begin{center}
+                        \begin{tikzpicture}[scale=1.5]
+                            \node (0) at (0, 0) {+};
+                            \node (1) at (1, 0) {+};
+                            \node (2) at (1, -1) {+};
+                            \node (3) at (0, -1) {+};
+
+                            \draw (0) -- (1);
+                            \draw (2) -- (3);
+                            \draw [color=ff4500] (1) -- (2);
+                            \draw [color=ff4500] (0) -- (3);
+
+                            \node (4) at (3, 0) {+};
+                            \node (5) at (4, 0) {+};
+                            \node (6) at (5, 0) {+};
+                            \node (7) at (6, 0) {+};
+                            \node (8) at (7, 0) {+};
+
+                            \draw (4) -- (5);
+                            \draw (6) -- (7);
+                            \draw [color=ff4500] (5) -- (6);
+                            \draw [color=ff4500] (7) -- (8);
+                        \end{tikzpicture}
+                    \end{center}
+
+                    C'est vrai grâce aux propriétés des couplages et à la condition sur les degrés dans $G'$.
+
+                    Comme $M'$ est maximum et $M$ ne l'est pas, on a
+                    \[
+                        \abs{M'} > \abs M
+                    \]
+                    et $\abs{M' \setminus M} > \abs{m \setminus M'}$
+
+                    un cycle de longueur paire dans $G'$ contient autant d'arêtes de $M' \setminus M$ que de $M \setminus M'$.
+
+                    \vspace{6pt}
+                    
+                    Il existe donc une composante connexe de $G'$ qui est un chemin simple contenant une arête de plus de $M'\setminus M$ que de $M \setminus M'$.
+
+                    Ce chemin est augmentant dans $G$ par $M$ : on sait qu'il est alternant et ses extrémités sont libres.
+
+                    En effet, la première et la dernière arête de ce chemin appartient à $M' \setminus M$, et il n'y a pas d'arête de $M$ incidente à l'une des extrémités (sinon, elle appartient à $M \setminus M'$ et aurait du être considérée dans $G'$).
+
+                    \vspace{12pt}
+                    
+                    \boxed{\Leftarrow} On note $s_0 \ldots s_n$ un chemin augmentant, et $E = \set{\set{s_i, s_{i + 1}}\ |\ i \in \nset 0 {n - 1}}$
+
+                    On considère $M' = M \Delta E$.
+                    \[
+                        \abs{M'} = \abs{M \setminus E} + \abs{E \setminus M} = \abs{M} + 1
+                    \]
+                    ($\abs{E \setminus M} = \abs{E \cap E} + 1$ d'après \ref{3.1.5}, page \pageref{3.1.5})
+
+                    Il reste à montrer que $M'$ est un couplage.
+
+                    Soit $s \in S$, montrons qu'il existe au plus une arête $a \in M'\ |\ s \ ina$.
+
+                    Si $s \notin \set{s_0, \ldots, s_n}$, alors il existe au plus une arête $a \in M\ |\ s \in a$, et $s \notin a'\ \forall a' \in E$ : ok.
+
+                    Si $s \in \set{s_0, s_n}$, alors $s$ est libre pour $M$, et il existe une unique arête de $E$ qui contient $s$ ($\set{s_0, s_1}$) ou $\set{s_{n - 1}, s_n}$ : ok.
+
+                    Si $s \in \set{s_0, \ldots, s_{n - 1}},\ \exists i \in \nset 1 {n - 1}\ |\ s_n s_i$
+
+                    $s$ appartient à une unique arête de $M \cap E$ (soit $\set{s_{i - 1}, s_i}$, soit $\set{s_i, s_{i + 1}}$) qui est remplacée dans $M'$ par l'unique arête de $E \setminus M$ incidente à $s$ (soit $\set{s_i, s_{i + 1}}$, soit $\set{s_{i - 1}, s_i}$).
+
+                    Donc $M'$ est un couplage tel que $\abs{M'} > \abs{M}$, donc $M$ n'est pas maximum
+                \end{proof}
+            \end{indt}
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Algorithme de recherche de couplage maximum}}
+            \begin{indt}{\subsubsection{Algorithme générique}}
+                On se sert du théorème \ref{3.1.6} (page \pageref{3.1.6}) et de sa démonstration.
+
+                Entrée : $G = (S, A)$ un GNO.
+
+                Pseudo-code :
+
+                \begin{pseudocode}
+                    $M \leftarrow \varnothing$
+
+                    \begin{indt}{Tant qu'il existe un chemin augmentant $s_0 \ldots s_n$ :}
+                        $E \leftarrow \set{\set{s_i, s_{i + 1}}\ |\ i \in \nset 0 {n - 1}}$
+
+                        $M \leftarrow M \Delta E$
+                    \end{indt}
+
+                    Renvoyer $M$
+                \end{pseudocode}
+
+                Problème : trouver un chemin augmentant n'est pas forcément simple.
+
+                Donc on va se restreindre aux graphes bipartis.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Recherche d'un chemin augmentant}}
+                \label{3.2.2}
+
+                Soit $G = (S ,A)$ un GNO biparti, et $(U, V)$ une partition convenable de $S$.
+
+                \vspace{12pt}
+                
+                Remarque : comme tout chemin augmentant est de longueur impaire (\textit{cf} \ref{3.1.5}, page \pageref{3.1.5}), il y a une extrémité dans $U$ et l'autre dans $V$.
+
+                \vspace{12pt}
+                
+                Principe : on oriente $G$ de telle sorte que tout chemin dans le GO soit alternant puis on ajoute un sommet ``source'' $s$ et un sommet ``cible'' $t$ de manière que tout chemin de $s$ à $t$ (privé de $s$ et $t$) soit augmentant. Il suffit alors de chercher un chemin de $s$ à $t$ à l'aide d'un parcours.
+
+                \begin{center}
+                    \begin{tikzpicture}
+                        \node (0) at (0, 0) [circle, draw] {$a_1$};
+                        \node (1) at (0, -1) [circle, draw] {$a_2$};
+                        \node (2) at (0, -2) [circle, draw] {$a_3$};
+                        \node (3) at (0, -3) [circle, draw] {$a_4$};
+                        \node (4) at (0, -4) [circle, draw] {$a_5$};
+
+                        \node (5) at (2, 0) [circle, draw] {$b_1$};
+                        \node (6) at (2, -1) [circle, draw] {$b_2$};
+                        \node (7) at (2, -2) [circle, draw] {$b_3$};
+                        \node (8) at (2, -3) [circle, draw] {$b_4$};
+                        \node (9) at (2, -4) [circle, draw] {$b_5$};
+
+                        \node (s) at (-2, -2) [circle, draw] {$s$};
+                        \node (t) at (4, -2) [circle, draw] {$t$};
+
+                        \draw[->] (0) to (5);
+                        \draw[->] (0) to (6);
+                        \draw[->] (1) to (7);
+                        \draw[->] (2) to (8);
+                        \draw[->] (3) to (8);
+                        \draw[->] (3) to (9);
+                        \draw[->] (4) to (9);
+
+                        \draw [->, color=ff4500] (6) -- (1);
+                        \draw [->, color=ff4500] (7) -- (2);
+
+                        \draw[->] (s) to (0);
+                        \draw[->] (s) to (3);
+                        \draw[->] (s) to (4);
+
+                        \draw[->] (6) to (t);
+                        \draw[->] (8) to (t);
+                        \draw[->] (9) to (t);
+                    \end{tikzpicture}
+                \end{center}
+
+                $M = \set{\set{a_2, b_2}, \set{a_3, b_3}}$
+
+                \vspace{12pt}
+                
+                Formalisation : on définit le GO $G_M = (S, A_M)$, où
+                \[
+                    A_M = \set{(u, v) \in U \times V\ |\ \set{u, v} \in A \setminus M} \cup \set{(v, u) \in V \times U\ |\ \set{u, v} \in M}
+                \]
+
+                Puis $G' = (S \cup \set{s, t}, A')$, où
+                \[
+                    A' = A_M \cup \set{(s, u)\ |\ u \in U\ \text{libre}} \cup \set{(v, t)\ |\ v \in V\ \text{libre}}
+                \]
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Proposition}}
+                Soit $G = (S, A)$ un GNO biparti et $M$ un couplage.
+
+                Soit $G' = (S \cup \set{s, t}, A')$ définit comme en \ref{3.2.2}, et $s_0 \ldots s_n$ un chemin de $s$ à $t$.
+
+                Alors $s_1 \ldots s_{n - 1}$ est un chemin augmentant pour $M$ dans $G$.
+
+                \vspace{12pt}
+                
+                \begin{proof}
+                    Remarque : cela a du sens d'écrire $s_1 \ldots s_{n - 1}$ car $n \ge 3$ par définition de $G'$.
+
+                    $s_1$ est libre car $(s, s_1) \in A'$
+
+                    $s_{n - 1}$ est libre car $(s_{n - 1}, t) \in A'$.
+
+                    Il reste à montrer que $s_1 \ldots s_{n - 1}$ est alternant.
+
+                    On montre par récurrence finie que $\forall i \in \nset 1 {n - 2}$,
+                    \[
+                        \begin{cases}
+                            i \in 2\N\ \Rightarrow\ s_i \in V,\ s_{i + 1} \in U,\ \set{s_i, s_{i + 1}} \in M
+                            \\
+                            i \in 2\N + 1\ \Rightarrow\ s_i \in U,\ s_{i + 1} \in V,\ \set{s_i, s_{i + 1}} \in M
+                        \end{cases}
+                    \]
+
+                    $\bullet$ Initialisation :
+
+                    $s_1 \in U$ car $(s, s_1) \in A'$, donc
+                    \[
+                        \begin{cases}
+                            s_2 \in V & \text{car}\ (s, s_1) \in A_M
+                            \\
+                            \set{s_1, s_2} \notin M
+                        \end{cases}
+                    \]
+
+                    \vspace{6pt}
+                    
+                    $\bullet$ Hérédité : si $i \in \nset 1 {n - 3}$ vérifie la propriété, on suppose $i + 1 \in 2\N$ (l'autre cas similaire).
+
+                    Par hypothèse de récurrence, $s_i \in U,\ s_{i + 1} \in V,\ \set{s_i, s_{i + 1}} \notin M$
+
+                    Comme $s_{i + 1} \in V$ et $(s_{i + 1}, s_{i + 2}) \in A_M$, on a
+                    \[
+                        s_{i + 2} \in U
+                        \\
+                        \set{s_{i + 1}, s_{i + 2}} \in M
+                    \]
+
+                    Donc $s_1 \ldots s_{n - 1}$ est augmentant
+                \end{proof}
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Complexité de l'algorithme}}
+                On suppose $G = (S, A)$ biparti.
+
+                Comme chaque sommet ne peut être extrémité que d'une arête d'un couplage et que chaque arête a deux extrémités, le cardinal maximum d'un couplage est $\le \floor{\dfrac{\abs S}{2}} = \mathcal O(\abs S)$.
+
+                Vu les arguments développés en \ref{3.1.6} (page \pageref{3.1.6}), et comme on part du couplage vide, l'algorithme effectue $\mathcal O(\abs S)$ tours de boucle.
+
+                La recherche d'une partition adaptée de $S$ peut être effectuée une seule fois en temps $\mathcal O(\abs S + \abs S)$ \textit{via} un parcours en largeur.
+
+                Le calcul $M \Delta E$ se fait en temps $\mathcal O(\abs E) = \mathcal O(\abs A)$ si on représente $M$ avec une table qui à chaque $a \in A$ associe le booléen $a \in M$
+
+                Le calcul de $G'$ et la recherche d'un chemin de $s$ à $t$ dans $G'$ se fait en temps $\mathcal O(\abs S + \abs A)$ (parcours de $M$ pour choisir l'orientation et déterminer les sommets libres, parcours de $U$ et $V$ pour définir les arcs depuis $s$ et vers $t$ et parcours en profondeur depuis $s$ pour chercher un chemin de $s$ à $t$).
+
+                Au total, on a une complexité $\mathcal O(\abs S (\abs S + \abs A))$ ($= \mathcal O\!\lr{\abs S ^3}$ si le graphe est dense ($\abs A = \Theta\!\lr{\abs S ^2}$)).
+            \end{indt}
+        \end{indt}
+    \end{indt}
+    
+    
+    
+\end{document}
+%--------------------------------------------End
