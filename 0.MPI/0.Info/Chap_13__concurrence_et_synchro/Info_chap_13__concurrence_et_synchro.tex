@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2022.09.13
+% Last modification     :   2022.09.15
 %
 %------------------------------------------------------------------------
 
@@ -540,6 +540,223 @@
 
                     $\bullet$ Des primitives de programmation directement fournies par le système (mutex et sémaphore) qui permettent l'interruption d'un fil en attendant la réalisation d'une condition plutôt qu'une attente active.
                 \end{indt}
+            \end{indt}
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Syntaxe de la manipulation des fils d'exécution}}
+            \begin{indt}{\subsubsection{En OCaml}}
+                On utilise le module \texttt{Thread}, qui propose les objets suivants :
+
+                $\bullet$ le type \texttt{Thread.t} qui représente les fils d'exécution ;
+
+                $\bullet$ la fonction \texttt{Thread.create : ('a -> 'b) -> 'a -> Thread.t} qui, étant donné une fonction \texttt{f : 'a -> 'b} et un argument \texttt{x : 'a}, crée et renvoie un fil d'exécution pour le processus courant, chargé d'évaluer \texttt{f x}.
+                Le résultat de la fonction est ignoré, et en pratique, on utilise des fonctions de type \texttt{'a -> unit} qui font des effets de bord ;
+
+                $\bullet$ la fonction \texttt{Thread.join : Thread.t -> unit} qui prend un fil \texttt p en argument et qui interrompt le fil courant jusqu'à terminaison de \texttt p.
+
+                \vspace{12pt}
+                
+                Pour compiler un programme utilisant ce module, on exécute une ligne de la forme
+                \begin{center}
+                    \texttt{ocamlc -I +threads unix.cma threads.cma fichier.ml -o programme}
+                \end{center}
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{En C}}
+                On inclut l'en-tête \texttt{pthread.h}.
+
+                Cela donne accès à :
+
+                $\bullet$  un type \texttt{pthread\_t} qui représente les fils d'exécution ;
+
+                $\bullet$ une fonction de prototype
+
+                \begin{lstlisting}[language=C, xleftmargin=80pt]
+int pthread_create(pthread_t* p, const pthread_attr_t* attr, void* (*f)(void*), void* args)\end{lstlisting}
+
+                \begin{indt}{où}
+                    $-$ \texttt p est un pointeur permettant de stocker le fil créé ;
+
+                    $-$ \texttt{attr} est H.P et sera toujours \texttt{NULL} ;
+
+                    $-$ \texttt f et \texttt{args} représentent la fonction que le nouveau fil doit exécuter et ses arguments.
+                \end{indt}
+
+                \vspace{12pt}
+                
+                Pourquoi \texttt{void*} ?
+
+                Pas de fonction d'ordre supérieur et pas de polymorphisme mais il est possible d'effectuer du transtypage vers et depuis \texttt{void*}.
+
+                On pourra se contenter de définir une fonction de type \texttt{void* f(void*)} et de la passer directement en argument.
+                Si \texttt f n'a aucun argument, \texttt{args} sera \texttt{NULL}.
+
+                L'entier renvoyé est un code d'erreur qui vaut 0 si tout s'est bien passé. On adoptera un style défensif et on vérifiera la valeur de cet entier.
+
+                \vspace{12pt}
+                
+                $\bullet$ La fonction de prototype
+
+                \begin{lstlisting}[language=C, xleftmargin=80pt]
+int pthread_join(pthread_t p, void** res)\end{lstlisting}
+
+                où \texttt p est le fil d'exécution dont le fil courant doit attendre la terminaison, et \texttt{res} est H.P et sera toujours \texttt{NULL} (permet de récupérer le résultat de la fonction \texttt f).
+
+                L'entier en retour a la même signification que dans la fonction \texttt{pthread\_create}.
+
+                \vspace{12pt}
+                
+                La compilation d'un programme utilisant cette bibliothèque est de la forme :
+
+                \begin{center}
+                    \texttt{gcc -lpthread file.c - o prog}
+                \end{center}
+            \end{indt}
+        \end{indt}
+    \end{indt}
+
+    \vspace{12pt}
+    
+    \begin{indt}{\section{Outils algorithmiques de synchronisation}}
+        \begin{indt}{\subsection{Algorithme de \textsc{Petersen}}}
+            \begin{indt}{\subsubsection{Introduction}}
+                Conçut en 1981, cet algorithme permet l'établissement d'une section critique garantissant l'exclusion mutuelle, l'absence de famine et l'absence d'interblocage.
+
+                Cependant, il nécessite une attente active de la part des fils d'exécution et est limité à deux fils concurrents, ce qui en fait un algorithme peu utilisé en pratique.
+
+                Avant de l'étudier, nous allons voir des versions plus simples, mais qui échouent.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Première tentative}}
+                On utilise un booléen associé à chaque fil d'exécution indiquant s'il est en section critique.
+                Un fil souhaitant entrer en section critique attend que l'autre n'y soit plus puis met son booléen à jour.
+                En sortie de section critique, un fil doit mettre son booléen à jour.
+
+                \textit{cf} \texttt{petersen\_0.c}.
+
+                Problème : si un fil est interrompu entre la fin de son attente active et la mise à jour de son booléen, il n'y a plus forcément exclusion mutuelle.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Deuxième tentative}}
+                Le problème de la première version vient du fait que la mise à jour du booléen est trop tardive. On pourrait plutôt signaler la volonté d'entrer en section critique : le booléen est mis à jour avant l'attente et un fil souhaitant entrer en section critique attend que l'autre fil ne veuille plus y être.
+
+                Problème : si un fil est interrompu entre la mise à jour de son booléen et le début de son attente, on peut atteindre une situation de blocage où les deux booléens valent \texttt{true}.
+
+                \textit{cf} \texttt{petersen\_1.c}
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Troisième tentative}}
+                On utilise plutôt une variable indiquant quel fil d'exécution peut entrer en section critique.
+                Lorsqu'un fil quitte la section critique, il indique que c'est au tour de l'autre fil.
+
+                \textit{cf} \texttt{petersen\_2.c}.
+
+                Problème : si un fil termine son exécution avant l'autre, lorsque le second fil indique que c'est au tour du fil qui s'est arrêté, son tour ne reviendra jamais, il est donc en situation de famine.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Algorithme de \textsc{Petersen}}}
+                On combine les deux dernières tentatives : un fil peut entrer en section critique si c'est à son tour ou si l'autre fil ne souhaite pas entrer en section critique.
+
+                \textit{cf} \texttt{petersen\_final.c}
+
+                Pseudo code :
+
+                \begin{pseudocode}
+                    \texttt{turn} $\leftarrow 0$
+
+                    \texttt{want} $\leftarrow$ \texttt{[false, false]}
+
+                    \begin{indt}{Thread $i$ :}
+                        \texttt{want[$i$]} $\leftarrow$ \texttt{true}
+
+                        \texttt{turn} $\leftarrow 1 - i$
+
+                        \begin{indt}{while \texttt{want[$1 - i$] \&\& turn = $1 - i$}}
+                            wait
+                        \end{indt}
+
+                        \textit{\textcolor{656565}{//Critical section}}
+
+                        \texttt{wait[$i$]} $\leftarrow$ \texttt{false}
+                    \end{indt}
+                \end{pseudocode}
+
+                \vspace{12pt}
+                
+                $\bullet$ Proposition : l'algorithme de \textsc{Petersen} garantit l'exclusion mutuelle.
+
+                \begin{proof}
+                    Par l'absurde, supposons que les fils 0 et 1 sont en section critique.
+
+                    Sans perte de généralité, on suppose que le fil 0 est entré en section critique en premier.
+
+                    Au moment de l'entrée en section critique du fil 1, on sait que \texttt{want[0]} vaut toujours \texttt{true} donc que \texttt{turn} vaut 1.
+
+                    Ainsi, le fil 1 a du être interrompu entre l'affectation \texttt{turn} $\leftarrow 0$ et la boucle d'attente pour permettre l'entrée en section critique du fil 0 (s'il avait été interrompu avant, l'affectation \texttt{turn} $\leftarrow 0$ empêcherait son entrée en section critique).
+
+                    Lorsque le fil 0 effectue l'affectation \texttt{turn} $\leftarrow 1$, il ne peut plus entrer en section critique car \texttt{want[1]} vaut \texttt{true} : absurde
+                \end{proof}
+
+                \vspace{12pt}
+                
+                $\bullet$ Proposition : l'algorithme de \textsc{Petersen} garantit le progrès de l'exécution et le temps d'attente borné pour les fils d'exécution.
+
+                \begin{proof}
+                    Supposons que le fil 0 veuille entrer en section critique.
+
+                    Si le fil 0 est en attente, c'est que \texttt{want[1]} vaut \texttt{true}, et \texttt{turn} vaut 1.
+
+                    Dans ce contexte, le fil 1 peut être dans plusieurs états :
+
+                    $-$ le fil 1 se situe juste après l'affectation \texttt{want[1]} $\leftarrow$ \texttt{true}. Dans ce cas, on a l'affectation \texttt{turn} $\leftarrow 0$, le fil 1 se met en attente (on a aussi \texttt{want[0]} qui vaut \texttt{true}) et le fil 0 peut entrer en section critique ;
+
+                    $-$ le fil 1 se situe à la boucle d'attente entre le moment où le fil 0 effectue l'affectation \texttt{want[0]} $\leftarrow$ \texttt{true} et l'affectation \texttt{turn} $\leftarrow 1$.
+
+                    Dans ce cas, lorsqu'il reprend son exécution, le fil 1 entre en section critique.
+                    \begin{indt}{Lorsqu'il sort de section critique, on a \texttt{want[1] = false} et il y a deux possibilités :}
+                        (1) le fil 0 reprend son exécution et entre en section critique ;
+
+                        (2) le fil 1 poursuit son exécution et tente à nouveau d'entrer en section critique.
+
+                        \texttt{want[1]} redevient \texttt{true}, mais le fil 1 finira par exécuter l'affectation \texttt{turn} $\leftarrow 0$ et le fil 1 se met en attente et le fil 0 entre en section critique
+                    \end{indt}
+
+                    $-$ le fil 1 se situe à la boucle d'attente avant l'affectation \texttt{want[0]} $\leftarrow$ \texttt{true}.
+
+                    Le fil 1 est donc en section critique, et comme avant, ne fera qu'un passage en section critique avant de céder la place au fil 0.
+
+                    Le même raisonnement s'applique au fil 1 par symétrie.
+
+                    On en déduit que l'exécution progresse toujours et qu'un fil d'exécution souhaitant entrer en section critique attendra au plus un passage de l'autre fil en section critique.
+                \end{proof}
+
+                \vspace{12pt}
+                
+                $\bullet$ Remarque : la proposition précédente assure l'absence de famine, donc d'interblocage.
+            \end{indt}
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Algorithme de la boulangerie de \textsc{Lamport}}}
+            \begin{indt}{\subsubsection{Introduction}}
+                Conçut en en 1974, cet algorithme permet également la mise en place d'une section critique avec les mêmes propriétés.
+
+                Il est aussi basé sur l'attente active, mais permet l'utilisation de plus de 2 fils.
+
+                Il existe des solutions plus efficaces que donc algorithme n'a qu'un intérêt théorique.
             \end{indt}
         \end{indt}
     \end{indt}
