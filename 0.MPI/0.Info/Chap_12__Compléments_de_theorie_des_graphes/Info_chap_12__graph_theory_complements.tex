@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2022.09.10
+% Last modification     :   2022.09.17
 %
 %------------------------------------------------------------------------
 
@@ -420,11 +420,11 @@
                 Entrée : $G = (S, A)$ un GO
 
                 \begin{pseudocode}
-                    Ranger $S$ par ordre de fin de traitement décroissante dans un parcours en profondeur de $G$
+                    $-$ Ranger $S$ par ordre de fin de traitement décroissante dans un parcours en profondeur de $G$ ;
 
-                    Déterminer $G^T$
+                    $-$ Déterminer $G^T$ ;
 
-                    Effectuer un parcours en profondeur de $G^T$ en choisissant les points de départ successifs dans leur ordre d'apparition dans le tri à la première étape
+                    $-$ Effectuer un parcours en profondeur de $G^T$ en choisissant les points de départ successifs dans leur ordre d'apparition dans le tri à la première étape
                 \end{pseudocode}
 
                 Résultat : pour chaque point de départ, l'ensemble des sommets atteints constitue sa composante fortement connexe.
@@ -529,7 +529,7 @@ let kosaraju (g : graphe) : int list list =
             \begin{indt}{\subsubsection{Correction de l'algorithme de \textsc{Kosaraju}}}
                 Soit $G = (S, A)$ un GO.
 
-                $\bullet$ Pour chaque composante fortement connexes $C$ de $G$, on note $\mathrm{fin}(C)$ le maximum des dates de fin de traitement de ses éléments dans le premier parcours.
+                $\bullet$ Pour chaque composante fortement connexe $C$ de $G$, on note $\mathrm{fin}(C)$ le maximum des dates de fin de traitement de ses éléments dans le premier parcours.
 
                 \vspace{12pt}
                 
@@ -550,7 +550,7 @@ let kosaraju (g : graphe) : int list list =
 
                     Comme $(s, s') \in A$ et comme tout sommet de $C'$ est accessible depuis $s'$, tout sommet de $C'$ est aussi accessible depuis $u$.
 
-                    Comme aucun sommet de $(C \cup C') \setminus \set u$ n'a été vu lorsqu'on atteint la date de fin de traitement de $u$ est supérieure à celle de tous les autres sommets de $C \cap C'$ donc $\mathrm{fin}(C) > \mathrm{fin}(C')$.
+                    Comme aucun sommet de $(C \cup C') \setminus \set u$ n'a été vu lorsqu'on atteint $u$, la date de fin de traitement de $u$ est supérieure à celle de tous les autres sommets de $C \cup C'$, donc $\mathrm{fin}(C) > \mathrm{fin}(C')$.
 
                     \vspace{6pt}
                     
@@ -659,7 +659,7 @@ let kosaraju (g : graphe) : int list list =
                 \begin{pseudocode}
                     $V \leftarrow \mathrm{Vars}(\varphi)$
 
-                    $S_\varphi \leftarrow \bigcup_{x \in V} \set{x, \neg x}$
+                    $\displaystyle S_\varphi \leftarrow \bigcup_{x \in V} \set{x, \neg x}$
 
                     $A_\varphi \leftarrow \varnothing$
 
@@ -677,7 +677,7 @@ let kosaraju (g : graphe) : int list list =
                     
                     \begin{indt}{Pour chaque $x \in V$ :}
                         \begin{indt}{Si $x$ et $\neg x$ appartient à la même composante fortement connexe :}
-                            Renvoyer \cit{Impossible}
+                            Renvoyer \cit{Insatisfiable}
                         \end{indt}
                     \end{indt}
 
@@ -690,7 +690,7 @@ let kosaraju (g : graphe) : int list list =
                 
                 $\bullet$ Exemple :
                 \[
-                    (p_3 \vee \neg p_4) \wedge (p_2 \vee \neg p_3) \wedge (p_4 \vee \neg p_2) \wedge (\neg p_1 \vee p_2) \wedge (\neg p_4 \vee p_3) \wedge (p_3 \vee p_2)
+                    (p_3 \vee \neg p_4) \wedge (p_2 \vee \neg p_3) \wedge (p_4 \vee \neg p_2) \wedge (\neg p_1 \vee p_2) \wedge (\neg p_4 \vee \neg p_3) \wedge (p_3 \vee p_2)
                 \]
 
                 \begin{center}
@@ -716,7 +716,7 @@ let kosaraju (g : graphe) : int list list =
                         \draw[->] (2') to (3');
                         \draw[->] (3') to (4');
 
-                        \draw[->] (3) to (2');
+                        \draw[->] (2') to (3);
                         \draw[->] (3') to (2);
 
                         \draw[->] (2) to [out=-135, in=135, looseness=1] (4);
@@ -736,7 +736,7 @@ let kosaraju (g : graphe) : int list list =
                 $\bullet$ Complexité :
                 si $\varphi$ a $n$ variables et $m$ clauses, on calcule $V$, $S_\varphi, A_\varphi$ en temps $\mathcal O(n + m)$.
 
-                $\abs{A_\varphi} = 2n$, $\abs{A_\varphi} = 2m$, donc le calcul des composantes fortement connexes se fait en temps $\mathcal O(n + m)$ (par l'algorithme de \textsc{Kosaraju}).
+                $\abs{S_\varphi} = 2n$, $\abs{A_\varphi} = 2m$, donc le calcul des composantes fortement connexes se fait en temps $\mathcal O(n + m)$ (par l'algorithme de \textsc{Kosaraju}).
 
                 Modulo un prétraitement en $\mathcal O(n)$, la dernière boucle s'exécute en temps $\mathcal O(n)$.
 
@@ -754,7 +754,10 @@ let kosaraju (g : graphe) : int list list =
                     \textit{Lemme} :
                     Si $\varphi$ est satisfiable et si $v$ est une valuation telle que $\lrbb{\varphi}_v = \top$
 
-                    Alors pour toute composante fortement connexe $C$ de $G_\varphi$ et $\forall l, l' \in C,\ \lrbb l_v = \lrbb{l'}_v$.
+                    Alors pour toute composante fortement connexe $C$ de $G_\varphi$, on a
+                    \[
+                        \forall l, l' \in C,\ \lrbb l_v = \lrbb{l'}_v
+                    \]
                 \end{pseudocode}
 
                 \begin{proof}
@@ -766,7 +769,7 @@ let kosaraju (g : graphe) : int list list =
 
                     Or $\lrbb \varphi _v = \top$, donc $\lrbb{c_i}_v = \top$ donc $\lrbb{l_i \rightarrow l_{i + 1}}_v = \top$.
 
-                    Par transitivité, $\lrbb{l' \rightarrow l}_v = \top$, donc $\lrbb{l \leftrightarrow l'}_v = \top$.
+                    Par transitivité, $\lrbb{l' \rightarrow l}_v = \top$, donc (par symétrie des rôles) $\lrbb{l \leftrightarrow l'}_v = \top$.
 
                     D'où $\lrbb l _v = \lrbb{l'}_v$
                 \end{proof}
@@ -935,7 +938,9 @@ let kosaraju (g : graphe) : int list list =
             \begin{indt}{\subsubsection{Proposition}}
                 Soit $G = (S, A, w)$ un GNO pondéré connexe.
 
-                Si $w$ est injective, alors $G$ admet un unique arbre couvrant de poids minimal.
+                \begin{pseudocode}
+                    Si $w$ est injective, alors $G$ admet un unique arbre couvrant de poids minimal.
+                \end{pseudocode}
 
                 \begin{proof}
                     Par contraposée, supposons deux arbres couvrants de poids minimum distincs.
@@ -1307,10 +1312,12 @@ void union(element x, element y) {
                         \begin{cases}
                             j + 1 & \text{si}\ k = 0
                             \\
-                            A_{k - 1} \circ A_{k - 1} \circ \cdots \circ A_{k - 1}(j)
+                            \underbrace{A_{k - 1} \circ A_{k - 1} \circ \cdots \circ A_{k - 1}}_{j + 1\ \text{termes}}(j)
                                   & \text{sinon}
+                            \vspace{-12pt}
                         \end{cases}
                     \]
+                    \vspace{6pt}
                 \end{pseudocode}
 
                 Remarque : en pratique, c'est linéaire en le nombre d'opérations.
@@ -1385,7 +1392,9 @@ void union(element x, element y) {
 
                 Soit $G = (S, A, w)$ un GNO pondéré connexe.
 
-                Le sous-graphe de $G$ produit par l'algorithme de \textsc{Kruskal} est un arbre couvrant de $G$
+                \begin{pseudocode}
+                    Le sous-graphe de $G$ produit par l'algorithme de \textsc{Kruskal} est un arbre couvrant de $G$
+                \end{pseudocode}
 
                 \vspace{12pt}
                 
@@ -1419,7 +1428,9 @@ void union(element x, element y) {
             \begin{indt}{\subsubsection{Proposition}}
                 Soit $G = (S, A, w)$ un GNO pondéré connexe.
 
-                L'arbre couvrant de $G$ produit par l'algorithme de \textsc{Kruskal} est de poids minimum.
+                \begin{pseudocode}
+                    L'arbre couvrant de $G$ produit par l'algorithme de \textsc{Kruskal} est de poids minimum.
+                \end{pseudocode}
 
                 \vspace{12pt}
                 
@@ -1445,7 +1456,7 @@ void union(element x, element y) {
                     \begin{indt}{$-$ Si $(S, A' \cup \set a)$ est acyclique :}
                         $+$ Si $a \in A_{\rm min}$, alors $A_{\rm min}$ convient encore pour $A' \cup \set a$.
 
-                        $+$ Si $a \notin A_{\rm min}$ : $(S, A_{\rm min \cup \set a})$ contient un cycle car $(S, A_{\rm min})$ est un arbre (d'après chap.10 2.2.14.)
+                        $+$ Si $a \notin A_{\rm min}$ : $(S, A_{\rm min} \cup \set a)$ contient un cycle car $(S, A_{\rm min})$ est un arbre (d'après chap.10 2.2.14.)
 
                         Retirer une arête de ce cycle donne de nouveau un arbre (couvrant).
 
@@ -1794,11 +1805,9 @@ element* kruskal(graphe g, int n) {
 
                     Comme $M'$ est maximum et $M$ ne l'est pas, on a
                     \[
-                        \abs{M'} > \abs M
+                        \abs{M'} > \abs M \quad \text{et} \quad \abs{M' \setminus M} > \abs{M \setminus M'}
                     \]
-                    et $\abs{M' \setminus M} > \abs{m \setminus M'}$
-
-                    un cycle de longueur paire dans $G'$ contient autant d'arêtes de $M' \setminus M$ que de $M \setminus M'$.
+                    Un cycle de longueur paire dans $G'$ contient autant d'arêtes de $M' \setminus M$ que de $M \setminus M'$.
 
                     \vspace{6pt}
                     
