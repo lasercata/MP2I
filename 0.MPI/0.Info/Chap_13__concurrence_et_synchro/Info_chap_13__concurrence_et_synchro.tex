@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2022.09.15
+% Last modification     :   2022.09.20
 %
 %------------------------------------------------------------------------
 
@@ -384,7 +384,7 @@
                 On suppose qu'initialement, le fichier contient l'entier $0$.
                 Quel est le résultat final ?
 
-                C'est une valeur de $\nset{100}{200}$ car un processus peut être interrompu juste après une lecture et l'écriture qui suivra la reprise de son exécution écrasera tous les changements faits par le second processus).
+                C'est une valeur de $\nset{100}{200}$ car un processus peut être interrompu juste après une lecture et l'écriture qui suivra la reprise de son exécution écrasera tous les changements faits par le second processus.
             \end{indt}
         \end{indt}
 
@@ -397,7 +397,7 @@
 
                 Il faut de plus un moyen de communication entre ces processus, qui peut être une interruption système (le système d'exploitation sert de messager) ou un partage de mémoire.
 
-                En réalité, un processus peut contenir plusieurs fils d'exécution ou processus légers qui partagent une partie de la mémoire du processus.
+                En réalité, un processus peut contenir plusieurs \textit{fils d'exécution} ou \textit{processus légers} qui partagent une partie de la mémoire du processus.
                 Ces fils d'exécution ont un programme commun mais l'exécutent en des points différents.
 
                 La structure de la mémoire d'un processus devient la suivante :
@@ -464,7 +464,7 @@
             \vspace{12pt}
             
             \begin{indt}{\subsubsection{Situation de compétition et atomicité}}
-                Un \textit{situation de compétition} (\textit{race condition}) a lieu quand le résultat d'un processus varie selon l'ordre d'exécution de ses fils. L'exemple vu en \ref{1.1.3} (page \pageref{1.1.3}) est une situation de compétition que l'on eput reproduire avec les fils d'un unique processus partageant une variable globale.
+                Un \textit{situation de compétition} (\textit{race condition}) a lieu quand le résultat d'un processus varie selon l'ordre d'exécution de ses fils. L'exemple vu en \ref{1.1.3} (page \pageref{1.1.3}) est une situation de compétition que l'on peut reproduire avec les fils d'un unique processus partageant une variable globale.
                 Un fil principal est chargé de créer deux fils secondaires qui exécutent la boucle.
                 Il doit attendre la terminaison des fils secondaires (opération \texttt{join}) avant de s'arrêter pour éviter une interruption prématurée du programme.
 
@@ -757,6 +757,280 @@ int pthread_join(pthread_t p, void** res)\end{lstlisting}
                 Il est aussi basé sur l'attente active, mais permet l'utilisation de plus de 2 fils.
 
                 Il existe des solutions plus efficaces que donc algorithme n'a qu'un intérêt théorique.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Principe de l'algorithme}}
+                L'algorithme de la boulangerie de \textsc{Lamport} exploite le fonctionnement d'une file d'attente à ticket : un fil d'exécution souhaitant entrer en section critique doit prendre un ticket et attendre son tour.
+
+                Différence majeure : ce sont les fils d'exécutions qui s'attribuent eux-mêmes leur ticket. Il doivent donc déterminer quel est le numéro de ticket maximal afin de s'attribuer un numéro qui lui est supérieur.
+
+                Dans un cadre concurrent, les fils peuvent être amenés à s'attribuer le même numéro.
+                Un fil d'exécution souhaitant entrer en section critique doit d'abord s'attribuer un numéro puis attendre d'avoir le numéro minimal, et en cas d'égalité, il faut pouvoir départager les fils.
+                On utilise pour cela les identifiants des fils d'exécution, que l'on suppose totalement ordonnés : en cas d'égalité, le fil d'identifiant minimal a la priorité.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Première tentative}}
+                On utilise un tableau \texttt{ticket} qui associe à chaque fil un numéro de ticket (on suppose ici que les identifiants correspondent aux indices du tableau).
+                L'absence de ticket sera dénoté par la valeur 0.
+
+                $\bullet$ Phase d'attribution du ticket pour le fil $i$ :
+
+                \begin{pseudocode}
+                    $m \leftarrow \max(\mathtt{ticket})$
+
+                    \texttt{ticket[$i$]} $\leftarrow m + 1$
+                \end{pseudocode}
+
+                \vspace{6pt}
+                
+                $\bullet$ Phase d'attente active pour le fil $i$ :
+
+                On parcourt séquentiellement le tableau \texttt{ticket} en attendant pour chaque fil prioritaire devant $i$ qu'il ait fini.
+
+                \begin{pseudocode}
+                    \begin{indt}{Pour $j$ de $0$ à $n - 1$ :}
+                        \begin{indt}{Tant que \texttt{ticket[$j$] != 0} et (\texttt{ticket[$j$] < ticket[$i$]} ou \texttt{ticket[$j$] = ticket[$i$]} et $j < i$) :}
+                            Attendre
+                        \end{indt}
+                    \end{indt}
+
+                    \vspace{6pt}
+                    
+                    Sortie de section critique : on détruit le ticket :
+
+                    \texttt{ticket[$i$]} $\leftarrow 0$
+                \end{pseudocode}
+
+                \vspace{6pt}
+                
+                Problème : l'exclusion mutuelle n'est pas garantie.
+
+                On suppose qu'il y a deux fils $i < j$ qui veulent entrer en section critique.
+                \textit{Via} des interruptions, ces deux fils peuvent calculer la même valeur pour le maximum, donc s'attribuer le même numéro.
+                On suppose que le file $i$ est interrompu avant la mise à jour de son numéro et que le fil $j$ poursuit son exécution.
+
+                Dans la phase d'attente active, le fil $j$ constatera que \texttt{ticket[$i$] = 0}, donc poursuivra l'exécution et entrera en section critique.
+
+                Si le fil $i$ reprend son exécution, dans la phase d'attente active il constate que le fil $j$ a le même numéro mais n'est pas prioritaire car $i < j$, donc il poursuivra l'exécution et arrivera en section critique.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Algorithme de boulangerie}}
+                Le problème de la tentative précédente est qu'un fil peut être interrompu pendant la phase d'attribution, ce qui permet à des fils non prioritaires de passer devant.
+                L'idée de \textsc{Lamport} est d'ajouter une phase d'attente supplémentaire : un fil ne peut comparer un ticket avec celui d'un autre fil que si ce dernier n'est pas en cours d'attribution.
+
+                \vspace{6pt}
+                
+                On utilise un tableau de booléens indiquant pour chaque fil s'il est dans la phase d'attribution.
+
+                $\bullet$ Initialisation :
+
+                \begin{pseudocode}
+                    \texttt{ticket} $\leftarrow$ tableau de taille $n$ contenant des 0
+
+                    \texttt{attribution} $\leftarrow$ tableau de taille $n$ contenant \texttt{false}
+                \end{pseudocode}
+
+                \vspace{6pt}
+                
+                $\bullet$ Phase d'attribution pour le fil $i$ :
+
+                \begin{pseudocode}
+                    \texttt{attribution[$i$]} $\leftarrow$ \texttt{true}
+
+                    $m \leftarrow \max(\mathtt{ticket})$
+
+                    \texttt{ticket[$i$]} $\leftarrow m + 1$
+
+                    \texttt{attribution[$i$]} $\leftarrow$ \texttt{false}
+                \end{pseudocode}
+
+                \vspace{6pt}
+                
+                $\bullet$ Phase d'attente active pour le fil $i$ :
+
+                \begin{pseudocode}
+                    \begin{indt}{Pour $i$ de 0 à $n - 1$ :}
+                        \begin{indt}{Tant que \texttt{attribution[$j$]} est vrai :}
+                            Attendre
+                        \end{indt}
+
+                        \vspace{6pt}
+                        
+                        \begin{indt}{Tant que \texttt{ticket[$j$] != 0} et (\texttt{ticket[$j$]}, $j$) $<$ (\texttt{ticket[$i$]}, $i$)}
+                            Attendre
+                        \end{indt}
+                    \end{indt}
+                \end{pseudocode}
+
+                \vspace{6pt}
+                
+                Sortie de section critique pour le fil $i$ :
+
+                \begin{pseudocode}
+                    \texttt{ticket[$i$]} $\leftarrow 0$
+                \end{pseudocode}
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Correction de l'algorithme de la boulangerie de \textsc{Lamport}}}
+                On dira qu'un fil d'exécution est dans la boulangerie entre le moment où il exécute la dernière instruction de la phase d'attribution et la fin de l'exécution de la sortie de section critique.
+
+                $\bullet$ Lemme 1
+
+                \begin{pseudocode}
+                    \textit{Lemme 1} : Si les fils $i$ et $j$ sont dans la boulangerie et si le fil $i$ y est entré avant que le fil $j$ exécute l'affectation \texttt{attribution[$j$] $\leftarrow$ true}, alors \texttt{ticket[$i$] < ticket[$j$]}.
+                \end{pseudocode}
+
+                \begin{proof}
+                    Lorsque le fil $j$ calcule $\max(\mathtt{ticket})$, \texttt{ticket[$i$]} contient déjà sa valeur courante (puisque $i$ est déjà dans la boulangerie).
+
+                    Donc $\max(\mathtt{ticket}) \ge \mathtt{ticket}[i]$
+
+                    et \texttt{ticket[$j$]} $\ge 1 + \mathtt{ticket[} i \mathtt ]$
+                \end{proof}
+
+                \vspace{12pt}
+                
+                $\bullet$ Lemme 2
+
+                \begin{pseudocode}
+                    \textit{Lemme 2} :
+                    Si le fil $i$ est en section critique et le fil $j$ est dans le boulangerie avec $i \neq j$, alors
+                    \[
+                        (\mathtt{ticket}[i], i) < (\mathtt{ticket}[j], j)
+                    \]
+                \end{pseudocode}
+
+                \begin{proof}
+                    On note $t_{\rm read}$ l'instant où le fil $i$ lit pour la dernière fois \texttt{attribution[$j$]} dans la phase d'attente, et $t_{\rm wait}$ l'instant auquel il exécute son dernier tour dans la seconde boucle d'attente concernant le fil $j$.
+
+                    On sait que $t_{\rm read} < t_{\rm wait}$.
+
+                    On note :
+
+                    $t_{\rm attr}$ l'instant auquel le fil $j$ exécute l'affectation \texttt{attribution[$j$] $\leftarrow$ true} ;
+
+                    $t_{\rm write}$ l'instant auquel le fil $j$ a fini d'écrire la valeur de \texttt{ticket[$j$]} ;
+
+                    $t_{\rm enter}$ l'instant auquel le fil $j$ entre dans le boulangerie.
+
+                    \vspace{6pt}
+                    
+                    On sait que $t_{\rm attr} < t_{\rm write} < t_{\rm enter}$.
+
+                    Par définition de $t_{\rm read}$, on sait que \texttt{attribution[$j$]} vaut \texttt{false} à l'instant $t_{\rm read}$.
+
+                    Il y a deux possibilités :
+
+                    $-$ Soit le fil $j$ n'est pas encore dans la phase d'attribution, \textit{i.e} $t_{\rm read} < t_{\rm attr}$.
+
+                    Dans ce cas, comme $i$ et $j$ sont dans la boulangerie, et comme $i$ y est entré avant que $j$ commence la phase d'attribution, le lemme 1 assure que
+                    \[
+                        \mathtt{ticket}[i] < \mathtt{ticket}[j],
+                    \]
+                    donc que
+                    \[
+                        (\mathtt{ticket}[i], i) < (\mathtt{ticket}[j], j)
+                    \]
+
+                    $-$ Soit le fil $j$ a fini sa phase d'attribution à l'instant $t_{\rm read}$.
+
+                    On a donc $t_{\rm write} < t_{\rm enter} < t_{\rm read} < t_{\rm wait}$
+
+                    Donc à l'instant $t_{\rm wait}$, \texttt{ticket[$j$]} contient sa valeur courante et comme le fil $i$ a pu poursuivre son exécution, soit $\mathtt{ticket}[j] = 0$, soit $(\mathtt{ticket}[i], i) \le (\mathtt{ticket}[j], j)$.
+
+                    Or $\mathtt{ticket}[j] \ge 1$ puisque l'attribution du ticket est déjà faite.
+
+                    De plus, $(\mathtt{ticket}[i], i) \neq (\mathtt{ticket}[j], j)$, car $i \neq j$.
+
+                    Donc
+                    \[
+                        (\mathtt{ticket}[i], i) < (\mathtt{ticket}[j], j)
+                    \]
+                \end{proof}
+
+                \vspace{12pt}
+                
+                $\bullet$ Proposition
+
+                \begin{pseudocode}
+                    \textit{Proposition} :
+                    L'algorithme de la boulangerie garantit l'exclusion mutuelle.
+                \end{pseudocode}
+
+                \vspace{6pt}
+                
+                \begin{proof}
+                    Par l'absurde, on suppose que deux fils $i \neq j$ sont en section critique.
+
+                    En particulier, il sont dans la boulangerie.
+
+                    Par le lemme 2, on a donc :
+                    \[
+                        \begin{cases}
+                            (\mathtt{ticket}[i], i) < (\mathtt{ticket}[j], j)
+                            \\
+                            (\mathtt{ticket}[j], j) < (\mathtt{ticket}[i], i)
+                        \end{cases}
+                    \]
+
+                    Absurde.
+                \end{proof}
+
+                \vspace{12pt}
+                
+                $\bullet$ Proposition
+
+                \begin{pseudocode}
+                    \textit{Proposition} :
+                    L'algorithme de la boulangerie garantit le progrès de l'exécution.
+                \end{pseudocode}
+
+                \vspace{12pt}
+                
+                \begin{proof}
+                    Par l'absurde, on suppose qu'au moins un fil souhaite entrer en section critique, que la section critique est libre, et qu'on peut retarder indéfiniment l'entrée d'un fil en section critique.
+
+                    Comme la phase d'attribution n'est pas bloquante, à un moment tous les fils seront soit dans la phase d'attente, soit ne souhaiterons pas entrer en section critique.
+
+                    Il y a au moins un fil en phase d'attente, donc on peut considérer le fil $i$ en attente qui minimise $(\mathtt{ticket}[i], i)$ (car l'ordre lexicographique est bien fondé).
+
+                    Pour chaque fil $j$ que le fil $i$ considère dans la phase d'attente, on sait que \texttt{attribution[$j$]} vaut \texttt{false} ($j$ est soit en phase d'attente, soit ne souhaite pas entrer en section critique), et si $\mathtt{ticket}[j] \neq 0$, alors $j$ est en phase d'attente.
+
+                    Donc par définition de $i$, $(\mathtt{ticket}[i], i) \le (\mathtt{itcket}[j], j)$, donc $i$ ne peut pas être bloqué en phase d'attente : absurde.
+                \end{proof}
+
+                \vspace{12pt}
+                
+                $\bullet$ Proposition :
+
+                \begin{pseudocode}
+                    \textit{Proposition} :
+                    l'algorithme de la boulangerie garantit un temps d'attente borné.
+                \end{pseudocode}
+
+                \vspace{6pt}
+                
+                \begin{proof}
+                    Soit $i$ un fil souhaitant entrer en section critique. On considère ce fil après la phase d'attribution, \textit{i.e} $i$ est dans la boulangerie.
+
+                    Soit $j$ un autre fil.
+
+                    Si $j$ commence sa phase d'exécution après l'entrée de $i$ dans la boulangerie, le lemme 1 assure $\mathtt{ticket}[i] < \mathtt{ticket}[j]$, donc le fil $i$ passera avant $j$ en section critique.
+
+                    Sinon deux possibilités : $i$ passe avant $j$ en section critique, soit $j$ passe avant $i$.
+
+                    Dans ce dernier cas, si le fil $j$ souhaite revenir en section critique, il devra commencer une nouvelle phase d'attribution, et le lemme 1 garantit que $i$ entrera en section critique avant le second passage de $j$.
+
+                    Donc dans le pire cas, un fil donné devra attendre un passage de chaque fil en section critique avant de pouvoir y entrer
+                \end{proof}
             \end{indt}
         \end{indt}
     \end{indt}
