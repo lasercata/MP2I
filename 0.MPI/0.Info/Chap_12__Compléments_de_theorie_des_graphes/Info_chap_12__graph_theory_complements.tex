@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2022.09.18
+% Last modification     :   2022.09.21
 %
 %------------------------------------------------------------------------
 
@@ -1054,7 +1054,7 @@ typedef element* ensemble;\end{lstlisting}
 
                 La recherche du représentant d'un élément se fait en temps linéaire en la taille de l'ensemble parce qu'il faut remonter les pointeurs jusqu'à la tête.
 
-                L'union se fait en mettant à jour mes pointeurs du dernier élément d'un ensemble et du premier de l'autre.
+                L'union se fait en mettant à jour les pointeurs du dernier élément d'un ensemble et du premier de l'autre.
 
                 \begin{lstlisting}[language=C, xleftmargin=80pt]
 void union(element* x, element* y) {
@@ -1093,8 +1093,8 @@ void union(element* x, element* y) {
 
                 \begin{center}
                     \begin{tikzpicture}
-                        \draw (0, 0) rectangle (1, -2);
-                        \draw (0, -1) -- (1, -1);
+                        \draw (-.7, 0) rectangle (1, -2.5);
+                        %\draw (0, -1) -- (1, -1);
 
                         \draw (2, -.5) rectangle (3, -1.5);
                         \draw (2, -.75) -- (3, -.75);
@@ -1106,30 +1106,37 @@ void union(element* x, element* y) {
                         \draw (3.5, -.5) rectangle (4.5, -1.5);
                         \draw (3.5, -.75) -- (4.5, -.75);
                         \draw (3.5, -1.25) -- (4.5, -1.25);
-                        \node (1) at (4, -1) {val$_2$};
+                        \node (2) at (4, -1) {val$_2$};
 
                         \draw[->] (4.3, -1.365) to (5.3, -1.365);
 
                         \draw (5, -.5) rectangle (6, -1.5);
                         \draw (5, -.75) -- (6, -.75);
                         \draw (5, -1.25) -- (6, -1.25);
-                        \node (1) at (5.5, -1) {$\cdots$};
+                        \node (3) at (5.5, -1) {$\cdots$};
 
                         \draw[->] (5.8, -1.365) to (6.8, -1.365);
 
                         \draw (6.5, -.5) rectangle (7.5, -1.5);
                         \draw (6.5, -.75) -- (7.5, -.75);
                         \draw (6.5, -1.25) -- (7.5, -1.25);
-                        \node (1) at (7, -1) {val$_n$};
+                        \node (4) at (7, -1) {val$_n$};
                         
                         \draw[->] (7.3, -1.365) to (8.3, -1.365);
 
-                        \draw[->] (.5, -1.5) to (2.3, -1.365);
+                        %\draw[->] (.5, -1.5) to (2.3, -1.365);
 
-                        \draw[->] (2.5, -.65) to [out=160, in=25] (.5, -.5);
-                        \draw[->] (4, -.65) to [out=160, in=25] (.5, -.5);
-                        \draw[->] (5.5, -.65) to [out=160, in=25] (.5, -.5);
-                        \draw[->] (7, -.65) to [out=160, in=25] (.5, -.5);
+                        \node (h) at (.6, -1.365) [label=left:{head}, rectangle, draw] {};
+                        \node (t) at (.6, -2) [label=left:{tail}, rectangle, draw] {};
+
+                        \draw[->] (h) to (2.3, -1.365);
+                        \draw[->] (t) to (7, -2) to (7, -1.365);
+
+                        \node (s) at (.5, -.5) {};
+                        \draw[->] (2.5, -.65) to [out=160, in=25] (s);
+                        \draw[->] (4, -.65) to [out=160, in=25] (s);
+                        \draw[->] (5.5, -.65) to [out=160, in=25] (s);
+                        \draw[->] (7, -.65) to [out=160, in=25] (s);
                     \end{tikzpicture}
                 \end{center}
 
@@ -1409,7 +1416,7 @@ void union(element x, element y) {
 
                     Soient $s, s' \in S$. Comme $G$ est connexe, il existe un chemin $s_0 s_1 \ldots s_n$ de $s$ à $s'$ dans $G$.
 
-                    $\forall i \in \nset 0 {n - 1}$, si $\set{s_i, s_{i + 1}} \in A$, on la conserve.
+                    $\forall i \in \nset 0 {n - 1}$, si $\set{s_i, s_{i + 1}} \in A'$, on la conserve.
 
                     Sinon, en notant $A''$ la valeur de la variable $A'$ au moment où $\set{s_i, s_{i + 1}}$ est rejetée, on sait que l'ajout de $\set{s_i, s_{i + 1}}$ à $A''$ crée un cycle.
 
