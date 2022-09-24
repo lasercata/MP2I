@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2022.09.20
+% Last modification     :   2022.09.24
 %
 %------------------------------------------------------------------------
 
@@ -27,8 +27,10 @@
 \definecolor{0ff}{HTML}{00ffff}
 \definecolor{656565}{HTML}{656565}
 
-\renewcommand{\emph}{\textcolor{ff4500}}
-\renewcommand{\em}{\color{ff4500}}
+%\renewcommand{\emph}{\textcolor{ff4500}}
+%\renewcommand{\em}{\color{ff4500}}
+
+\newcommand{\Emph}{\textcolor{ff4500}}
 
 \newcommand{\strong}[1]{\textcolor{ff4500}{\bf #1}}
 \newcommand{\st}{\color{ff4500}\bf}
@@ -89,11 +91,38 @@
 
 %\lstset{style=DarkCodeStyle}
 \lstset{style=LightCodeStyle}
-%Usage : \begin{lstlisting}[language=Caml] ... \end{lstlisting}
+%Usage : \begin{lstlisting}[language=Caml, xleftmargin=xpt] ... \end{lstlisting}
+
+
+%---Algorithm
+\usepackage[linesnumbered,ruled,vlined]{algorithm2e}
+\SetKwInput{KwInput}{Input}
+\SetKwInput{KwOutput}{Output}
+
+\SetKwProg{Fn}{Function}{:}{}
+\SetKw{KwPrint}{Print}
+
+\newcommand\commfont[1]{\textsl{\textcolor{656565}{#1}}}
+\SetCommentSty{commfont}
+\SetProgSty{texttt}
+\SetArgSty{textnormal}
+\SetFuncArgSty{textnormal}
+%\SetProgArgSty{texttt}
+
+\newenvironment{indalgo}[2][H]{
+    \begin{minipage}{\linewidth-\leftskip-5pt}
+        \begin{algorithm}[#1]
+            \caption{#2}
+}
+{
+        \end{algorithm}
+    \end{minipage}
+}
+
 
 %---tcolorbox
 \usepackage[many]{tcolorbox}
-\DeclareTColorBox{pseudocode}{O{black}O{lightwhite}}{
+\DeclareTColorBox{emphBox}{O{black}O{lightwhite}}{
     breakable,
     outer arc=0pt,
     arc=0pt,
@@ -119,14 +148,6 @@
     linkcolor=black,
     urlcolor=black
 }
-%Uncomment this and comment above for dark mode
-% \hypersetup{
-%     colorlinks,
-%     citecolor=white,
-%     filecolor=white,
-%     linkcolor=white,
-%     urlcolor=white
-% }
 
 
 %------pictures
@@ -216,7 +237,7 @@
 
 
 %------commands
-%---to quote french text
+%---to quote
 \newcommand{\simplecit}[1]{\guillemotleft$\;$#1$\;$\guillemotright}
 \newcommand{\cit}[1]{\simplecit{\textcolor{656565}{#1}}}
 \newcommand{\quo}[1]{\cit{\it #1}}
@@ -230,27 +251,26 @@
 \newenvironment{indt}[2][20pt]{#2 \par \ind[#1]}{\par \deind} %Titled indented env
 
 %---title
-\newcommand{\thetitle}[2]{\begin{center}\textbf{{\LARGE \underline{\emph{#1} :}} {\Large #2}}\end{center}}
+\newcommand{\thetitle}[2]{\begin{center}\textbf{{\LARGE \underline{\Emph{#1} :}} {\Large #2}}\end{center}}
 
 %---Maths environments
 %-Proofs
 \newenvironment{proof}[1][{}]{\begin{indt}{$\square$ #1}}{$\blacksquare$ \end{indt}}
 
 %-Maths parts (proposition, definition, ...)
-\newenvironment{mathspart}[1]{\begin{indt}{\boxed{\text{\textbf{#1}}}}}{\end{indt}}
-\newenvironment{mathbox}[1]{\boxed{\text{\textbf{#1}}}\begin{pseudocode}}{\end{pseudocode}}
+\newenvironment{mathpart}[1]{\begin{indt}{\boxed{\text{\textbf{#1}}}}}{\end{indt}}
+\newenvironment{mathbox}[1]{\boxed{\text{\textbf{#1}}}\begin{emphBox}}{\end{emphBox}}
 \newenvironment{mathul}[1]{\begin{indt}{\underline{\textbf{#1}}}}{\end{indt}}
 
-\newenvironment{theo}{\begin{mathspart}{Théorème}}{\end{mathspart}}
+\newenvironment{theo}{\begin{mathpart}{Théorème}}{\end{mathpart}}
 \newenvironment{Theo}{\begin{mathbox}{Théorème}}{\end{mathbox}}
-\newenvironment{theodef}{\begin{mathspart}{Théorème-définition}}{\end{mathspart}}
 
-\newenvironment{prop}{\begin{mathspart}{Proposition}}{\end{mathspart}}
+\newenvironment{prop}{\begin{mathpart}{Proposition}}{\end{mathpart}}
 \newenvironment{Prop}{\begin{mathbox}{Proposition}}{\end{mathbox}}
-\newenvironment{props}{\begin{mathspart}{Propriétés}}{\end{mathspart}}
+\newenvironment{props}{\begin{mathpart}{Propriétés}}{\end{mathpart}}
 
-\newenvironment{defi}{\begin{mathspart}{Définition}}{\end{mathspart}}
-\newenvironment{meth}{\begin{mathspart}{Méthode}}{\end{mathspart}}
+\newenvironment{defi}{\begin{mathpart}{Définition}}{\end{mathpart}}
+\newenvironment{meth}{\begin{mathpart}{Méthode}}{\end{mathpart}}
 
 \newenvironment{Rq}{\begin{mathul}{Remarque :}}{\end{mathul}}
 \newenvironment{Rqs}{\begin{mathul}{Remarques :}}{\end{mathul}}
@@ -279,13 +299,10 @@
 \pagestyle{fancy}
 \fancyhf{}
 \fancyhead[LE, RO]{\textit{\textcolor{black}{\today}}}
-\fancyhead[RE, LO]{\large{\textsl{\emph{\texttt{\jobname}}}}}
+\fancyhead[RE, LO]{\large{\textsl{\Emph{\texttt{\jobname}}}}}
 
-\fancyfoot[RO, LE]{\textit{\texttt{\textcolor{black}{Page \thepage /}\pageref{LastPage}}}} %Change 'black' to 'white' for dark mode
+\fancyfoot[RO, LE]{\textit{\texttt{\textcolor{black}{Page \thepage /}\pageref{LastPage}}}}
 \fancyfoot[LO, RE]{\includegraphics[scale=0.12]{/home/lasercata/Pictures/1.images_profil/logo/mieux/lasercata_logo_fly_fond_blanc.png}}
-
-% For dark mode :
-%/home/lasercata/Pictures/1.images_profil/logo/mieux/lasercata_logo_fly.png
 
 
 %------init lengths
@@ -362,8 +379,8 @@
             \begin{indt}{\subsubsection{Non déterminisme et synchronisation}}
                 \label{1.1.3}
 
-                L'exécution de processus concurrents est non déterministe car on ne peut pas faire l'hypothèse sur l'ordre d'exécution des instructions et des changements de contextes.
-                En effet, le système d'exploitation, \textit{via} un programme appelé \textit{ordonnanceur}, décide es changements de contexte selon des critères variés (horloge, événement provoqués par l'utilisateur, attente de données qui proviennent de la mémoire, \dots)
+                L'exécution de processus concurrents est non déterministe car on ne peut pas faire d'hypothèse sur l'ordre d'exécution des instructions et des changements de contextes.
+                En effet, le système d'exploitation, \textit{via} un programme appelé \textit{ordonnanceur}, décide des changements de contexte selon des critères variés (horloge, événement provoqués par l'utilisateur, attente de données qui proviennent de la mémoire, \dots)
 
                 Ce non-déterminisme implique la nécessité de synchroniser certains processus.
 
@@ -373,13 +390,13 @@
 
                 Le code est le suivant :
 
-                \begin{pseudocode}
+                \begin{emphBox}
                     \begin{indt}{Répéter 100 fois :}
                         Lire l'entier $n$ dans le fichier ``\texttt{toto.txt}"
 
                         Écraser le fichier ``\texttt{toto.txt}" en y écrivant $n + 1$
                     \end{indt}
-                \end{pseudocode}
+                \end{emphBox}
 
                 On suppose qu'initialement, le fichier contient l'entier $0$.
                 Quel est le résultat final ?
@@ -457,7 +474,7 @@
                 \begin{indt}{$\bullet$ On s'autorise uniquement deux primitives sur les fils d'exécutions :}
                     $-$ \texttt{create} : prend une fonction et des paramètres pour cette fonction et crée un nouveau fil d'exécution pour le processus courant, chargé d'évaluer la fonction sur les paramètres ;
 
-                    $-$ \texttt{join} : prend l'identifiant d'un file d'exécution en paramètre et interrompt le fil courant jusqu'à terminaison du fil passé en argument.
+                    $-$ \texttt{join} : prend l'identifiant d'un fil d'exécution en paramètre et interrompt le fil courant jusqu'à terminaison du fil passé en argument.
                 \end{indt}
             \end{indt}
 
@@ -476,13 +493,13 @@
             \begin{indt}{\subsubsection{Section critique}}
                 Dans l'exemple précédent, l'atomicité est une condition trop forte : on peut interrompre un fil entre la lecture et l'écriture tant que l'autre fil ne lit et n'écrit pas dans la variable.
 
-                On dit que le corps de la boucle est une \textit{section critique} du programme.
+                On dit que le corps de la boucle est une \textit{\em section critique} du programme.
 
-                On veut garantir l'exclusion mutuelle pour les secteurs critiques, \textit{i.e} il ne peut y avoir qu'un seul fil qui exécute une section critique à chaque instant.
+                On veut garantir l'\emph{\it exclusion mutuelle} pour les secteurs critiques, \textit{i.e} il ne peut y avoir qu'un seul fil qui exécute une section critique à chaque instant.
 
-                Une solution de synchronisation doit aussi garantir le progrès de l'exécution : si un fil souhaite entrer en section critique et si celle-ci est libre, le choix d'un fil entrant en section critique ne doit pas pouvoir être retardé indéfiniment.
+                Une solution de synchronisation doit aussi garantir le \emph{\it progrès de l'exécution} : si un fil souhaite entrer en section critique et si celle-ci est libre, le choix d'un fil entrant en section critique ne doit pas pouvoir être retardé indéfiniment.
 
-                On veut aussi assurer un temps d'attente borné : il doit y avoir une borne sur le nombre de fois que d'autres fils d'exécution entrent en section critique entre le moment où un fil signale qu'il souhaite entrer en section critique et son entrée effective.
+                On veut aussi assurer un \emph{\it temps d'attente borné} : il doit y avoir une borne sur le nombre de fois que d'autres fils d'exécution entrent en section critique entre le moment où un fil signale qu'il souhaite entrer en section critique et son entrée effective.
             \end{indt}
 
             \vspace{12pt}
@@ -490,6 +507,8 @@
             \begin{indt}{\subsubsection{Interblocage (\textit{deadlock}) et famine}}
                 Si la synchronisation des fils d'exécution n'est pas effectuée correctement, il peut y avoir plusieurs problèmes, dont :
 
+                \vspace{12pt}
+                
                 $\bullet$ l'interblocage : on dit qu'il y a \textit{interblocage} lorsque plusieurs fils attendent un événement qui ne peut être provoqué que par l'un des fils en attente.
 
                 Exemple classique : le dîner des philosophes.
@@ -500,7 +519,7 @@
 
                 Si les philosophes exécutent le programme suivant :
 
-                \begin{pseudocode}
+                \begin{emphBox}
                     Prendre la baguette à gauche
 
                     Prendre la baguette à droite
@@ -510,7 +529,7 @@
                     Poser les baguettes
 
                     Penser
-                \end{pseudocode}
+                \end{emphBox}
 
                 Il peut y avoir unterblocage si chaque philosophe a pris la baguette à sa gauche et attend que son voisin de droite libère l'autre.
 
@@ -615,6 +634,11 @@ int pthread_join(pthread_t p, void** res)\end{lstlisting}
                 \begin{center}
                     \texttt{gcc -lpthread file.c - o prog}
                 \end{center}
+
+                ou
+                \begin{center}
+                    \texttt{gcc -pthread file.c - o prog}
+                \end{center}
             \end{indt}
         \end{indt}
     \end{indt}
@@ -640,6 +664,8 @@ int pthread_join(pthread_t p, void** res)\end{lstlisting}
 
                 \textit{cf} \texttt{petersen\_0.c}.
 
+                \vspace{6pt}
+                
                 Problème : si un fil est interrompu entre la fin de son attente active et la mise à jour de son booléen, il n'y a plus forcément exclusion mutuelle.
             \end{indt}
 
@@ -648,9 +674,11 @@ int pthread_join(pthread_t p, void** res)\end{lstlisting}
             \begin{indt}{\subsubsection{Deuxième tentative}}
                 Le problème de la première version vient du fait que la mise à jour du booléen est trop tardive. On pourrait plutôt signaler la volonté d'entrer en section critique : le booléen est mis à jour avant l'attente et un fil souhaitant entrer en section critique attend que l'autre fil ne veuille plus y être.
 
-                Problème : si un fil est interrompu entre la mise à jour de son booléen et le début de son attente, on peut atteindre une situation de blocage où les deux booléens valent \texttt{true}.
-
                 \textit{cf} \texttt{petersen\_1.c}
+
+                \vspace{6pt}
+                
+                Problème : si un fil est interrompu entre la mise à jour de son booléen et le début de son attente, on peut atteindre une situation de blocage où les deux booléens valent \texttt{true}.
             \end{indt}
 
             \vspace{12pt}
@@ -661,6 +689,8 @@ int pthread_join(pthread_t p, void** res)\end{lstlisting}
 
                 \textit{cf} \texttt{petersen\_2.c}.
 
+                \vspace{6pt}
+                
                 Problème : si un fil termine son exécution avant l'autre, lorsque le second fil indique que c'est au tour du fil qui s'est arrêté, son tour ne reviendra jamais, il est donc en situation de famine.
             \end{indt}
 
@@ -673,25 +703,55 @@ int pthread_join(pthread_t p, void** res)\end{lstlisting}
 
                 Pseudo code :
 
-                \begin{pseudocode}
-                    \texttt{turn} $\leftarrow 0$
+%                 \begin{emphBox}
+%                     \texttt{turn} $\leftarrow 0$
+% 
+%                     \texttt{want} $\leftarrow$ \texttt{[false, false]}
+% 
+%                     \vspace{6pt}
+%                     
+%                     \begin{indt}{Thread $i$ :}
+%                         \texttt{want[$i$]} $\leftarrow$ \texttt{true}
+% 
+%                         \texttt{turn} $\leftarrow 1 - i$
+% 
+%                         \vspace{6pt}
+%                         
+%                         \begin{indt}{while \texttt{want[$1 - i$] \&\& turn = $1 - i$} :}
+%                             wait
+%                         \end{indt}
+% 
+%                         \vspace{6pt}
+%                         
+%                         \textit{\textcolor{656565}{//Critical section}}
+% 
+%                         \vspace{6pt}
+%                         
+%                         \texttt{want[$i$]} $\leftarrow$ \texttt{false}
+%                     \end{indt}
+%                 \end{emphBox}
+    
+                \begin{indalgo}{\textsc{Petersen}}
+                    \texttt{turn} $\gets 0$\;
+                    \texttt{want} $\gets$ \texttt{[false, false]}\;
 
-                    \texttt{want} $\leftarrow$ \texttt{[false, false]}
+                    \SetKwProg{Thread}{Thread}{:}{}
 
-                    \begin{indt}{Thread $i$ :}
-                        \texttt{want[$i$]} $\leftarrow$ \texttt{true}
+                    \Thread{$i$}{
+                        \texttt{want[$i$] $\gets$ true}\;
+                        \texttt{turn $\gets 1 - i$}\;
+                        
+                        \BlankLine
 
-                        \texttt{turn} $\leftarrow 1 - i$
+                        \While{\texttt{want[$1 - i$] \&\& turn = $1 - i$}}{
+                            Wait
+                        }
 
-                        \begin{indt}{while \texttt{want[$1 - i$] \&\& turn = $1 - i$}}
-                            wait
-                        \end{indt}
+                        \tcp{Critical section}
 
-                        \textit{\textcolor{656565}{//Critical section}}
-
-                        \texttt{wait[$i$]} $\leftarrow$ \texttt{false}
-                    \end{indt}
-                \end{pseudocode}
+                        \texttt{want[$i$] $\gets$ false}\;
+                    }
+                \end{indalgo}
 
                 \vspace{12pt}
                 
@@ -779,11 +839,11 @@ int pthread_join(pthread_t p, void** res)\end{lstlisting}
 
                 $\bullet$ Phase d'attribution du ticket pour le fil $i$ :
 
-                \begin{pseudocode}
+                \begin{emphBox}
                     $m \leftarrow \max(\mathtt{ticket})$
 
                     \texttt{ticket[$i$]} $\leftarrow m + 1$
-                \end{pseudocode}
+                \end{emphBox}
 
                 \vspace{6pt}
                 
@@ -791,19 +851,33 @@ int pthread_join(pthread_t p, void** res)\end{lstlisting}
 
                 On parcourt séquentiellement le tableau \texttt{ticket} en attendant pour chaque fil prioritaire devant $i$ qu'il ait fini.
 
-                \begin{pseudocode}
-                    \begin{indt}{Pour $j$ de $0$ à $n - 1$ :}
-                        \begin{indt}{Tant que \texttt{ticket[$j$] != 0} et (\texttt{ticket[$j$] < ticket[$i$]} ou \texttt{ticket[$j$] = ticket[$i$]} et $j < i$) :}
-                            Attendre
-                        \end{indt}
-                    \end{indt}
+%                 \begin{emphBox}
+%                     \begin{indt}{Pour $j$ de $0$ à $n - 1$ :}
+%                         \begin{indt}{Tant que \texttt{ticket[$j$] != 0} et (\texttt{ticket[$j$] < ticket[$i$]} ou \texttt{ticket[$j$] = ticket[$i$]} et $j < i$) :}
+%                             Attendre
+%                         \end{indt}
+%                     \end{indt}
+% 
+%                     \vspace{6pt}
+%                     
+%                     Sortie de section critique : on détruit le ticket :
+% 
+%                     \texttt{ticket[$i$]} $\leftarrow 0$
+%                 \end{emphBox}
+    
+                \begin{indalgo}{Phase d'attente active pour le fil $i$}
+                    \For{$j = 0$ \KwTo $n - 1$}{
+                        \While{\texttt{ticket[$j$] != 0} \KwSty{et} (\texttt{ticket[$j$] $<$ ticket[$i$]} \KwSty{ou} (\texttt{ticket[$j$] = ticket[$i$]} \KwSty{et} $j < i$))}{
+                            Attendre\;
+                        }
+                    }
 
-                    \vspace{6pt}
-                    
-                    Sortie de section critique : on détruit le ticket :
+                    \BlankLine
 
-                    \texttt{ticket[$i$]} $\leftarrow 0$
-                \end{pseudocode}
+                    \tcp{Sortie de section critique : on détruit le ticket}
+
+                    \texttt{ticket[$i$] $\gets 0$} \;
+                \end{indalgo}
 
                 \vspace{6pt}
                 
@@ -811,7 +885,7 @@ int pthread_join(pthread_t p, void** res)\end{lstlisting}
 
                 On suppose qu'il y a deux fils $i < j$ qui veulent entrer en section critique.
                 \textit{Via} des interruptions, ces deux fils peuvent calculer la même valeur pour le maximum, donc s'attribuer le même numéro.
-                On suppose que le file $i$ est interrompu avant la mise à jour de son numéro et que le fil $j$ poursuit son exécution.
+                On suppose que le fil $i$ est interrompu avant la mise à jour de son numéro et que le fil $j$ poursuit son exécution.
 
                 Dans la phase d'attente active, le fil $j$ constatera que \texttt{ticket[$i$] = 0}, donc poursuivra l'exécution et entrera en section critique.
 
@@ -830,17 +904,17 @@ int pthread_join(pthread_t p, void** res)\end{lstlisting}
 
                 $\bullet$ Initialisation :
 
-                \begin{pseudocode}
+                \begin{emphBox}
                     \texttt{ticket} $\leftarrow$ tableau de taille $n$ contenant des 0
 
                     \texttt{attribution} $\leftarrow$ tableau de taille $n$ contenant \texttt{false}
-                \end{pseudocode}
+                \end{emphBox}
 
                 \vspace{6pt}
                 
                 $\bullet$ Phase d'attribution pour le fil $i$ :
 
-                \begin{pseudocode}
+                \begin{emphBox}
                     \texttt{attribution[$i$]} $\leftarrow$ \texttt{true}
 
                     $m \leftarrow \max(\mathtt{ticket})$
@@ -848,13 +922,13 @@ int pthread_join(pthread_t p, void** res)\end{lstlisting}
                     \texttt{ticket[$i$]} $\leftarrow m + 1$
 
                     \texttt{attribution[$i$]} $\leftarrow$ \texttt{false}
-                \end{pseudocode}
+                \end{emphBox}
 
                 \vspace{6pt}
                 
                 $\bullet$ Phase d'attente active pour le fil $i$ :
 
-                \begin{pseudocode}
+                \begin{emphBox}
                     \begin{indt}{Pour $i$ de 0 à $n - 1$ :}
                         \begin{indt}{Tant que \texttt{attribution[$j$]} est vrai :}
                             Attendre
@@ -866,15 +940,15 @@ int pthread_join(pthread_t p, void** res)\end{lstlisting}
                             Attendre
                         \end{indt}
                     \end{indt}
-                \end{pseudocode}
+                \end{emphBox}
 
                 \vspace{6pt}
                 
                 Sortie de section critique pour le fil $i$ :
 
-                \begin{pseudocode}
+                \begin{emphBox}
                     \texttt{ticket[$i$]} $\leftarrow 0$
-                \end{pseudocode}
+                \end{emphBox}
             \end{indt}
 
             \vspace{12pt}
@@ -884,9 +958,9 @@ int pthread_join(pthread_t p, void** res)\end{lstlisting}
 
                 $\bullet$ Lemme 1
 
-                \begin{pseudocode}
+                \begin{emphBox}
                     \textit{Lemme 1} : Si les fils $i$ et $j$ sont dans la boulangerie et si le fil $i$ y est entré avant que le fil $j$ exécute l'affectation \texttt{attribution[$j$] $\leftarrow$ true}, alors \texttt{ticket[$i$] < ticket[$j$]}.
-                \end{pseudocode}
+                \end{emphBox}
 
                 \begin{proof}
                     Lorsque le fil $j$ calcule $\max(\mathtt{ticket})$, \texttt{ticket[$i$]} contient déjà sa valeur courante (puisque $i$ est déjà dans la boulangerie).
@@ -900,13 +974,13 @@ int pthread_join(pthread_t p, void** res)\end{lstlisting}
                 
                 $\bullet$ Lemme 2
 
-                \begin{pseudocode}
+                \begin{emphBox}
                     \textit{Lemme 2} :
                     Si le fil $i$ est en section critique et le fil $j$ est dans le boulangerie avec $i \neq j$, alors
                     \[
                         (\mathtt{ticket}[i], i) < (\mathtt{ticket}[j], j)
                     \]
-                \end{pseudocode}
+                \end{emphBox}
 
                 \begin{proof}
                     On note $t_{\rm read}$ l'instant où le fil $i$ lit pour la dernière fois \texttt{attribution[$j$]} dans la phase d'attente, et $t_{\rm wait}$ l'instant auquel il exécute son dernier tour dans la seconde boucle d'attente concernant le fil $j$.
@@ -960,10 +1034,10 @@ int pthread_join(pthread_t p, void** res)\end{lstlisting}
                 
                 $\bullet$ Proposition
 
-                \begin{pseudocode}
+                \begin{emphBox}
                     \textit{Proposition} :
                     L'algorithme de la boulangerie garantit l'exclusion mutuelle.
-                \end{pseudocode}
+                \end{emphBox}
 
                 \vspace{6pt}
                 
@@ -988,10 +1062,10 @@ int pthread_join(pthread_t p, void** res)\end{lstlisting}
                 
                 $\bullet$ Proposition
 
-                \begin{pseudocode}
+                \begin{emphBox}
                     \textit{Proposition} :
                     L'algorithme de la boulangerie garantit le progrès de l'exécution.
-                \end{pseudocode}
+                \end{emphBox}
 
                 \vspace{12pt}
                 
@@ -1004,17 +1078,17 @@ int pthread_join(pthread_t p, void** res)\end{lstlisting}
 
                     Pour chaque fil $j$ que le fil $i$ considère dans la phase d'attente, on sait que \texttt{attribution[$j$]} vaut \texttt{false} ($j$ est soit en phase d'attente, soit ne souhaite pas entrer en section critique), et si $\mathtt{ticket}[j] \neq 0$, alors $j$ est en phase d'attente.
 
-                    Donc par définition de $i$, $(\mathtt{ticket}[i], i) \le (\mathtt{itcket}[j], j)$, donc $i$ ne peut pas être bloqué en phase d'attente : absurde.
+                    Donc par définition de $i$, $(\mathtt{ticket}[i], i) \le (\mathtt{ticket}[j], j)$, donc $i$ ne peut pas être bloqué en phase d'attente : absurde.
                 \end{proof}
 
                 \vspace{12pt}
                 
                 $\bullet$ Proposition :
 
-                \begin{pseudocode}
+                \begin{emphBox}
                     \textit{Proposition} :
                     l'algorithme de la boulangerie garantit un temps d'attente borné.
-                \end{pseudocode}
+                \end{emphBox}
 
                 \vspace{6pt}
                 
