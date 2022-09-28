@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2022.09.24
+% Last modification     :   2022.09.28
 %
 %------------------------------------------------------------------------
 
@@ -505,6 +505,8 @@
             \vspace{12pt}
             
             \begin{indt}{\subsubsection{Interblocage (\textit{deadlock}) et famine}}
+                \label{1.2.4}
+
                 Si la synchronisation des fils d'exécution n'est pas effectuée correctement, il peut y avoir plusieurs problèmes, dont :
 
                 \vspace{12pt}
@@ -1105,6 +1107,258 @@ int pthread_join(pthread_t p, void** res)\end{lstlisting}
 
                     Donc dans le pire cas, un fil donné devra attendre un passage de chaque fil en section critique avant de pouvoir y entrer
                 \end{proof}
+            \end{indt}
+        \end{indt}
+    \end{indt}
+
+    \vspace{12pt}
+    
+    \begin{indt}{\section{Outils techniques de synchronisation}}
+        \begin{indt}{\subsection{Mutex}}
+            \begin{indt}{\subsubsection{Introduction}}
+                Un \textit{mutex} (pour \textit{mutual exclusion}) est une primitive de haut niveau pour l'exclusion qui se présente sous la forme d'un verrou : un fil d'exécution souhaitant entrer en section critique doit le verrouiller, puis le déverrouiller en sortie de section critique.
+                Si le mutex est déjà verrouillé lorsqu'un fil tente de le verrouiller, il sera mis en attente.
+
+                \vspace{12pt}
+                
+                Remarque : on ne dit rien sur l'implémentation des mutex, qui fonctionnent comme une boite noire pour le programmeur. Les algorithmes de \textsc{Petersen} et de \textsc{Lamport} sont des implémentations possibles de mutex, même s'il existe des solutions matérielles plus efficaces.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Mutex en OCaml}}
+                \begin{indt}{Le module \texttt{Mutex} fournit les objets suivants :}
+                    $\bullet$ Le type \texttt{Mutex.t} des mutex ;
+
+                    $\bullet$ Une fonction \texttt{Mutex.create : unit -> Mutex.t} qui sert à créer un nouveau mutex ;
+
+                    $\bullet$ Une fonction \texttt{Mutex.lock : Mutex.t -> unit} qui verrouille un mutex donné.
+                    Si le mutex est déjà verrouillé, le fil appelant est interrompu ;
+
+                    $\bullet$ Une fonction \texttt{Mutex.unlock : Mutex.t -> unit} qui déverrouille un mutex donné.
+                    Important : le mutex doit être verrouillé, et c'est le fil appelant qui doit l'avoir verrouillé.
+                    Les fils qui ont été interrompus parce qu'ils ont essayé de verrouiller ce mutex sont réveillés pour qu'ils tentent à nouveau de le verrouiller.
+                \end{indt}
+
+                \vspace{12pt}
+                
+                Exemple : on reprend la situation de compétition pour l'incrémentation d'une variable commune.
+                Le fil d'exécution principal crée un mutex \texttt m, qu'il rend accessible aux fils secondaires.
+                Le corps de la boucle des fils secondaires devient :
+
+                \begin{lstlisting}[language=Caml, xleftmargin=80pt]
+Mutex.lock m;
+n := !n + 1;
+Mutex.unlock m;\end{lstlisting}
+
+                \textit{cf} les fichiers \texttt{no\_race\_mutex.ml} et \texttt{no\_race\_mutex\_more\_threads.ml}.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Mutex en C}}
+                \begin{indt}{L'en-tête \texttt{pthread.h} donne accès aux objets suivants :}
+                    $\bullet$ Le type \texttt{pthread\_mutex\_t} des mutex ;
+
+                    \begin{indt}{$\bullet$ H.P (oubli du programme) : un mutex doit être initialisé. Il y a deux options :}
+                        $-$ Au moment de la déclaration, on écrit une ligne de la forme
+                        \begin{lstlisting}[language=C, xleftmargin=120pt]
+pthread_mutex_t m = PTHREAD_MUTEX_INITIALIZER;\end{lstlisting}
+
+                        $-$ Après la déclaration sans initialisation, on utilise la fonction de prototype
+                        \begin{lstlisting}[language=C, xleftmargin=120pt]
+int pthread_mutex_init(pthread_mutex_t* lock, const pthread_mutex_attr_t* attr);\end{lstlisting}
+
+                        Le second paramètre est H.P, et la valeur \texttt{NULL} donne un comportement équivalent à l'initialisation directe.
+
+                        L'entier renvoyé est un code d'erreur ;
+                    \end{indt}
+
+                    \vspace{6pt}
+                    
+                    $\bullet$ Les fonctions de prototypes
+                    \begin{lstlisting}[language=C, xleftmargin=100pt]
+int pthread_mutex_lock(pthread_mutex_t* lock);
+int pthread_mutex_unlock(pthread_mutex_t* lock);\end{lstlisting}
+
+                    qui fonctionnent comme \texttt{Mutex.lock} et \texttt{Mutex.unlock} en OCaml.
+
+                    Les entiers renvoyés sont des codes d'erreur ;
+
+                    \vspace{6pt}
+                    
+                    $\bullet$ La fonction de prototype
+                    \begin{lstlisting}[language=C, xleftmargin=100pt]
+int pthread_mutex_destroy(pthread_mutex_t* lock);\end{lstlisting}
+
+                    qui sert à détruire le mutex, \textit{i.e} à le remettre dans un état non initialisé.
+
+                    L'entier renvoyé est un code d'erreur.
+                \end{indt}
+
+                \vspace{12pt}
+                
+                Remarque : le module \texttt{Mutex} d'OCaml est implémenté en utilisant ces fonctions.
+
+                Exemple : \textit{cf} \texttt{no\_race\_mutex.c} et \texttt{no\_race\_mutex\_more\_threads.c}.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Retour sur le problème du dîner des philosophes}}
+                On se propose d'essayer d'utiliser les mutex pour résoudre ce problème.
+
+                \begin{indt}{$\bullet$  Première tentative : on pourrait utiliser un mutex global concernant l'activité \texttt{manger}.}
+                    Code :
+
+                    $-$ Déclaration globale :
+
+                    \begin{lstlisting}[language=C, xleftmargin=100pt]
+pthread_mutex_t diner = PTHREAD_MUTEX_INITIALIZER;\end{lstlisting}
+
+                    $-$ Fonction exécutée par chaque philosophe :
+
+                    \newpage
+
+                    \begin{lstlisting}[language=C, xleftmargin=100pt]
+void* philosopher(void* args) {
+    int i = *((int*) args);
+    printf("Philosopher %d is starting\n", i);
+
+    while (true) {
+        printf("Philosopher %d is thinking\n", i);
+        pthread_mutex_lock(&diner);
+        printf("Philosopher %d is eating\n", i);
+        pthread_mutex_unlock(&diner);
+    }
+}\end{lstlisting}
+
+                    On n'oublie pas la destruction du mutex par le fil principal avant la fin de son exécution.
+
+                    \textit{cf} \texttt{philosopher\_0.c}
+                \end{indt}
+
+                \vspace{12pt}
+                
+                Problème : on n'exploite pas toutes les possibilités du modèle concurrent car on pourrait autoriser deux philosophes à manger en même temps.
+
+                \vspace{12pt}
+                
+                \begin{indt}{$\bullet$ Deuxième tentative :}
+                    Puisqu'on veut autoriser plusieurs philosophes à manger en même temps, il faut tenir compte de la disponibilité des baguettes.
+
+                    On utilise un tableau de booléens \texttt{stick[5]}, et le philosophe $i$ doit prendre les baguettes $i$ et $i + 1 \mod 5$ pour pouvoir manger.
+
+                    Pour éviter les situations de compétition, on protège les accès au tableau par un mutex.
+
+                    Code :
+
+                    $-$ Déclaration globale :
+
+                    \begin{lstlisting}[language=C, xleftmargin=100pt]
+bool stick[5] = {true};
+pthread_mutex_t array = PTHREAD_MUTEX_INITIALIZER;\end{lstlisting}
+
+                    $-$ Boucle du philosophe $i$ :
+
+                    \begin{lstlisting}[language=C, xleftmargin=100pt]
+while (true) {
+    printf("Philosopher %d is thinking\n", i);
+
+    pthread_mutex_lock(&array);
+
+    if (stick[i] && stick[(i + 1) % 5]) {
+        stick[i] = false;
+        stick[(i + 1) % 5] = false;
+        pthread_mutex_unlock(&array);
+
+        printf("Philosopher %d is eating\n", i);
+
+        //No race situation here even if access is not protected
+        stick[i] = true; 
+        stick[(i + 1) % 5] = true;
+    }
+    else
+        pthread_mutex_unlock(&array);
+}\end{lstlisting}
+
+                    \textit{cf} \texttt{philosopher\_1.c}
+                \end{indt}
+
+                \vspace{12pt}
+                
+                Problème : on reproduit de l'attente active, et il peut y avoir famine si un philosophe n'a pas de chance avec les interruptions entre ses tests.
+
+                \vspace{12pt}
+                
+                \begin{indt}{$\bullet$ Troisième tentative :}
+                    Pour éviter l'attente active, on décide d'utiliser un mutex par baguette : un philosophe souhaitant manger doit verrouiller les deux mutex correspondant à ses baguettes.
+                    L'attente active est remplacée par l'interruption jusqu'au déverrouillage du mutex.
+
+                    $-$ Déclaration globale : on suppose déclaré et initialisé un tableau :
+
+                    \begin{lstlisting}[language=C, xleftmargin=100pt]
+pthread_mutex_t stick[5];\end{lstlisting}
+
+                    $-$ Boucle du philosophe $i$ :
+
+                    \begin{lstlisting}[language=C, xleftmargin=100pt]
+while (true) {
+    printf("Philosopher %d is thinking\n", i);
+
+    pthread_mutex_lock(stick + i);
+    pthread_mutex_lock(stick + ((i + 1) % 5));
+
+    printf("Philosopher %d is eating", i);
+
+    pthread_mutex_unlock(stick + i);
+    pthread_mutex_unlock(stick + ((i + 1) % 5));
+}\end{lstlisting}
+
+                    \textit{cf} \texttt{philosopher\_2.c}
+                \end{indt}
+
+                \vspace{12pt}
+                
+                Problème : il peut y avoir interblocage si chaque philosophe détient une baguette (\textit{cf} \ref{1.2.4}, page \pageref{1.2.4}).
+
+                \vspace{12pt}
+                
+                Solution simple : on impose aux philosophes d'identifiant impair de verrouiller d'abord le mutex $(i + 1) \mod 5$.
+
+                Inconvénient : cela brise la symétrie entre les philosophes. On voudrait que chaque fil d'exécution exécute le même programme.
+
+                \vspace{12pt}
+                
+                \begin{indt}{$\bullet$ Autre idée :}
+                    Pour garder la symétrie, on pourrait limiter le nombre de philosophes autorisés à tenir une baguette simultanément.
+
+                    Question : pourquoi une limite égale à quatre convient-t-elle ?
+
+                    Il reste toujours un baguette libre pour l'un de ces quatre philosophes.
+
+                    \begin{center}
+                       \begin{tikzpicture}[scale=1.8]
+                           \foreach \i in {0, 1, ..., 4} {
+                               \node (\i) at (\i*72+90 : 1) [circle, draw] {\i};
+                               \draw (\i*72+90+36 : .5) to (\i*72+90+36 : 1.5);
+                           }
+
+                           %\draw[dashed] (1) -- (126 : 1);
+
+                           \foreach \i in {1, 2, 3, 4} {
+                               \draw[dashed] (\i) -- (\i*72+90+36 : 1);
+                           }
+
+                           %\node at (0, 0) {$\cdot$};
+                       \end{tikzpicture}
+                    \end{center}
+
+                    On a donc besoin d'un compteur sur le nombre de philosophes tenant une baguette, protégé par une section critique pour éviter les situations de compétition et qui soit bloquant pour un philosophe qui souhaite prendre une baguette alors que les quatre autres en tiennent une.
+                    C'est impossible sans attente active avec les mutex (même problème que la deuxième tentative).
+
+                    Une généralisation des mutex, appelée sémaphore, permet de gérer ce type de capteur sans attente active.
+                \end{indt}
             \end{indt}
         \end{indt}
     \end{indt}
