@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2022.09.28
+% Last modification     :   2022.09.29
 %
 %------------------------------------------------------------------------
 
@@ -1206,6 +1206,8 @@ int pthread_mutex_destroy(pthread_mutex_t* lock);\end{lstlisting}
             \vspace{12pt}
             
             \begin{indt}{\subsubsection{Retour sur le problème du dîner des philosophes}}
+                \label{3.1.4}
+
                 On se propose d'essayer d'utiliser les mutex pour résoudre ce problème.
 
                 \begin{indt}{$\bullet$  Première tentative : on pourrait utiliser un mutex global concernant l'activité \texttt{manger}.}
@@ -1359,6 +1361,227 @@ while (true) {
 
                     Une généralisation des mutex, appelée sémaphore, permet de gérer ce type de capteur sans attente active.
                 \end{indt}
+            \end{indt}
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Sémaphores}}
+            \begin{indt}{\subsubsection{Introduction}}
+                Conçus dans les années 1960 par \textsc{Dijkstra}, les sémaphores permettent de compter le nombre d'accès simultanés à une resource et de mettre en attente tout processus souhaitant accéder à la resource si le nombre maximal d'accès est atteint.
+
+                Le \emph{sémaphore} est une primitive de synchronisation de haut niveau dont l'implémentation peut varier selon les systèmes.
+
+                On distingue le sémaphore \emph{binaire}, qui ne permet qu'un accès à la resource et correspond donc au mutex, du sémaphore à \emph{compteur}, qui autorise plus d'accès simultanés.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Définition (\emph{sémaphore à compteur})}}
+                \label{3.2.2}
+
+                \begin{indt}{Un \emph{sémaphore à compteur} est une structure contenant :}
+                    $\bullet$ un compteur initialisé par l'utilisateur avec une valeur positive ;
+
+                    $\bullet$ une file d'attente pour les fils d'exécutions interrompus.
+                \end{indt}
+
+                \vspace{12pt}
+                
+                \begin{indt}{Cette structure doit venir avec des primitives de création, d'initialisation (parfois de destruction), et de manipulation du compteur :}
+                    $\bullet$ Une opération nommée P : si le compteur est strictement positif, il est décrémenté et le fil poursuit son exécution. Sinon, le fil est placé dans la file d'attente ;
+
+                    $\bullet$ Une opération nommée V : s'il existe un fil d'exécution dans la file d'attente, il est réveillé et poursuit son exécution (la ressource est devenue disponible pour ce fil).
+                    Sinon, le compteur est incrémenté.
+                \end{indt}
+
+                \vspace{12pt}
+                
+                Attention : on ne dit rien sur le fonctionnement de la file d'attente, même si un comportement proche de celui d'une file (de priorité) est désirable pour éviter les famines.
+
+                \vspace{12pt}
+                
+                Remarque : on explique souvent les noms P et V par les termes néerlandais \textit{proberen} (tester) et \textit{verhogen} (incrémenter), même s'il sont souvent remplacés par d'autres termes, comme \textit{wait} et \textit{signal} (\textit{cf} TD$_{36}$), ou \textit{pend} et \textit{post}.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Syntaxe de la manipulation  des sémaphores}}
+                Même s'il existe un module \texttt{Semaphore} en OCaml, contenant deux sous-modules pour les sémaphores binaires et à compteur, le programme limite la programmation avec les sémaphores au language C.
+
+                Le fichier d'en-tête \texttt{semaphore.h} donne accès aux primitives des sémaphores à compteur (qui généralisent les sémaphores binaires).
+
+                \vspace{12pt}
+                
+                \begin{indt}{L'en-tête donne accès aux objets suivants :}
+                    $\bullet$ Le type \texttt{sem\_t} des sémaphores ;
+
+                    $\bullet$ Une fonction de prototype
+                    \begin{lstlisting}[language=C, xleftmargin=100pt]
+int sem_init(sem_t* sem, int pshared, unigned value);\end{lstlisting}
+
+                    qui initialise le sémaphore \texttt{sem} avec la valeur ($\ge 0$) \texttt{value}.
+                    Dans notre cas, l'entier \texttt{pshared} vaudra toujours 0 pour signaler que le sémaphore est partagé entre les fils du processus (une valeur non nulle signale que le sémaphore est partagé entre plusieurs processus, c'est donc H.P).
+
+                    L'entier renvoyé est un code d'erreur ;
+
+                    $\bullet$ Une fonction de prototype
+                    \begin{lstlisting}[language=C, xleftmargin=100pt]
+int sem_destroy(sem_t* sum);\end{lstlisting}
+                    qui détruit un sémaphore dont la file d'attente est vide ;
+
+                    $\bullet$ Une fonction implémentant l'opération P, de prototype
+                    \begin{lstlisting}[language=C, xleftmargin=100pt]
+int sem_wait(sem_t* sem);\end{lstlisting}
+                    Différence avec \ref{3.2.2} : le compteur est toujours décrémenté, et le fil appelant est placé dans un fil d'attente si la nouvelle valeur du compteur est strictement négative ;
+
+                    $\bullet$ Une fonction implémentant l'opération V, de prototype
+                    \begin{lstlisting}[language=C, xleftmargin=100pt]
+int sem_post(sem_t* sem);\end{lstlisting}
+                    Différence avec \ref{3.2.2} : le compteur est toujours incrémenté, et il existe un fil en attente qui sera réveillé si et seulement si la nouvelle valeur du compteur est négative ou nulle.
+                \end{indt}
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Application : le dîner des philosophes}}
+                On revient à l'idée évoquée en \ref{3.1.4} (page \pageref{3.1.4}) : afin d'éviter les interblocages liés aux verrous pris simultanément sur les baguettes par tous les philosophes, on limite à l'aide d'un sémaphore le nombre de philosophes pouvant prendre un verrou à quatre.
+
+                \vspace{12pt}
+                
+                $\bullet$ Initialisation :
+
+                \begin{lstlisting}[language=C, xleftmargin=80pt]
+sem_t pick_up;
+sem_init(&pick_up, 0, 4);
+
+pthread_mutex_t stick[5];
+for (int k = 0 ; k < 5 ; k++) {
+    pthread_mutex_init(&stick[i], NULL);
+}\end{lstlisting}
+
+                $\bullet$ Boucle du philosophe $i$ :
+
+                \begin{lstlisting}[language=C, xleftmargin=80pt]
+while (true) {
+    printf("Philosopher %d is thinking\n", i);
+
+    sem_wait(&pick_up);
+    pthread_mutex_lock(stick + i);
+    pthread_mutex_lock(stick + ((i + 1) %5));
+
+    //Possible to put sem_post here
+
+    printf("Philosopher %d is eating\n", i);
+
+    pthread_mutex_unlock(stick + i);
+    pthread_mutex_unlock(stick + ((i + 1) %5));
+
+    sem_post(&pick_up);
+}\end{lstlisting}
+
+                Remarque : ce programme garantit l'absence d'interblocage, mais l'absence de famine dépend d'une gestion équitable de la file d'attente.
+
+                \vspace{12pt}
+                
+                \textit{cf} \texttt{philosopher\_sem.c}
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Application : producteurs-consommateurs}}
+                $\bullet$  Rappel : on a un buffer dans lequel les producteurs écrivent des données, et les consommateurs prennent ces données.
+
+                \begin{indt}{$\bullet$ Besoins :}
+                    $-$ Il faut garantir l'exclusion mutuelle pour l'accès au buffer ;
+
+                    $-$ un consommateur souhaitant prendre une donnée dans un buffer vide doit être mis en attente ;
+
+                    $-$ un producteur souhaitant écrire dans un buffer plein doit être mis en attente.
+                \end{indt}
+
+                \vspace{6pt}
+                
+                \begin{indt}{$\bullet$ Outils :}
+                    $-$ l'accès au buffer est protégé par un mutex \texttt{access} ;
+
+                    $-$ la mise en attente des consommateurs est assurée par un sémaphore \texttt{full} qui compte le nombre de cases occupées : u producteur souhaitant écrire une donnée dans le buffer incrémente ce sémaphore après écriture, et un consommateur souhaitant prendre une donnée décrémente ce sémaphore avant la lecture ;
+
+                    $-$ la mise en attente des producteurs est assurée par un sémaphore \texttt{empty} qui compte le nombre de cases vides : un producteur souhaitant écrire dans le buffer décrémente ce sémaphore avant l'écriture, et un consommateur souhaitant prendre une donnée incrémente ce compteur après la lecture.
+                \end{indt}
+
+                \vspace{6pt}
+                
+                $\bullet$ Code :
+
+                Boucle producteur $i$ :
+                \begin{lstlisting}[language=C, xleftmargin=80pt]
+sem_wait(&empty);
+pthread_mutex_lock(&acces);
+int k = rand() % 100;
+pritnf("producer %d is writing %d\n", i, k);
+add(k, buffer);
+pthread_mutex_unlock(&access);
+sem_post(&full);\end{lstlisting}
+
+                Boucle consommateur $i$ :
+                \begin{lstlisting}[language=C, xleftmargin=80pt]
+sem_wait(&full);
+pthread_mutex_lock(&access);
+int k = take(buffer);
+printf("consumer %d is reading %d\n", i, k);
+pthread_mutex_unlock(&access);
+sem_post(&empty);\end{lstlisting}
+
+                Remarque : un buffer est une file que l'on peut implémenter grâce à un structure contenant une liste chaînée et un pointeur vers le dernier élément de la liste (on ajoute en fin de liste et on extrait la tête) + un compteur pour vérifier la taille du buffer, ou bien à l'aide d'un tableau et de deux indices indiquant le début et la fin des données.
+
+                \begin{lstlisting}[language=C, xleftmargin=80pt]
+typedef struct {
+    int start;
+    int end;
+    int buffer[SIZE];
+} le_buffer_de_Gaspard;\end{lstlisting}
+
+                \textit{cf} \texttt{prod\_cons.c}
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Application : barrière de synchronisation}}
+                Une \emph{barrière de synchronisation} pour $n$ fils d'exécution permet de bloquer les fils sur un point de rendez-vous tant que les $n$ fils n'y sont pas tous arrivés.
+                Cela permet donc de resynchroniser des fils dont l'exécution ne progresse pas de la même façon.
+
+                Idée : on utilise un sémaphore initialisé à 0 que les $n - 1$ premiers arrivés à la barrière décrémentent. Le dernier fil constate qu'il est dernier et incrémente $n - 1$ fois le sémaphore pour relancer l'exécution de tous les fils.
+
+                Pour que le dernier fil sache qu'il est le dernier, on utilise un compteur de fil en attente protégé par un mutex.
+
+                \vspace{12pt}
+                
+                $\bullet$ Initialisation :
+                \begin{lstlisting}[language=C, xleftmargin=80pt]
+sem_t barrier;
+sem_init(&barrier, 0, 0);
+int waiting = 0;
+pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;\end{lstlisting}
+
+                $\bullet$ Arrivée sur la barrière :
+                \begin{lstlisting}[language=C, xleftmargin=80pt]
+pthread_mutex_lock(&lock);
+
+if (waiting < n - 1) {
+    waiting++;
+    pthread_mutex_unlock(&lock);
+    sem_wait(&barrier);
+}
+else {
+    for (int i = 0 ; i < n - 1 ; i++)
+        sem_post(&barrier);
+
+    waiting = 0;
+    pthread_mutex_unlock(&lock);
+}\end{lstlisting}
+
+                \textit{cf} \texttt{barrier.c}
             \end{indt}
         \end{indt}
     \end{indt}
