@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2022.09.29
+% Last modification     :   2022.10.01
 %
 %------------------------------------------------------------------------
 
@@ -634,12 +634,12 @@ int pthread_join(pthread_t p, void** res)\end{lstlisting}
                 La compilation d'un programme utilisant cette bibliothèque est de la forme :
 
                 \begin{center}
-                    \texttt{gcc -lpthread file.c - o prog}
+                    \texttt{gcc -lpthread file.c -o prog}
                 \end{center}
 
                 ou
                 \begin{center}
-                    \texttt{gcc -pthread file.c - o prog}
+                    \texttt{gcc -pthread file.c -o prog}
                 \end{center}
             \end{indt}
         \end{indt}
@@ -896,7 +896,7 @@ int pthread_join(pthread_t p, void** res)\end{lstlisting}
 
             \vspace{12pt}
             
-            \begin{indt}{\subsubsection{Algorithme de boulangerie}}
+            \begin{indt}{\subsubsection{Algorithme de la boulangerie}}
                 Le problème de la tentative précédente est qu'un fil peut être interrompu pendant la phase d'attribution, ce qui permet à des fils non prioritaires de passer devant.
                 L'idée de \textsc{Lamport} est d'ajouter une phase d'attente supplémentaire : un fil ne peut comparer un ticket avec celui d'un autre fil que si ce dernier n'est pas en cours d'attribution.
 
@@ -904,53 +904,92 @@ int pthread_join(pthread_t p, void** res)\end{lstlisting}
                 
                 On utilise un tableau de booléens indiquant pour chaque fil s'il est dans la phase d'attribution.
 
-                $\bullet$ Initialisation :
-
-                \begin{emphBox}
-                    \texttt{ticket} $\leftarrow$ tableau de taille $n$ contenant des 0
-
-                    \texttt{attribution} $\leftarrow$ tableau de taille $n$ contenant \texttt{false}
-                \end{emphBox}
-
                 \vspace{6pt}
                 
-                $\bullet$ Phase d'attribution pour le fil $i$ :
+                \begin{indalgo}{Boulangerie de \textsc{Lamport}}
+                    \tcp{Initialisation}
 
-                \begin{emphBox}
-                    \texttt{attribution[$i$]} $\leftarrow$ \texttt{true}
+                    \texttt{ticket} $\gets$ tableau de taille $n$ contenant des 0\;
+                    \texttt{attribution} $\gets$ tableau de taille $n$ contenant \texttt{false}\;
 
-                    $m \leftarrow \max(\mathtt{ticket})$
+                    \BlankLine
 
-                    \texttt{ticket[$i$]} $\leftarrow m + 1$
+                    \SetKwProg{Thread}{Thread}{:}{}
+                    \Thread{$i$}{
+                        \tcp{attribution}
 
-                    \texttt{attribution[$i$]} $\leftarrow$ \texttt{false}
-                \end{emphBox}
+                        \texttt{attribution[$i$]} $\gets$ \texttt{true}\;
+                        $m \gets \max(\mathtt{ticket})$\;
+                        \texttt{ticket[$i$]} $\gets m + 1$\;
+                        \texttt{attribution[$i$]} $\gets$ \texttt{false}\;
 
-                \vspace{6pt}
-                
-                $\bullet$ Phase d'attente active pour le fil $i$ :
+                        \BlankLine
 
-                \begin{emphBox}
-                    \begin{indt}{Pour $i$ de 0 à $n - 1$ :}
-                        \begin{indt}{Tant que \texttt{attribution[$j$]} est vrai :}
-                            Attendre
-                        \end{indt}
+                        \tcp{Active waiting}
 
-                        \vspace{6pt}
-                        
-                        \begin{indt}{Tant que \texttt{ticket[$j$] != 0} et (\texttt{ticket[$j$]}, $j$) $<$ (\texttt{ticket[$i$]}, $i$)}
-                            Attendre
-                        \end{indt}
-                    \end{indt}
-                \end{emphBox}
+                        \For{$j = 0$ \KwTo $n - 1$}{
+                            \While{\texttt{attribution[$j$]}}{
+                                Wait\;
+                            }
 
-                \vspace{6pt}
-                
-                Sortie de section critique pour le fil $i$ :
+                            \While{\texttt{ticket[$j$] != 0} \KwSty{and} (\texttt{ticket[$j$], $j$}) $<$ (\texttt{ticket[$i$], $i$})}{
+                                Wait\;
+                            }
+                        }
 
-                \begin{emphBox}
-                    \texttt{ticket[$i$]} $\leftarrow 0$
-                \end{emphBox}
+                        \tcp{Critical section}
+
+                        \texttt{ticket[$i$]} $\gets 0$\;
+                    }
+                \end{indalgo}
+
+                % $\bullet$ Initialisation :
+
+                % \begin{emphBox}
+                %     \texttt{ticket} $\leftarrow$ tableau de taille $n$ contenant des 0
+
+                %     \texttt{attribution} $\leftarrow$ tableau de taille $n$ contenant \texttt{false}
+                % \end{emphBox}
+
+                % \vspace{6pt}
+                % 
+                % $\bullet$ Phase d'attribution pour le fil $i$ :
+
+                % \begin{emphBox}
+                %     \texttt{attribution[$i$]} $\leftarrow$ \texttt{true}
+
+                %     $m \leftarrow \max(\mathtt{ticket})$
+
+                %     \texttt{ticket[$i$]} $\leftarrow m + 1$
+
+                %     \texttt{attribution[$i$]} $\leftarrow$ \texttt{false}
+                % \end{emphBox}
+
+                % \vspace{6pt}
+                % 
+                % $\bullet$ Phase d'attente active pour le fil $i$ :
+
+                % \begin{emphBox}
+                %     \begin{indt}{Pour $i$ de 0 à $n - 1$ :}
+                %         \begin{indt}{Tant que \texttt{attribution[$j$]} est vrai :}
+                %             Attendre
+                %         \end{indt}
+
+                %         \vspace{6pt}
+                %         
+                %         \begin{indt}{Tant que \texttt{ticket[$j$] != 0} et (\texttt{ticket[$j$]}, $j$) $<$ (\texttt{ticket[$i$]}, $i$)}
+                %             Attendre
+                %         \end{indt}
+                %     \end{indt}
+                % \end{emphBox}
+
+                % \vspace{6pt}
+                % 
+                % Sortie de section critique pour le fil $i$ :
+
+                % \begin{emphBox}
+                %     \texttt{ticket[$i$]} $\leftarrow 0$
+                % \end{emphBox}
             \end{indt}
 
             \vspace{12pt}
@@ -978,7 +1017,7 @@ int pthread_join(pthread_t p, void** res)\end{lstlisting}
 
                 \begin{emphBox}
                     \textit{Lemme 2} :
-                    Si le fil $i$ est en section critique et le fil $j$ est dans le boulangerie avec $i \neq j$, alors
+                    Si le fil $i$ est en section critique et le fil $j$ est dans la boulangerie avec $i \neq j$, alors
                     \[
                         (\mathtt{ticket}[i], i) < (\mathtt{ticket}[j], j)
                     \]
@@ -1074,7 +1113,7 @@ int pthread_join(pthread_t p, void** res)\end{lstlisting}
                 \begin{proof}
                     Par l'absurde, on suppose qu'au moins un fil souhaite entrer en section critique, que la section critique est libre, et qu'on peut retarder indéfiniment l'entrée d'un fil en section critique.
 
-                    Comme la phase d'attribution n'est pas bloquante, à un moment tous les fils seront soit dans la phase d'attente, soit ne souhaiterons pas entrer en section critique.
+                    Comme la phase d'attribution n'est pas bloquante, à un moment tous les fils seront soit dans la phase d'attente, soit ne souhaiteront pas entrer en section critique.
 
                     Il y a au moins un fil en phase d'attente, donc on peut considérer le fil $i$ en attente qui minimise $(\mathtt{ticket}[i], i)$ (car l'ordre lexicographique est bien fondé).
 
@@ -1085,7 +1124,7 @@ int pthread_join(pthread_t p, void** res)\end{lstlisting}
 
                 \vspace{12pt}
                 
-                $\bullet$ Proposition :
+                $\bullet$ Proposition
 
                 \begin{emphBox}
                     \textit{Proposition} :
@@ -1101,7 +1140,7 @@ int pthread_join(pthread_t p, void** res)\end{lstlisting}
 
                     Si $j$ commence sa phase d'exécution après l'entrée de $i$ dans la boulangerie, le lemme 1 assure $\mathtt{ticket}[i] < \mathtt{ticket}[j]$, donc le fil $i$ passera avant $j$ en section critique.
 
-                    Sinon deux possibilités : $i$ passe avant $j$ en section critique, soit $j$ passe avant $i$.
+                    Sinon deux possibilités : soit $i$ passe avant $j$ en section critique, soit $j$ passe avant $i$.
 
                     Dans ce dernier cas, si le fil $j$ souhaite revenir en section critique, il devra commencer une nouvelle phase d'attribution, et le lemme 1 garantit que $i$ entrera en section critique avant le second passage de $j$.
 
@@ -1116,7 +1155,7 @@ int pthread_join(pthread_t p, void** res)\end{lstlisting}
     \begin{indt}{\section{Outils techniques de synchronisation}}
         \begin{indt}{\subsection{Mutex}}
             \begin{indt}{\subsubsection{Introduction}}
-                Un \textit{mutex} (pour \textit{mutual exclusion}) est une primitive de haut niveau pour l'exclusion qui se présente sous la forme d'un verrou : un fil d'exécution souhaitant entrer en section critique doit le verrouiller, puis le déverrouiller en sortie de section critique.
+                Un \emph{mutex} (pour \textit{mutual exclusion}) est une primitive de haut niveau pour l'exclusion qui se présente sous la forme d'un verrou : un fil d'exécution souhaitant entrer en section critique doit le verrouiller, puis le déverrouiller en sortie de section critique.
                 Si le mutex est déjà verrouillé lorsqu'un fil tente de le verrouiller, il sera mis en attente.
 
                 \vspace{12pt}
@@ -1340,7 +1379,7 @@ while (true) {
                     Il reste toujours un baguette libre pour l'un de ces quatre philosophes.
 
                     \begin{center}
-                       \begin{tikzpicture}[scale=1.8]
+                       \begin{tikzpicture}[scale=1.4]
                            \foreach \i in {0, 1, ..., 4} {
                                \node (\i) at (\i*72+90 : 1) [circle, draw] {\i};
                                \draw (\i*72+90+36 : .5) to (\i*72+90+36 : 1.5);
@@ -1416,6 +1455,8 @@ while (true) {
                 \begin{indt}{L'en-tête donne accès aux objets suivants :}
                     $\bullet$ Le type \texttt{sem\_t} des sémaphores ;
 
+                    \vspace{6pt}
+                    
                     $\bullet$ Une fonction de prototype
                     \begin{lstlisting}[language=C, xleftmargin=100pt]
 int sem_init(sem_t* sem, int pshared, unigned value);\end{lstlisting}
@@ -1425,16 +1466,22 @@ int sem_init(sem_t* sem, int pshared, unigned value);\end{lstlisting}
 
                     L'entier renvoyé est un code d'erreur ;
 
+                    \vspace{6pt}
+                    
                     $\bullet$ Une fonction de prototype
                     \begin{lstlisting}[language=C, xleftmargin=100pt]
 int sem_destroy(sem_t* sum);\end{lstlisting}
                     qui détruit un sémaphore dont la file d'attente est vide ;
 
+                    \vspace{6pt}
+                    
                     $\bullet$ Une fonction implémentant l'opération P, de prototype
                     \begin{lstlisting}[language=C, xleftmargin=100pt]
 int sem_wait(sem_t* sem);\end{lstlisting}
                     Différence avec \ref{3.2.2} : le compteur est toujours décrémenté, et le fil appelant est placé dans un fil d'attente si la nouvelle valeur du compteur est strictement négative ;
 
+                    \vspace{6pt}
+                    
                     $\bullet$ Une fonction implémentant l'opération V, de prototype
                     \begin{lstlisting}[language=C, xleftmargin=100pt]
 int sem_post(sem_t* sem);\end{lstlisting}
@@ -1492,6 +1539,8 @@ while (true) {
             \begin{indt}{\subsubsection{Application : producteurs-consommateurs}}
                 $\bullet$  Rappel : on a un buffer dans lequel les producteurs écrivent des données, et les consommateurs prennent ces données.
 
+                \vspace{6pt}
+                
                 \begin{indt}{$\bullet$ Besoins :}
                     $-$ Il faut garantir l'exclusion mutuelle pour l'accès au buffer ;
 
@@ -1505,7 +1554,7 @@ while (true) {
                 \begin{indt}{$\bullet$ Outils :}
                     $-$ l'accès au buffer est protégé par un mutex \texttt{access} ;
 
-                    $-$ la mise en attente des consommateurs est assurée par un sémaphore \texttt{full} qui compte le nombre de cases occupées : u producteur souhaitant écrire une donnée dans le buffer incrémente ce sémaphore après écriture, et un consommateur souhaitant prendre une donnée décrémente ce sémaphore avant la lecture ;
+                    $-$ la mise en attente des consommateurs est assurée par un sémaphore \texttt{full} qui compte le nombre de cases occupées : un producteur souhaitant écrire une donnée dans le buffer incrémente ce sémaphore après écriture, et un consommateur souhaitant prendre une donnée décrémente ce sémaphore avant la lecture ;
 
                     $-$ la mise en attente des producteurs est assurée par un sémaphore \texttt{empty} qui compte le nombre de cases vides : un producteur souhaitant écrire dans le buffer décrémente ce sémaphore avant l'écriture, et un consommateur souhaitant prendre une donnée incrémente ce compteur après la lecture.
                 \end{indt}
@@ -1517,9 +1566,9 @@ while (true) {
                 Boucle producteur $i$ :
                 \begin{lstlisting}[language=C, xleftmargin=80pt]
 sem_wait(&empty);
-pthread_mutex_lock(&acces);
+pthread_mutex_lock(&access);
 int k = rand() % 100;
-pritnf("producer %d is writing %d\n", i, k);
+printf("producer %d is writing %d\n", i, k);
 add(k, buffer);
 pthread_mutex_unlock(&access);
 sem_post(&full);\end{lstlisting}
