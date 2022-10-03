@@ -485,7 +485,7 @@
                 Un fil principal est chargé de créer deux fils secondaires qui exécutent la boucle.
                 Il doit attendre la terminaison des fils secondaires (opération \texttt{join}) avant de s'arrêter pour éviter une interruption prématurée du programme.
 
-                Dans un cas comme celui-ci, on peut résoudre le problème en imposant \textit{l'atomicité} du corps de la boucle. Un ensemble d'instructions est \textit{atomique} si le système ne peut pas interrompre leur exécution. Ici, on ne voit pas d'interruption entre la lecture et l'écriture.
+                Dans un cas comme celui-ci, on peut résoudre le problème en imposant \textit{l'atomicité} du corps de la boucle. Un ensemble d'instructions est \textit{atomique} si le système ne peut pas interrompre leur exécution. Ici, on ne veut pas d'interruption entre la lecture et l'écriture.
             \end{indt}
 
             \vspace{12pt}
@@ -555,7 +555,7 @@
             \begin{indt}{\subsubsection{Remarque}}
                 Nous allons voir plusieurs outils de synchronisation permettant l'établissement de sections critiques.
                 \begin{indt}{Ces outils peuvent être de plusieurs natures :}
-                    $\bullet$ Algorithmique : nous verrons deux algorithmes permettant de travailler avec deux fils d'exécution (algorithme de \textsc{Petersen}) ou plus (algorithme de la boulangerie de \textsc{Lamport})
+                    $\bullet$ Algorithmique : nous verrons deux algorithmes permettant de travailler avec deux fils d'exécution (algorithme de \textsc{Peterson}) ou plus (algorithme de la boulangerie de \textsc{Lamport})
 
                     Ces algorithmes nécessitent une attente active des fils d'exécution : ils bouclent en ne faisant rien en attendant la réalisation d'une condition.
 
@@ -648,7 +648,7 @@ int pthread_join(pthread_t p, void** res)\end{lstlisting}
     \vspace{12pt}
     
     \begin{indt}{\section{Outils algorithmiques de synchronisation}}
-        \begin{indt}{\subsection{Algorithme de \textsc{Petersen}}}
+        \begin{indt}{\subsection{Algorithme de \textsc{Peterson}}}
             \begin{indt}{\subsubsection{Introduction}}
                 Conçut en 1981, cet algorithme permet l'établissement d'une section critique garantissant l'exclusion mutuelle, l'absence de famine et l'absence d'interblocage.
 
@@ -664,7 +664,7 @@ int pthread_join(pthread_t p, void** res)\end{lstlisting}
                 Un fil souhaitant entrer en section critique attend que l'autre n'y soit plus puis met son booléen à jour.
                 En sortie de section critique, un fil doit mettre son booléen à jour.
 
-                \textit{cf} \texttt{petersen\_0.c}.
+                \textit{cf} \texttt{peterson\_0.c}.
 
                 \vspace{6pt}
                 
@@ -676,7 +676,7 @@ int pthread_join(pthread_t p, void** res)\end{lstlisting}
             \begin{indt}{\subsubsection{Deuxième tentative}}
                 Le problème de la première version vient du fait que la mise à jour du booléen est trop tardive. On pourrait plutôt signaler la volonté d'entrer en section critique : le booléen est mis à jour avant l'attente et un fil souhaitant entrer en section critique attend que l'autre fil ne veuille plus y être.
 
-                \textit{cf} \texttt{petersen\_1.c}
+                \textit{cf} \texttt{peterson\_1.c}
 
                 \vspace{6pt}
                 
@@ -689,7 +689,7 @@ int pthread_join(pthread_t p, void** res)\end{lstlisting}
                 On utilise plutôt une variable indiquant quel fil d'exécution peut entrer en section critique.
                 Lorsqu'un fil quitte la section critique, il indique que c'est au tour de l'autre fil.
 
-                \textit{cf} \texttt{petersen\_2.c}.
+                \textit{cf} \texttt{peterson\_2.c}.
 
                 \vspace{6pt}
                 
@@ -698,10 +698,10 @@ int pthread_join(pthread_t p, void** res)\end{lstlisting}
 
             \vspace{12pt}
             
-            \begin{indt}{\subsubsection{Algorithme de \textsc{Petersen}}}
+            \begin{indt}{\subsubsection{Algorithme de \textsc{Peterson}}}
                 On combine les deux dernières tentatives : un fil peut entrer en section critique si c'est à son tour ou si l'autre fil ne souhaite pas entrer en section critique.
 
-                \textit{cf} \texttt{petersen\_final.c}
+                \textit{cf} \texttt{peterson\_final.c}
 
                 Pseudo code :
 
@@ -733,7 +733,7 @@ int pthread_join(pthread_t p, void** res)\end{lstlisting}
 %                     \end{indt}
 %                 \end{emphBox}
     
-                \begin{indalgo}{\textsc{Petersen}}
+                \begin{indalgo}{\textsc{Peterson}}
                     \texttt{turn} $\gets 0$\;
                     \texttt{want} $\gets$ \texttt{[false, false]}\;
 
@@ -757,7 +757,7 @@ int pthread_join(pthread_t p, void** res)\end{lstlisting}
 
                 \vspace{12pt}
                 
-                $\bullet$ Proposition : l'algorithme de \textsc{Petersen} garantit l'exclusion mutuelle.
+                $\bullet$ Proposition : l'algorithme de \textsc{Peterson} garantit l'exclusion mutuelle.
 
                 \begin{proof}
                     Par l'absurde, supposons que les fils 0 et 1 sont en section critique.
@@ -773,7 +773,7 @@ int pthread_join(pthread_t p, void** res)\end{lstlisting}
 
                 \vspace{12pt}
                 
-                $\bullet$ Proposition : l'algorithme de \textsc{Petersen} garantit le progrès de l'exécution et le temps d'attente borné pour les fils d'exécution.
+                $\bullet$ Proposition : l'algorithme de \textsc{Peterson} garantit le progrès de l'exécution et le temps d'attente borné pour les fils d'exécution.
 
                 \begin{proof}
                     Supposons que le fil 0 veuille entrer en section critique.
@@ -1160,7 +1160,7 @@ int pthread_join(pthread_t p, void** res)\end{lstlisting}
 
                 \vspace{12pt}
                 
-                Remarque : on ne dit rien sur l'implémentation des mutex, qui fonctionnent comme une boite noire pour le programmeur. Les algorithmes de \textsc{Petersen} et de \textsc{Lamport} sont des implémentations possibles de mutex, même s'il existe des solutions matérielles plus efficaces.
+                Remarque : on ne dit rien sur l'implémentation des mutex, qui fonctionnent comme une boite noire pour le programmeur. Les algorithmes de \textsc{Peterson} et de \textsc{Lamport} sont des implémentations possibles de mutex, même s'il existe des solutions matérielles plus efficaces.
             \end{indt}
 
             \vspace{12pt}
