@@ -1832,17 +1832,17 @@ element* kruskal(graphe g, int n) {
                     \[
                         \abs{M'} = \abs{M \setminus E} + \abs{E \setminus M} = \abs{M} + 1
                     \]
-                    ($\abs{E \setminus M} = \abs{E \cap E} + 1$ d'après \ref{3.1.5}, page \pageref{3.1.5})
+                    ($\abs{E \setminus M} = \abs{E \cap M} + 1$ d'après \ref{3.1.5}, page \pageref{3.1.5})
 
                     Il reste à montrer que $M'$ est un couplage.
 
-                    Soit $s \in S$, montrons qu'il existe au plus une arête $a \in M'\ |\ s \ ina$.
+                    Soit $s \in S$, montrons qu'il existe au plus une arête $a \in M'\ |\ s \in a$.
 
                     Si $s \notin \set{s_0, \ldots, s_n}$, alors il existe au plus une arête $a \in M\ |\ s \in a$, et $s \notin a'\ \forall a' \in E$ : ok.
 
                     Si $s \in \set{s_0, s_n}$, alors $s$ est libre pour $M$, et il existe une unique arête de $E$ qui contient $s$ ($\set{s_0, s_1}$) ou $\set{s_{n - 1}, s_n}$ : ok.
 
-                    Si $s \in \set{s_0, \ldots, s_{n - 1}},\ \exists i \in \nset 1 {n - 1}\ |\ s_n s_i$
+                    Si $s \in \set{s_1, \ldots, s_{n - 1}},\ \exists i \in \nset 1 {n - 1}\ |\ s = s_i$
 
                     $s$ appartient à une unique arête de $M \cap E$ (soit $\set{s_{i - 1}, s_i}$, soit $\set{s_i, s_{i + 1}}$) qui est remplacée dans $M'$ par l'unique arête de $E \setminus M$ incidente à $s$ (soit $\set{s_i, s_{i + 1}}$, soit $\set{s_{i - 1}, s_i}$).
 
