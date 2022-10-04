@@ -1,0 +1,796 @@
+\documentclass[a4paper, 12pt, twoside]{article}
+
+
+%------------------------------------------------------------------------
+%
+% Author                :   Lasercata
+% Last modification     :   2022.10.04
+%
+%------------------------------------------------------------------------
+
+
+%------ini
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+%\usepackage[english]{babel}
+
+
+%------geometry
+\usepackage[textheight=700pt, textwidth=500pt]{geometry}
+
+
+%------color
+\usepackage{xcolor}
+\definecolor{ff4500}{HTML}{ff4500}
+\definecolor{00f}{HTML}{0000ff}
+\definecolor{0ff}{HTML}{00ffff}
+\definecolor{656565}{HTML}{656565}
+
+%\renewcommand{\emph}{\textcolor{ff4500}}
+%\renewcommand{\em}{\color{ff4500}}
+
+\newcommand{\Emph}{\textcolor{ff4500}}
+
+\newcommand{\strong}[1]{\textcolor{ff4500}{\bf #1}}
+\newcommand{\st}{\color{ff4500}\bf}
+
+
+%------Code highlighting
+%---listings
+\usepackage{listings}
+
+\definecolor{cbg}{HTML}{272822}
+\definecolor{cfg}{HTML}{ececec}
+\definecolor{ccomment}{HTML}{686c58}
+\definecolor{ckw}{HTML}{f92672}
+\definecolor{cstring}{HTML}{e6db72}
+\definecolor{cstringlight}{HTML}{98980f}
+\definecolor{lightwhite}{HTML}{fafafa}
+
+\lstdefinestyle{DarkCodeStyle}{
+    backgroundcolor=\color{cbg},
+    commentstyle=\itshape\color{ccomment},
+    keywordstyle=\color{ckw},
+    numberstyle=\tiny\color{cbg},
+    stringstyle=\color{cstring},
+    basicstyle=\ttfamily\footnotesize\color{cfg},
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=4,
+    xleftmargin=\leftskip
+}
+
+\lstdefinestyle{LightCodeStyle}{
+    backgroundcolor=\color{lightwhite},
+    commentstyle=\itshape\color{ccomment},
+    keywordstyle=\color{ckw},
+    numberstyle=\tiny\color{cbg},
+    stringstyle=\color{cstringlight},
+    basicstyle=\ttfamily\footnotesize\color{cbg},
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=10pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=4,
+    frame=L,
+    xleftmargin=\leftskip
+}
+
+%\lstset{style=DarkCodeStyle}
+\lstset{style=LightCodeStyle}
+%Usage : \begin{lstlisting}[language=Caml, xleftmargin=xpt] ... \end{lstlisting}
+
+
+%---Algorithm
+\usepackage[linesnumbered,ruled,vlined]{algorithm2e}
+\SetKwInput{KwInput}{Input}
+\SetKwInput{KwOutput}{Output}
+
+\SetKwProg{Fn}{Function}{:}{}
+\SetKw{KwPrint}{Print}
+
+\newcommand\commfont[1]{\textit{\texttt{\textcolor{656565}{#1}}}}
+\SetCommentSty{commfont}
+\SetProgSty{texttt}
+\SetArgSty{textnormal}
+\SetFuncArgSty{textnormal}
+%\SetProgArgSty{texttt}
+
+\newenvironment{indalgo}[2][H]{
+    \begin{minipage}{\linewidth-\leftskip-5pt}
+        \begin{algorithm}[#1]
+            \caption{#2}
+}
+{
+        \end{algorithm}
+    \end{minipage}
+}
+
+
+%---tcolorbox
+\usepackage[many]{tcolorbox}
+\DeclareTColorBox{emphBox}{O{black}O{lightwhite}}{
+    breakable,
+    outer arc=0pt,
+    arc=0pt,
+    top=0pt,
+    toprule=-.5pt,
+    right=0pt,
+    rightrule=-.5pt,
+    bottom=0pt,
+    bottomrule=-.5pt,
+    colframe=#1,
+    colback=#2,
+    enlarge left by=10pt,
+    width=\linewidth-\leftskip-10pt,
+}
+
+
+%-------make the table of content clickable
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=black
+}
+
+
+%------pictures
+\usepackage{graphicx}
+%\usepackage{wrapfig}
+
+\usepackage{tikz}
+%\usetikzlibrary{babel}             %Uncomment this to use circuitikz
+%\usetikzlibrary{shapes.geometric}  % To draw triangles in trees
+%\usepackage{circuitikz}            %Electrical circuits drawing
+\usetikzlibrary{automata}
+
+
+%------tabular
+%\usepackage{color}
+%\usepackage{colortbl}
+%\usepackage{multirow}
+
+
+%------Physics
+%---Packages
+%\usepackage[version=4]{mhchem} %$\ce{NO4^2-}$
+
+%---Commands
+\newcommand{\link}[2]{\mathrm{#1} \! - \! \mathrm{#2}}
+\newcommand{\pt}[1]{\cdot 10^{#1}} % Power of ten
+\newcommand{\dt}[2][t]{\dfrac{\mathrm d #2}{\mathrm d #1}} % Derivative
+
+
+%------math
+%---Packages
+%\usepackage{textcomp}
+%\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools} % For abs
+\usepackage{stmaryrd} %for \llbracket and \rrbracket
+\usepackage{mathrsfs} %for \mathscr{x} (different from \mathcal{x})
+
+%---Commands
+%-Sets
+\newcommand{\N}{\mathbb{N}} %set N
+\newcommand{\Z}{\mathbb{Z}} %set Z
+\newcommand{\Q}{\mathbb{Q}} %set Q
+\newcommand{\R}{\mathbb{R}} %set R
+\newcommand{\C}{\mathbb{C}} %set C
+\newcommand{\U}{\mathbb{U}} %set U
+\newcommand{\seg}[2]{\left[ #1\ ;\ #2 \right]}
+\newcommand{\nset}[2]{\left\llbracket #1\ ;\ #2 \right\rrbracket}
+
+%-Exponantial / complexs
+\newcommand{\e}{\mathrm{e}}
+\newcommand{\cj}[1]{\overline{#1}} %overline for the conjugate.
+
+%-Vectors
+\newcommand{\vect}{\overrightarrow}
+\newcommand{\veco}[3]{\displaystyle \vect{#1}\binom{#2}{#3}} %vector + coord
+
+%-Limits
+\newcommand{\lm}[2][{}]{\lim\limits_{\substack{#2 \\ #1}}} %$\lm{x \to a} f$ or $\lm[x < a]{x \to a} f$
+\newcommand{\Lm}[3][{}]{\lm[#1]{#2} \left( #3 \right)} %$\Lm{x \to a}{f}$ or $\Lm[x < a]{x \to a}{f}$
+\newcommand{\tendsto}[1]{\xrightarrow[#1]{}}
+
+%-Integral
+\newcommand{\dint}[4][x]{\displaystyle \int_{#2}^{#3} #4 \mathrm{d} #1} %$\dint{a}{b}{f(x)}$ or $\dint[t]{a}{b}{f(t)}$
+
+%-left right
+\newcommand{\lr}[1]{\left( #1 \right)}
+\newcommand{\lrb}[1]{\left[ #1 \right]}
+\newcommand{\lrbb}[1]{\left\llbracket #1 \right\rrbracket}
+\newcommand{\set}[1]{\left\{ #1 \right\}}
+\newcommand{\abs}[1]{\left\lvert #1 \right\rvert}
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
+\newcommand{\lrangle}[1]{\left\langle #1 \right\rangle}
+
+%-Others
+\newcommand{\para}{\ /\!/\ } %//
+\newcommand{\ssi}{\ \Leftrightarrow \ }
+\newcommand{\eqsys}[2]{\begin{cases} #1 \\ #2 \end{cases}}
+
+\newcommand{\med}[2]{\mathrm{med} \left[ #1\ ;\ #2 \right]}  %$\med{A}{B} -> med[A ; B]$
+\newcommand{\Circ}[2]{\mathscr{C}_{#1, #2}}
+
+\renewcommand{\le}{\leqslant}
+\renewcommand{\ge}{\geqslant}
+
+\newcommand{\oboxed}[1]{\textcolor{ff4500}{\boxed{\textcolor{black}{#1}}}} %orange boxed
+
+
+%------commands
+%---to quote
+\newcommand{\simplecit}[1]{\guillemotleft$\;$#1$\;$\guillemotright}
+\newcommand{\cit}[1]{\simplecit{\textcolor{656565}{#1}}}
+\newcommand{\quo}[1]{\cit{\it #1}}
+
+%---to indent
+\newcommand{\ind}[1][20pt]{\advance\leftskip + #1}
+\newcommand{\deind}[1][20pt]{\advance\leftskip - #1}
+
+%---to indent a text
+\newcommand{\indented}[2][20pt]{\par \ind[#1] #2 \par \deind[#1]}
+\newenvironment{indt}[2][20pt]{#2 \par \ind[#1]}{\par \deind} %Titled indented env
+
+%---title
+\newcommand{\thetitle}[2]{\begin{center}\textbf{{\LARGE \underline{\Emph{#1} :}} {\Large #2}}\end{center}}
+
+%---Maths environments
+%-Proofs
+\newenvironment{proof}[1][{}]{\begin{indt}{$\square$ #1}}{$\blacksquare$ \end{indt}}
+
+%-Maths parts (proposition, definition, ...)
+\newenvironment{mathpart}[1]{\begin{indt}{\boxed{\text{\textbf{#1}}}}}{\end{indt}}
+\newenvironment{mathbox}[1]{\boxed{\text{\textbf{#1}}}\begin{emphBox}}{\end{emphBox}}
+\newenvironment{mathul}[1]{\begin{indt}{\underline{\textbf{#1}}}}{\end{indt}}
+
+\newenvironment{theo}{\begin{mathpart}{Théorème}}{\end{mathpart}}
+\newenvironment{Theo}{\begin{mathbox}{Théorème}}{\end{mathbox}}
+
+\newenvironment{prop}{\begin{mathpart}{Proposition}}{\end{mathpart}}
+\newenvironment{Prop}{\begin{mathbox}{Proposition}}{\end{mathbox}}
+\newenvironment{props}{\begin{mathpart}{Propriétés}}{\end{mathpart}}
+
+\newenvironment{defi}{\begin{mathpart}{Définition}}{\end{mathpart}}
+\newenvironment{meth}{\begin{mathpart}{Méthode}}{\end{mathpart}}
+
+\newenvironment{Rq}{\begin{mathul}{Remarque :}}{\end{mathul}}
+\newenvironment{Rqs}{\begin{mathul}{Remarques :}}{\end{mathul}}
+
+\newenvironment{Ex}{\begin{mathul}{Exemple :}}{\end{mathul}}
+\newenvironment{Exs}{\begin{mathul}{Exemples :}}{\end{mathul}}
+
+
+%------Sections
+% To change section numbering :
+% \renewcommand\thesection{\Roman{section}}
+% \renewcommand\thesubsection{\arabic{subsection})}
+% \renewcommand\thesubsubsection{\textit \alph{subsubsection})}
+
+% To start numbering from 0
+% \setcounter{section}{-1}
+
+
+%------page style
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+
+\setlength{\headheight}{18pt}
+\setlength{\footskip}{50pt}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE, RO]{\textit{\textcolor{black}{\today}}}
+\fancyhead[RE, LO]{\large{\textsl{\Emph{\texttt{\jobname}}}}}
+
+\fancyfoot[RO, LE]{\textit{\texttt{\textcolor{black}{Page \thepage /}\pageref{LastPage}}}}
+\fancyfoot[LO, RE]{\includegraphics[scale=0.12]{/home/lasercata/Pictures/1.images_profil/logo/mieux/lasercata_logo_fly_fond_blanc.png}}
+
+
+%------init lengths
+\setlength{\parindent}{0pt} %To avoid using \noindent everywhere.
+\setlength{\parskip}{3pt}
+
+%---------Specific to this file
+\newcommand{\Reg}{\mathsf{Reg}}
+\newcommand{\Regexp}{\mathsf{Regexp}}
+
+
+%---------------------------------Begin Document
+\begin{document}
+    
+    \thetitle{Chapitre 14}{Langages formels}
+    
+    \tableofcontents
+    \newpage
+    
+    \begin{indt}{\section{Langages réguliers}}
+        \begin{indt}{\subsection{Motivation}}
+            \begin{indt}{\subsubsection{introduction}}
+                \label{1.1.1}
+
+                On a souvent besoin de mettre en place une analyse de texte, même dans le cadre d'applications qui ne relèvent pas uniquement du traitement de texte.
+
+                \begin{indt}{Par exemple :}
+                    $\bullet$ La recherche d'un mot dans un texte (\textit{cf} chap 11) ;
+
+                    $\bullet$ analyser un document structuré afin de traiter de manière appropriée son contenu (exemple : compiler un programme, récupérer des données sérialisées (\textit{cf} chap 11) dans un format particulier (ex : données brutes en CSV, fichiers de configuration en JSON ou en XML)) ;
+
+                    $\bullet$ Reconnaître un encodage et le déchiffrer (exemple : QR-code).
+                \end{indt}
+
+                \vspace{12pt}
+                
+                Quelle que soit l'application, on a besoin d'un formalisme pour décrire la structure du texte et d'algorithmes efficaces capables d'analyser cette structure et d'extraire les données associées.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Exemple}}
+                \'Etant donné un fichier binaire, déterminer s'il contient la représentation binaire d'un entier non signé multiple de 3.
+
+                \vspace{6pt}
+                
+                $\bullet$ Remarque : on n'utilise pas les types d'entiers natifs de C ou OCaml car ils ont une taille fixée qui peut être dépassée par le fichier.
+
+                \vspace{6pt}
+                
+                Idée : on lit les bits un à un en effectuant les opérations associées modulo 3, en remarquant que
+                \[
+                    \begin{cases}
+                        \lrangle{x 0}_2 = 2\lrangle x _2
+                        \\
+                        \lrangle{x 1}_2 = 2\lrangle x _2 + 1
+                    \end{cases}
+                \]
+
+                On utilise cette table :
+
+                \begin{center}
+                    \begin{tabular}{|l|c|c|c|}
+                        \hline
+                        $\lrangle x _2 \mod 3$ & 0 & 1 & 2
+                        \\
+                        \hline
+                        $\lrangle{x 0}_2 \mod 3$ & 0 & 2 & 1
+                        \\
+                        \hline
+                        $\lrangle{x 1}_2 \mod 3$ & 1 & 0 & 2
+                        \\
+                        \hline
+                    \end{tabular}
+                \end{center}
+
+                $\bullet$ Algorithme :
+
+                \begin{indalgo}{}
+                    $x \gets 0$\;
+
+                    \For{chaque bit $b$ pris dans l'odre}{
+                        \If{$b = 0$}{
+                            $x \gets 2x \mod 3$\;
+                        }
+                        \Else{
+                            $x \gets 2x + 1 \mod 3$
+                        }
+                    }
+
+                    \KwRet $x = 0$\;
+                \end{indalgo}
+
+                \vspace{12pt}
+                
+                $\bullet$ Représentation graphique : $x$ ne peut prendre que trois valeurs différentes, appelées états, et on peut représenter les changements de valeur de $x$ dans un graphe orienté dont les sommets sont les états, et les arcs sont étiquetés par le bit qui produit le changement de valeur de l'état source vers l'état cible.
+
+                \begin{center}
+                    \begin{tikzpicture}[scale=1.3]
+                        \node (0) at (0, 0) [state, initial, initial text={}, accepting] {$0$};
+                        \node (1) at (2, 0) [state] {$1$};
+                        \node (2) at (4, 0) [state] {$2$};
+
+                        \draw[->] (0) to [out=-20, in=-160] node [below] {$1$} (1);
+                        \draw[->] (1) to [out=160, in=20] node [above] {$1$} (0);
+                        \draw[->] (1) to [out=-20, in=-160] node [below] {$0$} (2);
+                        \draw[->] (2) to [out=160, in=20] node [above] {$0$} (1);
+
+                        \draw[->] (0) to [out=60, in=120, looseness=3] node [above] {$0$} (0);
+                        \draw[->] (2) to [out=60, in=120, looseness=3] node [above] {$1$} (2);
+                    \end{tikzpicture}
+                \end{center}
+
+                On distingue de plus la valeur initiale par une flèche, et la valeur finale atteinte par un double cercle.
+
+                Cette représentation correspond au formalisme des \emph{automates}, que nous verrons en \ref{2} (page \pageref{2}).
+            \end{indt}
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Langages}}
+            \begin{indt}{\subsubsection{Définition (\textit{alphabet})}}
+                Un \emph{alphabet} est un ensemble fini non vide, dont les éléments sont appelés lettres ou symboles.
+
+                Notation usuelle : $\Sigma$.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Définition (\textit{mot})}}
+                Soit $\Sigma$ un alphabet.
+
+                Un \emph{mot} sur $\Sigma$ est une suite finie de symboles $u = u_1 \cdots u_n$, potentiellement vide.
+
+                Si $n = 0$, on note $u = \varepsilon$.
+
+                On note $\abs u = n$ la \emph{longueur} du mot.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Définition (\textit{concaténation})}}
+                Soit $\Sigma$ un alphabet, et $u, v$ deux mots sur $\Sigma$.
+
+                On appelle \emph{concaténation} de $u$ et $v$ le mot
+                \[
+                    uv =
+                    \begin{cases}
+                        v & \text{si}\ u = \varepsilon
+                        \\
+                        u & \text{si}\ v = \varepsilon
+                        \\
+                        u_1 \cdots u_n v_1 \cdots v_p
+                        & \text{si}
+                        \begin{cases}
+                            u = u_1 \cdots u_n
+                            \\
+                            v = v_1 \cdots v_p
+                        \end{cases}
+                    \end{cases}
+                \]
+
+                \boxed{\rm Exo}
+
+                $\bullet$ $\abs{uv} = \abs u + \abs v$
+
+                $\bullet$ La concaténation est une loi de composition interne associative et d'élément neutre $\varepsilon$ sur l'ensemble des mots sur $\Sigma$.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Définition (\textit{préfixe, suffixe, facteur, sous-mot})}}
+                Soit $\Sigma$ un alphabet, et $u, v$ deux mots sur $\Sigma$
+
+                \vspace{6pt}
+                
+                $\bullet$ $v$ est un \emph{préfixe} de $u$ ssi $\exists w$ mot tel que $u = vw$
+
+                $\bullet$ $v$ est un \emph{suffixe} de $u$ ssi $\exists w$ mot tel que $u = wv$
+
+                $\bullet$ $v$ est un \emph{facteur} de $u$ ssi $\exists x, y$ mots tels que $u = xvy$
+
+                $\bullet$ $v$ est un \emph{sous-mot} de $u$ ssi $\exists i_1 < i_2 < \cdots < i_k$ tels que si $u = u_1 \cdots u_n$, alors $v = u_{i_1} \cdots u_{i_k}$
+
+                \vspace{12pt}
+                
+                Exemple : si $u = abc$, $v = ac$ est un sous-mot de $u$, mais pas un facteur.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Langages}}
+                $\bullet$ Définition (\textit{langage}) : un \emph{langage} sur un alphabet $\Sigma$ est un ensemble de mots sur $\Sigma$.
+
+                \vspace{12pt}
+                
+                \begin{indt}{$\bullet$ Exemples :}
+                    $-$ l'ensemble de tous les mots, noté $\Sigma^*$ (\textit{cf} \ref{1.3}, page \pageref{1.3}) ;
+
+                    $-$ l'ensemble des écritures binaires de multiples des 3 ($\Sigma = \set{0, 1}$) ;
+
+                    $-$ $\Sigma$ (si on voit les lettres comme des mots de longueur 1) ;
+
+                    $-$ l'ensemble des code sources OCaml de programmes qui ne terminent pas.
+                \end{indt}
+
+                \vspace{12pt}
+                
+                $\bullet$ Problème : étant donné un langage $L$ sur un alphabet $\Sigma$, on veut disposer d'une représentation formelle de $L$ pour pouvoir étudier la question suivante :
+                étant donné un mot $u$, a-t-on $u \in L$ ?
+
+                \vspace{6pt}
+                
+                C'est une question importante car souvent, comme dans les exemples en \ref{1.1.1} (page \pageref{1.1.1}), il faut pouvoir vérifier la structure d'un élément avant d'en extraire des données.
+
+                Malheureusement, on ne peut pas toujours répondre algorithmiquement à cette question. (\textit{cf} chap 16 et la notion de décidabilité et le problème de l'arêt), mais on peut y répondre pour une classe restreinte de langages.
+            \end{indt}
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Langages réguliers}}
+            \label{1.3}
+
+            \begin{indt}{\subsubsection{Opérations sur les langages}}
+                Outre les opérations ensemblistes usuelles (intersection, union, complémentaire), on définit certaines opérations plus spécifiques aux langages.
+
+                \vspace{12pt}
+                
+                $\bullet$ \textbf{Concaténation} : Soit $\Sigma$ un alphabet, et $L, L'$ deux langages sur $\Sigma$.
+
+                La concaténation de $L$ et $L'$ est le langage
+                \[
+                    LL' = \set{uv\ |\ (u, v) \in L \times L'}
+                \]
+
+                Remarque : $L \varnothing = \varnothing L = \varnothing$.
+
+                \vspace{12pt}
+                
+                $\bullet$ \textbf{Puissance} : Soit $\Sigma$ un alphabet, $L$ un langage sur $\Sigma$, et $n \in \N$.
+
+                La puissance $n$-ème de $L$ est le langage
+                \[
+                    L^n =
+                    \begin{cases}
+                        \set \varepsilon
+                        & \text{si}\ n = 0
+                        \\
+                        LL^{n - 1}
+                        & \text{si}\ n > 0
+                    \end{cases}
+                \]
+
+                \vspace{12pt}
+                
+                $\bullet$ \textbf{\'Etoile de \textsc{Kleine}} : Soit $\Sigma$ un alphabet, et $L$ un langage sur $\Sigma$.
+
+                L'\emph{étoile de \textsc{Kleine}} de $L$ est le langage
+                \[
+                    L^* = \bigcup_{n \in \N} L^n
+                \]
+
+                \vspace{12pt}
+                
+                \begin{indt}{$\bullet$ Remarques :}
+                    $-$ $\Sigma^*$ est bien l'ensemble de tous les mots : tout mot $u = u_1 \cdots u_n$ est la caractérisation de ses lettres ($\forall i \in \nset{1}{n},\ u_i \in \Sigma$, donc $u = u_1 \cdots u_n \in \Sigma^n \subseteq \Sigma^*$).
+
+                    $-$ On peut aussi définir la puissance $n$-ème d'un mot :
+                    \[
+                        u^n =
+                        \begin{cases}
+                            \varepsilon
+                            & \text{si}\ n = 0
+                            \\
+                            u u^{n - 1}
+                            & \text{si}\ n > 0
+                        \end{cases}
+                    \]
+
+                    Attention : ne pas confondre $L^n$ et $\set{u^n\ |\ u \in L}$.
+
+                    $-$ On note aussi
+                    \[
+                        L^+ = \bigcup_{n \in \N^*} L^n
+                    \]
+
+                    \vspace{6pt}
+                    
+                    \boxed{\rm Exo} $L^+ = L^* \ssi \varepsilon \in L$.
+                \end{indt}
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Théorème (\textit{Lemme d'\textsc{Arden}}) (H.P)}}
+                \begin{emphBox}
+                    Soit $\Sigma$ un alphabet, et $K, L$ deux langages sur $\Sigma$.
+
+                    (1) $K^* L$ est le minimum (pour l'ordre de l'inclusion) des solutions de l'équation
+                    \[
+                        X = K X \cup L
+                    \]
+                    d'inconnue un langage $X$.
+
+                    \vspace{6pt}
+                    
+                    (2) Si $\varepsilon \notin K$, alors $K^* L$ est l'unique solution.
+                \end{emphBox}
+
+                \vspace{12pt}
+                
+                \begin{proof}
+                    (1) On a :
+                    \[
+                        \begin{array}{rcl}
+                            K(K^*L)\cup L
+                            &=& \displaystyle K\lr{\bigcup_{n \in \N} K^n L} \cup L
+                            \vspace{3pt}
+                            \\
+                            &=& K^+ L \cup K^0 L
+                            \vspace{3pt}
+                            \\
+                            &=&K^* L
+                        \end{array}
+                    \]
+                    Donc $K^*L$ est une solution.
+
+                    Puis soit $X$ une solution. Montrons que $K^* L \subset X$.
+
+                    Soit $u \in K^* L$. Par définition,
+                    \[
+                        \exists n \in \N,\ \exists k_1, \ldots, k_n \in K,\ \exists l \in L\ |\
+                        u = k_1 \cdots k_n l
+                    \]
+
+                    On montre par récurrence sur $n$ que $u \in X$ :
+
+                    $\bullet$ $n = 0$ :
+                    $u \in L \subset KX\cup L = X$, donc $u \in X$.
+
+                    \vspace{6pt}
+                    
+                    $\bullet$ Héréditée :
+                    si $\forall k_1 \cdots k_n \in K,\ \forall l \in L,\ k_1 \cdots k_n l \in X$, considérons $u = k_1 \cdots k_{n + 1} l$, avec $k_1 \cdots k_{n + 1} \in K$ et $l \in L$.
+
+                    $u = k_1(\underbrace{k_2 \cdots k_{n + 1}l}_{\in X\ \text{par H.R}}) \in KX \subseteq KX \cup L = X$, donc $u \in X$.
+
+                    Finalement, $K^* L \subset X$, et $K^*L$ est bien le minimum des solutions.
+
+                    \vspace{12pt}
+                    
+                    (2) On suppose $\varepsilon \notin K$. Soit $X$ une solution.
+
+                    On sait par (1) que $K^*L \subseteq X$.
+
+                    Il suffit de montrer que $X \subseteq K^* L$.
+
+                    Soit $u \in X$ dont on note $n$ la longueur.
+
+                    On montre par récurrence que
+                    \[
+                        \forall k \in \nset 0 n,\ X = \bigcup_{j = 0}^k K^j L \cup K^{k + 1} X
+                    \]
+
+                    \vspace{6pt}
+                    
+                    $\bullet$ $k = 0$ :
+                    \[
+                        \bigcup_{j = 0}^0 K^j L \cup K^{0 + 1} X = L \cup KX = X
+                    \]
+
+                    $\bullet$ Héréditée : Soit $k \in \nset 0 {n - 1} \ |\ X = \displaystyle \bigcup_{j = 0}^k K^j L \cup K^{k + 1} X$
+
+                    \[
+                        \begin{array}{rcl}
+                            X
+                            &=& KX \cup L
+                            \\
+                            &=& \displaystyle K\lr{\bigcup_{j = 0}^k K^j L \cup K^{k + 1}L} \cup L
+                            \\
+                            &=& \displaystyle \bigcup_{j = 0}^k K^{j + 1} L \cup K^{k + 1} L \cup L
+                            \vspace{3pt}
+                            \\
+                            &=& \displaystyle \bigcup_{j = 0}^{k + 1} K^J L \cup K^{k + 2} L
+                        \end{array}
+                    \]
+
+                    En particulier,
+                    \[
+                        X = \bigcup_{j = 0}^n K^J L \cup K^{n + 1} X
+                    \]
+
+                    Or $\forall v \in k^{n + 1}X,\ \abs v \ge n + 1$
+
+                    En effet, $\exists k_1 \cdots k_{n + 1} \in K,\ \exists x \in X\ |\ v = k_1 \cdots k_{n + 1} x$.
+
+                    Or $\forall i \in \nset 1 {n + 1}, k_i \neq \varepsilon$, donc $\abs{k_i} \ge 1$, donc
+                    \[
+                        \abs v = \sum_{i = 1}^{n + 1} \abs{k_i} + \abs x
+                        \ge n + 1 + \abs x \ge n + 1
+                    \]
+
+                    Donc, comme $\abs u = n < n + 1$,
+                    \[
+                        \bigcup_{j = 0}^n K^j L \subseteq \cup_{j \in \N} K^J L = K^*L
+                    \]
+                    Donc $u \in K^* L$, et $X \subseteq K^*L$
+                \end{proof}
+
+                \vspace{12pt}
+                
+                $\bullet$ Contre-exemple au point (2) si $\varepsilon \in K$ : on prend $K = \set \varepsilon$, et $L = \set a$.
+                $K^*L = \set a = L$, et tout $X\ |\ a \in X$ est solution ($KX\cup L = X \cup \set a$). Par exemple : $\set a = K^*L$ ou $\set{a, aa}, \set{a, aa, aaa}$.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Langage régulier}}
+                La classe des \emph{langages réguliers}, aussi appelés \emph{langages rationnels}, est la famille des langages que l'on peut construire à partir de langages de base ($\varnothing$, $\set \varepsilon$, $\set a\ \forall a \in \Sigma$) et des opérations dites \emph{régulières} : union, concaténation et étoile de \textsc{Kleine}. L'ensemble $\Reg(\Sigma)$ des langages réguliers sur l'alphabet $\Sigma$ est définit inductivement par :
+                \[
+                    \dfrac{}{\varnothing \in \Reg(\Sigma)}
+                    \qquad
+                    \dfrac{a \in \Sigma}{\set a \in \Reg(\Sigma)}
+                    \qquad
+                    \dfrac{L \in \Reg(\Sigma)}{L^* \in \Reg(\Sigma)}
+                \]
+
+                \[
+                    \dfrac{l \in \Reg(\Sigma)\ L' \in \Reg(\Sigma)}{L \cup L' \in \Reg(\Sigma)}
+                    \qquad
+                    \dfrac{l \in \Reg(\Sigma)\ L' \in \Reg(\Sigma)}{LL' \in \Reg(\Sigma)}
+                \]
+
+                \vspace{12pt}
+                
+                $\bullet$ Remarque : $\set \varepsilon \in \Reg(\Sigma)$ car $\set \varepsilon = \varnothing^0 = \displaystyle \bigcup_{n \in \N} \varnothing^n = \varnothing^*$
+
+                $\Sigma \in \Reg(\Sigma)$ car, en notant $\Sigma = \set{a_1 \cdots a_n}$, on a :
+                \[
+                    \Sigma = \bigcup_{k = 1}^n \set{a_k}
+                \]
+                Donc une récurrence sur $n = \abs \Sigma$ conclut.
+
+                De même, tout langage fini est régulier (\boxed{\rm Exo}).
+
+                \vspace{6pt}
+                
+                Il manque encore un formalisme pour décrire les langages réguliers.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Expressions régulières}}
+                Soit $\Sigma$ un alphabet, et $S = \set{(, ), |, *, \varnothing, \varepsilon}$ un ensemble de symboles supposé disjoint de $\Sigma$.
+
+                L'ensemble $\Regexp(\Sigma)$ des \emph{expressions régulières} sur $\Sigma$, aussi appelées \emph{expressions rationnelles}, est l'ensemble des mots sur $\Sigma \cup S$ défini inductivement par
+                \[
+                    \dfrac{}{\varnothing \in \Regexp(\Sigma)}
+                    \qquad
+                    \dfrac{}{\Sigma \in \Regexp(\Sigma)}
+                    \qquad
+                    \dfrac{a \in \Sigma}{a \in \Regexp(\Sigma)}
+                \]
+                \[
+                    \dfrac{e \in \Regexp(\Sigma)\ f \in \Regexp(\Sigma)}{(e | f) \in \Regexp(\Sigma)}
+                    \qquad
+                    \dfrac{e \in \Regexp(\Sigma)\ f \in \Regexp(\Sigma)}{(ef) \in \Regexp(\Sigma)}
+                \]
+                \[
+                    \dfrac{e \in \Regexp(\Sigma)}{(e^*) \in \Regexp(\Sigma)}
+                \]
+
+                Remarques :
+
+                $\bullet$ $|$ est parfois noté $+$.
+
+                $\bullet$ On se passe de certaines parenthèses avec les règles de priorité :
+                \[
+                    * > \text{concaténation} > |
+                \]
+
+                Par exemple, $\lr{\lr{a\lr{b^*}} | b}$ s'écrit $a b^* | b$.
+            \end{indt}
+        \end{indt}
+    \end{indt}
+    
+\end{document}
+%--------------------------------------------End
