@@ -561,9 +561,9 @@
 
                 \vspace{12pt}
                 
-                $\bullet$ \textbf{\'Etoile de \textsc{Kleine}} : Soit $\Sigma$ un alphabet, et $L$ un langage sur $\Sigma$.
+                $\bullet$ \textbf{\'Etoile de \textsc{Kleene}} : Soit $\Sigma$ un alphabet, et $L$ un langage sur $\Sigma$.
 
-                L'\emph{étoile de \textsc{Kleine}} de $L$ est le langage
+                L'\emph{étoile de \textsc{Kleene}} de $L$ est le langage
                 \[
                     L^* = \bigcup_{n \in \N} L^n
                 \]
@@ -724,7 +724,7 @@
             \vspace{12pt}
             
             \begin{indt}{\subsubsection{Langage régulier}}
-                La classe des \emph{langages réguliers}, aussi appelés \emph{langages rationnels}, est la famille des langages que l'on peut construire à partir de langages de base ($\varnothing$, $\set \varepsilon$, $\set a\ \forall a \in \Sigma$) et des opérations dites \emph{régulières} : union, concaténation et étoile de \textsc{Kleine}. L'ensemble $\Reg(\Sigma)$ des langages réguliers sur l'alphabet $\Sigma$ est définit inductivement par :
+                La classe des \emph{langages réguliers}, aussi appelés \emph{langages rationnels}, est la famille des langages que l'on peut construire à partir de langages de base ($\varnothing$, $\set \varepsilon$, $\set a\ \forall a \in \Sigma$) et des opérations dites \emph{régulières} : union, concaténation et étoile de \textsc{Kleene}. L'ensemble $\Reg(\Sigma)$ des langages réguliers sur l'alphabet $\Sigma$ est définit inductivement par :
                 \[
                     \dfrac{}{\varnothing \in \Reg(\Sigma)}
                     \qquad
@@ -788,6 +788,485 @@
                 \]
 
                 Par exemple, $\lr{\lr{a\lr{b^*}} | b}$ s'écrit $a b^* | b$.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Définition (\textit{langage dénoté par une expression régulière})}}
+                Soit $\Sigma$ un alphabet.
+
+                Le \emph{langage dénoté par une expression régulière} $e \in \Regexp(\Sigma)$ est le langage $L(e)$ défini inductivement par :
+                \[
+                    L(\varnothing) = \varnothing
+                    \qquad
+                    L(\varepsilon) = \set \varepsilon
+                    \qquad
+                    \forall a \in \Sigma,\ L(a) = \set a
+                \]
+                \[
+                    L(e | f) = L(e) \cup L(f)
+                    \qquad
+                    L(ef) = L(e) L(f)
+                    \qquad
+                    L(e^*) = L(e)^*
+                \]
+
+                \vspace{6pt}
+                
+                Exemple :
+
+                $L_1 = \set \varepsilon = L(\varnothing^*)$
+
+                $L_2 = \Sigma = L(a_1 | a_2 | \cdots | a_n)$ en notant $\Sigma = \set{a_k\ |\ k \in \nset 1 n}$
+
+                \[
+                    \begin{array}{rcl}
+                        L_3 &=& \set{u \in \Sigma^*\ |\ \abs u \equiv 1\ [2]}
+                            \vspace{6pt}
+                        \\
+                            &=& \displaystyle \bigcup_{n \in \N} \set{u \in \Sigma^*\ |\ \abs u = 2n + 1}
+                            \vspace{6pt}
+                        \\
+                            &=& \displaystyle \lr{\bigcup_{n \in \N} \set{u \in \Sigma^*\ |\ \abs u = 2n}}\Sigma
+                            \vspace{6pt}
+                        \\
+                            &=& L\!\lr{(\Sigma\Sigma)^* \Sigma}
+                    \end{array}
+                \]
+
+                $L_4 = \set{u \in \Sigma^*\ |\ a\ \text{préfixe de $u$ et $b$ suffixe de $u$}} = L(a\Sigma^* b)$
+
+                $L_5 = \set{u \in \Sigma^*\ |\ ab\ \text{est facteur de $u$}} = L(\Sigma^* ab \Sigma^*)$
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Proposition}}
+                \begin{emphBox}
+                    Soit $\Sigma$ un alphabet, et $L$ un langage sur $\Sigma$.
+
+                    Alors :
+                    \[
+                        L\ \text{est régulier}\ \ssi \exists e \in \Regexp(\Sigma)\ |\ L = L(e)
+                    \]
+                \end{emphBox}
+
+                \vspace{12pt}
+                
+                \begin{proof}
+                    \boxed{\Leftarrow} \boxed{\rm Exo}
+                    (par induction sur $e$)
+
+                    \vspace{12pt}
+                    
+                    \boxed{\Rightarrow} par induction sur une dérivation de $L \in \Reg(\Sigma)$, en faisant une disjonction de cas selon la dernière règle utilisée.
+
+                    \vspace{6pt}
+                    
+                    $\bullet$ $\dfrac{}{\varnothing \in \Reg(\Sigma)}$ : alors $L = \varnothing = L(\varnothing)$
+
+                    \vspace{6pt}
+                    
+                    $\bullet$ $\dfrac{a \in \Sigma}{\set a \in \Reg(\Sigma)}$ : alors $L = \set a = L(a)$
+
+                    \vspace{6pt}
+                    
+                    $\bullet$ $\dfrac{L_1 \in \Reg(\Sigma)\ L_2 \in \Reg(\Sigma)}{L_1 \cup L_2 \in \Reg(\Sigma)}$ : alors $L = L_1 \cup L_2$, et par H.I :
+                    \[
+                        \exists e_1, e_2 \in \Regexp(\Sigma)\
+                        \begin{array}{|l}
+                            L_1 = L(e_1)
+                            \\
+                            L_2 = L(e_2)
+                        \end{array}
+                    \]
+                    D'où $L = L_1 \cup L_2 = L(e_1) \cup L(e_2)$
+
+                    \vspace{6pt}
+                    
+                    $\bullet$ $\dfrac{L_1 \in \Reg(\Sigma)\ L_2 \in \Reg(\Sigma)}{L_1 L_2 \in \Reg(\Sigma)}$ : alors $L = L_1 L_2$, et par H.I :
+                    \[
+                        \exists e_1, e_2 \in \Regexp(\Sigma)\
+                        \begin{array}{|l}
+                            L_1 = L(e_1)
+                            \\
+                            L_2 = L(e_2)
+                        \end{array}
+                    \]
+                    D'où $L = L_1 L_2 = L(e_1) L(e_2)$
+
+                    \vspace{6pt}
+                    
+                    $\bullet$ $\dfrac{L_0 \in \Reg(\Sigma)}{L_0^* \in \Reg(\Sigma)}$ : alors $L = L_0^*$, et par H.I :
+                    \[
+                        \exists e \in \Regexp(\Sigma)\
+                        \begin{array}{|l}
+                            L_0 = L(e)
+                        \end{array}
+                    \]
+                    D'où $L = L_0^* = L(e)$
+                \end{proof}
+
+                \vspace{12pt}
+                
+                Exemple : $L = \set{ab, ac}$
+
+                \[
+                    \begin{array}{c}
+                        \dfrac{
+                            ~\dfrac{
+                                ~\dfrac{a \in \Sigma}{\set a \in \Reg(\Sigma)}
+                                \ \
+                                \dfrac{b \in \Sigma}{\set b \in \Reg(\Sigma)}~
+                            }{
+                                \set{ab} \in \Reg(\Sigma)
+                            }
+                            \ \
+                            \dfrac{
+                                ~\dfrac{a \in \Sigma}{\set a \in \Reg(\Sigma)}
+                                \ \
+                                \dfrac{c \in \Sigma}{\set c \in \Reg(\Sigma)}~
+                            }{
+                                \set{ac} \in \Reg(\Sigma)
+                            }~
+                        }{
+                            \set{ab, ac} \in \Reg(\Sigma) %\Reg(\set{a, b c})
+                        }
+                        \\
+                        \\
+                        ab | ac
+                        \\\\
+                        \dfrac{
+                            ~\dfrac{
+                                a \in \Reg(\Sigma)
+                            }{
+                                \set a \in \Reg(\Sigma)
+                            }
+                            \ \
+                            \dfrac{
+                                ~\dfrac{b \in \Sigma}{\set b \in \Reg(\Sigma)}
+                                \ \
+                                \dfrac{c \in \Sigma}{\set c \in \Reg(\Sigma)}~
+                            }{
+                                \set{b, c} \in \Reg(\Sigma)
+                            }~
+                        }{
+                            \set{ab, ac} \in \Reg(\Sigma)
+                        }
+                        \\
+                        \\
+                        a(b|c)
+                    \end{array}
+                \]
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Définition (\textit{équivalence d'expressions régulières})}}
+                Soit $\Sigma$ un alphabet, et $e, f \in \Regexp(\Sigma)$.
+
+                Alors $e, f$ sont dits équivalents, noté $e \equiv f$, si et seulement si $L(e) = L(f)$.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Proposition}}
+                \begin{emphBox}
+                    Soit $\Sigma$ un alphabet, et $e \in \Regexp(\Sigma)$.
+
+                    (1) Si $e$ ne contient pas $\varnothing$, alors $L(e) \neq \varnothing$
+
+                    (2) La réciproque est fausse
+
+                    (3) Si $L(e) \neq \varnothing$, alors $\exists f \in \Regexp(\Sigma)\ |\ e \equiv f$ et $f$ ne contient pas $\varnothing$.
+                \end{emphBox}
+
+                \vspace{12pt}
+                
+                \begin{proof}
+                    (1) \boxed{\rm Exo} par induction sur $e$
+
+                    (2) $a | \varnothing$ avec $a \in \Sigma$
+
+                    (3) Par induction sur $e$ :
+
+                    $\bullet$ $e = \varnothing$ : impossible
+
+                    $\bullet$ $e = \Sigma$ ou $e = a$ avec $a \in \Sigma$, $f = e$ convient
+
+                    \begin{indt}{$\bullet$ $e = e_1 | e_2$ : $L(e_1) = \varnothing = L(e_2)$ est impossible car $L(e) = L(e_1) \cup L(e_2)$}
+                        $-$ Si $L(e_1) = \varnothing$ et $L(e_2) \neq \varnothing$ (l'autre ces est symétrique), $L(e) = L(e_2)$, et par H.I, $\exists f_2 \in \Regexp(\Sigma)\ |\ f_2$ ne contient pas $\varnothing$ et $f_2 \equiv e_2$.
+
+                        Alors $e \equiv f_2$.
+
+                        \vspace{12pt}
+                        
+                        $-$ Si $L(e_1) \neq \varnothing$ et $L(e_2) \neq \varnothing$, par H.I, $\exists f_1, f_2 \in \Regexp(\Sigma)\ |\ f_1, f_2$ ne contiennent pas $\varnothing$, et
+                        \[
+                            \begin{cases}
+                                f_1 \equiv e_1
+                                \\
+                                f_2 \equiv e_2
+                            \end{cases}
+                        \]
+                        Alors $L(e) = L(e_1) \cup L(e_2) = L(f_1) \cup L(f_2) = L(f_1 | f_2)$
+                        et $e \equiv f_1 | f_2$ qui ne contient pas $\varnothing$.
+                    \end{indt}
+
+                    \vspace{6pt}
+                    
+                    $\bullet$ $e = e_1 e_2$ : $L(e_1) = \varnothing$ ou $L(e_2) = \varnothing$ est impossible car $L(e) = L(e_1) L(e_2)$.
+
+                    De même, on applique l'H.I à $e_1$ et $e_2$ pour obtenir deux expressions régulières dont on prend la concaténation.
+
+                    \vspace{6pt}
+                    
+                    \begin{indt}{$\bullet$ $e = l_0^*$ :}
+                        $-$ Si $L(e_0) = \varnothing$, alors $L(e) = \set \varepsilon = L(\varepsilon)$
+
+                        $-$ Sinon, on applique l'H.I à $e_0$ pour obtenir une expression régulière dont on prend l'étoile de \textsc{Kleene}
+                    \end{indt}
+                \end{proof}
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Proposition}}
+                \begin{emphBox}
+                    Soit $\Sigma$ un alphabet, et $e \in \Regexp(\Sigma)$.
+
+                    On définit le terme constant de $e$ inductivement par
+                    \[
+                        c(\varnothing) = 0
+                        \qquad
+                        c(\varepsilon) = 1
+                        \qquad
+                        c(a) = 0
+                    \]
+                    \[
+                        c(ef) = \min(c(e), c(f))
+                        \qquad
+                        c(e|f) = \max(c(e), c(f))
+                        \qquad
+                        c(e^*) = 1
+                    \]
+
+                    \vspace{6pt}
+                    
+                    Alors $\varepsilon \in L(e) \ssi c(e) = 1$
+                \end{emphBox}
+
+                \vspace{12pt}
+                
+                \begin{proof}
+                    \boxed{\rm Exo} par induction sur $e$.
+                \end{proof}
+            \end{indt}
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Expressions régulières étendues}}
+            \begin{indt}{\subsubsection{Définition (\textit{expressions régulières étendues})}}
+                Soit $\Sigma$ un alphabet.
+
+                On étend la définition des expressions régulières en ajoutant deux symboles $\cap$ et $\setminus$ à $S$ et en ajoutant les règles d'inférence suivantes :
+                \[
+                    \dfrac{e \in \Regexp(\Sigma)\ f \in \Regexp(\Sigma)}{e \cap f \in \Regexp(\Sigma)}
+                    \qquad
+                    \dfrac{e \in \Regexp(\Sigma)\ f \in \Regexp(\Sigma)}{(e \setminus f) \in \Regexp(\Sigma)}
+                \]
+
+                Les langages dénotés sont
+                \[
+                    \begin{array}{l}
+                        L(e \cap f) = L(e) \cap L(f)
+                        \\
+                        L(e\setminus f) = L(e) \setminus L(f)
+                    \end{array}
+                \]
+
+                Nous verrons que les expressions régulières étendues dénotent les mêmes langages que les expressions régulières.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Application}}
+                Les expressions régulières (étendues) sont liées aux expressions régulières de la norme POSIX, utilisées par exemple dans la commande \texttt{grep}.
+
+                Exemple :
+                \begin{center}
+                    \texttt{find | grep -E '.*/d[ms][1/]*\textbackslash .(pdf|tex)\$' | grep 'corrigé'}
+                \end{center}
+                trouve les fichiers dont le nom contient \texttt{dm} ou \texttt{ds}, d'extension \texttt{.pdf} ou \texttt{.tex}, et dont le nom contient \texttt{corrigé}.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Définition (\textit{langages des préfixes / suffixes / facteurs})}}
+                Soit $L$ un langage sur un alphabet $\Sigma$.
+
+                On défini les langages des préfixes / suffixes de longueur 1 et des facteurs de longueur 2 des mots de $L$ par
+                \[
+                    \begin{array}{l}
+                        P_1(L) = \set{a \in \Sigma\ |\ \exists u \in \Sigma^*\ |\ au \in L}
+                        \\
+                        S_1(L) = \set{a \in \Sigma\ |\ \exists u \in \Sigma^*\ |\ ua \in L}
+                        \\
+                        F_2(L) = \set{u \in \Sigma^2\ |\ \exists x, y \in \Sigma^*\ |\ xuy \in L}
+                    \end{array}
+                \]
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Langages locaux}}
+                $\bullet$ \boxed{\rm Exo} pour tout langage $L$ sur un alphabet $\Sigma$,
+                \[
+                    L \setminus \set \varepsilon
+                    \subseteq
+                    \lr{P_1(L) \Sigma^* \cap \Sigma^* S_1(L)} \setminus \lr{\Sigma^*\lr{\Sigma^2 \setminus F_2(L)} \Sigma^*}
+                \]
+                mais cette inclusion peut être stricte.
+
+                \vspace{12pt}
+                
+                $\bullet$ Définition : Soit $\Sigma$ un alphabet, et $L$ un langage sur $\Sigma$.
+
+                $L$ est \emph{local} si et seulement si
+                \[
+                    L \setminus \set \varepsilon = \lr{P_1(L) \Sigma^* \cap \Sigma^* S_1(L)} \setminus \lr{\Sigma^*\lr{\Sigma^2 \setminus F_2(L)} \Sigma^*}
+                \]
+
+                \vspace{12pt}
+                
+                \begin{indt}{$\bullet$ Exemples :}
+                    $-$ $(ab)^*$ et $(ab)^+$ sont locaux
+
+                    $-$ $P_1 = \set a$, $S_1 = \set b$, et $F_2 = \set{a, b}^2 \setminus \set{ab, ba}$ définissent les langages locaux $\varepsilon$ et $\varnothing$
+                \end{indt}
+
+                \vspace{12pt}
+                
+                $\bullet$ Proposition :
+                \begin{emphBox}
+                    Tout langage local est dénoté par une expression régulière étendue
+                \end{emphBox}
+
+                \vspace{6pt}
+                
+                \begin{proof}
+                    En utilisant la définition et le fait qu'un langage fini est régulier \boxed{\rm Exo}
+                \end{proof}
+
+                \vspace{12pt}
+                
+                $\bullet$ \boxed{\rm Exo} : Donner un algorithme permettant de déterminer $P_1(L)$, $S_1(L)$, $F_2(L)$ pour tout langage régulier.
+
+                Indication : induction sur une expression régulière dénotant $L$.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Langages linéaires}}
+                $\bullet$ Définition (\emph{expression régulière linéaire}) : une expression régulière est dite \emph{linéaire} si et seulement si chaque lettre qui la compose n'y apparaît qu'une seule fois.
+
+                \vspace{12pt}
+                
+                $\bullet$ Exemple : $(ab)^* | cd^*e$ mais pas $(ab^*)|ca$
+
+                \vspace{12pt}
+                
+                $\bullet$ Définition (\emph{langage linéaire}) : un langage est \emph{linéaire} si et seulement si il est dénoté par une expression régulière linéaire.
+
+                \vspace{12pt}
+                
+                $\bullet$ Proposition :
+                \begin{emphBox}
+                    Tout langage linéaire est local.
+                \end{emphBox}
+
+                \vspace{6pt}
+                
+                \begin{proof}
+                    $-$ Lemme 1 :
+                    \begin{emphBox}
+                        \textit{Lemme 1} :
+                        Soient $L_1, L_2$ deux langages locaux sur les alphabets disjoints.
+
+                        Alors $L_1 \cup L_2$ est local
+                    \end{emphBox}
+
+                    \boxed{\rm Exo}
+
+                    \vspace{6pt}
+                    
+                    $-$ Lemme 2 :
+                    \begin{emphBox}
+                        \textit{Lemme 2} :
+                        Soient $L_1, L_2$ deux langages locaux sur des alphabets disjoints.
+
+                        Alors $L_1 L_2$ est local.
+                    \end{emphBox}
+
+                    \boxed{\rm Exo}
+
+                    Indication : distinguer quatre cas selon que $\varepsilon \in L_1$ ou $\varepsilon \in L_2$.
+
+                    \vspace{12pt}
+                    
+                    \begin{indt}{$-$ Par induction sur une expression régulière linéaire dénotant le langage}
+                        . $\varnothing$ ou $\varepsilon$ : $P_1 = S_1 = F_2 = \varnothing$ conviennent
+
+                        . $a \in \Sigma$ : $P_1 = S_1 = \set a$ et $F_2 = \varnothing$ convient
+
+                        . $e | f$ : par H.I, $L(e)$ et $L(f)$ sont locaux.
+
+                        De plus, come $e | f$ est linéaire, $e$ et $f$ sont exprimés sur des alphabets disjoints.
+
+                        Donc le lemme 1 conclut.
+                    \end{indt}
+
+                    $-$ $ef$ : le même raisonnement avec le lemme 2.
+
+                    $-$ $e^*$ : par H.I, $L(e)$ est local, donc
+                    \[
+                        L(e) \setminus \set \varepsilon =
+                        \lr{P_1 \Sigma^* \cap \Sigma^* S_1} \setminus \lr{\Sigma^* \lr{\Sigma^2 \setminus F_2} \Sigma^*}
+                    \]
+
+                    $p_1(e^*) = P_1(e)$
+
+                    $S_1(e^*) = S_1(e)$
+
+                    $F_2(e^*) = F_2(e) \cup S_1(e) P_1(e)$
+                \end{proof}
+
+                \vspace{12pt}
+                
+                \begin{indt}{$\bullet$ Contre-exemples :}
+                    $-$ lemmes 1 et 2 : $L_1 = ab$ et $L_2 = a^*$
+
+                    Si $L_1 \cup L_2$ était local, comme $P_1 = \set a,\ S_1 = \set{a, b},\ F_2 = \set{ab, aa}$, on aurait $aab \in L_1 \cup L_2$ : absurde
+
+                    Si $L_1 L_2$ était local, comme $P_1 = \set a,\ S_1 = \set{a, b},\ \set{ab, ba, aa}$, on aurait $aab \in L_1 L_2$ : absurde
+
+                    \vspace{6pt}
+                    
+                    $-$ $a(ba)^*$ est local mais non linéaire.
+                \end{indt}
+
+                \vspace{12pt}
+                
+                $\bullet$ Linéarisation : on peut transformer une expression régulière $e$ en expression régulière linéaire $\tilde e$ en numérotant ses lettres (l'alphabet devient $\Sigma \times \nset 1 n$)
+
+                \vspace{12pt}
+                
+                Exemple : $aa(a | ab)^*b$ devient $a_1a_2(a_3 | a_4b_1)^*b_2$
+
+                C'est une étape importante pour faire le lien entre automates et langages réguliers.
+
+                \boxed{\rm Exo} $\forall u,\ u \in L(e) \ssi \exists$ numérotation des lettres de $u$ donnant $\tilde u \in L(\tilde e)$
             \end{indt}
         \end{indt}
     \end{indt}
