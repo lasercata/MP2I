@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2022.10.04
+% Last modification     :   2022.10.08
 %
 %------------------------------------------------------------------------
 
@@ -734,9 +734,9 @@
                 \]
 
                 \[
-                    \dfrac{l \in \Reg(\Sigma)\ L' \in \Reg(\Sigma)}{L \cup L' \in \Reg(\Sigma)}
+                    \dfrac{L \in \Reg(\Sigma)\ L' \in \Reg(\Sigma)}{L \cup L' \in \Reg(\Sigma)}
                     \qquad
-                    \dfrac{l \in \Reg(\Sigma)\ L' \in \Reg(\Sigma)}{LL' \in \Reg(\Sigma)}
+                    \dfrac{L \in \Reg(\Sigma)\ L' \in \Reg(\Sigma)}{LL' \in \Reg(\Sigma)}
                 \]
 
                 \vspace{12pt}
@@ -995,7 +995,7 @@
                     $\bullet$ $e = \Sigma$ ou $e = a$ avec $a \in \Sigma$, $f = e$ convient
 
                     \begin{indt}{$\bullet$ $e = e_1 | e_2$ : $L(e_1) = \varnothing = L(e_2)$ est impossible car $L(e) = L(e_1) \cup L(e_2)$}
-                        $-$ Si $L(e_1) = \varnothing$ et $L(e_2) \neq \varnothing$ (l'autre ces est symétrique), $L(e) = L(e_2)$, et par H.I, $\exists f_2 \in \Regexp(\Sigma)\ |\ f_2$ ne contient pas $\varnothing$ et $f_2 \equiv e_2$.
+                        $-$ Si $L(e_1) = \varnothing$ et $L(e_2) \neq \varnothing$ (l'autre cas est symétrique), $L(e) = L(e_2)$, et par H.I, $\exists f_2 \in \Regexp(\Sigma)\ |\ f_2$ ne contient pas $\varnothing$ et $f_2 \equiv e_2$.
 
                         Alors $e \equiv f_2$.
 
@@ -1032,28 +1032,31 @@
             \vspace{12pt}
             
             \begin{indt}{\subsubsection{Proposition}}
+                Soit $\Sigma$ un alphabet, et $e \in \Regexp(\Sigma)$.
+
+                On définit le terme constant de $e$ inductivement par
+                \[
+                    c(\varnothing) = 0
+                    \qquad
+                    c(\varepsilon) = 1
+                    \qquad
+                    c(a) = 0
+                \]
+                \[
+                    c(ef) = \min(c(e), c(f))
+                    \qquad
+                    c(e|f) = \max(c(e), c(f))
+                    \qquad
+                    c(e^*) = 1
+                \]
+
+                \vspace{6pt}
+                
+                Alors :
                 \begin{emphBox}
-                    Soit $\Sigma$ un alphabet, et $e \in \Regexp(\Sigma)$.
-
-                    On définit le terme constant de $e$ inductivement par
                     \[
-                        c(\varnothing) = 0
-                        \qquad
-                        c(\varepsilon) = 1
-                        \qquad
-                        c(a) = 0
+                        \varepsilon \in L(e) \ssi c(e) = 1
                     \]
-                    \[
-                        c(ef) = \min(c(e), c(f))
-                        \qquad
-                        c(e|f) = \max(c(e), c(f))
-                        \qquad
-                        c(e^*) = 1
-                    \]
-
-                    \vspace{6pt}
-                    
-                    Alors $\varepsilon \in L(e) \ssi c(e) = 1$
                 \end{emphBox}
 
                 \vspace{12pt}
