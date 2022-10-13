@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2022.10.08
+% Last modification     :   2022.10.13
 %
 %------------------------------------------------------------------------
 
@@ -256,7 +256,7 @@
 
 %---Maths environments
 %-Proofs
-\newenvironment{proof}[1][{}]{\begin{indt}{$\square$ #1}}{$\blacksquare$ \end{indt}}
+\newenvironment{proof}[1][{Démonstration :}]{\begin{indt}{$\square$ #1}}{$\blacksquare$ \end{indt}}
 
 %-Maths parts (proposition, definition, ...)
 \newenvironment{mathpart}[1]{\begin{indt}{\boxed{\text{\textbf{#1}}}}}{\end{indt}}
@@ -313,6 +313,7 @@
 %---------Specific to this file
 \newcommand{\Reg}{\mathsf{Reg}}
 \newcommand{\Regexp}{\mathsf{Regexp}}
+\newcommand{\Rec}[1]{\mathsf{Rec}\!\lr{#1}}
 
 
 %---------------------------------Begin Document
@@ -346,6 +347,8 @@
             \vspace{12pt}
             
             \begin{indt}{\subsubsection{Exemple}}
+                \label{1.1.2}
+
                 \'Etant donné un fichier binaire, déterminer s'il contient la représentation binaire d'un entier non signé multiple de 3.
 
                 \vspace{6pt}
@@ -1270,6 +1273,1034 @@
                 C'est une étape importante pour faire le lien entre automates et langages réguliers.
 
                 \boxed{\rm Exo} $\forall u,\ u \in L(e) \ssi \exists$ numérotation des lettres de $u$ donnant $\tilde u \in L(\tilde e)$
+            \end{indt}
+        \end{indt}
+    \end{indt}
+
+    \vspace{12pt}
+    
+    \begin{indt}{\section{Automates finis}}
+        \label{2}
+
+        \begin{indt}{\subsection{Automates finis déterministes}}
+            \begin{indt}{\subsubsection{Introduction}}
+                La représentation visuelle de l'algorithme vu en \ref{1.1.2} (page \pageref{1.1.2}) est la representation graphique d'un automate fini déterministe.
+                On peut voir un automate comme une machine à états, qui change d'état en fonction des caractères lus sur son entrée. L'entrée est considérée comme valide si l'état final de la machine est approprié.
+
+                Il existe plusieurs notions d'automates, et nous montrerons que toutes celles au programme sont équivalentes.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Définition (\textit{automate fini déterministe (AFD)})}}
+                \label{2.1.2}
+
+                \begin{indt}{Un \emph{automate fini déterministe} est un quintuplet $(\Sigma, Q, q_0, F, \delta)$, où :}
+                    $\bullet$ $\Sigma$ est un alphabet ;
+
+                    $\bullet$ $Q$ est un ensemble fini non vide, appelé \emph{ensemble d'états} ;
+
+                    $\bullet$ $q_0 \in Q$ est l'état initial ;
+
+                    $\bullet$ $F \in \mathcal P(Q)$ est l'ensemble des états acceptants / finaux / final / terminaux ;
+
+                    $\bullet$ $\delta : Q \times \Sigma \longrightarrow Q$ est une fonction partielle (\textit{i.e} définie sur une partie de $Q \times \Sigma$) appelée \emph{fonction de transition}.
+                \end{indt}
+
+                \vspace{12pt}
+                
+                \begin{indt}{Représentation graphique :}
+                    $\bullet$ Tout état $q \in Q$ est représenté par un cercle ;
+
+                    $\bullet$ L'état initial prend une flèche ;
+
+                    $\bullet$ Les états acceptants sont cerclés deux fois ;
+
+                    $\bullet$ $\forall q, q' \in Q,\ \forall a \in \Sigma\ |\ \delta(q, a) = q'$, on dessine un arc de $q$ à $q'$ étiqueté par $a$.
+                \end{indt}
+
+                \vspace{12pt}
+                
+                Exemple :
+                \begin{center}
+                    \begin{tikzpicture}
+                        \node (q0) at (0, 0) [state, initial, initial text={}] {$q_0$};
+                        \node (q1) at (2, 0) [state] {$q_1$};
+                        \node (q2) at (4, 0) [state] {$q_2$};
+                        \node (q3) at (2, -2) [state, accepting] {$q_3$};
+
+                        \draw[->] (q0) to node [above] {$1$} (q1);
+                        \draw[->] (q1) to [out=20, in=160] node [above] {$0$} (q2);
+                        \draw[->] (q2) to [out=-160, in=-20] node [below] {$0$} (q1);
+                        \draw[->] (q0) to node [below left] {$0$} (q3);
+                        \draw[->] (q1) to [out=-70, in=70] node [right] {$1$} (q3);
+                        \draw[->] (q3) to [out=110, in=-110] node [left] {$1$} (q1);
+
+                        \draw[->] (q3) to [out=0, in=-50, looseness=2] node [right] {$0$} (q3);
+                        \draw[->] (q2) to [out=0, in=-50, looseness=2] node [right] {$1$} (q2);
+                    \end{tikzpicture}
+                \end{center}
+
+                représente
+                \[
+                    (\set{0, 1}, \set{q_0, \ldots, q_3}, q_0, \set{q_3}, \delta)
+                \]
+                où $\delta$ est défini par la table
+                \[
+                    \begin{array}{c|c|c}
+                        & 0 & 1
+                        \\
+                        \hline
+                        q_0 & q_3 & q_1
+                        \\
+                        \hline
+                        q_1 & q_2 & q_3
+                        \\
+                        \hline
+                        q_2 & q_ 1 & q_2
+                        \\
+                        \hline
+                        q_3 & q_3 & q_1
+                    \end{array}
+                \]
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Modèle de calcul associé}}
+                $\bullet$ Définition (\emph{transition généralisées}) : Soit $M = (\Sigma, Q, q_0, F, \delta)$ un AFD.
+
+                On généralise la fonction de transition aux mots par :
+                \[
+                    \begin{cases}
+                        \forall q \in Q,\ \delta(q, \varepsilon) = q
+                        \\
+                        \forall q \in Q,\ \forall u \in \Sigma^*,\ \forall a \in \Sigma\ |\ (q, a) \in \mathrm{dom}(\delta),\ \delta(q, au) = \delta(\delta(q, a), u)
+                    \end{cases}
+                \]
+
+                \boxed{\rm Exo} Mq cette définition est équivalente à
+                \[
+                    \forall (q, u, a) \in Q \times \Sigma^* \times \Sigma,\
+                    \delta(q, ua) = \delta(\delta(q, u), a)
+                \]
+                ou alors
+                \[
+                    \forall q, q' \in Q,\ \forall u \in \Sigma ^*,\ \delta(q, u) = q'
+                \]
+                si et seulement si il existe un chemin dans le graphe de l'automate de $q$ à $q'$ tel que la concaténation des étiquettes sur ce chemin vaut $u$.
+
+                \vspace{12pt}
+                
+                $\bullet$ Définition (\emph{langage reconnu / reconnaissable}) : Soit $M = (\Sigma, Q, q_0, F, \delta)$ un AFD.
+
+                $-$ $u \in \Sigma ^*$ est \emph{accepté} par $M$ ssi $\delta(q_0, u) \in F$
+
+                $-$ La langage \emph{reconnu} par $M$ est
+                \[
+                    L(M) = \set{u \in \Sigma^*\ |\ u\ \text{accepté par $M$}}
+                \]
+
+                $-$ Un langage $L$ sur un alphabet $\Sigma$ est \emph{reconnaissable} ssi il existe un AFD $M$ d'alphabet $\Sigma$ tel que $L(M) = L$.
+
+                On note alors $\Rec \Sigma$ l'ensemble des langages reconnaissables sur $\Sigma$.
+
+                \vspace{12pt}
+                
+                $\bullet$ Exemples :
+
+                $-$ $\set{u \in \set{0, 1}^*\ |\ \lrangle u _2 \equiv 0\ [3]} \in \Rec{\set{0, 1}}$ par \ref{1.1.2} (page \pageref{1.1.2}).
+
+                $-$ On reprend l'AFD vu en \ref{2.1.2} (page \pageref{2.1.2}).
+                Pour déterminer $L(M)$, on peut utiliser le lemme d'\textsc{Arden}.
+
+                $\forall q \in Q,$ on définit
+                \[
+                    L_q = \set{u \in \Sigma^*\ |\ \delta(q, u) \in F}
+                \]
+
+                On cherche $L(M) = L_{q_0}$ sachant :
+
+                \[
+                    \begin{cases}
+                        L_{q_0} = 0L_{q_3} \cup 1L_{q_1}
+                        \\
+                        L_{q_1} = 0L_{q_2} \cup 1L_{q_3}
+                        \\
+                        L_{q_2} = 0L_{q_1} \cup 1L_{q_2}
+                        \\
+                        L_{q_3} = 0L_{q_3} \cup 1L_{q_1} \cup \set \varepsilon
+                    \end{cases}
+                \]
+
+                \boxed{\rm Exo} Mq $L(M) = (1(01^*0)^*1|0)^*$
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Automate complet}}
+                $\bullet$ Définition (\emph{Automate complet}) : un AFD est dit \emph{complet} ssi sa fonction de transition est totale.
+
+                \vspace{12pt}
+                
+                $\bullet$ Exemple : les automates en \ref{1.1.2} (page \pageref{1.1.2}) et \ref{2.1.2} (page \pageref{2.1.2}).
+
+                \vspace{12pt}
+                
+                $\bullet$ Complétion : étant donné un AFD $M = (\Sigma, Q, q_0, F, \delta)$ incomplet, on peut construire $M'$ complet reconnaissant $L(M)$ en ajoutant un état dit \emph{poubelle / puits}, vers lequel vont toutes les transitions non définies de $\delta$.
+
+                \[
+                    M' = (\Sigma, Q \cup \set \Pi, q_0, F, \delta')
+                \]
+                où $\Pi \notin Q$, et
+                \[
+                    \forall q \in Q \cup \set \Pi,\ \forall a \in \Sigma,\
+                    \delta'(q, a) =
+                    \begin{cases}
+                        \delta(q, a)
+                        & \text{si}\ (q, a) \in \mathrm{dom}(\delta)
+                        \\
+                        \Pi
+                        & \text{sinon}
+                    \end{cases}
+                \]
+
+                \vspace{12pt}
+                
+                $\bullet$ Proposition :
+                \begin{emphBox}
+                    $M'$ est complet, et $L(M') = L(M)$
+                \end{emphBox}
+
+                \vspace{6pt}
+                
+                \begin{proof}
+                    $M'$ est complet par définition.
+
+                    Si $u \in L(M)$, on remarque que toutes les transitions suivies dans $M$ lors de la lecture de $u$ sont définies, et ce sont les mêmes dans $M'$, donc $u \in L(M')$ (récurrence finie, en notant $u = u_1 \cdots u_n$, et $\forall i \in \nset 1 n,\ q_i = \delta(q_0, u_1 \cdots, u_i)$ \boxed{\rm Exo}).
+
+                    \vspace{6pt}
+                    
+                    Si $u \in L(M')$, on remarque qu'il n'existe pas de transition étiquetée par un préfixe de $u$ menant à l'état $\Pi$ (sinon $\delta'(q_0, u) = \Pi \notin F$) donc toutes ces transitions sont aussi définies dans $M$ et $u \in L(M)$.
+                \end{proof}
+
+                \vspace{12pt}
+                
+                $\bullet$ Exemple :
+
+                \begin{center}
+                    \begin{tikzpicture}
+                        \node (0) at (0, 0) [initial, initial text={}, state] {$q_0$};
+                        \node (1) at (2, 0) [state] {$q_1$};
+                        \node (2) at (4, 0) [state, accepting] {$q_2$};
+
+                        \draw[->] (0) to node [above] {$a$} (1);
+
+                        \draw[->] (1) to [out=20, in=160] node [above] {$b$} (2);
+                        \draw[->] (2) to [out=-160, in=-20] node [below] {$a$} (1);
+                    \end{tikzpicture}
+                \end{center}
+
+                Devient :
+                \begin{center}
+                    \begin{tikzpicture}
+                        \node (0) at (0, 0) [initial, initial text={}, state] {$q_0$};
+                        \node (1) at (2, 0) [state] {$q_1$};
+                        \node (2) at (4, 0) [state, accepting] {$q_2$};
+                        \node (pi) at (2, -2) [state] {$\Pi$};
+
+                        \draw[->] (0) to node [above] {$a$} (1);
+                        \draw[->] (0) to node [below left] {$b$} (pi);
+                        \draw[->] (1) to node [right] {$a$} (pi);
+                        \draw[->] (2) to node [below right] {$b$} (pi);
+
+                        \draw[->] (1) to [out=20, in=160] node [above] {$b$} (2);
+                        \draw[->] (2) to [out=-160, in=-20] node [below] {$a$} (1);
+
+                        \draw[->] (pi) to [out=-45, in=-90, looseness=4] node [below] {$a, b$} (pi);
+                    \end{tikzpicture}
+                \end{center}
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Automate standard}}
+                $\bullet$ Définition : Un AFD est dit \emph{standard} ssi aucune transistion ne mène à l'état initial.
+
+                \vspace{12pt}
+                
+                $\bullet$ Exemple : l'automate en \ref{2.1.2} (page \pageref{2.1.2}), mais pas celui en \ref{1.1.2} (page \pageref{1.1.2}).
+
+                \vspace{12pt}
+                
+                $\bullet$ Standardisation : si $M = (\Sigma, Q, q_0, F, \delta)$ est un AFD non standard, on construit un AFD $M'$ standard reconnaissant $L(M)$ en ajoutant un nouvel état initial qui ne sert que pour la première transition.
+
+                On définit $M' = (\Sigma, Q \cup \set \iota, \iota, F', \delta')$, où $\iota \notin Q$,
+                \[
+                    F' =
+                    \begin{cases}
+                        F
+                        & \text{si}\ q_0 \notin F
+                        \\
+                        F \cup \set \iota
+                        & \text{sinon}
+                    \end{cases}
+                \]
+                \[
+                    \forall (q, a) \in (Q \cup \set \iota) \times \Sigma,\
+                    \delta'(q, a) =
+                    \begin{cases}
+                        \delta(q, a)
+                        & \text{si}\ (q ,a) \in \mathrm{dom}(\delta)
+                        \\
+                        \delta(q_0, a)
+                        & \text{si}\ \iota = q\ \text{et}\ (q_0, a) \in \mathrm{dom}(\delta)
+                        \\
+                        \text{non définie}
+                        & \text{sinon}
+                    \end{cases}
+                \]
+
+                \boxed{\rm Exo} $M'$ est standard, et $L(M') = L(M)$.
+
+                \vspace{12pt}
+                
+                $\bullet$ Exemple :
+
+                \begin{center}
+                    \begin{tikzpicture}
+                        \node (0) at (0, 0) [initial, initial text={}, state, accepting] {$q_0$};
+                        \node (1) at (2, 0) [state] {$q_1$};
+                        \node (2) at (4, 0) [state, accepting] {$q_2$};
+
+                        \draw[->] (0) to node [above] {$a$} (1);
+
+                        \draw[->] (1) to [out=20, in=160] node [above] {$b$} (2);
+                        \draw[->] (2) to [out=-160, in=-20] node [below] {$a$} (1);
+
+                        \draw[->] (1) to [out=45, in=90, looseness=3] node [above] {$a$} (1);
+                    \end{tikzpicture}
+                \end{center}
+
+                Devient :
+                \begin{center}
+                    \begin{tikzpicture}
+                        \node (0) at (0, 0) [initial, initial text={}, state, accepting] {$q_0$};
+                        \node (1) at (2, 0) [state] {$q_1$};
+                        \node (2) at (4, 0) [state, accepting] {$q_2$};
+                        \node (i) at (2, -2) [state, initial, initial text={}, accepting] {$\iota$};
+
+                        \draw[->] (0) to node [above] {$a$} (1);
+                        \draw[->] (i) to node [below left] {$b$} (0);
+                        \draw[->] (i) to node [right] {$a$} (1);
+                        %\draw[->] (i) to node [below right] {$b$} (2);
+
+                        \draw[->] (1) to [out=20, in=160] node [above] {$b$} (2);
+                        \draw[->] (2) to [out=-160, in=-20] node [below] {$a$} (1);
+
+                        \draw[->] (0) to [out=45, in=90, looseness=3] node [above] {$b$} (0);
+                    \end{tikzpicture}
+                \end{center}
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Automate émondé}}
+                $\bullet$ Idée : certains états peuvent être inutiles du point de vue du modèle de calcul.
+
+                Par exemple, l'état puits d'un complété n'apporte rien au langage reconnu.
+                De même un état qui ne serait pas accessible depuis l'état initial est inutile.
+
+                \vspace{12pt}
+                
+                \begin{indt}{$\bullet$ Définition (\emph{états accessibles / co-accessibles, utiles}) : Soit $M = (\Sigma, Q, q_0, F, \delta)$ un AFD, et $q \in Q$.}
+                    $-$ $q$ est dit \emph{accessible} ssi $\exists u \in \Sigma^*\ |\ \delta(q_0, u) = q$
+
+                    $-$ $q$ est dit \emph{co-accessible} ssi $\exists u \in \Sigma^*\ |\ \delta(q, u) \in F$
+
+                    $-$ $q$ est dit \emph{utile} ssi $q$ est accessible et co-accessible.
+                \end{indt}
+
+                \vspace{12pt}
+                
+                $\bullet$ Remarque : il est possible de déterminer les états accessibles grâce à un parcours depuis l'état initial, les états co-accessibles grâce à un parcours du graphe transposé du graphe de l'automate à partir des états acceptants, et les états utiles grâce à deux parcours.
+
+                \vspace{12pt}
+                
+                $\bullet$ Définition (\emph{automate émondé}) : Un automate est dit \emph{émondé} ssi tous ses états sont utiles.
+
+                \vspace{12pt}
+                
+                $\bullet$ \boxed{\rm Exo} Supprimer les états inutiles donne un AFD émondé reconnaissant le même langage.
+
+                \vspace{12pt}
+                
+                $\bullet$ Remarque : Disposer d'un automate émondé reconnaissant un langage donné n'assure pas d'avoir l'information minimale permettant de caractériser ce langage.
+
+                Exemple :
+
+                \begin{center}
+                    \begin{tikzpicture}
+                        \node (0) at (0, 0) [state, accepting, initial, initial text={}] {$q_0$};
+                        \node (1) at (2, 0) [state, accepting] {$q_1$};
+
+                        \draw[->] (0) to node [above] {$a, b$} (1);
+                        \draw[->] (1) to [out=45, in=90, looseness=3] node [above right] {$a, b$} (1);
+
+                        \node at (3.75, 0) {et};
+
+                        \node (0') at (6, 0) [state, accepting, initial, initial text={}] {$q_0$};
+                        \draw[->] (0') to [out=45, in=90, looseness=3] node [above right] {$a, b$} (0');
+                    \end{tikzpicture}
+                \end{center}
+
+                sont deux automates émondés reconnaissant le même langage ($\Sigma^*$, avec $\Sigma = \set{a, b}$)
+
+                \vspace{12pt}
+                
+                $\bullet$ (H.P) Un automate reconnaissant un langage donné et ayant un nombre minimal d'états est appelé \emph{automate minimal} du langage et on peut montrer que l'automate minimal d'un langage donné est émondé et unique (à isomorphisme près).
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Automate local}}
+                $\bullet$ Remarque :
+                Un langage local est caractérisé par la connaissance des lettres qui peuvent débuter / terminer un mot du langage et des lettres qui peuvent succéder à une lettre donnée dans un mot de langage. En particulier, la connaissance de la dernière lettre lue permet de connaître les lettres qui peuvent suivre, ce qui fait des langages locaux de bon candidats pour l'appartenance à $\Rec \Sigma$.
+
+                \vspace{12pt}
+                
+                $\bullet$ Exemple : $a(b^* | c)$, $P_1 = \set a$, $S_1 = \set{a, b, c}$, $F_2 = \set{ab, ac, bb}$
+
+                Idée : on associe un état à chaque lettre lue.
+
+                \begin{center}
+                    \begin{tikzpicture}
+                        \node (ep) at (-2, 0) [state, initial, initial text={}] {$q_\varepsilon$};
+                        \node (a) at (0, 0) [state, accepting] {$q_a$};
+                        \node (b) at (2, 0) [state, accepting] {$q_b$};
+                        \node (c) at (-45 : 2) [state, accepting] {$q_c$};
+
+                        \draw[->] (ep) to node [above] {$a$} (a);
+                        \draw[->] (a) to node [above] {$b$} (b);
+                        \draw[->] (a) to node [below left] {$c$} (c);
+
+                        \draw[->] (b) to [out=45, in=90, looseness=3] node [above right] {$b$} (b);
+                    \end{tikzpicture}
+                \end{center}
+
+                \vspace{12pt}
+                
+                $\bullet$ Définition (\emph{automate local}) : Soit $M = (\Sigma, Q, q_0, F, \delta)$ un AFD.
+
+                $M'$ est dit \emph{local} ssi
+                \[
+                    \forall a \in \Sigma,\ \exists q \in Q\ |\ \forall q' \in Q,\
+                    (q', a) \in \mathrm{dom}(\delta) \Rightarrow \delta(q', a) = q
+                \]
+
+                \vspace{12pt}
+                
+                $\bullet$ Proposition :
+                \begin{emphBox}
+                    Soit $\Sigma$ un alphabet, et $L$ un langage sur $\Sigma$.
+
+                    \[
+                        L\ \text{est local}
+                        \ssi
+                        \exists M = (\Sigma, Q, q_0, F, \delta)\ \text{un AFD local}\ |\
+                        L(M) = L
+                    \]
+                \end{emphBox}
+
+                \vspace{6pt}
+                
+                \begin{proof}
+                    \boxed{\Rightarrow} On sait que
+                    \[
+                        L \setminus \varepsilon = (P_1(L) \Sigma^* \cap \Sigma^*S_1(L)) \setminus (\Sigma^*(\Sigma^2 (F_2(L)) \Sigma^*))
+                        \qquad (*)
+                \]
+
+                On définit $M = (\Sigma, Q, q_\varepsilon, F, \delta)$, où
+                \[
+                    Q = \set{q_\varepsilon} \cup \set{q_a\ |\ a \in \Sigma}
+                \]
+                \[
+                    F =
+                    \begin{cases}
+                        \set{q_a\ |\ a \in S_1(L)}
+                        & \text{si}\ \varepsilon \notin L
+                        \\
+                        \set{q_a\ |\ a \in S_1(L)} \cup \set{q_\varepsilon}
+                        & \text{sinon}
+                    \end{cases}
+                \]
+                \[
+                    \forall (q ,a) \in Q \times \Sigma,\
+                    \delta(q, a) =
+                    \begin{cases}
+                        q_a
+                        & \text{si}\ q = q_\varepsilon\ \text{et}\ a \in P_1(L)
+                        \\
+                        q_b
+                        & \text{si}\ q = q_b\ \text{et}\ ba \in F_2(L)
+                        \\
+                        \text{non définie}
+                        & \text{sinon}
+                    \end{cases}
+                \]
+
+                \textcolor{red}{\sl (pas sûr pour la ligne 2 ($q_b = \cdots$))}
+
+                Alors $M$ est local (même standard) et $L(M) = L$
+
+                On le montre par double inclusion en utilisant l'égalité $(*)$ \boxed{\rm Exo}.
+
+                \vspace{12pt}
+                
+                \boxed{\Leftarrow} On sait que $L = L(M)$ où $M = (\Sigma, Q, q_0, F, \delta)$ est un AFD local.
+
+                \[
+                    \forall a \in \Sigma,\ \exists q_a \in Q\ |\ \forall q' \in Q,\
+                    (q', a) \in \mathrm{dom}(\delta) \Rightarrow \delta(q', a) = q_a
+                \]
+
+                On définit
+                \[
+                    \begin{array}{l}
+                        P_1 = \set{a \in \Sigma\ |\ (q_0, a) \in \mathrm{dom}(\delta)}
+                        = \set{a \in \Sigma\ |\ \delta(q_0, a) = q_a}
+                        \\
+                        S_1 = \set{a \in \Sigma\ |\ qa \in F}
+                        \\
+                        F_2 = \set{ab \in \Sigma^2\ |\ (qa, b) \in \mathrm{dom}(\delta)}
+                    \end{array}
+                \]
+
+                On vérifie alors que
+                \[
+                    L \setminus \set \varepsilon
+                    = (P_1 \Sigma^* \cap \Sigma^* S_1) \setminus \lr{\Sigma^* \lr{\Sigma^2 \setminus F_2} \Sigma^*}
+                \]
+
+                \boxed{\subseteq} Soit $u = u_1 \cdots u_n \in L \setminus \set \varepsilon$.
+
+                $u \in L(M)$, donc $\forall i \in \nset 1 n,\ \delta(q_0, u_1 \cdots u_i)$ est bien défini, notons le $q_i$.
+
+                $(q_0, q_i) \in \mathrm{dom}(\delta)$, donc $u_1 \in P_1$.
+
+                $q_{u_n} = \delta(q_0, u_1 \cdots u_n) \in F$, donc $u_n \in S_1$.
+
+                $\forall i \in \nset 1 {n - 1}$,
+                \[
+                    \begin{array}{rcl}
+                        \delta(q_0, u_1 \cdots u_{i + 1})
+                        &=& \delta(\delta(q_0, u_1 \cdots u_i), u_{i + 1})
+                        \\
+                        &=& \delta(q_i, u_{i + 1})
+                        \\
+                        &=& q_i
+                    \end{array}
+                \]
+
+                Donc $u_i u{i + 1} \in F_2$, donc
+                \[
+                    u \in (P_1 \Sigma^* \cap \Sigma^* S_1) \setminus \lr{\Sigma^* \lr{\Sigma^2 \setminus F_2} \Sigma^*}
+                \]
+
+                \vspace{6pt}
+                
+                \boxed{\supseteq} par récurrence sur la taille du mot \boxed{\rm Exo}.
+                \end{proof}
+            \end{indt}
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Automates finis non déterministes (AFND)}}
+            \begin{indt}{\subsubsection{Introduction}}
+                Il peut être complexe, ou simplement fastidieux, de concevoir un AFD reconnaissant un langage donné.
+
+                \vspace{12pt}
+                
+                Exemple : digicode : on entre une série de chiffres, et si elle se termine par le code enregistré, la porte se débloque.
+                Cela correspond au fonctionnement d'un automate, mais la difficulté vient fu fait que même si le début du code est entré, il faut pouvoir revenir en arrière si la suite est invalide.
+
+                Idée : on compte le nombre de chiffres valides lus consécutivement et on met à jour ce nombre en fonction des chiffres lus.
+
+                Par exemple, pour le code 4242, on peut écrire le programme suivant :
+
+                \begin{lstlisting}[language=Caml, xleftmargin=80pt]
+let nb_valides = ref 0 in
+while !nb_valides < 4 do
+    let n = read_int () in
+    match !nb_valides, n with
+    | 0, 4 | 1, 2 | 2, 4 | 3, 2 -> incr nb_valides
+    | _, 4 -> nb_valides := 1
+    | _ -> := nb_valides := 0
+done;
+unlock_door()\end{lstlisting}
+                
+                En associant un état à chaque valeur possible de \texttt{nb\_valides}, ce code correspond à l'automate
+
+                \begin{center}
+                    \begin{tikzpicture}[scale=1.5]
+                        \node (0) at (0, 0) [state, initial, initial text={}] {$0$};
+                        \node (1) at (2, 0) [state] {$1$};
+                        \node (2) at (4, 0) [state] {$2$};
+                        \node (3) at (6, 0) [state] {$3$};
+                        \node (4) at (8, 0) [state, accepting] {$4$};
+
+                        \draw[->] (0) to node [above] {$4$} (1);
+                        \draw[->] (1) to node [above] {$2$} (2);
+                        \draw[->] (2) to node [above] {$4$} (3);
+                        \draw[->] (3) to node [above] {$2$} (4);
+
+                        \draw[->] (1) to [out=45, in=90, looseness=3] node [above right] {$4$} (1);
+                        \draw[->] (0) to [out=-90, in=-135, looseness=3] node [below left] {${0 - 3, 5 - 9}$} (0);
+                        \draw[->] (2) to [out=100, in=40, looseness=1] node [above right] {${0 - 3, 5 - 9}$} (0);
+                        \draw[->] (1) to [out=-120, in=-40] node [below right] {${0, 1, 3, 5 - 9}$} (0);
+                        \draw[->] (3) to [out=-100, in=-50, looseness=.8] node [below right] {${0, 1, 3, 5-9}$} (0);
+                        \draw[->] (3) to [out=-135, in=-15] node [below right] {$4$} (1);
+                    \end{tikzpicture}
+                \end{center}
+
+                Cet automate contient de nombreuses informations ``parasites'', liées uniquement à la gestion des erreurs de l'entrée. On peut simplifier sa présentation en changeant le modèle de calcul et en exploitant le principe de retour sur trace.
+
+                Idée : depuis l'état 0, si on lit un 4, cela peut être le début d'une séquence valide donc on passe dans l'état 1, mais si une erreur survient dans la suite de la séquence, on revient sur ce choix et on décide que la lecture de ce 4 conserve l'état 0.
+
+                Graphiquement, cela simplifie l'automate en :
+
+                \begin{center}
+                    \begin{tikzpicture}
+                        \node (0) at (0, 0) [state, initial, initial text={}] {$0$};
+                        \node (1) at (2, 0) [state] {$1$};
+                        \node (2) at (4, 0) [state] {$2$};
+                        \node (3) at (6, 0) [state] {$3$};
+                        \node (4) at (8, 0) [state, accepting] {$4$};
+
+                        \draw[->] (0) to node [above] {$4$} (1);
+                        \draw[->] (1) to node [above] {$2$} (2);
+                        \draw[->] (2) to node [above] {$4$} (3);
+                        \draw[->] (3) to node [above] {$2$} (4);
+
+                        \draw[->] (0) to [out=-90, in=-135, looseness=4] node [below] {$0 - 9$} (0);
+                    \end{tikzpicture}
+                \end{center}
+
+                L'algorithme de retour sur trace revient à parcourir ce graphe selon les lettres lues en essayant de passer dans l'état 1 dès que possible et en revenant sur ce choix en cas d'impossibilité.
+                Ce type d'automate est appelé \emph{non déterministe} car on peut le voir comme une machine pouvant être dans plusieurs états à la fois ( par exemple 0 et 1 après la lecture d'un 4 depuis l'état 0).
+                Lorsqu'une transition est impossible, la machine n'est plus dans l'état associé (idée du retour sur trace), et l'objectif est que l'un des états de la machine sont acceptant en fin de lecture.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Définition (\textit{Automate fini non déterministe})}}
+                \begin{indt}{Un \emph{automate fini non déterministe} (AFND) est un quintuplet $M = (\Sigma, Q, I, F, \delta)$}
+                    $-$ $\Sigma$ est un alphabet ;
+
+                    $-$ $Q$ est un ensemble fini non vide d'états ;
+
+                    $-$ $I \subseteq Q$ est l'ensemble des états initiaux ;
+
+                    $-$ $F \subseteq Q$ est l'ensemble des états acceptants ;
+
+                    $-$ $\delta : Q \times \Sigma \longrightarrow \mathcal P(Q)$
+                \end{indt}
+
+                \vspace{12pt}
+                
+                Remarque : $\delta$ est totale, mais son image peut être vide pour certains couples.
+
+                \vspace{12pt}
+                
+                Représentation graphique : comme les AFD, avec un arc $q \overset a \longrightarrow q'$ $\forall (q, q', a) \in Q^2 \times \Sigma\ |\ q' \in \delta(q, a)$.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Modèle de calcul associé}}
+                $\bullet$ Définition (\emph{transition généralisées}) : Soit $M = (\Sigma, Q, I, F, \delta)$ un AFND.
+
+                On généralise $\delta$ aux mots en définissant $\forall q \in Q,\ \delta(q, \varepsilon) = \set q$, et
+                \[
+                    \forall (q, u, a) \in Q \times \Sigma^* \times \Sigma,\
+                    \delta(q, au) = \bigcup_{q' \in \delta(q, a)} \delta(q', u)
+                \]
+
+                \boxed{\rm Exo} Montrer que c'est équivalent à :
+                \[
+                    \forall (q, u, a) \in Q \times \Sigma^* \times \Sigma,\
+                    \delta(q, ua) = \bigcup_{q' \in \delta(q, u)} \delta(q', a)
+                \]
+
+                \vspace{12pt}
+                
+                \begin{indt}{$\bullet$ Définition (\emph{langage reconnu}) : Soit $M = (\Sigma, Q, I, F, \delta)$ un AFND.}
+                    $-$ $\forall u \in \Sigma^*$, $u$ est accepté par $M$ si et seulement si
+                    \[
+                        \lr{\bigcup_{q_0 \in I} \delta(q_0, u)} \cap F \neq \varnothing
+                    \]
+
+                    $-$ Le langage reconnu par $M$ est
+                    \[
+                        L(M) = \set{u \in \Sigma^*\ |\ M\ \text{acceptable}\ u}
+                    \]
+                \end{indt}
+
+                \vspace{12pt}
+                
+                $\bullet$ Proposition :
+                \begin{emphBox}
+                    Soit $M = (\Sigma, Q, I, F, \delta)$ un AFND, et $u \in \Sigma^*$
+
+                    Alors $u \in L(M) \ssi$ il existe un chemin $q_0 \cdots q_n$ dans le graphe de $M$ avec $q_0 \in I\ |\ qu \in F$, et la concaténation des étiquettes sur ce chemin est $u$.
+                \end{emphBox}
+
+                \vspace{6pt}
+                
+                \begin{proof}
+                    \boxed{\Leftarrow} On montre que $\forall i \in \nset 0 n,\ q_i \in \delta(q_0, u_1 \cdots u_i)$ (on note $u = u_1 \cdots u_i$)
+
+                    $-$ $i = 0$ : $\delta(q_0, u_1 \cdots u_0) = \delta(q_0, \varepsilon) = \set{q_0} \ni q_0$
+
+                    $-$ Hérédité : si $i \in \nset 1 {n - 1}\ |\ q_i \in \delta(q_0, u_1 \cdots u_i)$, alors
+                    \[
+                        \bigcup_{q \in \delta(q_0, u_1 \cdots u_i)} \delta(q, u_{i + 1}) \supseteq \delta(q_i, u_{i + 1}) \ni q_{i + 1}
+                    \]
+                    (car $q_i \overset{u_{i + 1}}\longrightarrow q_{i + 1}$)
+
+                    Finalement, $q_n \in F \cap \delta(\underbrace{q_0}_{\in I}, \underbrace{u_1 \cdots u_n}_u)$, donc $u \in L(M)$.
+
+                    \vspace{12pt}
+                    
+                    \boxed{\Rightarrow} $\exists q_0 \in I,\ \exists q_n \in F\ |\ q_n \in \delta(q_0, u)$.
+
+                    On montre qu'il existe, $\forall i \in \nset 0 n$ un chemin $q_i \cdots q_n$ étiqueté par $u_{i + 1} \cdots u_n$ avec $q_i \in \delta(q_0, u_1 \cdots u_i)$.
+
+                    \vspace{6pt}
+                    
+                    $-$ $i = n$, $q_n \in \delta(q_0, u_1 \cdots u_n)$, et le chemin vide étiqueté par $\Sigma = u_{n + 1}u_n$.
+
+                    \vspace{6pt}
+                    
+                    $-$ Hérédité : si $i \in \nset 1 n\ |\ \exists q_i \cdots q_n$ un chemin étiqueté par $u_{i + 1} \cdots u_n$ avec $q_i \in \delta(q_0, u_1 \cdots u_i)$, alors
+
+                    \[
+                        q_i \in \delta(q_0, u_1 \cdots u_i) = \bigcup_{q \in \delta(q_0, u_1 \cdots u_{i - 1})} \delta(q, u_i)
+                    \]
+
+                    Donc $\exists q_{i - 1} \in \delta(q_0, u_1 \cdots u_{i - 1})\ |\ q_i \in \delta(q_{i - 1}, u_i)$.
+
+                    Le chemin $q_{i - 1}, q_n$ est étiqueté par $u_{i} \cdots u_n$.
+
+                    Finalement, on a construit un chemin $q_0 \cdots q_n$ convenable.
+                \end{proof}
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Détermination}}
+                $\bullet$ Théorème :
+                \begin{emphBox}
+                    Soit $\Sigma$ un alphabet, et $L$ un langage sur $\Sigma$.
+
+                    \[
+                        L \in \Rec \Sigma \ssi
+                        \exists M = (\Sigma, Q, I, F, \delta)\ \text{un AFND}\ |\ L(M) = L
+                    \]
+                \end{emphBox}
+
+                \vspace{12pt}
+                
+                \begin{proof}
+                    \boxed{\Rightarrow} Si $M = (\Sigma, Q, q_0, F, \delta)$ est un AFD tel que $L = L(M)$, on construit $M' = (\Sigma, Q, \set{q_0}, F, \delta')$, où $\forall q \in Q, \forall a \in \Sigma$,
+                    \[
+                        \delta'(q, a) =
+                        \begin{cases}
+                            \set{\delta(q, a)}
+                            & \text{si}\ (q, a) \in \mathrm{dom}(\delta)
+                            \\
+                            \varnothing
+                            & \text{sinon}
+                        \end{cases}
+                    \]
+
+                    Les graphes de $M$ est $M'$ sont identiques, donc $L = L(M) = L(M')$.
+
+                    \vspace{12pt}
+                    
+                    \boxed{\Leftarrow} On construit l'automate des parties
+                    \[
+                        M' = (\Sigma, \mathcal P(Q), I, F', \delta')
+                    \]
+                    où
+                    \[
+                        \begin{array}{l}
+                            F' = \set{E \in \mathcal P(Q) \ |\ E \cap F \neq \varnothing}
+                            \\
+                            \forall E \in \mathcal P(Q), \forall a \in \Sigma,\
+                            \delta'(E, a) = \displaystyle \bigcup_{q \in E} \delta(q, a)
+                        \end{array}
+                    \]
+
+                    $M'$ est un AFD.
+
+                    On montre par récurrence que
+                    \[
+                        \forall (n, u) \in \N \times \Sigma^*\ |\ \abs u = n,\
+                        \delta'(I, u) = \bigcup_{q_0 \in I} \delta(q_0, u)
+                    \]
+
+                    $-$ $n = 0$ : $u = \varepsilon$ est le seul mot possible, et
+                    \[
+                        \delta'(I, \varepsilon) = I = \bigcup_{q_0 \in I} \set{q_0} = \bigcup_{q_0 \in I} \delta(q_0, \varepsilon)
+                    \]
+
+                    $-$ Hérédité : Soit $n \in \N\ |\ \forall u \in \Sigma^*\ |\ n = \abs u,\ \delta'(I, u) = \displaystyle \bigcup_{q_0 \in I} \delta (q_0, u)$.
+
+                    Soit $u \in \Sigma^*\ |\ \abs u = n + 1$. Alors $u$ s'écrit $u = va$ avec $v \in \Sigma^*, a \in \Sigma\ |\ \abs v = n$.
+
+                    \[
+                        \begin{array}{rcl}
+                            \delta'(I, u)
+                            &=& \delta'(I, va)
+                            \vspace{3pt}
+                            \\
+                            &=& \displaystyle \bigcup_{q \in \delta'(I, v)} \delta'(q, a)
+                            \vspace{3pt}
+                            \\
+                            &=& \displaystyle \bigcup_{q_0 \in I} \bigcup_{q \in \delta(q_0, u)} \delta(q, a)
+                            \vspace{3pt}
+                            \\
+                            &=& \displaystyle \bigcup_{q_0 \in I} \delta(q_0, \varepsilon)
+                        \end{array}
+                    \]
+
+                    Soit $u \in \Sigma^*$.
+
+                    \[
+                        \begin{array}{rcl}
+                            u \in L
+                            &\ssi& u \in L(M)
+                            \\
+                            &\ssi& \displaystyle \bigcup_{q_0 \in I} \delta(q_0, u) \cap F \neq \varnothing
+                            \\
+                            &\ssi& \delta'(I, u) \cap F \neq \varnothing
+                            \\
+                            &\ssi& \delta'(I, u) \in F'
+                            \\
+                            &\ssi& u \in L(M')
+                        \end{array}
+                    \]
+                \end{proof}
+
+                \vspace{12pt}
+                
+                $\bullet$ Remarque : l'automate des parties est complet et possède un nombre d'états exponentiel en le nombre d'états de l'AFND associé. On peut réduire ce nombre d'états en ne considérant que les ensembles d'états de l'AFND qui sont accessibles depuis $I$.
+                L'algorithme de détermination accessible s'exprime ainsi :
+
+                \vspace{6pt}
+                
+                \begin{indalgo}{}
+                    $E \gets \set I$\;
+
+                    \While{$\exists P \in E$ pas encore traité}{
+                        $\forall a \in \Sigma$, construire $\delta'(P, a)$ et l'ajouter à $E$\;
+                    }
+                \end{indalgo}
+
+                \vspace{12pt}
+                
+                Exemple : $L = (a | b)^*baa$ est reconnu par l'AFND
+
+                \begin{center}
+                    \begin{tikzpicture}
+                        \node (0) at (0, 0) [state, initial, initial text={}] {$q_0$};
+                        \node (1) at (2, 0) [state] {$q_1$};
+                        \node (2) at (4, 0) [state] {$q_2$};
+                        \node (3) at (6, 0) [state, accepting] {$q_3$};
+
+                        \draw[->] (0) to node [above] {$b$} (1);
+                        \draw[->] (1) to node [above] {$a$} (2);
+                        \draw[->] (2) to node [above] {$a$} (3);
+
+                        \draw[->] (0) to [out=45, in=90, looseness=3] node [above right] {$a, b$} (0);
+                    \end{tikzpicture}
+                \end{center}
+
+                \[
+                    \begin{array}{lllll}
+                        & \set{q_0} & \set{q_0, q_1} & \set{q_0, q_2} & \set{q_0, q_3}
+                        \\
+                        a & \set{q_0} & \set{q_0, q_2} & \set{q_0, q_3} & \set{q_0}
+                        \\
+                        b & \set{q_0, q_1} & \set{q_0, q_1} & \set{q_0, q_1} & \set{q_0, q_1}
+                    \end{array}
+                \]
+
+                L'AFD obtenu est :
+
+                \begin{center}
+                    \begin{tikzpicture}[scale=1.5]
+                        \node (0) at (0, 0) [state, initial, initial text={}] {$\set{q_0}$};
+                        \node (1) at (2, 0) [state] {$\set{q_0, q_1}$};
+                        \node (2) at (0, -2) [state] {$\set{q_1, q_3}$};
+                        \node (3) at (2, -2) [state] {$\set{q_1, q_2}$};
+
+                        \draw[->] (0) to node [above] {$b$} (1);
+                        \draw[->] (2) to node [left] {$a$} (0);
+                        \draw[->] (2) to node [above left] {$b$} (1);
+                        \draw[->] (3) to node [below] {$a$} (2);
+
+                        \draw[->] (1) to [out=-110, in=110] node [left] {$a$} (3);
+                        \draw[->] (3) to [out=70, in=-70] node [right] {$b$} (1);
+
+                        \draw[->] (1) to [out=45, in=90, looseness=3] node [above right] {$b$} (1);
+                        \draw[->] (0) to [out=45, in=90, looseness=3] node [above right] {$a$} (0);
+                    \end{tikzpicture}
+                \end{center}
+
+                \boxed{\rm Exo} le langage $(a|b)^*a(a|b)^n$ est reconnu par un AFND à $n + 2$ états mais un AFD reconnaissant ce langage a au moins $2^{n + 1}$ états.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Propriétés de clôture sur $\Rec \Sigma$}}
+                $\bullet$ Clôture par complémentation : Soit $L \in \Rec \Sigma$.
+                Alors
+                \[
+                    \Sigma^* \setminus L \in \Rec \Sigma
+                \]
+
+                \begin{proof}
+                    $\exists M = (\Sigma, Q, q_0, F, \delta)$ un AFD complet tel que $L = L(M)$.
+
+                    On considère $M' = (\Sigma, Q, q_0, Q \setminus F, \delta)$.
+
+                    \(
+                        \begin{array}{rcll}
+                            u \in L(M')
+                            &\ssi& \delta(q_0, u) \in Q \setminus F
+                            \\
+                            &\ssi& \delta(q_0, u) \notin F
+                            & \text{car}\ (q_0, u)\  \text{existe car $M$ est complet}
+                            \\
+                            &\ssi& u \notin L(M)
+                            \\
+                            &\ssi& u \in \Sigma^* \setminus L
+                        \end{array}
+                    \)
+
+                \end{proof}
+
+                \vspace{12pt}
+                
+                $\bullet$ Clôture par union : Soient $L_1, L_2 \in \Rec \Sigma$.
+
+                Alors :
+                \[
+                    L_1 \cup L_2 \in \Rec \Sigma
+                \]
+
+                \begin{proof}
+                    Idée : on lit le mot dans les deux automates en parallèle et on accepte si l'un des deux accepte.
+
+                    \[
+                        \forall i \in \set{1, 2},\ \exists M_i = (\Sigma, Q_i, I_i, F_i, \delta_i)\ |\ L(M_i) = L_i
+                    \]
+
+                    On construit
+                    \[
+                        M = \lr{\Sigma,\ Q_1 \uplus Q_2,\ I_1 \uplus I_2,\ F_1 \uplus F_2,\ \delta}
+                    \]
+
+                    où $\forall q \in Q_1 \uplus Q_2,\ \forall a \in \Sigma,$
+                    \[
+                        \delta(q, a) =
+                        \begin{cases}
+                            \delta_1(q, a)
+                            & \text{si}\ q \in Q_1
+                            \\
+                            \delta_2(q, a)
+                            & \text{si}\ q \in Q_2
+                        \end{cases}
+                    \]
+
+                    \boxed{\rm Exo} $L(M) = L_1 \cup L_2$
+                \end{proof}
+
+                \vspace{12pt}
+                
+                $\bullet$ Clôture par intersection :
+                Soient $L_1, L_2 \in \Rec \Sigma$.
+
+                Alors
+                \[
+                    L_1 \cap L_2 \in \Rec \Sigma
+                \]
+
+                \begin{proof}
+                    On a :
+                    \[
+                        \forall i \in \set{1, 2},\ \exists M_i = (\Sigma, Q_i, I_i, F_i, \delta_i)\ |\ L(M_i) = L_i
+                    \]
+
+                    On construit l'automate produit $M = (\Sigma, Q_1 \times Q_2, I_1 \times I_2, F_1 \times F_2, \delta)$
+
+                    où $\forall q_1 \in Q_1,\ \forall q_2 \in Q_2,\ \forall a \in \Sigma,\ \delta((q_1, q_2), a) = \delta_1(q_1, a) \times \delta_2(q_2, a)$
+
+                    \boxed{\rm Exo} $L(M) = L(M_1) \cap L(M_2)$
+                \end{proof}
+
+                \vspace{12pt}
+                
+                $\bullet$ Clôture par concaténation : Soient $L_1, L_2 \in \Rec \Sigma$.
+
+                Alors :
+                \[
+                    L_1 L_2 \in \Rec \Sigma
+                \]
+
+                \begin{proof}
+                    Idée : on met bout à bout les automates en passant du premier au second de manière déterministe.
+
+                    \[
+                        \forall i \in \set{1, 2},\ \exists M_i = (\Sigma, Q_i, q_i, F_i, \delta_i)\ |\ L(M_i) = L_i
+                    \]
+
+                    On suppose $M_1$ et $M_2$ complets et $M_2$ standard.
+
+                    On construit $M = \lr{\Sigma, Q_1 \cup Q_2 \setminus \set{q_2}, \set{q_1}, F, \delta}$, où :
+                    \[
+                        F =
+                        \begin{cases}
+                            F_2
+                            & \text{si}\ q_2 \notin F_2
+                            \\
+                            F_1 \cup F_2 \setminus \set{q_2}
+                            & \text{sinon}
+                        \end{cases}
+                    \]
+
+                    et
+                    \[
+                        \forall (q, a) \in \lr{Q_1 \cup Q_2 \setminus \set{q_2}} \times \Sigma,\
+                        \delta(q, a) =
+                        \begin{cases}
+                            \set{\delta_1(q, a)}
+                            & \text{si}\ q \in Q_1 \setminus F_1
+                            \\
+                            \set{\delta_2(q, a)}
+                            & \text{si}\ q \in Q_2 \setminus \set{q_2}
+                            \\
+                            \set{\delta_1(q, a), \delta_2(q_2, a)}
+                            & \text{sinon}
+                        \end{cases}
+                    \]
+
+                    \boxed{\rm Exo} $L(M) = L_1 L_2$
+                \end{proof}
             \end{indt}
         \end{indt}
     \end{indt}
