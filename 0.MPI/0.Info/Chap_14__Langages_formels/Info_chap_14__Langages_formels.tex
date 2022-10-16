@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2022.10.13
+% Last modification     :   2022.10.16
 %
 %------------------------------------------------------------------------
 
@@ -768,7 +768,7 @@
                 \[
                     \dfrac{}{\varnothing \in \Regexp(\Sigma)}
                     \qquad
-                    \dfrac{}{\Sigma \in \Regexp(\Sigma)}
+                    \dfrac{}{\varepsilon \in \Regexp(\Sigma)}
                     \qquad
                     \dfrac{a \in \Sigma}{a \in \Regexp(\Sigma)}
                 \]
@@ -1336,8 +1336,8 @@
                         \draw[->] (q1) to [out=-70, in=70] node [right] {$1$} (q3);
                         \draw[->] (q3) to [out=110, in=-110] node [left] {$1$} (q1);
 
-                        \draw[->] (q3) to [out=0, in=-50, looseness=2] node [right] {$0$} (q3);
-                        \draw[->] (q2) to [out=0, in=-50, looseness=2] node [right] {$1$} (q2);
+                        \draw[->] (q3) to [out=0, in=-50, looseness=3] node [right] {$0$} (q3);
+                        \draw[->] (q2) to [out=0, in=-50, looseness=3] node [right] {$1$} (q2);
                     \end{tikzpicture}
                 \end{center}
 
