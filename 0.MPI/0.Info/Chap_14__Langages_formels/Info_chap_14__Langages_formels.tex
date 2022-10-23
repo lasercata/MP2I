@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2022.10.16
+% Last modification     :   2022.10.23
 %
 %------------------------------------------------------------------------
 
@@ -322,11 +322,12 @@
     \thetitle{Chapitre 14}{Langages formels}
     
     \tableofcontents
+    \listofalgorithms
     \newpage
     
     \begin{indt}{\section{Langages réguliers}}
         \begin{indt}{\subsection{Motivation}}
-            \begin{indt}{\subsubsection{introduction}}
+            \begin{indt}{\subsubsection{Introduction}}
                 \label{1.1.1}
 
                 On a souvent besoin de mettre en place une analyse de texte, même dans le cadre d'applications qui ne relèvent pas uniquement du traitement de texte.
@@ -385,7 +386,9 @@
 
                 $\bullet$ Algorithme :
 
-                \begin{indalgo}{}
+                \begin{indalgo}{Exemple}
+                    \label{alg:1}
+
                     $x \gets 0$\;
 
                     \For{chaque bit $b$ pris dans l'odre}{
@@ -1175,6 +1178,8 @@
             \vspace{12pt}
             
             \begin{indt}{\subsubsection{Langages linéaires}}
+                \label{1.4.5}
+
                 $\bullet$ Définition (\emph{expression régulière linéaire}) : une expression régulière est dite \emph{linéaire} si et seulement si chaque lettre qui la compose n'y apparaît qu'une seule fois.
 
                 \vspace{12pt}
@@ -1284,7 +1289,7 @@
 
         \begin{indt}{\subsection{Automates finis déterministes}}
             \begin{indt}{\subsubsection{Introduction}}
-                La représentation visuelle de l'algorithme vu en \ref{1.1.2} (page \pageref{1.1.2}) est la representation graphique d'un automate fini déterministe.
+                La représentation visuelle de l'algorithme n°\ref{alg:1} (page \pageref{alg:1}) est la representation graphique d'un automate fini déterministe.
                 On peut voir un automate comme une machine à états, qui change d'état en fonction des caractères lus sur son entrée. L'entrée est considérée comme valide si l'état final de la machine est approprié.
 
                 Il existe plusieurs notions d'automates, et nous montrerons que toutes celles au programme sont équivalentes.
@@ -1368,6 +1373,8 @@
             \vspace{12pt}
             
             \begin{indt}{\subsubsection{Modèle de calcul associé}}
+                \label{2.1.3}
+
                 $\bullet$ Définition (\emph{transition généralisées}) : Soit $M = (\Sigma, Q, q_0, F, \delta)$ un AFD.
 
                 On généralise la fonction de transition aux mots par :
@@ -1585,7 +1592,7 @@
                 Devient :
                 \begin{center}
                     \begin{tikzpicture}
-                        \node (0) at (0, 0) [initial, initial text={}, state, accepting] {$q_0$};
+                        \node (0) at (0, 0) [state, accepting] {$q_0$};
                         \node (1) at (2, 0) [state] {$q_1$};
                         \node (2) at (4, 0) [state, accepting] {$q_2$};
                         \node (i) at (2, -2) [state, initial, initial text={}, accepting] {$\iota$};
@@ -1664,6 +1671,8 @@
             \vspace{12pt}
             
             \begin{indt}{\subsubsection{Automate local}}
+                \label{2.1.7}
+
                 $\bullet$ Remarque :
                 Un langage local est caractérisé par la connaissance des lettres qui peuvent débuter / terminer un mot du langage et des lettres qui peuvent succéder à une lettre donnée dans un mot de langage. En particulier, la connaissance de la dernière lettre lue permet de connaître les lettres qui peuvent suivre, ce qui fait des langages locaux de bon candidats pour l'appartenance à $\Rec \Sigma$.
 
@@ -2000,7 +2009,9 @@ unlock_door()\end{lstlisting}
 
             \vspace{12pt}
             
-            \begin{indt}{\subsubsection{Détermination}}
+            \begin{indt}{\subsubsection{Déterminisation}}
+                \label{2.2.4}
+
                 $\bullet$ Théorème :
                 \begin{emphBox}
                     Soit $\Sigma$ un alphabet, et $L$ un langage sur $\Sigma$.
@@ -2098,11 +2109,13 @@ unlock_door()\end{lstlisting}
                 \vspace{12pt}
                 
                 $\bullet$ Remarque : l'automate des parties est complet et possède un nombre d'états exponentiel en le nombre d'états de l'AFND associé. On peut réduire ce nombre d'états en ne considérant que les ensembles d'états de l'AFND qui sont accessibles depuis $I$.
-                L'algorithme de détermination accessible s'exprime ainsi :
+                L'algorithme de déterminisation accessible s'exprime ainsi :
 
                 \vspace{6pt}
                 
-                \begin{indalgo}{}
+                \begin{indalgo}{Déterminisation accessible}
+                    \label{alg:2}
+
                     $E \gets \set I$\;
 
                     \While{$\exists P \in E$ pas encore traité}{
@@ -2301,6 +2314,1192 @@ unlock_door()\end{lstlisting}
 
                     \boxed{\rm Exo} $L(M) = L_1 L_2$
                 \end{proof}
+            \end{indt}
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Transitions spontanées}}
+            \begin{indt}{\subsubsection{Introduction}}
+                On ajoute de l'indéterminisme aux automates en autorisant un changement d'état sans lire de lettre.
+
+                Ce nouveau type de transition s'appelle \emph{transition spontanée / instantanée}, ou $\varepsilon$-transition, qui correspond à une transition étiquetée par le mot vide.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Définition (\textit{automate fini non déterministe à transitions spontanées})}}
+                \begin{indt}{Un AFND à transitions spontanées ($\varepsilon$-AFND) est un quintuplet $(\Sigma, Q, I, F, \delta)$, où}
+                    $-$ $\Sigma$ est un alphabet ;
+
+                    $-$ $Q$ est un ensemble fini non vide d'états ;
+
+                    $-$ $I \subseteq Q$ est l'ensemble des états initiaux ;
+
+                    $-$ $F \subseteq F$ est l'ensemble des états acceptants ;
+
+                    $-$ $\delta : Q \times (\Sigma \cup \set \varepsilon) \longrightarrow \mathcal P(Q)$ est la fonction de transition.
+                \end{indt}
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Modèle de calcul associé}}
+                \label{2.3.3}
+
+                $\bullet$ Principe : un $\varepsilon$-AFND fonctionne comme un AFND mais à tout moment dans la lecture du mot il est possible de suivre un nombre quelconque d'$\varepsilon$-transitions.
+                Il faut donc déterminer pour chaque état les états accessibles depuis ce dernier \textit{via} des transitions spontanées.
+                C'est un problème de graphe simple à résoudre.
+
+                \vspace{12pt}
+                
+                $\bullet$ Définition (\textit{$\varepsilon$-clôture}) : Soit $M = (\Sigma, Q, I, F, \delta)$ un $\varepsilon$-AFND, et $q \in Q$.
+
+                On appelle \textit{$\varepsilon$-clôture} de $q$ l'ensemble
+                \[
+                    E(q) = \set{
+                        q' \in Q\ |\ \exists n \in \N,\ \exists (q_0, q_n) \in Q^2\
+                        \begin{array}{|l}
+                            q_0 = q
+                            \\
+                            q_n = q'
+                            \\
+                            \forall i \in \nset 0 {n - 1},\ q_{i + 1} \in \delta(q_i, \varepsilon)
+                        \end{array}
+                    }
+                \]
+
+                \vspace{12pt}
+                
+                $\bullet$ Définition (\textit{transitions généralisées}) : Soit $M = (\Sigma, Q, I, F, \delta)$ un $\varepsilon$-AFND.
+
+                On généralise $\delta$ aux mots par :
+                \[
+                    \forall q \in Q,\ \hat \delta(q, \varepsilon) = E(q)
+                \]
+                \[
+                    \forall (q, u, a) \in Q \times \Sigma^* \times \Sigma,\
+                    \hat \delta(q, au)
+                    = \bigcup_{q' \in E(q)} \bigcup_{q" \in \delta(q', a)} \hat \delta(q", u)
+                \]
+
+                \boxed{\rm Exo} Mq c'est équivalent à
+                \[
+                    \forall (q, u, a) \in Q \times \Sigma^* \times \Sigma,\
+                    \hat \delta(q, ua)
+                    = \bigcup_{q' \in \hat \delta(q, u)} \bigcup_{q" \in \delta(q', a)} E(q")
+                \]
+
+                \vspace{12pt}
+                
+                $\bullet$ Définition (\textit{langage reconnu}) : Soit $M = (\Sigma, Q, I, F, \delta)$ un $\varepsilon$-AFND.
+
+                $-$ $u \in \Sigma^*$ est accepté par $M$ ssi
+                \[
+                    \bigcup_{q_0 \in I} \hat \delta(q_0, u) \cap F \neq \varnothing
+                \]
+
+                $-$ Le langage reconnu par $M$ est
+                \[
+                    L(M) = \set{u \in \Sigma^*\ |\ M\ \text{accepte}\ u}
+                \]
+
+                \vspace{12pt}
+                
+                $\bullet$ Proposition
+
+                \begin{emphBox}
+                    Soit $M = (\Sigma, Q, I, F, \delta)$ un $\varepsilon$-AFND, et $u \in \Sigma^*$.
+
+                    Alors $u \in L(M) \ssi \exists q_0 \cdots q_n \in Q\ |\ q_0 \in I, q_n \in F,\ \exists a_1 \cdots a_n \in \Sigma \cup \set \varepsilon\ |\ \forall i \in \nset 0 {n - 1},\ q_i \in \delta(q_i, a_{i + 1})$ et $u = a_1 \cdots a_n$
+                \end{emphBox}
+
+                \vspace{12pt}
+                
+                \begin{proof}
+                    \boxed{\Leftarrow} On montre par récurrence que $\forall i \in \nset 0 n,\ q_i \in \hat \delta(q_0, a_1 \cdots a_i)$ :
+
+                    $-$ $i = 0$ : $a_1 \cdots a_i = \varepsilon$ et $q_0 \in E(q_0) = \hat \delta(q_0, \varepsilon)$.
+
+                    \begin{indt}{$-$ Si $\forall j \le i$, la propriété est vraie, deux cas :}
+                        . $a_{i + 1} \neq \varepsilon$ : $q_{i + 1} \in \delta(q_i, a_{i + 1})$ et $q_i \in \hat \delta(q_0, a_1 \cdots a_i)$.
+
+                        Or $\hat \delta (q_0, a_1 \cdots a_{i + 1}) = \displaystyle \bigcup_{q \in \hat \delta(q_0, a_1 \cdots a_i)} \bigcup_{q' \in \delta(q, a_{i + 1})} E(q')$.
+
+                        Donc $q_{i + 1} \in E(q_{i + 1}) \subseteq \displaystyle \bigcup_{q \in \delta(q_i, a_{i + 1})} E(q') \subseteq \hat \delta(q_0, a_1 \cdots a_{i + 1})$
+
+                        \vspace{6pt}
+                        
+                        \begin{indt}{. $a_{i + 1} = \varepsilon$ : deux cas :}
+                            $+$ $\forall j \le i,\ a_j = \varepsilon$. Dans ce cas, $q_{i + 1} \in E(q_0) = \hat \delta(q_0, \varepsilon) = \hat \delta(q_0, a_1 \cdots a_{i + 1})$
+
+                            $+$ $\exists j \le i\ |\ a_j \neq \varepsilon$ : on considère $j = \max \set{k \le i\ |\ a_k \neq \varepsilon}$
+
+                            On sait que $a_1 \cdots a_{i+1} = a_1 \cdots a_j$.
+
+                            \[
+                                q_{i + 1} \in E(q_j)
+                                \subseteq \bigcup_{q' \in \delta(q_{j - 1}, a_j)} E(q')
+                                \subseteq \bigcup_{q \in \hat \delta(q_0, a_1 \cdots a_{j - 1})} \bigcup_{q' \in \delta (q, a_j)} E(q')
+                                = \hat \delta(q_0, a_1 \cdots a_j)
+                            \]
+                        \end{indt}
+                    \end{indt}
+
+                    \vspace{12pt}
+                    
+                    \boxed{\rm \Rightarrow} On montre par récurrence sur $n \in \N$ qur $\forall u \in \Sigma^*\ |\ \abs u = n,\ \forall q, q' \in Q$, si $q' \in \hat \delta(q, u)$, alors il exste un chemin $q_0 \cdots q_n$ dont les étiquettes $a_1 \cdots a_n$ vérifient $u = a_1 \cdots a_n$ et $q_0 = q, q_n = q'$.
+
+                    \vspace{6pt}
+                    
+                    $-$ $n = 0$ : $u = \varepsilon$ et $q' \in E(q)$ donc la définition de l'$\varepsilon$-clôture donne le chemin.
+
+                    \vspace{6pt}
+                    
+                    $-$ Si la propriété est vraie pour $n \in \N$, soit $u \in \Sigma^*\ |\ \abs u = n + 1$, soit $q, q' \in Q\ |\ q' \in \hat \delta(q, u)$.
+
+                    $\exists v \in \Sigma^*\ |\ \abs v = n,\ \exists a \in \Sigma\ |\ u = av$.
+
+                    $q' \in \hat \delta(q, av) = \displaystyle \bigcup_{q'' \in E(q)} \bigcup_{q''' \in \delta(q'', q)} \hat \delta(q''', v)$
+
+                    Première union : chemin étiqueté par $\varepsilon \cdots \varepsilon$ de $q$ à $q'$
+
+                    Deuxième union : avec transition étiquetée par $a$ de $q''$ à $q'''$
+
+                    $\hat \delta(q'', v)$ : H.R : le chemin étiqueté par $a_1 \cdots a_n$ tel que $a_1 \cdots a_n = v$ de $q'''$ à $q'$.
+
+                    Donc chemin de $q$ à $q'$ étiqueté par $\varepsilon \cdots \varepsilon$ de $a_1 \cdots a_n = av = u$.
+
+                    \vspace{6pt}
+                    
+                    $-$ Si $u \in L(M)$, alors $\exists q_0 \in I, \exists q_n \in F\ |\ q_n \in \hat \delta(q_0, u)$
+
+                    donc la propriété démontrée donne le chemin voulu.
+                \end{proof}
+
+                \vspace{12pt}
+                
+                $\bullet$ Exemple : si $u = u_1 \cdots u_n$,
+
+                $-$ l'AFD
+
+                \begin{center}
+                    \begin{tikzpicture}
+                        \node (0) at (0, 0) [state, initial, initial text={}] {$q_0$};
+                        \node (1) at (2, 0) [state] {$q_1$};
+                        \node (d) at (4, 0) {$\cdots$};
+                        \node (n) at (6, 0) [state, accepting] {$q_n$};
+
+                        \draw[->] (0) to node [above] {$u_1$} (1);
+                        \draw[->] (1) to node [above] {$u_2$} (d);
+                        \draw[->] (d) to node [above] {$u_n$} (n);
+                    \end{tikzpicture}
+                \end{center}
+
+                reconnait $\set \varepsilon$.
+
+                \vspace{6pt}
+                
+                $-$ l'$\varepsilon$-AFND
+
+                \begin{center}
+                    \begin{tikzpicture}
+                        \node (0) at (0, 0) [state, initial, initial text={}] {$q_0$};
+                        \node (1) at (2, 0) [state] {$q_1$};
+                        \node (d) at (4, 0) {$\cdots$};
+                        \node (n) at (6, 0) [state, accepting] {$q_n$};
+
+                        \draw[->] (0) to [out=20, in=160] node [above] {$u_1$} (1);
+                        \draw[->] (1) to [out=20, in=160] node [above] {$u_2$} (d);
+                        \draw[->] (d) to [out=20, in=160] node [above] {$u_n$} (n);
+
+                        \draw[->] (0) to [out=-20, in=-160] node [below] {$\varepsilon$} (1);
+                        \draw[->] (1) to [out=-20, in=-160] node [below] {$\varepsilon$} (d);
+                        \draw[->] (d) to [out=-20, in=-160] node [below] {$\varepsilon$} (n);
+                    \end{tikzpicture}
+                \end{center}
+
+                reconnait $\set{v \in \Sigma^*\ |\ v\ \text{sous-mot de}\ u}$
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Théorème}}
+                \begin{emphBox}
+                    Soit $\Sigma$ un alphabet, et $L$ un langage sur $\Sigma$.
+
+                    \[
+                        L \in \Rec \Sigma
+                        \ssi
+                        \exists M = (\Sigma, Q, I, F, \delta)\ \text{un $\varepsilon$-AFND}\ |\ L(M) = L
+                    \]
+                \end{emphBox}
+
+                \begin{proof}
+                    \boxed{\Rightarrow} par \ref{2.2.4} (page \pageref{2.2.4}), $\exists M = (\Sigma, Q, I, F, \delta)$ un AFND tel que $L(M) = L$.
+
+                    On construit l'$\varepsilon$-AFND $M' = (\Sigma, Q, I, F, \delta')$, où
+                    \[
+                        \forall (q, a) \in Q \times (\Sigma \cup \set \varepsilon),\
+                        \delta'(q, a) =
+                        \begin{cases}
+                            \delta(q, a)
+                            & \text{si}\ a \neq \varepsilon
+                            \\
+                            \varnothing
+                            & \text{sinon}
+                        \end{cases}
+                    \]
+
+                    Les graphes de $M, M'$ sont identiques, donc par \ref{2.3.3} (page \pageref{2.3.3}), $L(M') = L(M) = L$
+
+                    \vspace{12pt}
+                    
+                    \boxed{\Leftarrow} On élimine les $\varepsilon$-transitions en construisant l'AFND
+                    \[
+                        M' = \lr{\Sigma, Q, \bigcup_{q_0 \in I} E(q_0), F, \delta'}
+                    \]
+                    où $\forall (q, a) \in Q \times \Sigma$,
+                    \[
+                        \delta'(q, a) = \bigcup_{q' \in \delta(q, a)} E(q')
+                    \]
+
+                    Soit $u \in \Sigma^*$. On note $u = u_1 \cdots u_n$.
+
+                    $
+                        u \in L(M')
+                        \ssi \exists q_0 \cdots q_n\ \text{un chemin}\
+                        \left|
+                        \begin{array}{l}
+                            \displaystyle
+                            q_0 \in \bigcup_{q \in I} E(q)
+                            \vspace{3pt}
+                            \\
+                            q_n \in F
+                            \vspace{3pt}
+                            \\
+                            \forall i \in \nset 0 {n - 1},\ q_{i+1} \in \delta'(q_i, u_{i + 1})
+                        \end{array}
+                        \right.
+                    $
+
+                    $
+                        \ssi
+                        \exists q_0 \cdots q_n\ \text{un chemin}
+                        \left|
+                        \begin{array}{l}
+                            \displaystyle
+                            q_0 \in \bigcup_{q \in I} E(q)
+                            \vspace{3pt}
+                            \\
+                            q_n \in F
+                            \vspace{3pt}
+                            \\
+                            \displaystyle
+                            \forall i \in \nset 0 {n - 1},\ q_{i + 1} \in \bigcup_{q \in \delta(q_i, u_{i + 1})} E(q)
+                            \vspace{-6pt}
+                        \end{array}
+                        \right.
+                    $
+                    \vspace{6pt}
+
+                    %$\ssi$ il existe un chemin $q_{-n} \cdots q_0 q_1^{(0)} \cdots q_1^{(n_1)} q_2^{(0)} \cdots q_2^{(n_2)} \cdots q_n^{(0)} \cdots q_n^{(m_n)}, \forall i \in \nset 0 {n - 1}, q_{i + 1} \in \delta(q_i, \varepsilon), \forall i \in \nset 1 n,\ q_i^{(0)} \in \delta(q_{i - 1}^{(n_{i - 1})}, u_i),\ \forall j \in \nset 0 {m_i - 1}, \ q_i^{(j + 1)} \in \delta(q_i^{(j)}, \varepsilon)$
+                    %et $q_0 \in I$, et $q_n^{m_n} \in F$
+
+                    $
+                        \ssi
+                        \exists q_{-m} \cdots q_0 q_1^{(0)} \cdots q_1^{(m_1)} q_2^{(0)} \cdots q_2^{(m_2)} \cdots q_n^{(0)} \cdots q_n^{(m_n)}\ \text{un chemin tel que}
+                    $
+                    \[
+                        \left|
+                        \begin{array}{l}
+                            \forall i \in \nset{-m}{-1},\ q_{i + 1} \in \delta(q_i, \varepsilon)
+                            \vspace{3pt}
+                            \\
+                            \forall i \in \nset 1 n,\ q_i^{(0)} \in \delta(q_{i - 1}^{(m_{i - 1})}, u_i)
+                            \vspace{3pt}
+                            \\
+                            \forall j \in \nset 0 {m_i - 1},\ q_i^{(j + 1)} \in \delta(q_i^{(j)}, \varepsilon)
+                            \vspace{3pt}
+                            \\
+                            q_0 \in I
+                            \vspace{0pt}
+                            \\
+                            q_n^{(m_n)} \in F
+                        \end{array}
+                        \right.
+                    \]
+
+                    $\ssi u \in L(M)$
+                \end{proof}
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Exemple}}
+                \label{2.3.5}
+
+                $\Sigma = \set{a, b}$, et $\forall c \in \Sigma$, on note $L_c = \set{u \in \Sigma^*\ |\ \abs u _c \equiv 1\ [2]}$
+
+                $(L_a L_b)^+$ est reconnu par :
+
+                \begin{center}
+                    \begin{tikzpicture}
+                        \node (0) at (0, 0) [state, initial, initial text={}] {$q_0$};
+                        \node (1) at (2, 0) [state] {$q_1$};
+                        \node (2) at (2, -2) [state] {$q_2$};
+                        \node (3) at (0, -2) [state, accepting] {$q_3$};
+
+                        \draw[->] (0) to [out=20, in=160] node [above] {$a$} (1);
+                        \draw[->] (1) to [out=-160, in=-20] node [below] {$a$} (0);
+
+                        \draw[->] (1) to node [right] {$\varepsilon$} (2);
+                        \draw[->] (3) to node [left] {$\varepsilon$} (0);
+
+                        \draw[->] (3) to [out=20, in=160] node [above] {$b$} (2);
+                        \draw[->] (2) to [out=-160, in=-20] node [below] {$b$} (3);
+
+                        \draw[->] (2) to [out=-45, in=0, looseness=3] node [below right] {$a$} (2);
+                        \draw[->] (3) to [out=-135, in=180, looseness=3] node [below left] {$a$} (3);
+                        \node at (6, -1) {$
+                            \begin{array}{l}
+                                E(q_0) = \set{q_0}
+                                \\
+                                E(q_1) = \set{q_1, q_2}
+                                \\
+                                E(q_2) = \set{q_2}
+                                \\
+                                E(q_3) = \set{q_3, q_0}
+                            \end{array}
+                        $};
+                    \end{tikzpicture}
+                \end{center}
+
+                $a(bb)$
+
+                $\rightarrow (ab)b \in L(M)$
+
+                \vspace{12pt}
+                
+                $(L_a L_b)^+$ est donc reconnu par
+
+                \begin{center}
+                    \begin{tikzpicture}[scale=1.5]
+                        \node (0) at (0, 0) [state, initial, initial text={}] {$q_0$};
+                        \node (1) at (2, 0) [state] {$q_1$};
+                        \node (2) at (2, -2) [state] {$q_2$};
+                        \node (3) at (0, -2) [state, accepting] {$q_3$};
+
+                        \draw[->] (0) to [out=20, in=160] node [above] {$a$} (1);
+                        \draw[->] (1) to [out=-160, in=-20] node [below] {$a$} (0);
+
+                        \draw[->] (1) to node [right] {$\varepsilon$} (2);
+                        \draw[->] (3) to node [left] {$\varepsilon$} (0);
+
+                        \draw[->] (3) to [out=20, in=160] node [above] {$b$} (2);
+                        \draw[->] (2) to [out=-160, in=-20] node [below] {$b$} (3);
+
+                        \draw[->] (2) to [out=-45, in=0, looseness=3] node [below right] {$a$} (2);
+                        \draw[->] (3) to [out=-135, in=180, looseness=3] node [below left] {$a$} (3);
+
+                        \draw[->] (0) to [out=45, in=90, looseness=3] node [above right] {$b$} (0);
+                        \draw[->] (1) to [out=45, in=90, looseness=3] node [above right] {$b$} (1);
+
+                        \draw[->] (0) to [out=-35, in=125] node [above right] {$a$} (2);
+                        \draw[->] (2) to [out=145, in=-55] node [below left] {$b$} (0);
+                    \end{tikzpicture}
+                \end{center}
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Retour aux propriétés de clôture sur $\Rec \Sigma$}}
+                $\bullet$ Théorème :
+                \begin{emphBox}
+                    \[
+                        \Reg(\Sigma) \subseteq \Rec \Sigma
+                    \]
+                \end{emphBox}
+
+                \vspace{12pt}
+                
+                \begin{proof}
+                    On procède par induction structurelle sur une expression régulière dénotant le langage en applicant la construction de \textsc{Thompson} :
+
+                    $-$ $\varnothing$ :
+                    \begin{center}
+                        \begin{tikzpicture}
+                            \node (0) at (0, 0) [state, initial, initial text={}] {$q_i$};
+                            \node (1) at (2, 0) [state, accepting] {$q_f$};
+                        \end{tikzpicture}
+                    \end{center}
+
+                    $M_\varnothing = (\Sigma, \set{q_i, q_f}, \set{q_i}, \set{q_f}, \varnothing)$
+
+                    %\vspace{12pt}
+                    \newpage
+                    
+                    $-$ $\varepsilon$ :
+                    \begin{center}
+                        \begin{tikzpicture}
+                            \node (0) at (0, 0) [state, initial, initial text={}] {$q_i$};
+                            \node (1) at (2, 0) [state, accepting] {$q_f$};
+
+                            \draw[->] (0) to node [above] {$\varepsilon$} (1);
+                        \end{tikzpicture}
+                    \end{center}
+
+                    $
+                        M_\varepsilon = \lr{
+                            \Sigma,
+                            \set{q_i, q_f},
+                            \set{q_i},
+                            \set{q_f},
+                            \set{(q_i, \varepsilon) \longmapsto \set{q_f}}
+                        }
+                    $
+
+                    \vspace{6pt}
+                    
+                    $-$ $a \in \Sigma$
+                    \begin{center}
+                        \begin{tikzpicture}
+                            \node (0) at (0, 0) [state, initial, initial text={}] {$q_i$};
+                            \node (1) at (2, 0) [state, accepting] {$q_f$};
+
+                            \draw[->] (0) to node [above] {$a$} (1);
+                        \end{tikzpicture}
+                    \end{center}
+
+                    $
+                        M_a = \lr{
+                            \Sigma,
+                            \set{q_i, q_f},
+                            \set{q_i},
+                            \set{q_f},
+                            \set{(q_i, a) \longmapsto \set{q_f}}
+                        }
+                    $
+
+                    \vspace{12pt}
+                    
+                    $-$ $e | f$ :
+
+                    \begin{center}
+                        \begin{tikzpicture}
+                            \node (i) at (0, 0) [state, initial, initial text={}] {$q_i$};
+                            \node (f) at (6, 0) [state, accepting] {$q_f$};
+
+                            \node (Me) at (3, 1) [rectangle, draw, rounded corners=5pt] {
+                                \tikz{
+                                    \node at (0, 0) [circle, draw] {$q_{ie}$};
+                                    \node at (1, 0) {$M_e$};
+                                    \node at (2, 0) [circle, draw] {$q_{fe}$};
+                                }
+                            };
+
+                            \node (Mf) at (3, -1) [rectangle, draw, rounded corners=5pt] {
+                                \tikz{
+                                    \node at (0, 0) [circle, draw] {$q_{if}$};
+                                    \node at (1, 0) {$M_f$};
+                                    \node at (2, 0) [circle, draw] {$q_{ff}$};
+                                }
+                            };
+                            
+                            \draw[->] (i) to [out=45, in=180] node [above left] {$\varepsilon$} (Me);
+                            \draw[->] (i) to [out=-45, in=180] node [below left] {$\varepsilon$} (Mf);
+
+                            \draw[->] (Me) to [out=0, in=135] node [above right] {$\varepsilon$} (f);
+                            \draw[->] (Mf) to [out=0, in=-135] node [below right] {$\varepsilon$} (f);
+                        \end{tikzpicture}
+                    \end{center}
+
+                    $
+                        M_{e | f}
+                        = \lr{
+                            \Sigma,\
+                            \set{q_i, q_f} \cup Q_e \cup Q_f,\
+                            \set {q_i},\
+                            \set {q_f},\
+                            \delta_e \cup \delta_f \cup
+                            \begin{array}{|l}
+                                (q_i, \varepsilon) \longmapsto \set{q_{ie}, q_{if}}
+                                \\
+                                (q_{ie}, \varepsilon) \longmapsto \set{q_f}
+                                \\
+                                (q_{ff}, \varepsilon) \longmapsto \set{q_f}
+                            \end{array}
+                        }
+                    $
+
+                    $u \in L(M_{e | f}) \ssi$
+
+                    il existe un chemin de $q_i$ à $q_f$ dont les étiquettes donnent $u$
+
+                    $\ssi$ il existe un chemin de $q_{ie}$ à $q_{fe}$ dont les étiquettes donnent $u$
+
+                    ou il existe un chemin de $q_{if}$ à $q_{ff}$ dont les étiquettes donnent $u$
+
+                    $\ssi u \in L(M_e)$ ou $u \in L(M_f)$
+
+                    $\ssi u \in L(M_e) \cup L(M_f) = L(e) \cup L(f) = L(e|f)$.
+
+                    \vspace{12pt}
+                    
+                    $-$ $ef$
+
+                    \begin{center}
+                        \begin{tikzpicture}
+                            \node (i) at (0, 0) [state, initial, initial text={}] {$q_i$};
+                            \node (Me) at (3, 0) [rectangle, draw, rounded corners=5pt] {
+                                \tikz{
+                                    \node at (0, 0) [state] {$q_{ie}$};
+                                    \node at (1, 0) {$M_e$};
+                                    \node at (2, 0) [state] {$q_{fe}$};
+                                }
+                            };
+
+                            \node (Mf) at (7.5, 0) [rectangle, draw, rounded corners=5pt] {
+                                \tikz{
+                                    \node at (0, 0) [state] {$q_{if}$};
+                                    \node at (1, 0) {$M_f$};
+                                    \node at (2, 0) [state] {$q_{ff}$};
+                                }
+                            };
+
+                            \node (f) at (10.5, 0) [state, accepting] {$q_f$};
+
+                            \draw[->] (i) to node [above] {$\varepsilon$} (Me);
+                            \draw[->] (Me) to node [above] {$\varepsilon$} (Mf);
+                            \draw[->] (Mf) to node [above] {$\varepsilon$} (f);
+                        \end{tikzpicture}
+                    \end{center}
+
+                    $
+                        M_{ef} =
+                        \lr{
+                            \Sigma,\
+                            Q_e \cup Q_f \cup \set{q_i, q_f},\
+                            \set{q_i},\
+                            \set{q_f},\
+                            \delta_e \cup \delta_f \cup
+                            \begin{array}{|l}
+                                (q_i, \varepsilon) \longmapsto \set{q_{ie}}
+                                \\
+                                (q_{fe}, \varepsilon) \longmapsto \set{q_{if}}
+                                \\
+                                (q_{ff}, \varepsilon) \longmapsto \set{q_{ff}}
+                            \end{array}
+                        }
+                    $
+
+                    \vspace{12pt}
+                    
+                    $-$ $e^*$ :
+
+                    \begin{center}
+                        \begin{tikzpicture}
+                            \node (i) at (0, 0) [state, initial, initial text={}] {$q_i$};
+                            \node (Me) at (3, 0) [rectangle, draw, rounded corners=5pt] {
+                                \tikz{
+                                    \node (ie) at (0, 0) [state] {$q_{ie}$};
+                                    \node (M) at (1, 0) {$M_e$};
+                                    \node (fe) at (2, 0) [state] {$q_{fe}$};
+
+                                    \draw[->] (ie) to [out=-45, in=-135] node [below] {$\varepsilon$} (fe);
+                                    \draw[->] (fe) to [out=135, in=45] node [above] {$\varepsilon$} (ie);
+                                }
+                            };
+                            \node (f) at (6, 0) [state, accepting] {$q_f$};
+
+                            \draw[->] (i) to node [above] {$\varepsilon$} (Me);
+                            \draw[->] (Me) to node [above] {$\varepsilon$} (f);
+                        \end{tikzpicture}
+                    \end{center}
+
+                    $
+                        M_{e^*} =
+                        \lr{
+                            \Sigma,\
+                            Q_e \cup \set{q_i, q_f},\
+                            \set{q_i},\
+                            \set{q_f},\
+                            \delta_e \cup
+                            \begin{array}{|l}
+                                (q_i, \varepsilon) \longmapsto \set{q_{ie}}
+                                \\
+                                (q_{ie}, \varepsilon) \longmapsto \set{q_{fe}}
+                                \\
+                                (q_{fe}, \varepsilon) \longmapsto \set{q_{ie}, q_{f}}
+                            \end{array}
+                        }
+                    $
+
+                    \vspace{12pt}
+                    
+                    \boxed{\rm Exo} Comme $M_e$ est standard, $L(M_{e^*}) = L(e^*)$
+                \end{proof}
+
+                \vspace{12pt}
+                
+                $\bullet$ Exemple : $((a | b)^*)(ba)$
+
+                \begin{center}
+                    \begin{tikzpicture}
+                        \node (0) at (0, 0) [circle, draw, initial, initial text={}] {};
+                        \node (1) at (1, 0) [circle, draw] {};
+                        \node (Mab) at (3.7, 0) [rectangle, draw, rounded corners=5pt, label=above:{$M_{a|b}$}] {
+                            \tikz{
+                                \node (0') at (0, 0) [circle, draw] {};
+                                \node (1up) at (1, 1) [circle, draw] {};
+                                \node (2up) at (2, 1) [circle, draw] {};
+                                \node (1down) at (1, -1) [circle, draw] {};
+                                \node (2down) at (2, -1) [circle, draw] {};
+                                \node (3') at (3, 0) [circle, draw] {};
+
+                                \draw[->] (0') to node [above left] {$\varepsilon$} (1up);
+                                \draw[->] (0') to node [below left] {$\varepsilon$} (1down);
+
+                                \draw[->] (1up) to node [below] {$a$} (2up);
+                                \draw[->] (1down) to node [above] {$b$} (2down);
+
+                                \draw[->] (2up) to node [above right] {$\varepsilon$} (3');
+                                \draw[->] (2down) to node [below right] {$\varepsilon$} (3');
+                            }
+                        };
+                        
+                        \node (2) at (6.4, 0) [circle, draw] {};
+
+                        \node (Mb) at (8, 0) [rectangle, draw, rounded corners=5pt, label=above:{$M_b$}] {
+                            \tikz{
+                                \node (0') at (0, 0) [circle, draw] {};
+                                \node (1') at (1, 0) [circle, draw] {};
+
+                                \draw[->] (0') to node [above] {$b$} (1');
+                            }
+                        };
+
+                        \node (Ma) at (10.4, 0) [rectangle, draw, rounded corners=5pt, label=above:{$M_a$}] {
+                            \tikz{
+                                \node (0') at (0, 0) [circle, draw] {};
+                                \node (1') at (1, 0) [circle, draw] {};
+
+                                \draw[->] (0') to node [above] {$a$} (1');
+                            }
+                        };
+
+                        \node (3) at (12, 0) [circle, draw, accepting] {};
+
+                        \draw[->] (0) to node [above] {$\varepsilon$} (1);
+                        \draw[->] (1) to node [above] {$\varepsilon$} (Mab);
+                        \draw[->] (Mab) to node [above] {$\varepsilon$} (2);
+                        \draw[->] (2) to node [above] {$\varepsilon$} (Mb);
+                        \draw[->] (Mb) to node [above] {$\varepsilon$} (Ma);
+                        \draw[->] (Ma) to node [above] {$\varepsilon$} (3);
+                    \end{tikzpicture}
+                \end{center}
+            \end{indt}
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Théorème de \textsc{Kleene}}}
+            \begin{indt}{\subsubsection{Introduction}}
+                Le théorème de \textsc{Kleene} énonce le fait que les langages réguliers et les automates finis ont la même expressivité : les langages réguliers sont les mêmes langages que les langages reconnaissables.
+
+                \vspace{12pt}
+                
+                Remarque : le théorème est déjà démontré : la construction de \textsc{Thompson} (\textit{cf} \ref{2.3.5}, page \pageref{2.3.5}) montre que les langages réguliers sont reconnaissables et on a vu qu'il était possible de déterminer le langage reconnu par un AFD à l'aide du lemme d'\textsc{Arden} (\textit{cf} \ref{2.1.3}, page \pageref{2.1.3}).
+                Ce langage est construit à l'aide d'opérations régulières, donc il est régulier.
+
+                \vspace{12pt}
+                
+                Rappel :
+                Soit $M = (\Sigma, Q, q_0, F, \delta)$ un AFD.
+
+                $\forall q \in Q$, on définit le système d'équations d'inconnues $L_q,\ q \in Q$ suivant :
+                \[
+                    \forall q \in Q,\
+                    L_q =
+                    \begin{cases}
+                        \displaystyle
+                        \bigcup_{q' \in Q} \Sigma_{q, q'} L_{q'}
+                        & \text{si}\ q \notin F
+                        \\
+                        \displaystyle
+                        \set \varepsilon \cup
+                        \bigcup_{q' \in Q} \Sigma_{q, q'} L_{q'}
+                        & \text{sinon}
+                    \end{cases}
+                \]
+                où $\Sigma_{q, q'} = \set{a \in \Sigma\ |\ \delta(q, a) = q'}$
+
+                \vspace{6pt}
+                
+                On remarque que $\forall q \in Q$, $\Sigma_{q, q'}$ ne contient pas le mot vide ($\Sigma_{q, q'} \subseteq \Sigma$), donc le lemme d'\textsc{Arden} permet d'obtenir l'expression de $L_q$ en fonction des $L_{q'},\ \forall q' \in Q \setminus q$.
+
+                Réinjecter cette expression dans les autres équations permet d'obtenir un système avec une équation et une inconnue de moins, que l'on peut résoudre récursivement.
+
+                \vspace{12pt}
+                
+                Nous allons maintenant voir une autre démonstration du théorème de \textsc{Kleene} , au programme cette fois.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Théorème (\textsc{Kleene}, sens direct)}}
+                \begin{emphBox}
+                    Soit $\Sigma$ un alphabet.
+
+                    \[
+                        \Reg(\Sigma) \subseteq \Rec \Sigma
+                    \]
+                \end{emphBox}
+
+                \vspace{6pt}
+                
+                \begin{proof}
+                    Soit $L \in \Reg(\Sigma)$. On a donc
+                    \[
+                        \exists e \in \Regexp(\Sigma)\ |\ L = L(e)
+                    \]
+
+                    On construit un automate reconnaissant $L$ grâce à l'algorithme de \textsc{Berry-Sethi} :
+
+                    \vspace{6pt}
+                    
+                    \begin{indalgo}{\textsc{Berry-Sethi}}
+                        \label{alg:3}
+
+                        Linéariser $e$ en une expression régulière $e'$ sur $\Sigma \times \nset 1 n$ (\textit{cf} \ref{1.4.5}, page \pageref{1.4.5})\;
+
+                        Construire l'AFD local $M = (\Sigma \times \nset 1 n, Q, q_0, F, \delta)$ reconnaissant $L(e')$ comme en \ref{2.1.7} (page \pageref{2.1.7})
+                        (rappel : $L(e')$ est local, \textit{cf} \ref{1.4.5})\;
+
+                        Effacer les indices des symboles pour obtenir un AFND $M' = (\Sigma, Q, \set{q_0}, F, \delta')$, où :
+                        \[
+                            \forall (q, a) \in Q \times \Sigma,\
+                            \delta'(q, a) = \set{q' \in Q\ |\ \exists i \in \nset 1 n\ |\ \delta(q, (a, i)) = q'}
+                        \]
+                    \end{indalgo}
+
+                    \vspace{6pt}
+                    
+                    $M'$ est appelé l'automate de \textsc{Glushkov} associé à $e$, et on peut, de manière optionnelle, le déterminiser (\textit{cf} \ref{2.2.4}, page \pageref{2.2.4})
+
+                    La correction de l'algorithme s'exprime ainsi :
+
+                    $L(M') = L(e)$.
+
+                    Soit $u \in \Sigma^*$. On le note $u = u_1 \cdots u_m$.
+
+                    $u \in L(M') \ssi \exists$ un chemin $q_0 \overset{u_1}{\longrightarrow} q_1 \overset{u_2}{\longrightarrow} \cdots \overset{u_m}{\longrightarrow} q_m$
+                    avec $q_m \in F$ dans le graphe $M'$
+
+                    $\ssi \exists i_1, \ldots, i_m,\ \exists$ un chemin $q_0 \overset{(u_1, i_1)}{\longrightarrow} q_1 \overset{(u_2, i_2)}{\longrightarrow} \cdots \overset{(u_m, i_m)}{\longrightarrow} q_m$
+                    avec $q_m \in F$ dans le graphe de $M$.
+
+                    $\ssi \exists i_1, \ldots, i_m\ |\ (u_1, i_1), \ldots, (u_m, i_m) \in L(M) = L(e')$
+
+                    $\ssi u = u_1 \cdots u_m \in L(e)$ (\textit{cf} exo en \ref{1.4.5}, page \pageref{1.4.5})
+                \end{proof}
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Exemple}}
+                On considère $e = a(ab)^* | b^* a$.
+
+                (1) On linéarise $e$ en $e' = a_1(a_2b_1)^* | b_2^* a_3$
+
+                (2) On détermine
+                \[
+                    \begin{array}{l}
+                        P_1 = \set{a_1, b_2, a_3}
+                        \\
+                        S_1 = \set{a_1, b_1, a_3}
+                        \\
+                        F_2 = \set{a_1a_2, a_2b_1, b_1a_2, b_2a_3, b_2b_2}
+                    \end{array}
+                \]
+
+                D'où l'automate $M$ :
+                \begin{center}
+                    \begin{tikzpicture}
+                        \node (a3) at (0, 0) [state, accepting] {$a_3$};
+                        \node (b2) at (2, 0) [state] {$b_2$};
+                        \node (ep) at (4, 0) [state, initial above, initial text={}] {$\varepsilon$};
+                        \node (a1) at (6, 0) [state, accepting] {$a_1$};
+                        \node (a2) at (8, 0) [state] {$a_2$};
+                        \node (b1) at (10, 0) [state, accepting] {$b_1$};
+
+                        \draw[->] (b2) to node [above] {$a_3$} (a3);
+                        \draw[->] (ep) to node [above] {$b_2$} (b2);
+                        \draw[->] (ep) to node [above] {$a_1$} (a1);
+                        \draw[->] (a1) to node [above] {$a_2$} (a2);
+
+                        \draw[->] (a2) to [out=20, in=160] node [above] {$b_1$} (b1);
+                        \draw[->] (b1) to [out=-160, in=-20] node [below] {$a_2$} (a2);
+
+                        \draw[->] (ep) to [out=-135, in=-45] node [below] {$a_3$} (a3);
+
+                        \draw[->] (b2) to [out=45, in=90, looseness=3] node [above right] {$b_2$} (b2);
+                    \end{tikzpicture}
+                \end{center}
+
+                \vspace{6pt}
+                
+                (3) L'automate de \textsc{Glushkov} associé à $e$ est donc
+
+                \begin{center}
+                    \begin{tikzpicture}
+                        \node (a3) at (0, 0) [state, accepting] {$a_3$};
+                        \node (b2) at (2, 0) [state] {$b_2$};
+                        \node (ep) at (4, 0) [state, initial above, initial text={}] {$\varepsilon$};
+                        \node (a1) at (6, 0) [state, accepting] {$a_1$};
+                        \node (a2) at (8, 0) [state] {$a_2$};
+                        \node (b1) at (10, 0) [state, accepting] {$b_1$};
+
+                        \draw[->] (b2) to node [above] {$a$} (a3);
+                        \draw[->] (ep) to node [above] {$b$} (b2);
+                        \draw[->] (ep) to node [above] {$a$} (a1);
+                        \draw[->] (a1) to node [above] {$a$} (a2);
+
+                        \draw[->] (a2) to [out=20, in=160] node [above] {$b$} (b1);
+                        \draw[->] (b1) to [out=-160, in=-20] node [below] {$a$} (a2);
+
+                        \draw[->] (ep) to [out=-135, in=-45] node [below] {$a$} (a3);
+
+                        \draw[->] (b2) to [out=45, in=90, looseness=3] node [above right] {$b$} (b2);
+                    \end{tikzpicture}
+                \end{center}
+
+                Que l'on peut déterminiser :
+                \[
+                    \begin{array}{ccccccc}
+                        & \set \varepsilon & \set{a_1, a_3} & \set{b_2} & \set{a_2} & \set{a_3} & \set{b_1}
+                        \\
+                        a & \set{a_1, a_3} & \set{a_2} & \set{a_3} & \varnothing & \varnothing & \set{a_2}
+                        \\
+                        b & \set{b_2} & \varnothing & \set{b_2} & \set{b_1} & \varnothing & \varnothing
+                    \end{array}
+                \]
+
+                \begin{center}
+                    \begin{tikzpicture}
+                        \node (a3) at (0, 0) [state, accepting] {$\set{a_3}$};
+                        \node (b2) at (2, 0) [state] {$\set{b_2}$};
+                        \node (ep) at (4, 0) [state, initial above, initial text={}] {$\set \varepsilon$};
+                        \node (a1) at (6, 0) [state, accepting] {$\set{a_1, a_3}$};
+                        \node (a2) at (8, 0) [state] {$\set{a_2}$};
+                        \node (b1) at (10, 0) [state, accepting] {$\set{b_1}$};
+
+                        \draw[->] (b2) to node [above] {$a$} (a3);
+                        \draw[->] (ep) to node [above] {$b$} (b2);
+                        \draw[->] (ep) to node [above] {$a$} (a1);
+                        \draw[->] (a1) to node [above] {$a$} (a2);
+
+                        \draw[->] (a2) to [out=20, in=160] node [above] {$b$} (b1);
+                        \draw[->] (b1) to [out=-160, in=-20] node [below] {$a$} (a2);
+
+                        %\draw[->] (ep) to [out=-135, in=-45] node [below] {$a$} (a3);
+
+                        \draw[->] (b2) to [out=45, in=90, looseness=3] node [above right] {$b$} (b2);
+                    \end{tikzpicture}
+                \end{center}
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Théorème (\textsc{Kleene}, sens réciproque)}}
+                \begin{emphBox}
+                    Soit $\Sigma$ un alphabet.
+
+                    Alors
+                    \[
+                        \Rec \Sigma \subseteq \Reg(\Sigma)
+                    \]
+                \end{emphBox}
+
+                \vspace{6pt}
+                
+                \begin{proof}
+                    Soit $L \in \Rec \Sigma$. Il existe un AFD $M = (\Sigma, Q, q_0, F, \delta)\ |\ L(M) = L$.
+
+                    On construit à partir de $M$ une expression régulière $e$ telle que $L(e) = L(M) = L$, en appliquant l'algorithme de \textsc{Brzozavski} et Mc \textsc{Cuskey} dont le principe est le suivant :
+
+                    \begin{indalgo}{\textsc{Brzozavski} et Mc \textsc{Cuskey}}
+                        \label{alg:4}
+
+                        On construit l'automate généralisé
+                        \[
+                            M' = (\Regexp(\Sigma), Q \cup \set{q_i, q_f}, q_i, \set{q_f}, \delta')
+                        \]
+                        où
+                        $\forall (q, e) \in Q \times \Regexp(\Sigma)$,
+                        \[
+                            \delta'(q, e) =
+                            \begin{cases}
+                                q_0
+                                & \text{si}\ e = \varepsilon\ \text{et}\ q = q_i
+                                \\
+                                q_f
+                                & \text{si}\ e = \varepsilon\ \text{et}\ q \in F
+                                \\
+                                \delta(q, a)
+                                & \text{si}\ e = a \in \Sigma\ \text{et}\ (q, a) \in \mathrm{dom}(\delta)
+                                \\
+                                \text{non défini}
+                                & \text{sinon}
+                            \end{cases}
+                        \]
+
+                        \begin{center}
+                            \begin{tikzpicture}
+                                \node (i) at (0, 0) [state, initial, initial text={}] {$q_i$};
+                                \node (M) at (3.1, 0) [rectangle, draw, rounded corners=5pt] {
+                                    \tikz{
+                                        \node at (0, 0) [state] {$q_0$};
+                                        \node at (1, 0) {$M$};
+                                        \node at (2.2, 0) [state] {$q \in F$};
+                                    }
+                                };
+
+                                \node (f) at (6.2, 0) [state, accepting] {$q_f$};
+
+                                \draw[->] (i) to node [above] {$\varepsilon$} (M);
+                                \draw[->] (M) to node [above] {$\varepsilon$} (f);
+                            \end{tikzpicture}
+                        \end{center}
+                        %\;
+                        \BlankLine
+
+                        \While{$Q \neq \varnothing$}{
+                            Éliminer des transitions multiples : si l'automate contient deux transitions $q \overset{e}{\longrightarrow} q'$ et $q \overset f \longrightarrow q'$, on les remplace par $q \overset{e|f}{\longrightarrow} q'$ \;
+
+                            Éliminer un état $q \in Q$ : pour toute transition $p \overset e \longrightarrow q$ et $q \overset f \longrightarrow r$, on ajoute la transition $p \overset{ef} \longrightarrow r$ s'il n'existe pas de transition de $q$ vers lui-même et $p \overset{eg^*f} \longrightarrow r$ s'il existe une transition $q \overset g \longrightarrow q$\;
+
+                            Supprimer $q$ et les transitions associées \;
+                        }
+
+                        \BlankLine
+
+                        Après une éventuelle élimination des transitions multiples, l'automate est de la forme
+                        \begin{center}
+                            \begin{tikzpicture}
+                                \node (i) at (0, 0) [state, initial, initial text={}] {$q_i$};
+                                \node (f) at (2, 0) [state, accepting] {$q_f$};
+
+                                \draw[->] (i) to node [above] {$e$} (f);
+                            \end{tikzpicture}
+                        \end{center}
+
+                        L'expression régulière $e$ est le résultat de l'algorithme\;
+                    \end{indalgo}
+
+                    \vspace{12pt}
+                    
+                    La preuve de correction de cet algorithme est H.P. Elle nécessiterait de définir le modèle de calcul associé aux automates généralisés.
+                    L'idée de la preuve consiste à remarquer que l'algorithme termine ($\abs Q$ est un variant de boucle), et démontrer l'invariant $L(M') = L(M)$.
+
+                    Pour cela, on remarque que les transformations conservent le langage de l'automate :
+
+                    $-$ Si
+                    \begin{center}
+                        \begin{tikzpicture}
+                            \node (0) at (0, 0) [state] {$q$};
+                            \node (1) at (2, 0) [state] {$q'$};
+
+                            \draw[->] (0) to [out=20, in=160] node [above] {$e$} (1);
+                            \draw[->] (1) to [out=-160, in=-20] node [below] {$f$} (0);
+                        \end{tikzpicture}
+                    \end{center}
+                    et si la lecture du mot $u$ depuis $q$ mène à $q'$, c'est que $u \in L(e)$ ou $u \in L(f)$ donc $u \in L(e) \cup L(f) = L(e | f)$.
+
+                    \vspace{6pt}
+                    
+                    $-$ Si
+                    \begin{center}
+                        \begin{tikzpicture}
+                            \node (p) at (0, 0) [state] {$p$};
+                            \node (q) at (2, 0) [state] {$q$};
+                            \node (r) at (4, 0) [state] {$r$};
+
+                            \draw[->] (p) to node [above] {$e$} (q);
+                            \draw[->] (q) to node [above] {$f$} (r);
+                            \draw[->] (q) to [out=45, in=90, looseness=3] node [above] {$g$} (q);
+                        \end{tikzpicture}
+                    \end{center}
+                    et si la lecture de $u$ mène de $p$ à $r$ \textit{via} $q$, alors en notant $n \in \N$ le nombre de fois que cette lecture passe par la transition
+                    \begin{center}
+                        \begin{tikzpicture}
+                            \node (q) at (0, 0) [state] {$q$};
+                            \draw[->] (q) to [out=45, in=90, looseness=3] node [above] {$g$} (q);
+                        \end{tikzpicture}
+                    \end{center}
+                    Alors $\exists (x, y, z) \in L(e) \times L(g)^n \times L(f)\ |\ u = xyz$
+
+                    Donc $\exists n \in \N\ |\ u \in L(e) L(g)^n L(f)$, donc
+                    \[
+                        u \in L(e) L(g)^* L(f)
+                        = L(eg^*f)
+                    \]
+
+                    \vspace{6pt}
+                    
+                    Remarque : on obtient un automate de la forme
+                    \begin{center}
+                        \begin{tikzpicture}
+                            \node (i) at (0, 0) [state, initial, initial text={}] {$q_i$};
+                            \node (f) at (2, 0) [state, accepting] {$q_f$};
+
+                            \draw[->] (i) to node [above] {$e$} (f);
+                        \end{tikzpicture}
+                    \end{center}
+                    que dans le cas où il existe un chemin de $q_0$ à un état $q \in F$, \textit{i.e} $q_0$ est co-accessible, \textit{i.e} $L(M) \neq \varnothing$.
+
+                    Si $L(M) = \varnothing$, ce que l'on peut vérifier en faisant un parcours du graphe de $M$ à partir de $q_0$, il est inutile d'appliquer l'algorithme de \textsc{Brzozwski} et Mc \textsc{Cuskey} (algorithme n°\ref{alg:4}, page \pageref{alg:4}) : l'expression régulière $\varnothing$ convient.
+                \end{proof}
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Exemple}}
+                L'algorithme de \textsc{Brzozwski} et Mc \textsc{Cuskey} (algorithme n°\ref{alg:4}, page \pageref{alg:4}) fonctionne également sur les AFND :
+
+                \begin{center}
+                    \begin{tikzpicture}
+                        \node (0) at (0, 0) [state, initial, initial text={}] {$q_0$};
+                        \node (1) at (1.5, 2) [state] {$q_1$};
+                        \node (2) at (4.5, 2) [state] {$q_2$};
+                        \node (3) at (6, 0) [state, accepting] {$q_3$};
+
+                        \draw[->] (0) to node [above left] {$a$} (1);
+                        \draw[->] (0) to node [below] {$a, b$} (3);
+                        \draw[->] (2) to node [above right] {$a$} (3);
+
+                        \draw[->] (1) to [out=20, in=160] node [above] {$b$} (2);
+                        \draw[->] (2) to [out=-160, in=-20] node [below] {$b$} (1);
+                    \end{tikzpicture}
+                \end{center}
+
+                $L(M) = (a|b|ab(bb)^*a)b^*$
+
+                \vspace{12pt}
+                
+                (1) On construit l'automate généralisé :
+                \begin{center}
+                    \begin{tikzpicture}
+                        \node (i) at (-2, 0) [state, initial, initial text={}] {$q_i$};
+                        \node (0) at (0, 0) [state] {$q_0$};
+                        \node (1) at (1.5, 2) [state] {$q_1$};
+                        \node (2) at (4.5, 2) [state] {$q_2$};
+                        \node (3) at (6, 0) [state] {$q_3$};
+                        \node (f) at (8, 0) [state, accepting] {$q_f$};
+
+                        \draw[->] (0) to node [above left] {$a$} (1);
+                        \draw[->] (0) to node [below] {$a, b$} (3);
+                        \draw[->] (2) to node [above right] {$a$} (3);
+
+                        \draw[->] (1) to [out=20, in=160] node [above] {$b$} (2);
+                        \draw[->] (2) to [out=-160, in=-20] node [below] {$b$} (1);
+
+                        \draw[->] (i) to node [above] {$\varepsilon$} (0);
+                        \draw[->] (3) to node [above] {$\varepsilon$} (f);
+
+                        \draw[->] (3) to [out=45, in=90, looseness=3] node [above right] {$b$} (3);
+                    \end{tikzpicture}
+                \end{center}
+
+                \vspace{6pt}
+                
+                (2) On élimine les transitions multiples de $q_0$ à $q_3$, puis on élimine $q_0$
+
+                \begin{center}
+                    \begin{tikzpicture}
+                        \node (i) at (0, 0) [state, initial, initial text={}] {$q_i$};
+                        \node (1) at (1.5, 1) [state] {$q_1$};
+                        \node (2) at (3.5, 1) [state] {$q_2$};
+                        \node (3) at (5, 0) [state] {$q_3$};
+                        \node (f) at (7, 0) [state, accepting] {$q_f$};
+
+                        \draw[->] (2) to node [above right] {$a$} (3);
+
+                        \draw[->] (1) to [out=20, in=160] node [above] {$b$} (2);
+                        \draw[->] (2) to [out=-160, in=-20] node [below] {$b$} (1);
+
+                        \draw[->] (i) to node [above left] {$a$} (1);
+                        \draw[->] (3) to node [above] {$\varepsilon$} (f);
+
+                        \draw[->] (3) to [out=45, in=90, looseness=3] node [above right] {$b$} (3);
+                        \draw[->] (i) to [out=-10, in=-170] node [below] {$a | b$} (3);
+                    \end{tikzpicture}
+                \end{center}
+                Pas de transition multiples, on élimine $q_1$ :
+
+                \begin{center}
+                    \begin{tikzpicture}
+                        \node (i) at (0, 0) [state, initial, initial text={}] {$q_i$};
+                        \node (2) at (1.5, 1) [state] {$q_2$};
+                        \node (3) at (3, 0) [state] {$q_3$};
+                        \node (f) at (5, 0) [state, accepting] {$q_f$};
+
+                        \draw[->] (2) to node [above right] {$a$} (3);
+
+                        \draw[->] (i) to node [above left] {$ab$} (2);
+                        \draw[->] (3) to node [above] {$\varepsilon$} (f);
+
+                        \draw[->] (3) to [out=45, in=90, looseness=3] node [above right] {$b$} (3);
+                        \draw[->] (i) to [out=-10, in=-170] node [below] {$a | b$} (3);
+                        \draw[->] (2) to [out=45, in=90, looseness=3] node [above right] {$bb$} (2);
+                    \end{tikzpicture}
+                \end{center}
+
+                Pas de transitions multiples, on élimine $q_2$ :
+
+                \begin{center}
+                    \begin{tikzpicture}
+                        \node (i) at (0, 0) [state, initial, initial text={}] {$q_i$};
+                        \node (3) at (2.5, 0) [state] {$q_3$};
+                        \node (f) at (4.5, 0) [state, accepting] {$q_f$};
+
+                        \draw[->] (i) to [out=20, in=160] node [above] {$ab(bb)^* a$} (3);
+                        \draw[->] (3) to node [above] {$\varepsilon$} (f);
+
+                        \draw[->] (3) to [out=45, in=90, looseness=3] node [above right] {$b$} (3);
+                        \draw[->] (i) to [out=-20, in=-160] node [below] {$a | b$} (3);
+                    \end{tikzpicture}
+                \end{center}
+
+                On élimine les transitions multiples entre $q_i$ et $q_3$, puis on élimine $q_3$ :
+
+                \begin{center}
+                    \begin{tikzpicture}
+                        \node (i) at (-2, 0) [state, initial, initial text={}] {$q_i$};
+                        \node (f) at (2, 0) [state, accepting] {$q_f$};
+
+                        \draw[->] (i) to node [above] {$(a|b|ab(bb)^*a)b^*$} (f);
+                    \end{tikzpicture}
+                \end{center}
+
+                \vspace{6pt}
+                
+                On conclut que $L(M) = (a|b|ab(bb)^*a)b^*$.
+
+                \vspace{12pt}
+                
+                \begin{indt}{Remarques :}
+                    $-$ L'ordre d'élimination a un impact sur l'expression régulière obtenue.
+
+                    \boxed{\rm Exo} en éliminant les sommets dans l'ordre $q_3, q_2, q_1, q_0$, on aurait obtenu
+                    \[
+                        (a|b)b^* | a(bb)^*bab^*
+                    \]
+
+                    \vspace{6pt}
+                    
+                    $-$ L'automate de \textsc{Glushkov} associé à une expression régulière a toujours un nombre d'états de l'ordre du nombre de symboles dans l'expression régulière (mais le déterminiser peut donner un nombre d'états exponentiel), mais l'expression régulière obtenue par l'algorithme de \textsc{Brzozwski} et Mc \textsc{Cuskey} (algorithme n°\ref{alg:4}, page \pageref{alg:4}) peut être de taille exponentielle en le nombre d'états de l'automate \boxed{\rm Exo}.
+                \end{indt}
             \end{indt}
         \end{indt}
     \end{indt}
