@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2022.10.23
+% Last modification     :   2022.10.25
 %
 %------------------------------------------------------------------------
 
@@ -801,29 +801,29 @@
             \begin{indt}{\subsubsection{Définition (\textit{langage dénoté par une expression régulière})}}
                 Soit $\Sigma$ un alphabet.
 
-                Le \emph{langage dénoté par une expression régulière} $e \in \Regexp(\Sigma)$ est le langage $L(e)$ défini inductivement par :
+                Le \emph{langage dénoté par une expression régulière} $e \in \Regexp(\Sigma)$ est le langage $\mathcal L(e)$ défini inductivement par :
                 \[
-                    L(\varnothing) = \varnothing
+                    \mathcal L(\varnothing) = \varnothing
                     \qquad
-                    L(\varepsilon) = \set \varepsilon
+                    \mathcal L(\varepsilon) = \set \varepsilon
                     \qquad
-                    \forall a \in \Sigma,\ L(a) = \set a
+                    \forall a \in \Sigma,\ \mathcal L(a) = \set a
                 \]
                 \[
-                    L(e | f) = L(e) \cup L(f)
+                    \mathcal L(e | f) = \mathcal L(e) \cup \mathcal L(f)
                     \qquad
-                    L(ef) = L(e) L(f)
+                    \mathcal L(ef) = \mathcal L(e) \mathcal L(f)
                     \qquad
-                    L(e^*) = L(e)^*
+                    \mathcal L(e^*) = \mathcal L(e)^*
                 \]
 
                 \vspace{6pt}
                 
                 Exemple :
 
-                $L_1 = \set \varepsilon = L(\varnothing^*)$
+                $L_1 = \set \varepsilon = \mathcal L(\varnothing^*)$
 
-                $L_2 = \Sigma = L(a_1 | a_2 | \cdots | a_n)$ en notant $\Sigma = \set{a_k\ |\ k \in \nset 1 n}$
+                $L_2 = \Sigma = \mathcal L(a_1 | a_2 | \cdots | a_n)$ en notant $\Sigma = \set{a_k\ |\ k \in \nset 1 n}$
 
                 \[
                     \begin{array}{rcl}
@@ -836,13 +836,13 @@
                             &=& \displaystyle \lr{\bigcup_{n \in \N} \set{u \in \Sigma^*\ |\ \abs u = 2n}}\Sigma
                             \vspace{6pt}
                         \\
-                            &=& L\!\lr{(\Sigma\Sigma)^* \Sigma}
+                            &=& \mathcal L\!\lr{(\Sigma\Sigma)^* \Sigma}
                     \end{array}
                 \]
 
-                $L_4 = \set{u \in \Sigma^*\ |\ a\ \text{préfixe de $u$ et $b$ suffixe de $u$}} = L(a\Sigma^* b)$
+                $L_4 = \set{u \in \Sigma^*\ |\ a\ \text{préfixe de $u$ et $b$ suffixe de $u$}} = \mathcal L(a\Sigma^* b)$
 
-                $L_5 = \set{u \in \Sigma^*\ |\ ab\ \text{est facteur de $u$}} = L(\Sigma^* ab \Sigma^*)$
+                $L_5 = \set{u \in \Sigma^*\ |\ ab\ \text{est facteur de $u$}} = \mathcal L(\Sigma^* ab \Sigma^*)$
             \end{indt}
 
             \vspace{12pt}
@@ -853,7 +853,7 @@
 
                     Alors :
                     \[
-                        L\ \text{est régulier}\ \ssi \exists e \in \Regexp(\Sigma)\ |\ L = L(e)
+                        L\ \text{est régulier}\ \ssi \exists e \in \Regexp(\Sigma)\ |\ L = \mathcal L(e)
                     \]
                 \end{emphBox}
 
@@ -869,11 +869,11 @@
 
                     \vspace{6pt}
                     
-                    $\bullet$ $\dfrac{}{\varnothing \in \Reg(\Sigma)}$ : alors $L = \varnothing = L(\varnothing)$
+                    $\bullet$ $\dfrac{}{\varnothing \in \Reg(\Sigma)}$ : alors $L = \varnothing = \mathcal L(\varnothing)$
 
                     \vspace{6pt}
                     
-                    $\bullet$ $\dfrac{a \in \Sigma}{\set a \in \Reg(\Sigma)}$ : alors $L = \set a = L(a)$
+                    $\bullet$ $\dfrac{a \in \Sigma}{\set a \in \Reg(\Sigma)}$ : alors $L = \set a = \mathcal L(a)$
 
                     \vspace{6pt}
                     
@@ -881,12 +881,12 @@
                     \[
                         \exists e_1, e_2 \in \Regexp(\Sigma)\
                         \begin{array}{|l}
-                            L_1 = L(e_1)
+                            L_1 = \mathcal L(e_1)
                             \\
-                            L_2 = L(e_2)
+                            L_2 = \mathcal L(e_2)
                         \end{array}
                     \]
-                    D'où $L = L_1 \cup L_2 = L(e_1) \cup L(e_2)$
+                    D'où $L = L_1 \cup L_2 = \mathcal L(e_1) \cup \mathcal L(e_2)$
 
                     \vspace{6pt}
                     
@@ -894,12 +894,12 @@
                     \[
                         \exists e_1, e_2 \in \Regexp(\Sigma)\
                         \begin{array}{|l}
-                            L_1 = L(e_1)
+                            L_1 = \mathcal L(e_1)
                             \\
-                            L_2 = L(e_2)
+                            L_2 = \mathcal L(e_2)
                         \end{array}
                     \]
-                    D'où $L = L_1 L_2 = L(e_1) L(e_2)$
+                    D'où $L = L_1 L_2 = \mathcal L(e_1) \mathcal L(e_2)$
 
                     \vspace{6pt}
                     
@@ -907,10 +907,10 @@
                     \[
                         \exists e \in \Regexp(\Sigma)\
                         \begin{array}{|l}
-                            L_0 = L(e)
+                            L_0 = \mathcal L(e)
                         \end{array}
                     \]
-                    D'où $L = L_0^* = L(e)$
+                    D'où $L = L_0^* = \mathcal L(e)$
                 \end{proof}
 
                 \vspace{12pt}
@@ -971,7 +971,7 @@
             \begin{indt}{\subsubsection{Définition (\textit{équivalence d'expressions régulières})}}
                 Soit $\Sigma$ un alphabet, et $e, f \in \Regexp(\Sigma)$.
 
-                Alors $e, f$ sont dits équivalents, noté $e \equiv f$, si et seulement si $L(e) = L(f)$.
+                Alors $e, f$ sont dits équivalents, noté $e \equiv f$, si et seulement si $\mathcal L(e) = \mathcal L(f)$.
             \end{indt}
 
             \vspace{12pt}
@@ -980,11 +980,11 @@
                 \begin{emphBox}
                     Soit $\Sigma$ un alphabet, et $e \in \Regexp(\Sigma)$.
 
-                    (1) Si $e$ ne contient pas $\varnothing$, alors $L(e) \neq \varnothing$
+                    (1) Si $e$ ne contient pas $\varnothing$, alors $\mathcal L(e) \neq \varnothing$
 
                     (2) La réciproque est fausse
 
-                    (3) Si $L(e) \neq \varnothing$, alors $\exists f \in \Regexp(\Sigma)\ |\ e \equiv f$ et $f$ ne contient pas $\varnothing$.
+                    (3) Si $\mathcal L(e) \neq \varnothing$, alors $\exists f \in \Regexp(\Sigma)\ |\ e \equiv f$ et $f$ ne contient pas $\varnothing$.
                 \end{emphBox}
 
                 \vspace{12pt}
@@ -1000,14 +1000,14 @@
 
                     $\bullet$ $e = \Sigma$ ou $e = a$ avec $a \in \Sigma$, $f = e$ convient
 
-                    \begin{indt}{$\bullet$ $e = e_1 | e_2$ : $L(e_1) = \varnothing = L(e_2)$ est impossible car $L(e) = L(e_1) \cup L(e_2)$}
-                        $-$ Si $L(e_1) = \varnothing$ et $L(e_2) \neq \varnothing$ (l'autre cas est symétrique), $L(e) = L(e_2)$, et par H.I, $\exists f_2 \in \Regexp(\Sigma)\ |\ f_2$ ne contient pas $\varnothing$ et $f_2 \equiv e_2$.
+                    \begin{indt}{$\bullet$ $e = e_1 | e_2$ : $\mathcal L(e_1) = \varnothing = \mathcal L(e_2)$ est impossible car $\mathcal L(e) = \mathcal L(e_1) \cup \mathcal L(e_2)$}
+                        $-$ Si $\mathcal L(e_1) = \varnothing$ et $\mathcal L(e_2) \neq \varnothing$ (l'autre cas est symétrique), $\mathcal L(e) = \mathcal L(e_2)$, et par H.I, $\exists f_2 \in \Regexp(\Sigma)\ |\ f_2$ ne contient pas $\varnothing$ et $f_2 \equiv e_2$.
 
                         Alors $e \equiv f_2$.
 
                         \vspace{12pt}
                         
-                        $-$ Si $L(e_1) \neq \varnothing$ et $L(e_2) \neq \varnothing$, par H.I, $\exists f_1, f_2 \in \Regexp(\Sigma)\ |\ f_1, f_2$ ne contiennent pas $\varnothing$, et
+                        $-$ Si $\mathcal L(e_1) \neq \varnothing$ et $\mathcal L(e_2) \neq \varnothing$, par H.I, $\exists f_1, f_2 \in \Regexp(\Sigma)\ |\ f_1, f_2$ ne contiennent pas $\varnothing$, et
                         \[
                             \begin{cases}
                                 f_1 \equiv e_1
@@ -1015,20 +1015,20 @@
                                 f_2 \equiv e_2
                             \end{cases}
                         \]
-                        Alors $L(e) = L(e_1) \cup L(e_2) = L(f_1) \cup L(f_2) = L(f_1 | f_2)$
+                        Alors $\mathcal L(e) = \mathcal L(e_1) \cup \mathcal L(e_2) = \mathcal L(f_1) \cup \mathcal L(f_2) = \mathcal L(f_1 | f_2)$
                         et $e \equiv f_1 | f_2$ qui ne contient pas $\varnothing$.
                     \end{indt}
 
                     \vspace{6pt}
                     
-                    $\bullet$ $e = e_1 e_2$ : $L(e_1) = \varnothing$ ou $L(e_2) = \varnothing$ est impossible car $L(e) = L(e_1) L(e_2)$.
+                    $\bullet$ $e = e_1 e_2$ : $\mathcal L(e_1) = \varnothing$ ou $\mathcal L(e_2) = \varnothing$ est impossible car $\mathcal L(e) = \mathcal L(e_1) \mathcal L(e_2)$.
 
                     De même, on applique l'H.I à $e_1$ et $e_2$ pour obtenir deux expressions régulières dont on prend la concaténation.
 
                     \vspace{6pt}
                     
                     \begin{indt}{$\bullet$ $e = l_0^*$ :}
-                        $-$ Si $L(e_0) = \varnothing$, alors $L(e) = \set \varepsilon = L(\varepsilon)$
+                        $-$ Si $\mathcal L(e_0) = \varnothing$, alors $\mathcal L(e) = \set \varepsilon = \mathcal L(\varepsilon)$
 
                         $-$ Sinon, on applique l'H.I à $e_0$ pour obtenir une expression régulière dont on prend l'étoile de \textsc{Kleene}
                     \end{indt}
@@ -1061,7 +1061,7 @@
                 Alors :
                 \begin{emphBox}
                     \[
-                        \varepsilon \in L(e) \ssi c(e) = 1
+                        \varepsilon \in \mathcal L(e) \ssi c(e) = 1
                     \]
                 \end{emphBox}
 
@@ -1089,9 +1089,9 @@
                 Les langages dénotés sont
                 \[
                     \begin{array}{l}
-                        L(e \cap f) = L(e) \cap L(f)
+                        \mathcal L(e \cap f) = \mathcal L(e) \cap \mathcal L(f)
                         \\
-                        L(e\setminus f) = L(e) \setminus L(f)
+                        \mathcal L(e\setminus f) = \mathcal L(e) \setminus \mathcal L(f)
                     \end{array}
                 \]
 
@@ -1203,7 +1203,7 @@
                     $-$ Lemme 1 :
                     \begin{emphBox}
                         \textit{Lemme 1} :
-                        Soient $L_1, L_2$ deux langages locaux sur les alphabets disjoints.
+                        Soient $L_1, L_2$ deux langages locaux sur des alphabets disjoints.
 
                         Alors $L_1 \cup L_2$ est local
                     \end{emphBox}
@@ -1227,30 +1227,30 @@
                     \vspace{12pt}
                     
                     \begin{indt}{$-$ Par induction sur une expression régulière linéaire dénotant le langage}
-                        . $\varnothing$ ou $\varepsilon$ : $P_1 = S_1 = F_2 = \varnothing$ conviennent
+                        $*$ $\varnothing$ ou $\varepsilon$ : $P_1 = S_1 = F_2 = \varnothing$ conviennent
 
-                        . $a \in \Sigma$ : $P_1 = S_1 = \set a$ et $F_2 = \varnothing$ convient
+                        $*$ $a \in \Sigma$ : $P_1 = S_1 = \set a$ et $F_2 = \varnothing$ convient
 
-                        . $e | f$ : par H.I, $L(e)$ et $L(f)$ sont locaux.
+                        $*$ $e | f$ : par H.I, $\mathcal L(e)$ et $\mathcal L(f)$ sont locaux.
 
                         De plus, come $e | f$ est linéaire, $e$ et $f$ sont exprimés sur des alphabets disjoints.
 
                         Donc le lemme 1 conclut.
+
+                        $*$ $ef$ : le même raisonnement avec le lemme 2.
+
+                        $*$ $e^*$ : par H.I, $\mathcal L(e)$ est local, donc
+                        \[
+                            \mathcal L(e) \setminus \set \varepsilon =
+                            \lr{P_1 \Sigma^* \cap \Sigma^* S_1} \setminus \lr{\Sigma^* \lr{\Sigma^2 \setminus F_2} \Sigma^*}
+                        \]
+
+                        $P_1(e^*) = P_1(e)$
+
+                        $S_1(e^*) = S_1(e)$
+
+                        $F_2(e^*) = F_2(e) \cup S_1(e) P_1(e)$
                     \end{indt}
-
-                    $-$ $ef$ : le même raisonnement avec le lemme 2.
-
-                    $-$ $e^*$ : par H.I, $L(e)$ est local, donc
-                    \[
-                        L(e) \setminus \set \varepsilon =
-                        \lr{P_1 \Sigma^* \cap \Sigma^* S_1} \setminus \lr{\Sigma^* \lr{\Sigma^2 \setminus F_2} \Sigma^*}
-                    \]
-
-                    $p_1(e^*) = P_1(e)$
-
-                    $S_1(e^*) = S_1(e)$
-
-                    $F_2(e^*) = F_2(e) \cup S_1(e) P_1(e)$
                 \end{proof}
 
                 \vspace{12pt}
@@ -1277,7 +1277,7 @@
 
                 C'est une étape importante pour faire le lien entre automates et langages réguliers.
 
-                \boxed{\rm Exo} $\forall u,\ u \in L(e) \ssi \exists$ numérotation des lettres de $u$ donnant $\tilde u \in L(\tilde e)$
+                \boxed{\rm Exo} $\forall u,\ u \in \mathcal L(e) \ssi \exists$ numérotation des lettres de $u$ donnant $\tilde u \in \mathcal L(\tilde e)$
             \end{indt}
         \end{indt}
     \end{indt}
@@ -1382,7 +1382,7 @@
                     \begin{cases}
                         \forall q \in Q,\ \delta(q, \varepsilon) = q
                         \\
-                        \forall q \in Q,\ \forall u \in \Sigma^*,\ \forall a \in \Sigma\ |\ (q, a) \in \mathrm{dom}(\delta),\ \delta(q, au) = \delta(\delta(q, a), u)
+                        \forall (q, u, a) \in Q \times \Sigma^* \times \Sigma\ |\ (q, a) \in \mathrm{dom}(\delta),\ \delta(q, au) = \delta(\delta(q, a), u)
                     \end{cases}
                 \]
 
@@ -1403,12 +1403,12 @@
 
                 $-$ $u \in \Sigma ^*$ est \emph{accepté} par $M$ ssi $\delta(q_0, u) \in F$
 
-                $-$ La langage \emph{reconnu} par $M$ est
+                $-$ Le langage \emph{reconnu} par $M$ est
                 \[
-                    L(M) = \set{u \in \Sigma^*\ |\ u\ \text{accepté par $M$}}
+                    \mathcal L(M) = \set{u \in \Sigma^*\ |\ u\ \text{accepté par $M$}}
                 \]
 
-                $-$ Un langage $L$ sur un alphabet $\Sigma$ est \emph{reconnaissable} ssi il existe un AFD $M$ d'alphabet $\Sigma$ tel que $L(M) = L$.
+                $-$ Un langage $L$ sur un alphabet $\Sigma$ est \emph{reconnaissable} ssi il existe un AFD $M$ d'alphabet $\Sigma$ tel que $\mathcal L(M) = L$.
 
                 On note alors $\Rec \Sigma$ l'ensemble des langages reconnaissables sur $\Sigma$.
 
@@ -1419,14 +1419,14 @@
                 $-$ $\set{u \in \set{0, 1}^*\ |\ \lrangle u _2 \equiv 0\ [3]} \in \Rec{\set{0, 1}}$ par \ref{1.1.2} (page \pageref{1.1.2}).
 
                 $-$ On reprend l'AFD vu en \ref{2.1.2} (page \pageref{2.1.2}).
-                Pour déterminer $L(M)$, on peut utiliser le lemme d'\textsc{Arden}.
+                Pour déterminer $\mathcal L(M)$, on peut utiliser le lemme d'\textsc{Arden}.
 
                 $\forall q \in Q,$ on définit
                 \[
                     L_q = \set{u \in \Sigma^*\ |\ \delta(q, u) \in F}
                 \]
 
-                On cherche $L(M) = L_{q_0}$ sachant :
+                On cherche $\mathcal L(M) = L_{q_0}$ sachant :
 
                 \[
                     \begin{cases}
@@ -1440,7 +1440,7 @@
                     \end{cases}
                 \]
 
-                \boxed{\rm Exo} Mq $L(M) = (1(01^*0)^*1|0)^*$
+                \boxed{\rm Exo} Mq $\mathcal L(M) = (1(01^*0)^*1|0)^*$
             \end{indt}
 
             \vspace{12pt}
@@ -1454,7 +1454,7 @@
 
                 \vspace{12pt}
                 
-                $\bullet$ Complétion : étant donné un AFD $M = (\Sigma, Q, q_0, F, \delta)$ incomplet, on peut construire $M'$ complet reconnaissant $L(M)$ en ajoutant un état dit \emph{poubelle / puits}, vers lequel vont toutes les transitions non définies de $\delta$.
+                $\bullet$ Complétion : étant donné un AFD $M = (\Sigma, Q, q_0, F, \delta)$ incomplet, on peut construire $M'$ complet reconnaissant $\mathcal L(M)$ en ajoutant un état dit \emph{poubelle / puits}, vers lequel vont toutes les transitions non définies de $\delta$.
 
                 \[
                     M' = (\Sigma, Q \cup \set \Pi, q_0, F, \delta')
@@ -1476,7 +1476,7 @@
                 
                 $\bullet$ Proposition :
                 \begin{emphBox}
-                    $M'$ est complet, et $L(M') = L(M)$
+                    $M'$ est complet, et $\mathcal L(M') = \mathcal L(M)$
                 \end{emphBox}
 
                 \vspace{6pt}
@@ -1484,11 +1484,11 @@
                 \begin{proof}
                     $M'$ est complet par définition.
 
-                    Si $u \in L(M)$, on remarque que toutes les transitions suivies dans $M$ lors de la lecture de $u$ sont définies, et ce sont les mêmes dans $M'$, donc $u \in L(M')$ (récurrence finie, en notant $u = u_1 \cdots u_n$, et $\forall i \in \nset 1 n,\ q_i = \delta(q_0, u_1 \cdots, u_i)$ \boxed{\rm Exo}).
+                    Si $u \in \mathcal L(M)$, on remarque que toutes les transitions suivies dans $M$ lors de la lecture de $u$ sont définies, et ce sont les mêmes dans $M'$, donc $u \in \mathcal L(M')$ (récurrence finie, en notant $u = u_1 \cdots u_n$, et $\forall i \in \nset 1 n,\ q_i = \delta(q_0, u_1 \cdots, u_i)$ \boxed{\rm Exo}).
 
                     \vspace{6pt}
                     
-                    Si $u \in L(M')$, on remarque qu'il n'existe pas de transition étiquetée par un préfixe de $u$ menant à l'état $\Pi$ (sinon $\delta'(q_0, u) = \Pi \notin F$) donc toutes ces transitions sont aussi définies dans $M$ et $u \in L(M)$.
+                    Si $u \in \mathcal L(M')$, on remarque qu'il n'existe pas de transition étiquetée par un préfixe de $u$ menant à l'état $\Pi$ (sinon $\delta'(q_0, u) = \Pi \notin F$) donc toutes ces transitions sont aussi définies dans $M$ et $u \in \mathcal L(M)$.
                 \end{proof}
 
                 \vspace{12pt}
@@ -1540,7 +1540,7 @@
 
                 \vspace{12pt}
                 
-                $\bullet$ Standardisation : si $M = (\Sigma, Q, q_0, F, \delta)$ est un AFD non standard, on construit un AFD $M'$ standard reconnaissant $L(M)$ en ajoutant un nouvel état initial qui ne sert que pour la première transition.
+                $\bullet$ Standardisation : si $M = (\Sigma, Q, q_0, F, \delta)$ est un AFD non standard, on construit un AFD $M'$ standard reconnaissant $\mathcal L(M)$ en ajoutant un nouvel état initial qui ne sert que pour la première transition.
 
                 On définit $M' = (\Sigma, Q \cup \set \iota, \iota, F', \delta')$, où $\iota \notin Q$,
                 \[
@@ -1568,7 +1568,7 @@
                     \end{cases}
                 \]
 
-                \boxed{\rm Exo} $M'$ est standard, et $L(M') = L(M)$.
+                \boxed{\rm Exo} $M'$ est standard, et $\mathcal L(M') = \mathcal L(M)$.
 
                 \vspace{12pt}
                 
@@ -1586,6 +1586,8 @@
                         \draw[->] (2) to [out=-160, in=-20] node [below] {$a$} (1);
 
                         \draw[->] (1) to [out=45, in=90, looseness=3] node [above] {$a$} (1);
+
+                        \draw[->] (0) to [out=45, in=90, looseness=3] node [above] {$b$} (0);
                     \end{tikzpicture}
                 \end{center}
 
@@ -1717,7 +1719,7 @@
                         L\ \text{est local}
                         \ssi
                         \exists M = (\Sigma, Q, q_0, F, \delta)\ \text{un AFD local}\ |\
-                        L(M) = L
+                        \mathcal L(M) = L
                     \]
                 \end{emphBox}
 
@@ -1726,7 +1728,7 @@
                 \begin{proof}
                     \boxed{\Rightarrow} On sait que
                     \[
-                        L \setminus \varepsilon = (P_1(L) \Sigma^* \cap \Sigma^*S_1(L)) \setminus (\Sigma^*(\Sigma^2 (F_2(L)) \Sigma^*))
+                        L \setminus \set \varepsilon = \lr{P_1(L) \Sigma^* \cap \Sigma^*S_1(L)} \setminus \lr{\Sigma^*\lr{\Sigma^2 (F_2(L)) \Sigma^*}}
                         \qquad (*)
                 \]
 
@@ -1751,7 +1753,7 @@
                         q_a
                         & \text{si}\ q = q_\varepsilon\ \text{et}\ a \in P_1(L)
                         \\
-                        q_b
+                        q_a
                         & \text{si}\ q = q_b\ \text{et}\ ba \in F_2(L)
                         \\
                         \text{non définie}
@@ -1759,15 +1761,13 @@
                     \end{cases}
                 \]
 
-                \textcolor{red}{\sl (pas sûr pour la ligne 2 ($q_b = \cdots$))}
-
-                Alors $M$ est local (même standard) et $L(M) = L$
+                Alors $M$ est local (même standard) et $\mathcal L(M) = L$
 
                 On le montre par double inclusion en utilisant l'égalité $(*)$ \boxed{\rm Exo}.
 
                 \vspace{12pt}
                 
-                \boxed{\Leftarrow} On sait que $L = L(M)$ où $M = (\Sigma, Q, q_0, F, \delta)$ est un AFD local.
+                \boxed{\Leftarrow} On sait que $L = \mathcal L(M)$ où $M = (\Sigma, Q, q_0, F, \delta)$ est un AFD local.
 
                 \[
                     \forall a \in \Sigma,\ \exists q_a \in Q\ |\ \forall q' \in Q,\
@@ -1794,7 +1794,7 @@
 
                 \boxed{\subseteq} Soit $u = u_1 \cdots u_n \in L \setminus \set \varepsilon$.
 
-                $u \in L(M)$, donc $\forall i \in \nset 1 n,\ \delta(q_0, u_1 \cdots u_i)$ est bien défini, notons le $q_i$.
+                $u \in \mathcal L(M)$, donc $\forall i \in \nset 1 n,\ \delta(q_0, u_1 \cdots u_i)$ est bien défini, notons le $q_i$.
 
                 $(q_0, q_i) \in \mathrm{dom}(\delta)$, donc $u_1 \in P_1$.
 
@@ -1812,7 +1812,7 @@
                     \end{array}
                 \]
 
-                Donc $u_i u{i + 1} \in F_2$, donc
+                Donc $u_i u_{i + 1} \in F_2$, donc
                 \[
                     u \in (P_1 \Sigma^* \cap \Sigma^* S_1) \setminus \lr{\Sigma^* \lr{\Sigma^2 \setminus F_2} \Sigma^*}
                 \]
@@ -1953,7 +1953,7 @@ unlock_door()\end{lstlisting}
 
                     $-$ Le langage reconnu par $M$ est
                     \[
-                        L(M) = \set{u \in \Sigma^*\ |\ M\ \text{acceptable}\ u}
+                        \mathcal L(M) = \set{u \in \Sigma^*\ |\ M\ \text{acceptable}\ u}
                     \]
                 \end{indt}
 
@@ -1963,7 +1963,7 @@ unlock_door()\end{lstlisting}
                 \begin{emphBox}
                     Soit $M = (\Sigma, Q, I, F, \delta)$ un AFND, et $u \in \Sigma^*$
 
-                    Alors $u \in L(M) \ssi$ il existe un chemin $q_0 \cdots q_n$ dans le graphe de $M$ avec $q_0 \in I\ |\ qu \in F$, et la concaténation des étiquettes sur ce chemin est $u$.
+                    Alors $u \in \mathcal L(M) \ssi$ il existe un chemin $q_0 \cdots q_n$ dans le graphe de $M$ avec $q_0 \in I\ |\ qu \in F$, et la concaténation des étiquettes sur ce chemin est $u$.
                 \end{emphBox}
 
                 \vspace{6pt}
@@ -1979,7 +1979,7 @@ unlock_door()\end{lstlisting}
                     \]
                     (car $q_i \overset{u_{i + 1}}\longrightarrow q_{i + 1}$)
 
-                    Finalement, $q_n \in F \cap \delta(\underbrace{q_0}_{\in I}, \underbrace{u_1 \cdots u_n}_u)$, donc $u \in L(M)$.
+                    Finalement, $q_n \in F \cap \delta(\underbrace{q_0}_{\in I}, \underbrace{u_1 \cdots u_n}_u)$, donc $u \in \mathcal L(M)$.
 
                     \vspace{12pt}
                     
@@ -2018,14 +2018,14 @@ unlock_door()\end{lstlisting}
 
                     \[
                         L \in \Rec \Sigma \ssi
-                        \exists M = (\Sigma, Q, I, F, \delta)\ \text{un AFND}\ |\ L(M) = L
+                        \exists M = (\Sigma, Q, I, F, \delta)\ \text{un AFND}\ |\ \mathcal L(M) = L
                     \]
                 \end{emphBox}
 
                 \vspace{12pt}
                 
                 \begin{proof}
-                    \boxed{\Rightarrow} Si $M = (\Sigma, Q, q_0, F, \delta)$ est un AFD tel que $L = L(M)$, on construit $M' = (\Sigma, Q, \set{q_0}, F, \delta')$, où $\forall q \in Q, \forall a \in \Sigma$,
+                    \boxed{\Rightarrow} Si $M = (\Sigma, Q, q_0, F, \delta)$ est un AFD tel que $L = \mathcal L(M)$, on construit $M' = (\Sigma, Q, \set{q_0}, F, \delta')$, où $\forall q \in Q, \forall a \in \Sigma$,
                     \[
                         \delta'(q, a) =
                         \begin{cases}
@@ -2037,7 +2037,7 @@ unlock_door()\end{lstlisting}
                         \end{cases}
                     \]
 
-                    Les graphes de $M$ est $M'$ sont identiques, donc $L = L(M) = L(M')$.
+                    Les graphes de $M$ est $M'$ sont identiques, donc $L = \mathcal L(M) = \mathcal L(M')$.
 
                     \vspace{12pt}
                     
@@ -2093,7 +2093,7 @@ unlock_door()\end{lstlisting}
                     \[
                         \begin{array}{rcl}
                             u \in L
-                            &\ssi& u \in L(M)
+                            &\ssi& u \in \mathcal L(M)
                             \\
                             &\ssi& \displaystyle \bigcup_{q_0 \in I} \delta(q_0, u) \cap F \neq \varnothing
                             \\
@@ -2101,7 +2101,7 @@ unlock_door()\end{lstlisting}
                             \\
                             &\ssi& \delta'(I, u) \in F'
                             \\
-                            &\ssi& u \in L(M')
+                            &\ssi& u \in \mathcal L(M')
                         \end{array}
                     \]
                 \end{proof}
@@ -2187,19 +2187,19 @@ unlock_door()\end{lstlisting}
                 \]
 
                 \begin{proof}
-                    $\exists M = (\Sigma, Q, q_0, F, \delta)$ un AFD complet tel que $L = L(M)$.
+                    $\exists M = (\Sigma, Q, q_0, F, \delta)$ un AFD complet tel que $L = \mathcal L(M)$.
 
                     On considère $M' = (\Sigma, Q, q_0, Q \setminus F, \delta)$.
 
                     \(
                         \begin{array}{rcll}
-                            u \in L(M')
+                            u \in \mathcal L(M')
                             &\ssi& \delta(q_0, u) \in Q \setminus F
                             \\
                             &\ssi& \delta(q_0, u) \notin F
                             & \text{car}\ (q_0, u)\  \text{existe car $M$ est complet}
                             \\
-                            &\ssi& u \notin L(M)
+                            &\ssi& u \notin \mathcal L(M)
                             \\
                             &\ssi& u \in \Sigma^* \setminus L
                         \end{array}
@@ -2220,7 +2220,7 @@ unlock_door()\end{lstlisting}
                     Idée : on lit le mot dans les deux automates en parallèle et on accepte si l'un des deux accepte.
 
                     \[
-                        \forall i \in \set{1, 2},\ \exists M_i = (\Sigma, Q_i, I_i, F_i, \delta_i)\ |\ L(M_i) = L_i
+                        \forall i \in \set{1, 2},\ \exists M_i = (\Sigma, Q_i, I_i, F_i, \delta_i)\ |\ \mathcal L(M_i) = L_i
                     \]
 
                     On construit
@@ -2240,7 +2240,7 @@ unlock_door()\end{lstlisting}
                         \end{cases}
                     \]
 
-                    \boxed{\rm Exo} $L(M) = L_1 \cup L_2$
+                    \boxed{\rm Exo} $\mathcal L(M) = L_1 \cup L_2$
                 \end{proof}
 
                 \vspace{12pt}
@@ -2256,14 +2256,14 @@ unlock_door()\end{lstlisting}
                 \begin{proof}
                     On a :
                     \[
-                        \forall i \in \set{1, 2},\ \exists M_i = (\Sigma, Q_i, I_i, F_i, \delta_i)\ |\ L(M_i) = L_i
+                        \forall i \in \set{1, 2},\ \exists M_i = (\Sigma, Q_i, I_i, F_i, \delta_i)\ |\ \mathcal L(M_i) = L_i
                     \]
 
                     On construit l'automate produit $M = (\Sigma, Q_1 \times Q_2, I_1 \times I_2, F_1 \times F_2, \delta)$
 
                     où $\forall q_1 \in Q_1,\ \forall q_2 \in Q_2,\ \forall a \in \Sigma,\ \delta((q_1, q_2), a) = \delta_1(q_1, a) \times \delta_2(q_2, a)$
 
-                    \boxed{\rm Exo} $L(M) = L(M_1) \cap L(M_2)$
+                    \boxed{\rm Exo} $\mathcal L(M) = \mathcal L(M_1) \cap \mathcal L(M_2)$
                 \end{proof}
 
                 \vspace{12pt}
@@ -2279,7 +2279,7 @@ unlock_door()\end{lstlisting}
                     Idée : on met bout à bout les automates en passant du premier au second de manière déterministe.
 
                     \[
-                        \forall i \in \set{1, 2},\ \exists M_i = (\Sigma, Q_i, q_i, F_i, \delta_i)\ |\ L(M_i) = L_i
+                        \forall i \in \set{1, 2},\ \exists M_i = (\Sigma, Q_i, q_i, F_i, \delta_i)\ |\ \mathcal L(M_i) = L_i
                     \]
 
                     On suppose $M_1$ et $M_2$ complets et $M_2$ standard.
@@ -2312,7 +2312,7 @@ unlock_door()\end{lstlisting}
                         \end{cases}
                     \]
 
-                    \boxed{\rm Exo} $L(M) = L_1 L_2$
+                    \boxed{\rm Exo} $\mathcal L(M) = L_1 L_2$
                 \end{proof}
             \end{indt}
         \end{indt}
@@ -2401,7 +2401,7 @@ unlock_door()\end{lstlisting}
 
                 $-$ Le langage reconnu par $M$ est
                 \[
-                    L(M) = \set{u \in \Sigma^*\ |\ M\ \text{accepte}\ u}
+                    \mathcal L(M) = \set{u \in \Sigma^*\ |\ M\ \text{accepte}\ u}
                 \]
 
                 \vspace{12pt}
@@ -2411,7 +2411,7 @@ unlock_door()\end{lstlisting}
                 \begin{emphBox}
                     Soit $M = (\Sigma, Q, I, F, \delta)$ un $\varepsilon$-AFND, et $u \in \Sigma^*$.
 
-                    Alors $u \in L(M) \ssi \exists q_0 \cdots q_n \in Q\ |\ q_0 \in I, q_n \in F,\ \exists a_1 \cdots a_n \in \Sigma \cup \set \varepsilon\ |\ \forall i \in \nset 0 {n - 1},\ q_i \in \delta(q_i, a_{i + 1})$ et $u = a_1 \cdots a_n$
+                    Alors $u \in \mathcal L(M) \ssi \exists q_0 \cdots q_n \in Q\ |\ q_0 \in I, q_n \in F,\ \exists a_1 \cdots a_n \in \Sigma \cup \set \varepsilon\ |\ \forall i \in \nset 0 {n - 1},\ q_i \in \delta(q_i, a_{i + 1})$ et $u = a_1 \cdots a_n$
                 \end{emphBox}
 
                 \vspace{12pt}
@@ -2472,7 +2472,7 @@ unlock_door()\end{lstlisting}
 
                     \vspace{6pt}
                     
-                    $-$ Si $u \in L(M)$, alors $\exists q_0 \in I, \exists q_n \in F\ |\ q_n \in \hat \delta(q_0, u)$
+                    $-$ Si $u \in \mathcal L(M)$, alors $\exists q_0 \in I, \exists q_n \in F\ |\ q_n \in \hat \delta(q_0, u)$
 
                     donc la propriété démontrée donne le chemin voulu.
                 \end{proof}
@@ -2531,12 +2531,12 @@ unlock_door()\end{lstlisting}
                     \[
                         L \in \Rec \Sigma
                         \ssi
-                        \exists M = (\Sigma, Q, I, F, \delta)\ \text{un $\varepsilon$-AFND}\ |\ L(M) = L
+                        \exists M = (\Sigma, Q, I, F, \delta)\ \text{un $\varepsilon$-AFND}\ |\ \mathcal L(M) = L
                     \]
                 \end{emphBox}
 
                 \begin{proof}
-                    \boxed{\Rightarrow} par \ref{2.2.4} (page \pageref{2.2.4}), $\exists M = (\Sigma, Q, I, F, \delta)$ un AFND tel que $L(M) = L$.
+                    \boxed{\Rightarrow} par \ref{2.2.4} (page \pageref{2.2.4}), $\exists M = (\Sigma, Q, I, F, \delta)$ un AFND tel que $\mathcal L(M) = L$.
 
                     On construit l'$\varepsilon$-AFND $M' = (\Sigma, Q, I, F, \delta')$, où
                     \[
@@ -2551,7 +2551,7 @@ unlock_door()\end{lstlisting}
                         \end{cases}
                     \]
 
-                    Les graphes de $M, M'$ sont identiques, donc par \ref{2.3.3} (page \pageref{2.3.3}), $L(M') = L(M) = L$
+                    Les graphes de $M, M'$ sont identiques, donc par \ref{2.3.3} (page \pageref{2.3.3}), $\mathcal L(M') = \mathcal L(M) = L$
 
                     \vspace{12pt}
                     
@@ -2567,7 +2567,7 @@ unlock_door()\end{lstlisting}
                     Soit $u \in \Sigma^*$. On note $u = u_1 \cdots u_n$.
 
                     $
-                        u \in L(M')
+                        u \in \mathcal L(M')
                         \ssi \exists q_0 \cdots q_n\ \text{un chemin}\
                         \left|
                         \begin{array}{l}
@@ -2630,7 +2630,7 @@ unlock_door()\end{lstlisting}
                         \right.
                     \]
 
-                    $\ssi u \in L(M)$
+                    $\ssi u \in \mathcal L(M)$
                 \end{proof}
             \end{indt}
 
@@ -2677,7 +2677,7 @@ unlock_door()\end{lstlisting}
 
                 $a(bb)$
 
-                $\rightarrow (ab)b \in L(M)$
+                $\rightarrow (ab)b \in \mathcal L(M)$
 
                 \vspace{12pt}
                 
@@ -2832,7 +2832,7 @@ unlock_door()\end{lstlisting}
                         }
                     $
 
-                    $u \in L(M_{e | f}) \ssi$
+                    $u \in \mathcal L(M_{e | f}) \ssi$
 
                     il existe un chemin de $q_i$ à $q_f$ dont les étiquettes donnent $u$
 
@@ -2840,9 +2840,9 @@ unlock_door()\end{lstlisting}
 
                     ou il existe un chemin de $q_{if}$ à $q_{ff}$ dont les étiquettes donnent $u$
 
-                    $\ssi u \in L(M_e)$ ou $u \in L(M_f)$
+                    $\ssi u \in \mathcal L(M_e)$ ou $u \in \mathcal L(M_f)$
 
-                    $\ssi u \in L(M_e) \cup L(M_f) = L(e) \cup L(f) = L(e|f)$.
+                    $\ssi u \in \mathcal L(M_e) \cup \mathcal L(M_f) = \mathcal L(e) \cup \mathcal L(f) = \mathcal L(e|f)$.
 
                     \vspace{12pt}
                     
@@ -2937,7 +2937,7 @@ unlock_door()\end{lstlisting}
 
                     \vspace{12pt}
                     
-                    \boxed{\rm Exo} Comme $M_e$ est standard, $L(M_{e^*}) = L(e^*)$
+                    \boxed{\rm Exo} Comme $M_e$ est standard, $\mathcal L(M_{e^*}) = \mathcal L(e^*)$
                 \end{proof}
 
                 \vspace{12pt}
@@ -3061,7 +3061,7 @@ unlock_door()\end{lstlisting}
                 \begin{proof}
                     Soit $L \in \Reg(\Sigma)$. On a donc
                     \[
-                        \exists e \in \Regexp(\Sigma)\ |\ L = L(e)
+                        \exists e \in \Regexp(\Sigma)\ |\ L = \mathcal L(e)
                     \]
 
                     On construit un automate reconnaissant $L$ grâce à l'algorithme de \textsc{Berry-Sethi} :
@@ -3073,8 +3073,8 @@ unlock_door()\end{lstlisting}
 
                         Linéariser $e$ en une expression régulière $e'$ sur $\Sigma \times \nset 1 n$ (\textit{cf} \ref{1.4.5}, page \pageref{1.4.5})\;
 
-                        Construire l'AFD local $M = (\Sigma \times \nset 1 n, Q, q_0, F, \delta)$ reconnaissant $L(e')$ comme en \ref{2.1.7} (page \pageref{2.1.7})
-                        (rappel : $L(e')$ est local, \textit{cf} \ref{1.4.5})\;
+                        Construire l'AFD local $M = (\Sigma \times \nset 1 n, Q, q_0, F, \delta)$ reconnaissant $\mathcal L(e')$ comme en \ref{2.1.7} (page \pageref{2.1.7})
+                        (rappel : $\mathcal L(e')$ est local, \textit{cf} \ref{1.4.5})\;
 
                         Effacer les indices des symboles pour obtenir un AFND $M' = (\Sigma, Q, \set{q_0}, F, \delta')$, où :
                         \[
@@ -3089,19 +3089,19 @@ unlock_door()\end{lstlisting}
 
                     La correction de l'algorithme s'exprime ainsi :
 
-                    $L(M') = L(e)$.
+                    $\mathcal L(M') = \mathcal L(e)$.
 
                     Soit $u \in \Sigma^*$. On le note $u = u_1 \cdots u_m$.
 
-                    $u \in L(M') \ssi \exists$ un chemin $q_0 \overset{u_1}{\longrightarrow} q_1 \overset{u_2}{\longrightarrow} \cdots \overset{u_m}{\longrightarrow} q_m$
+                    $u \in \mathcal L(M') \ssi \exists$ un chemin $q_0 \overset{u_1}{\longrightarrow} q_1 \overset{u_2}{\longrightarrow} \cdots \overset{u_m}{\longrightarrow} q_m$
                     avec $q_m \in F$ dans le graphe $M'$
 
                     $\ssi \exists i_1, \ldots, i_m,\ \exists$ un chemin $q_0 \overset{(u_1, i_1)}{\longrightarrow} q_1 \overset{(u_2, i_2)}{\longrightarrow} \cdots \overset{(u_m, i_m)}{\longrightarrow} q_m$
                     avec $q_m \in F$ dans le graphe de $M$.
 
-                    $\ssi \exists i_1, \ldots, i_m\ |\ (u_1, i_1), \ldots, (u_m, i_m) \in L(M) = L(e')$
+                    $\ssi \exists i_1, \ldots, i_m\ |\ (u_1, i_1), \ldots, (u_m, i_m) \in \mathcal L(M) = \mathcal L(e')$
 
-                    $\ssi u = u_1 \cdots u_m \in L(e)$ (\textit{cf} exo en \ref{1.4.5}, page \pageref{1.4.5})
+                    $\ssi u = u_1 \cdots u_m \in \mathcal L(e)$ (\textit{cf} exo en \ref{1.4.5}, page \pageref{1.4.5})
                 \end{proof}
             \end{indt}
 
@@ -3224,9 +3224,9 @@ unlock_door()\end{lstlisting}
                 \vspace{6pt}
                 
                 \begin{proof}
-                    Soit $L \in \Rec \Sigma$. Il existe un AFD $M = (\Sigma, Q, q_0, F, \delta)\ |\ L(M) = L$.
+                    Soit $L \in \Rec \Sigma$. Il existe un AFD $M = (\Sigma, Q, q_0, F, \delta)\ |\ \mathcal L(M) = L$.
 
-                    On construit à partir de $M$ une expression régulière $e$ telle que $L(e) = L(M) = L$, en appliquant l'algorithme de \textsc{Brzozavski} et Mc \textsc{Cuskey} dont le principe est le suivant :
+                    On construit à partir de $M$ une expression régulière $e$ telle que $\mathcal L(e) = \mathcal L(M) = L$, en appliquant l'algorithme de \textsc{Brzozavski} et Mc \textsc{Cuskey} dont le principe est le suivant :
 
                     \begin{indalgo}{\textsc{Brzozavski} et Mc \textsc{Cuskey}}
                         \label{alg:4}
@@ -3300,7 +3300,7 @@ unlock_door()\end{lstlisting}
                     \vspace{12pt}
                     
                     La preuve de correction de cet algorithme est H.P. Elle nécessiterait de définir le modèle de calcul associé aux automates généralisés.
-                    L'idée de la preuve consiste à remarquer que l'algorithme termine ($\abs Q$ est un variant de boucle), et démontrer l'invariant $L(M') = L(M)$.
+                    L'idée de la preuve consiste à remarquer que l'algorithme termine ($\abs Q$ est un variant de boucle), et démontrer l'invariant $\mathcal L(M') = \mathcal L(M)$.
 
                     Pour cela, on remarque que les transformations conservent le langage de l'automate :
 
@@ -3314,7 +3314,7 @@ unlock_door()\end{lstlisting}
                             \draw[->] (1) to [out=-160, in=-20] node [below] {$f$} (0);
                         \end{tikzpicture}
                     \end{center}
-                    et si la lecture du mot $u$ depuis $q$ mène à $q'$, c'est que $u \in L(e)$ ou $u \in L(f)$ donc $u \in L(e) \cup L(f) = L(e | f)$.
+                    et si la lecture du mot $u$ depuis $q$ mène à $q'$, c'est que $u \in \mathcal L(e)$ ou $u \in \mathcal L(f)$ donc $u \in \mathcal L(e) \cup \mathcal L(f) = \mathcal L(e | f)$.
 
                     \vspace{6pt}
                     
@@ -3337,12 +3337,12 @@ unlock_door()\end{lstlisting}
                             \draw[->] (q) to [out=45, in=90, looseness=3] node [above] {$g$} (q);
                         \end{tikzpicture}
                     \end{center}
-                    Alors $\exists (x, y, z) \in L(e) \times L(g)^n \times L(f)\ |\ u = xyz$
+                    Alors $\exists (x, y, z) \in \mathcal L(e) \times \mathcal L(g)^n \times \mathcal L(f)\ |\ u = xyz$
 
-                    Donc $\exists n \in \N\ |\ u \in L(e) L(g)^n L(f)$, donc
+                    Donc $\exists n \in \N\ |\ u \in \mathcal L(e) \mathcal L(g)^n \mathcal L(f)$, donc
                     \[
-                        u \in L(e) L(g)^* L(f)
-                        = L(eg^*f)
+                        u \in \mathcal L(e) \mathcal L(g)^* \mathcal L(f)
+                        = \mathcal L(eg^*f)
                     \]
 
                     \vspace{6pt}
@@ -3356,9 +3356,9 @@ unlock_door()\end{lstlisting}
                             \draw[->] (i) to node [above] {$e$} (f);
                         \end{tikzpicture}
                     \end{center}
-                    que dans le cas où il existe un chemin de $q_0$ à un état $q \in F$, \textit{i.e} $q_0$ est co-accessible, \textit{i.e} $L(M) \neq \varnothing$.
+                    que dans le cas où il existe un chemin de $q_0$ à un état $q \in F$, \textit{i.e} $q_0$ est co-accessible, \textit{i.e} $\mathcal L(M) \neq \varnothing$.
 
-                    Si $L(M) = \varnothing$, ce que l'on peut vérifier en faisant un parcours du graphe de $M$ à partir de $q_0$, il est inutile d'appliquer l'algorithme de \textsc{Brzozwski} et Mc \textsc{Cuskey} (algorithme n°\ref{alg:4}, page \pageref{alg:4}) : l'expression régulière $\varnothing$ convient.
+                    Si $\mathcal L(M) = \varnothing$, ce que l'on peut vérifier en faisant un parcours du graphe de $M$ à partir de $q_0$, il est inutile d'appliquer l'algorithme de \textsc{Brzozwski} et Mc \textsc{Cuskey} (algorithme n°\ref{alg:4}, page \pageref{alg:4}) : l'expression régulière $\varnothing$ convient.
                 \end{proof}
             \end{indt}
 
@@ -3383,7 +3383,7 @@ unlock_door()\end{lstlisting}
                     \end{tikzpicture}
                 \end{center}
 
-                $L(M) = (a|b|ab(bb)^*a)b^*$
+                $\mathcal L(M) = (a|b|ab(bb)^*a)b^*$
 
                 \vspace{12pt}
                 
@@ -3484,7 +3484,7 @@ unlock_door()\end{lstlisting}
 
                 \vspace{6pt}
                 
-                On conclut que $L(M) = (a|b|ab(bb)^*a)b^*$.
+                On conclut que $\mathcal L(M) = (a|b|ab(bb)^*a)b^*$.
 
                 \vspace{12pt}
                 
