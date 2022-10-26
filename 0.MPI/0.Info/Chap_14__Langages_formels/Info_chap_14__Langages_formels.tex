@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2022.10.25
+% Last modification     :   2022.10.26
 %
 %------------------------------------------------------------------------
 
@@ -1846,7 +1846,7 @@ while !nb_valides < 4 do
     match !nb_valides, n with
     | 0, 4 | 1, 2 | 2, 4 | 3, 2 -> incr nb_valides
     | _, 4 -> nb_valides := 1
-    | _ -> := nb_valides := 0
+    | _ -> nb_valides := 0
 done;
 unlock_door()\end{lstlisting}
                 
@@ -1963,7 +1963,7 @@ unlock_door()\end{lstlisting}
                 \begin{emphBox}
                     Soit $M = (\Sigma, Q, I, F, \delta)$ un AFND, et $u \in \Sigma^*$
 
-                    Alors $u \in \mathcal L(M) \ssi$ il existe un chemin $q_0 \cdots q_n$ dans le graphe de $M$ avec $q_0 \in I\ |\ qu \in F$, et la concaténation des étiquettes sur ce chemin est $u$.
+                    Alors $u \in \mathcal L(M) \ssi$ il existe un chemin $q_0 \cdots q_n$ dans le graphe de $M$ avec $q_0 \in I,\ q_n \in F$, et la concaténation des étiquettes sur ce chemin est $u$.
                 \end{emphBox}
 
                 \vspace{6pt}
@@ -1989,7 +1989,7 @@ unlock_door()\end{lstlisting}
 
                     \vspace{6pt}
                     
-                    $-$ $i = n$, $q_n \in \delta(q_0, u_1 \cdots u_n)$, et le chemin vide étiqueté par $\Sigma = u_{n + 1}u_n$.
+                    $-$ $i = n$, $q_n \in \delta(q_0, u_1 \cdots u_n)$, et le chemin vide étiqueté par $\varepsilon = u_{n + 1}u_n$.
 
                     \vspace{6pt}
                     
