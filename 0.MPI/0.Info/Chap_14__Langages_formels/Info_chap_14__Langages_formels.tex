@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2022.10.26
+% Last modification     :   2022.10.28
 %
 %------------------------------------------------------------------------
 
@@ -109,14 +109,23 @@
 \SetFuncArgSty{textnormal}
 %\SetProgArgSty{texttt}
 
+%\newenvironment{indalgo}[2][H]{
+%    \begin{minipage}{\linewidth-\leftskip-5pt}
+%        \begin{algorithm}[#1]
+%            \caption{#2}
+%}
+%{
+%        \end{algorithm}
+%    \end{minipage}
+%}
 \newenvironment{indalgo}[2][H]{
-    \begin{minipage}{\linewidth-\leftskip-5pt}
+    \begin{algoBox}
         \begin{algorithm}[#1]
             \caption{#2}
 }
 {
         \end{algorithm}
-    \end{minipage}
+    \end{algoBox}
 }
 
 
@@ -135,6 +144,22 @@
     colframe=#1,
     colback=#2,
     enlarge left by=10pt,
+    width=\linewidth-\leftskip-10pt,
+}
+
+\DeclareTColorBox{algoBox}{O{black}O{lightwhite}}{
+    breakable,
+    arc=0pt,
+    top=0pt,
+    toprule=-.5pt,
+    right=0pt,
+    rightrule=-.5pt,
+    bottom=0pt,
+    bottomrule=-.5pt,
+    left=0pt,
+    leftrule=-.5pt,
+    colframe=#1,
+    colback=#2,
     width=\linewidth-\leftskip-10pt,
 }
 
@@ -2158,8 +2183,8 @@ unlock_door()\end{lstlisting}
                     \begin{tikzpicture}[scale=1.5]
                         \node (0) at (0, 0) [state, initial, initial text={}] {$\set{q_0}$};
                         \node (1) at (2, 0) [state] {$\set{q_0, q_1}$};
-                        \node (2) at (0, -2) [state] {$\set{q_1, q_3}$};
-                        \node (3) at (2, -2) [state] {$\set{q_1, q_2}$};
+                        \node (2) at (0, -2) [state, accepting] {$\set{q_0, q_3}$};
+                        \node (3) at (2, -2) [state] {$\set{q_0, q_2}$};
 
                         \draw[->] (0) to node [above] {$b$} (1);
                         \draw[->] (2) to node [left] {$a$} (0);
@@ -2261,7 +2286,7 @@ unlock_door()\end{lstlisting}
 
                     On construit l'automate produit $M = (\Sigma, Q_1 \times Q_2, I_1 \times I_2, F_1 \times F_2, \delta)$
 
-                    où $\forall q_1 \in Q_1,\ \forall q_2 \in Q_2,\ \forall a \in \Sigma,\ \delta((q_1, q_2), a) = \delta_1(q_1, a) \times \delta_2(q_2, a)$
+                    où $\forall (q_1, q_2) \in Q_1 \times Q_2,\ \forall a \in \Sigma,\ \delta((q_1, q_2), a) = \delta_1(q_1, a) \times \delta_2(q_2, a)$
 
                     \boxed{\rm Exo} $\mathcal L(M) = \mathcal L(M_1) \cap \mathcal L(M_2)$
                 \end{proof}
@@ -2336,7 +2361,7 @@ unlock_door()\end{lstlisting}
 
                     $-$ $I \subseteq Q$ est l'ensemble des états initiaux ;
 
-                    $-$ $F \subseteq F$ est l'ensemble des états acceptants ;
+                    $-$ $F \subseteq Q$ est l'ensemble des états acceptants ;
 
                     $-$ $\delta : Q \times (\Sigma \cup \set \varepsilon) \longrightarrow \mathcal P(Q)$ est la fonction de transition.
                 \end{indt}
@@ -2358,7 +2383,7 @@ unlock_door()\end{lstlisting}
                 On appelle \textit{$\varepsilon$-clôture} de $q$ l'ensemble
                 \[
                     E(q) = \set{
-                        q' \in Q\ |\ \exists n \in \N,\ \exists (q_0, q_n) \in Q^2\
+                        q' \in Q\ |\ \exists n \in \N,\ \exists (q_0, \ldots, q_n) \in Q^{n + 1}\
                         \begin{array}{|l}
                             q_0 = q
                             \\
@@ -2408,10 +2433,36 @@ unlock_door()\end{lstlisting}
                 
                 $\bullet$ Proposition
 
+                %\begin{emphBox}
+                %    Soit $M = (\Sigma, Q, I, F, \delta)$ un $\varepsilon$-AFND, et $u \in \Sigma^*$.
+
+                %    Alors $u \in \mathcal L(M) \ssi \exists q_0 \cdots q_n \in Q\ |\ q_0 \in I, q_n \in F,\ \exists a_1 \cdots a_n \in \Sigma \cup \set \varepsilon\ |\ \forall i \in \nset 0 {n - 1},\ q_i \in \delta(q_i, a_{i + 1})$ et $u = a_1 \cdots a_n$
+                %\end{emphBox}
+                
                 \begin{emphBox}
                     Soit $M = (\Sigma, Q, I, F, \delta)$ un $\varepsilon$-AFND, et $u \in \Sigma^*$.
 
-                    Alors $u \in \mathcal L(M) \ssi \exists q_0 \cdots q_n \in Q\ |\ q_0 \in I, q_n \in F,\ \exists a_1 \cdots a_n \in \Sigma \cup \set \varepsilon\ |\ \forall i \in \nset 0 {n - 1},\ q_i \in \delta(q_i, a_{i + 1})$ et $u = a_1 \cdots a_n$
+                    Alors
+                    \[
+                        \begin{array}{c}
+                            u \in \mathcal L(M)
+                            \ssi
+                            \\
+                            \exists q_0, \ldots, q_n \in Q\
+                            \begin{array}{|l}
+                                q_0 \in I
+                                \\
+                                q_n \in F
+                                \\
+                                \exists a_1, \ldots, a_n \in \Sigma \cup \set \varepsilon\
+                                \begin{array}{|l}
+                                    \forall i \in \nset 0 {n - 1},\ q_{i + 1} \in \delta(q_i, a_{i + 1})
+                                    \\
+                                    u = a_1 \cdots a_n
+                                \end{array}
+                            \end{array}
+                        \end{array}
+                    \]
                 \end{emphBox}
 
                 \vspace{12pt}
@@ -2422,7 +2473,7 @@ unlock_door()\end{lstlisting}
                     $-$ $i = 0$ : $a_1 \cdots a_i = \varepsilon$ et $q_0 \in E(q_0) = \hat \delta(q_0, \varepsilon)$.
 
                     \begin{indt}{$-$ Si $\forall j \le i$, la propriété est vraie, deux cas :}
-                        . $a_{i + 1} \neq \varepsilon$ : $q_{i + 1} \in \delta(q_i, a_{i + 1})$ et $q_i \in \hat \delta(q_0, a_1 \cdots a_i)$.
+                        $*$ $a_{i + 1} \neq \varepsilon$ : $q_{i + 1} \in \delta(q_i, a_{i + 1})$ et $q_i \in \hat \delta(q_0, a_1 \cdots a_i)$.
 
                         Or $\hat \delta (q_0, a_1 \cdots a_{i + 1}) = \displaystyle \bigcup_{q \in \hat \delta(q_0, a_1 \cdots a_i)} \bigcup_{q' \in \delta(q, a_{i + 1})} E(q')$.
 
@@ -2430,7 +2481,7 @@ unlock_door()\end{lstlisting}
 
                         \vspace{6pt}
                         
-                        \begin{indt}{. $a_{i + 1} = \varepsilon$ : deux cas :}
+                        \begin{indt}{$*$ $a_{i + 1} = \varepsilon$ : deux cas :}
                             $+$ $\forall j \le i,\ a_j = \varepsilon$. Dans ce cas, $q_{i + 1} \in E(q_0) = \hat \delta(q_0, \varepsilon) = \hat \delta(q_0, a_1 \cdots a_{i + 1})$
 
                             $+$ $\exists j \le i\ |\ a_j \neq \varepsilon$ : on considère $j = \max \set{k \le i\ |\ a_k \neq \varepsilon}$
@@ -2496,7 +2547,7 @@ unlock_door()\end{lstlisting}
                     \end{tikzpicture}
                 \end{center}
 
-                reconnait $\set \varepsilon$.
+                reconnait $\set u$.
 
                 \vspace{6pt}
                 
@@ -2693,8 +2744,8 @@ unlock_door()\end{lstlisting}
                         \draw[->] (0) to [out=20, in=160] node [above] {$a$} (1);
                         \draw[->] (1) to [out=-160, in=-20] node [below] {$a$} (0);
 
-                        \draw[->] (1) to node [right] {$\varepsilon$} (2);
-                        \draw[->] (3) to node [left] {$\varepsilon$} (0);
+                        \draw[->] (1) to node [right] {$b$} (2);
+                        \draw[->] (3) to node [left] {$a$} (0);
 
                         \draw[->] (3) to [out=20, in=160] node [above] {$b$} (2);
                         \draw[->] (2) to [out=-160, in=-20] node [below] {$b$} (3);
@@ -2825,7 +2876,7 @@ unlock_door()\end{lstlisting}
                             \begin{array}{|l}
                                 (q_i, \varepsilon) \longmapsto \set{q_{ie}, q_{if}}
                                 \\
-                                (q_{ie}, \varepsilon) \longmapsto \set{q_f}
+                                (q_{fe}, \varepsilon) \longmapsto \set{q_f}
                                 \\
                                 (q_{ff}, \varepsilon) \longmapsto \set{q_f}
                             \end{array}
@@ -2888,7 +2939,7 @@ unlock_door()\end{lstlisting}
                                 \\
                                 (q_{fe}, \varepsilon) \longmapsto \set{q_{if}}
                                 \\
-                                (q_{ff}, \varepsilon) \longmapsto \set{q_{ff}}
+                                (q_{ff}, \varepsilon) \longmapsto \set{q_{f}}
                             \end{array}
                         }
                     $
@@ -2996,6 +3047,9 @@ unlock_door()\end{lstlisting}
                         \draw[->] (2) to node [above] {$\varepsilon$} (Mb);
                         \draw[->] (Mb) to node [above] {$\varepsilon$} (Ma);
                         \draw[->] (Ma) to node [above] {$\varepsilon$} (3);
+
+                        \draw[->] (1) to (1, -1.5) to [out=-90, in=180] (1.5, -2) to node [below] {$\varepsilon$} (5.9, -2) to [out=0, in=-90] (6.4, -1.5) to (2);
+                        \draw[->] (2) to (6.4, 1.5) to [out=90, in=0] (5.9, 2.1) to node [above] {$\varepsilon$} (1.5, 2.1) to [out=180, in=90] (1, 1.5) to (1);
                     \end{tikzpicture}
                 \end{center}
             \end{indt}
@@ -3017,7 +3071,7 @@ unlock_door()\end{lstlisting}
                 Rappel :
                 Soit $M = (\Sigma, Q, q_0, F, \delta)$ un AFD.
 
-                $\forall q \in Q$, on définit le système d'équations d'inconnues $L_q,\ q \in Q$ suivant :
+                $\forall q \in Q$, on définit le système d'équations d'inconnues $L_q$ suivant :
                 \[
                     \forall q \in Q,\
                     L_q =
@@ -3380,6 +3434,8 @@ unlock_door()\end{lstlisting}
 
                         \draw[->] (1) to [out=20, in=160] node [above] {$b$} (2);
                         \draw[->] (2) to [out=-160, in=-20] node [below] {$b$} (1);
+
+                        \draw[->] (3) to [out=45, in=90, looseness=3] node [above right] {$b$} (3);
                     \end{tikzpicture}
                 \end{center}
 
