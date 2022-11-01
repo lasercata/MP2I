@@ -1,0 +1,973 @@
+\documentclass[a4paper, 12pt, twoside]{article}
+
+
+%------------------------------------------------------------------------
+%
+% Author                :   Lasercata
+% Last modification     :   2022.10.31
+%
+%------------------------------------------------------------------------
+
+
+%------ini
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+%\usepackage[french]{babel}
+%\usepackage[english]{babel}
+
+
+%------geometry
+\usepackage[textheight=700pt, textwidth=500pt]{geometry}
+
+
+%------color
+\usepackage{xcolor}
+\definecolor{ff4500}{HTML}{ff4500}
+\definecolor{00f}{HTML}{0000ff}
+\definecolor{0ff}{HTML}{00ffff}
+\definecolor{656565}{HTML}{656565}
+
+%\renewcommand{\emph}{\textcolor{ff4500}}
+%\renewcommand{\em}{\color{ff4500}}
+
+\newcommand{\Emph}{\textcolor{ff4500}}
+
+\newcommand{\strong}[1]{\textcolor{ff4500}{\bf #1}}
+\newcommand{\st}{\color{ff4500}\bf}
+
+
+%------Code highlighting
+%---listings
+\usepackage{listings}
+
+\definecolor{cbg}{HTML}{272822}
+\definecolor{cfg}{HTML}{ececec}
+\definecolor{ccomment}{HTML}{686c58}
+\definecolor{ckw}{HTML}{f92672}
+\definecolor{cstring}{HTML}{e6db72}
+\definecolor{cstringlight}{HTML}{98980f}
+\definecolor{lightwhite}{HTML}{fafafa}
+
+\lstdefinestyle{DarkCodeStyle}{
+    backgroundcolor=\color{cbg},
+    commentstyle=\itshape\color{ccomment},
+    keywordstyle=\color{ckw},
+    numberstyle=\tiny\color{cbg},
+    stringstyle=\color{cstring},
+    basicstyle=\ttfamily\footnotesize\color{cfg},
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=4,
+    xleftmargin=\leftskip
+}
+
+\lstdefinestyle{LightCodeStyle}{
+    backgroundcolor=\color{lightwhite},
+    commentstyle=\itshape\color{ccomment},
+    keywordstyle=\color{ckw},
+    numberstyle=\tiny\color{cbg},
+    stringstyle=\color{cstringlight},
+    basicstyle=\ttfamily\footnotesize\color{cbg},
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=10pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=4,
+    frame=L,
+    xleftmargin=\leftskip
+}
+
+%\lstset{style=DarkCodeStyle}
+\lstset{style=LightCodeStyle}
+%Usage : \begin{lstlisting}[language=Caml, xleftmargin=xpt] ... \end{lstlisting}
+
+
+%---Algorithm
+\usepackage[linesnumbered,ruled,vlined]{algorithm2e}
+\SetKwInput{KwInput}{Input}
+\SetKwInput{KwOutput}{Output}
+
+\SetKwProg{Fn}{Function}{:}{}
+\SetKw{KwPrint}{Print}
+
+\newcommand\commfont[1]{\textit{\texttt{\textcolor{656565}{#1}}}}
+\SetCommentSty{commfont}
+\SetProgSty{texttt}
+\SetArgSty{textnormal}
+\SetFuncArgSty{textnormal}
+%\SetProgArgSty{texttt}
+
+\newenvironment{indalgo}[2][H]{
+    \begin{algoBox}
+        \begin{algorithm}[#1]
+            \caption{#2}
+}
+{
+        \end{algorithm}
+    \end{algoBox}
+}
+
+
+%---tcolorbox
+\usepackage[many]{tcolorbox}
+\DeclareTColorBox{emphBox}{O{black}O{lightwhite}}{
+    breakable,
+    outer arc=0pt,
+    arc=0pt,
+    top=0pt,
+    toprule=-.5pt,
+    right=0pt,
+    rightrule=-.5pt,
+    bottom=0pt,
+    bottomrule=-.5pt,
+    colframe=#1,
+    colback=#2,
+    enlarge left by=10pt,
+    width=\linewidth-\leftskip-10pt,
+}
+
+\DeclareTColorBox{algoBox}{O{black}O{lightwhite}}{
+    breakable,
+    arc=0pt,
+    top=0pt,
+    toprule=-.5pt,
+    right=0pt,
+    rightrule=-.5pt,
+    bottom=0pt,
+    bottomrule=-.5pt,
+    left=0pt,
+    leftrule=-.5pt,
+    colframe=#1,
+    colback=#2,
+    width=\linewidth-\leftskip-10pt,
+}
+
+
+%-------make the table of content clickable
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=black
+}
+
+
+%------pictures
+\usepackage{graphicx}
+%\usepackage{wrapfig}
+
+\usepackage{tikz}
+%\usetikzlibrary{babel}             %Uncomment this to use circuitikz
+%\usetikzlibrary{shapes.geometric}  % To draw triangles in trees
+%\usepackage{circuitikz}            %Electrical circuits drawing
+
+
+%------tabular
+%\usepackage{color}
+%\usepackage{colortbl}
+%\usepackage{multirow}
+
+
+%------Physics
+%---Packages
+%\usepackage[version=4]{mhchem} %$\ce{NO4^2-}$
+
+%---Commands
+\newcommand{\link}[2]{\mathrm{#1} \! - \! \mathrm{#2}}
+\newcommand{\pt}[1]{\cdot 10^{#1}} % Power of ten
+\newcommand{\dt}[2][t]{\dfrac{\mathrm d #2}{\mathrm d #1}} % Derivative
+
+
+%------math
+%---Packages
+%\usepackage{textcomp}
+%\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools} % For abs
+\usepackage{stmaryrd} %for \llbracket and \rrbracket
+\usepackage{mathrsfs} %for \mathscr{x} (different from \mathcal{x})
+\usepackage{yhmath} %For \widering
+
+%---Commands
+%-Sets
+\newcommand{\N}{\mathbb{N}} %set N
+\newcommand{\Z}{\mathbb{Z}} %set Z
+\newcommand{\Q}{\mathbb{Q}} %set Q
+\newcommand{\R}{\mathbb{R}} %set R
+\newcommand{\C}{\mathbb{C}} %set C
+\newcommand{\U}{\mathbb{U}} %set U
+\newcommand{\K}{\mathbb K}
+\newcommand{\seg}[2]{\left[ #1\ ;\ #2 \right]}
+\newcommand{\nset}[2]{\left\llbracket #1\ ;\ #2 \right\rrbracket}
+
+%-Exponantial / complexs
+\newcommand{\e}{\mathrm{e}}
+\newcommand{\cj}[1]{\overline{#1}} %overline for the conjugate.
+
+%-Vectors
+\newcommand{\vect}{\overrightarrow}
+\newcommand{\veco}[3]{\displaystyle \vect{#1}\binom{#2}{#3}} %vector + coord
+
+%-Limits
+\newcommand{\lm}[2][{}]{\lim\limits_{\substack{#2 \\ #1}}} %$\lm{x \to a} f$ or $\lm[x < a]{x \to a} f$
+\newcommand{\Lm}[3][{}]{\lm[#1]{#2} \left( #3 \right)} %$\Lm{x \to a}{f}$ or $\Lm[x < a]{x \to a}{f}$
+\newcommand{\tendsto}[1]{\xrightarrow[#1]{}}
+
+%-Integral
+\newcommand{\dint}[4][x]{\displaystyle \int_{#2}^{#3} #4 \mathrm{d} #1} %$\dint{a}{b}{f(x)}$ or $\dint[t]{a}{b}{f(t)}$
+
+%-left right
+\newcommand{\lr}[1]{\left( #1 \right)}
+\newcommand{\lrb}[1]{\left[ #1 \right]}
+\newcommand{\lrbb}[1]{\left\llbracket #1 \right\rrbracket}
+\newcommand{\set}[1]{\left\{ #1 \right\}}
+\newcommand{\abs}[1]{\left\lvert #1 \right\rvert}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
+\newcommand{\lrangle}[1]{\left\langle #1 \right\rangle}
+
+%-Others
+\newcommand{\para}{\ /\!/\ } %//
+\newcommand{\ssi}{\ \Leftrightarrow \ }
+\newcommand{\eqsys}[2]{\begin{cases} #1 \\ #2 \end{cases}}
+
+\newcommand{\med}[2]{\mathrm{med} \left[ #1\ ;\ #2 \right]}  %$\med{A}{B} -> med[A ; B]$
+\newcommand{\Circ}[2]{\mathscr{C}_{#1, #2}}
+
+\renewcommand{\le}{\leqslant}
+\renewcommand{\ge}{\geqslant}
+
+\newcommand{\oboxed}[1]{\textcolor{ff4500}{\boxed{\textcolor{black}{#1}}}} %orange boxed
+
+\newcommand{\rboxed}[1]{\begin{array}{|c} \hline #1 \\ \hline \end{array}} %boxed with right opened
+\newcommand{\lboxed}[1]{\begin{array}{c|} \hline #1 \\ \hline \end{array}} %boxed with left opened
+
+\newcommand{\orboxed}[1]{\textcolor{ff4500}{\rboxed{\textcolor{black}{#1}}}} %orange right boxed
+\newcommand{\olboxed}[1]{\textcolor{ff4500}{\lboxed{\textcolor{black}{#1}}}} %orange left boxed
+
+
+%------commands
+%---to quote
+\newcommand{\simplecit}[1]{\guillemotleft$\;$#1$\;$\guillemotright}
+\newcommand{\cit}[1]{\simplecit{\textcolor{656565}{#1}}}
+\newcommand{\quo}[1]{\cit{\it #1}}
+
+%---to indent
+\newcommand{\ind}[1][20pt]{\advance\leftskip + #1}
+\newcommand{\deind}[1][20pt]{\advance\leftskip - #1}
+
+%---to indent a text
+\newcommand{\indented}[2][20pt]{\par \ind[#1] #2 \par \deind[#1]}
+\newenvironment{indt}[2][20pt]{#2 \par \ind[#1]}{\par \deind} %Titled indented env
+
+%---title
+\newcommand{\thetitle}[2]{\begin{center}\textbf{{\LARGE \underline{\Emph{#1} :}} {\Large #2}}\end{center}}
+
+%---Maths environments
+%-Proofs
+\newenvironment{proof}[1][{}]{\begin{indt}{$\square$ #1}}{$\blacksquare$ \end{indt}}
+
+%-Maths parts (proposition, definition, ...)
+\newenvironment{mathpart}[1]{\begin{indt}{\boxed{\text{\textbf{#1}}}}}{\end{indt}}
+\newenvironment{mathbox}[1]{\boxed{\text{\textbf{#1}}}\begin{emphBox}}{\end{emphBox}}
+\newenvironment{mathul}[1]{\begin{indt}{\underline{\textbf{#1}}}}{\end{indt}}
+
+\newenvironment{theo}{\begin{mathpart}{Théorème}}{\end{mathpart}}
+\newenvironment{Theo}{\begin{mathbox}{Théorème}}{\end{mathbox}}
+
+\newenvironment{prop}{\begin{mathpart}{Proposition}}{\end{mathpart}}
+\newenvironment{Prop}{\begin{mathbox}{Proposition}}{\end{mathbox}}
+\newenvironment{props}{\begin{mathpart}{Propriétés}}{\end{mathpart}}
+
+\newenvironment{defi}{\begin{mathpart}{Définition}}{\end{mathpart}}
+\newenvironment{meth}{\begin{mathpart}{Méthode}}{\end{mathpart}}
+
+\newenvironment{Rq}{\begin{mathul}{Remarque :}}{\end{mathul}}
+\newenvironment{Rqs}{\begin{mathul}{Remarques :}}{\end{mathul}}
+
+\newenvironment{Ex}{\begin{mathul}{Exemple :}}{\end{mathul}}
+\newenvironment{Exs}{\begin{mathul}{Exemples :}}{\end{mathul}}
+
+
+%------Sections
+% To change section numbering :
+% \renewcommand\thesection{\Roman{section}}
+% \renewcommand\thesubsection{\arabic{subsection})}
+% \renewcommand\thesubsubsection{\textit \alph{subsubsection})}
+
+% To start numbering from 0
+% \setcounter{section}{-1}
+
+
+%------page style
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+
+\setlength{\headheight}{18pt}
+\setlength{\footskip}{50pt}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE, RO]{\textit{\textcolor{black}{\today}}}
+\fancyhead[RE, LO]{\large{\textsl{\Emph{\texttt{\jobname}}}}}
+
+\fancyfoot[RO, LE]{\textit{\texttt{\textcolor{black}{Page \thepage /}\pageref{LastPage}}}}
+\fancyfoot[LO, RE]{\includegraphics[scale=0.12]{/home/lasercata/Pictures/1.images_profil/logo/mieux/lasercata_logo_fly_fond_blanc.png}}
+
+
+%------init lengths
+\setlength{\parindent}{0pt} %To avoid using \noindent everywhere.
+\setlength{\parskip}{3pt}
+
+
+%---------------------------------Begin Document
+\begin{document}
+    
+    \thetitle{Maths}{Topologie}
+    
+    \tableofcontents
+    \newpage
+
+    Dans tout ce qui suit, on note $\K$ le corps $\R$ ou $\C$.
+    
+    \begin{indt}{\section{Norme}}
+        \begin{indt}{\subsection{Définition (\textit{norme})}}
+            Soit $E$ un $\K$-espace vectoriel.
+
+            Une \emph{norme} sur $E$ est une application
+            \[
+                N : E \longrightarrow \R
+            \]
+
+            \begin{indt}{vérifiant :}
+                $\bullet$ la séparation :
+                \[
+                    \forall x \in E,\ N(x) = 0 \Rightarrow x = 0_E
+                \]
+
+                $\bullet$ l'homogénéité :
+                \[
+                    \forall (\lambda, x) \in \K \times E,\ N(\lambda x) = \abs \lambda N(x)
+                \]
+
+                $\bullet$ l'inégalité triangulaire :
+                \[
+                    \forall (x, y) \in E^2,\ N(x + y) \le N(x) + N(y)
+                \]
+            \end{indt}
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Proposition (\textit{inégalité triangulaire renversée})}}
+            Soit $E$ un $\K$-espace vectoriel, et $N$ une norme sur $E$.
+
+            On a :
+            \[
+                \forall (x, y) \in E^2,\ \abs{N(x) - N(y)} \le N(x + y)
+            \]
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Convexité}}
+            \begin{indt}{\subsubsection{Définition (\textit{segment})}}
+                Soit $E$ un $\R$-espace vectoriel, et $A, B \in E$.
+                
+                Le \emph{segment} $[A, B]$ est définit par :
+                \[
+                    \begin{array}{rcl}
+                        [A, B] &=& \set{A + \lambda(B - A) \ |\ \lambda \in \seg 0 1}
+                        \\
+                               &=& \set{\lambda A + (1 - \lambda)B\ |\ \lambda \in \seg 0 1}
+                    \end{array}
+                \]
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Définition (\textit{Partie convexe})}}
+                Soit $E$ un $\R$-espace vectoriel, et $\mathcal A \in \mathcal P(E)$.
+
+                Alors $\mathcal A$ est dite \emph{convexe} si, et seulement si
+                \[
+                    \forall (A, B) \in \mathcal A,\ [A, B] \in \mathcal A
+                \]
+            \end{indt}
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Normes usuelles}}
+            \begin{indt}{\subsubsection{Sur $\K^n$}}
+                Soit $n \in \N^*$.
+
+                On définit, $\forall x = (x_1, \ldots, x_n) \in \K^n$ :
+                \[
+                    \begin{array}{lcl}
+                        \norm{x}_1
+                        &=& \displaystyle
+                        \sum_{k = 1}^n \abs{x_k}
+                        \vspace{6pt}
+                        \\
+                        \norm{x}_2
+                        &=& \displaystyle
+                        \sqrt{\sum_{k = 1}^n \abs{x_k}^2}
+                        \vspace{6pt}
+                        \\
+                        \norm{x}_\infty
+                        &=& \displaystyle
+                        \max_{k \in \nset 1 n} \abs{x_k}
+                    \end{array}
+                \]
+
+                Ces applications sont des normes sur $\K^n$.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Sur $\mathcal C^0\!\lr{[a, b], \K}$}}
+                Soient $a, b \in \R$.
+
+                On peut munir le $\K$-espace vectoriel $\mathcal C^0\:\lr{[a, b], \K}$ de normes définies par, $\forall f \in \mathcal C^0\:\lr{[a, b], \K}$ :
+                \[
+                    \begin{array}{lcl}
+                        \norm{x}_1
+                        &=& \displaystyle
+                        \dint a b {\abs{f(x)}}
+                        \vspace{6pt}
+                        \\
+                        \norm{x}_2
+                        &=& \displaystyle
+                        \sqrt{\dint a b {\abs{f(x)}^2}}
+                        \vspace{6pt}
+                        \\
+                        \norm{x}_\infty
+                        &=& \displaystyle
+                        \sup_{x \in [a, b]} \abs{f(x)}
+                    \end{array}
+                \]
+            \end{indt}
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Fonctions lipschitziennes}}
+            Soient $\lrb{E, \norm \cdot _E}, \lrb{F, \norm \cdot _F}$ des $\K$-espaces vectoriels normés, $A \in \mathcal P(E) \setminus \varnothing$, et $f \in F^A$.
+
+            Alors $f$ est dite $k$-lipschitzienne si et seulement si
+            \[
+                \exists k \in \R_+\ |\ \forall x, y \in A,\
+                \norm{f(y) - f(x)}_F \le k\norm{y - x}_E
+            \]
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Définition (\textit{normes équivalentes})}}
+            Soit $E$ un $\K$-espace vectoriel, et $N, \widetilde N$ deux normes sur $E$.
+
+            Les normes $N$ et $\widetilde N$ sont \emph{équivalentes} si et seulement si
+            \[
+                \begin{array}{cl}
+                    &
+                    \exists k, \widetilde k \in \R^*_+\ |
+                    \forall x \in E,\
+                    \begin{array}{|l}
+                        N(x) \le \widetilde k \widetilde N(x)
+                        \\
+                        \widetilde N(x) \le k N(x)
+                    \end{array}
+                    \vspace{6pt}
+                    \\
+                    \ssi&
+                    \exists k, k' \in \R^*_+\ |\
+                    \forall x \in E,\
+                    k' \widetilde N(x) \le N(x) \le k \widetilde N(x)
+                    \vspace{6pt}
+                    \\
+                    \ssi&
+                    \exists k \in \R^*_+\ |\
+                    \forall x \in E,\
+                    \dfrac{1}{k} \widetilde N(x) \le N(x) \le k \widetilde N(x)
+                \end{array}
+            \]
+        \end{indt}
+    \end{indt}
+
+    \vspace{12pt}
+    
+    \begin{indt}{\section{Topologie d'un espace vectoriel normé}}
+
+        Dans cette section, on désigne par $\lrb{E, \norm \cdot}$ un $\K$-espace vectoriel.
+
+        \begin{indt}{\subsection{Voisinages}}
+            \begin{indt}{\subsubsection{Définition (\textit{voisinage})}}
+                Soit $a \in E$.
+
+                Un \emph{voisinage} de $a$ est une partie $A \in \mathcal P(E)$ vérifiant
+                \[
+                    \exists r \in \R^*_+\ |\ \mathscr B_o(a, r) \subset A
+                \]
+
+                On note $v(a)$ l'ensemble des voisinages de $a$ :
+                \[
+                    \forall a \in E,\
+                    v(a) = \set{A \in \mathcal P(E)\ |\ \exists r \in \R^*_+\ |\ \mathscr B_o(a, r) \subset A}
+                \]
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Propriétés}}
+                On a :
+
+                $\bullet$ $
+                    \forall a \in E,\
+                    \forall V \in v(a), a \in V
+                $
+
+                $\bullet$ $
+                    \forall (a, W) \in E \times \mathcal P(E),\
+                    (\exists V \in v(a)\ |\ V \subset W) \Rightarrow W \in v(a)
+                $
+
+                \vspace{6pt}
+                
+                Soit $I \neq \varnothing$ un ensemble d'indexation, et $a \in E$.
+                \[
+                    \forall \lr{V_i}_{i \in I} \subset v(a),\
+                    \bigcup_{i \in I} V_i \in v(a)
+                \]
+
+                Soit $n \in \N$ et $a \in E$.
+                \[
+                    \forall \!\lr{V_k}_{k \in \nset 1 n} \subset v(a),\
+                    \bigcap_{k = 1}^n V_k \in v(a)
+                \]
+
+                $\bullet$ $
+                    \forall a, b \in E\ |\ a \neq b,\
+                    \exists V, W \in v(a)\ |\ V \cap W = \varnothing
+                $
+
+                $\bullet$ Deux normes équivalentes définissent la même notion de voisinage.
+            \end{indt}
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Ouverts, fermés}}
+            \begin{indt}{\subsubsection{Définition (\textit{Ouvert})}}
+                Un ouvert de $[E, \norm \cdot]$ est une partie de $E$ vérifiant :
+                \[
+                    \begin{array}{rcl}
+                        \forall O \in \mathcal P(E),\
+                        O\ \text{ouvert}
+                        &\ssi&
+                        \forall a \in O,\ O \in v(a)
+                        \vspace{3pt}
+                        \\
+                        &\ssi&
+                        \forall a \in O,\ \exists r \in \R^*_+\ |\ \mathscr B_o(a, r) \subset O
+                    \end{array}
+                \]
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Définition (\textit{Fermé})}}
+                Un fermé de $[E, \norm \cdot]$ est une partie vérifiant :
+                \[
+                    \forall F \in \mathcal P(E),\
+                    F\ \text{fermé}
+                    \ssi
+                    \complement_E(F) = E \setminus F\ \text{ouvert}
+                \]
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Propriétés}}
+                Soient $n \in \N^*$, et $I \neq \varnothing$ un ensemble d'indexation.
+
+                \vspace{12pt}
+                
+                $\bullet$
+                $
+                    \displaystyle
+                    \forall (O_i)_{i \in I}\ \text{ouverts},\
+                    \bigcup_{i \in I} O_i\ \text{ouvert}
+                $
+
+                $\bullet$
+                $
+                    \displaystyle
+                    \forall (O_k)_{k \in \nset 1 n}\ \text{ouverts},\
+                    \bigcap_{k = 1}^n O_k\ \text{ouvert}
+                $
+
+                \vspace{6pt}
+                
+                $\bullet$
+                $
+                    \displaystyle
+                    \forall (F_i)_{i \in I}\ \text{fermés},\
+                    \bigcap_{i \in I} F_i\ \text{fermé}
+                $
+
+                $\bullet$
+                $
+                    \displaystyle
+                    \forall (F_k)_{k \in \nset 1 n}\ \text{fermés},\
+                    \bigcup_{k = 1}^n F_k\ \text{fermé}
+                $
+
+                \vspace{12pt}
+                
+                $\bullet$ Soient $(a, r) \in E \times \R^*_+$. On a :
+                \[
+                    \mathscr B_o(a, r) = \set{x \in E\ |\ \norm{x - a} < r}\ \text{ouvert}
+                \]
+                \[
+                    \mathscr B_f(a, r) = \set{x \in E\ |\ \norm{x - a} \le r}\ \text{fermé}
+                \]
+                \[
+                    \mathscr S(a, r) = \mathscr B_f(a, r) \setminus \mathscr B_o(a, r)\ \text{fermé}
+                \]
+
+                \vspace{12pt}
+                
+                Soient $\displaystyle \lr{[E_k, N_k]}_{k \in \nset 1 n}$ des espaces vectoriels normés.
+                On note $E = \displaystyle \prod_{k = 1}^n E_k$.
+                On munit $E$ de la norme produit $N$.
+
+                Alors
+                \[
+                    \forall (O_k)_{k \in \nset 1 n}\ |\ \forall k \in \nset 1 n,\ O_k\ \text{ouvert de}\ E_k,\
+                    \prod_{k = 1}^n O_k \ \text{ouvert de}\ [E, N]
+                \]
+
+                \[
+                    \forall (F_k)_{k \in \nset 1 n}\ |\ \forall k \in \nset 1 n,\ F_k\ \text{fermé de}\ E_k,\
+                    \prod_{k = 1}^n F_k \ \text{fermé de}\ [E, N]
+                \]
+            \end{indt}
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Adhérence}}
+            \begin{indt}{\subsubsection{Définition (\textit{Adhérence})}}
+                Soit $A \in \mathcal P(E)$, et $a \in E$.
+
+                Alors $a$ est dit \emph{adhérent} à $A$ lorsque
+                \[
+                    \forall V \in v(a),\ V \cap A \neq \varnothing
+                \]
+
+                On note alors $\cj A$ l'ensemble des points adhérents à $A$, appelée \emph{adhérence de $A$} :
+                \[
+                    \cj A = \set{a \in E\ |\ \forall V \in v(a),\ V \cap A \neq \varnothing}
+                \]
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Définition (\textit{densité})}}
+                Soit $A \in \mathcal P(E)$.
+
+                On dit que $A$ est \emph{dense} dans $E$ lorsque
+                \[
+                    \cj A = E
+                \]
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Caractérisation de l'adhérence (intersection)}}
+                Soit $A \in \mathcal P(E)$.
+
+                Alors :
+                \[
+                    \cj A
+                    =
+                    \bigcap_{\substack{F \text{ fermé de } E \vspace{2pt} \\ A \subset F}} F
+                \]
+
+                Donc $\cj A$ est le plus petit fermé de $E$ contenant $A$.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Propriétés}}
+                Soient $A, B \in \mathcal P(E)$. On a :
+
+                \vspace{6pt}
+                
+                $\bullet$ $A = \cj A \ssi A\ \text{fermé}$
+
+                \vspace{3pt}
+
+                $\bullet$ $\cj{\cj{A}} = \cj A$ (car $\cj A$ fermé)
+
+                \vspace{3pt}
+
+                $\bullet$ $A \subset B \Rightarrow \cj A \subset \cj B$
+
+                \vspace{3pt}
+
+                $\bullet$ $\cj{A \cup B} = \cj A \cup \cj B$
+
+                \vspace{3pt}
+
+                $\bullet$ $\cj{A \cap B} \subset \cj A \cap \cj B$
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Caractérisation séquentielle de l'adhérence}}
+                Soit $A \in \mathcal P(E) \setminus \varnothing$, et $a \in E$.
+
+                Alors :
+                \[
+                    a \in \cj A
+                    \ssi
+                    \exists (x_n)_{n \in \N} \in A^\N\ |\ x_n \tendsto{n \to +\infty} a
+                \]
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Corollaire}}
+                Soit $A \in \mathcal P(E) \setminus \varnothing$.
+
+                On a :
+
+                \vspace{6pt}
+                
+                $\bullet$ $\forall x \in E, x \in \cj A \ssi d(x, A) = 0$
+
+                $\bullet$
+                $
+                    A\ \text{fermé dans}\ E
+                    \ssi
+                    \forall (x_n)_{n \in \N} \in A^\N,\
+                    (\exists \ell \in E\ |\ x_n \tendsto{n \to +\infty} \ell) \Rightarrow \ell \in A
+                $
+
+                $\bullet$
+                $
+                    A\ \text{dense dans}\ E
+                    \ssi
+                    \forall x \in E,\
+                    \exists (u_n)_{n \in \N} \in A^\N\ |\ u_n \tendsto{n \to +\infty} x
+                $
+            \end{indt}
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Intérieur}}
+            \begin{indt}{\subsubsection{Définition (\textit{Intérieur})}}
+                Soit $A \in \mathcal P(E)$, et $a \in E$.
+
+                Alors $a$ est dit \emph{intérieur} à $A$ lorsque
+                \[
+                    \begin{array}{cl}
+                        & \exists O\ \text{ouvert de}\ E\
+                        \begin{array}{|l}
+                            O \subset A
+                            \\
+                            a \in O
+                        \end{array}
+                        \vspace{3pt}
+                        \\
+                        \ssi&
+                        \exists r \in \R^*_+\ |\ \mathscr B_o(a, r) \subset A
+                        \vspace{3pt}
+                        \\
+                        \ssi&
+                        A \in v(a)
+                    \end{array}
+                \]
+
+                On note $\mathring A$ l'ensemble des points intérieurs à $A$, appelé \emph{intérieur} de $A$ :
+                \[
+                    \mathring A = \set{x \in E\ |\ A \in v(x)}
+                \]
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Propriétés}}
+                Soient $A, B \in \mathcal P(E)$.
+
+                On a :
+
+                $\bullet$ $\mathring A \subset A$
+
+                $\bullet$ $A \subset B \Rightarrow \mathring A \subset \mathring B$
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Caractérisation (union)}}
+                Soit $A \in \mathcal P(E)$.
+
+                Alors
+                \[
+                    \mathring A =
+                    \bigcup_{\substack{O \text{ ouvert de } E \vspace{2pt} \\ O \subset A}} O
+                \]
+
+                Donc $\mathring A$ est le plus grand ouvert de $E$ inclus $A$.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Propriétés}}
+                Soient $A, B \in \mathcal P(E)$.
+
+                On a :
+
+                \vspace{6pt}
+                
+                $\bullet$ $\widering{A \cap B} = \mathring A \cap \mathring B$
+
+                $\bullet$ $\mathring A \cup \mathring B \subset \widering{A \cup B}$
+
+                $\bullet$ $\complement_E(\cj A) = \widering{\complement_E(A)}$
+
+                $\bullet$ $\complement_E\!\lr{\mathring A} = \cj{\complement_E(A)}$
+
+                \vspace{6pt}
+                
+                $\bullet$ $A\ \text{ouvert} \ssi A = \mathring A$
+            \end{indt}
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Frontière}}
+            \begin{indt}{\subsubsection{Définition (\textit{Frontière})}}
+                Soit $A \in \mathcal P(E)$.
+
+                On appelle \emph{frontière} de $A$, et on le note souvent $Fr(A)$, l'ensemble
+                \[
+                    Fr(A) = \cj A \setminus \mathring A
+                    = \complement_{\cj A}\!\lr{\mathring A}
+                    = \cj A \cap \complement_E\!\lr{\mathring A}
+                \]
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Définition (\textit{Extérieur})}}
+                Soit $A \in \mathcal P(E)$.
+
+                On appelle \emph{extérieur} de $A$ l'ouvert
+                \[
+                    \complement_E\!\lr{\bar A} = \widering{\complement_E(A)}
+                \]
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Proposition}}
+                Soit $A \in \mathcal P(E)$.
+
+                Alors l'intérieur, l'extérieur et la frontière de $A$ forment une partition de $E$.
+            \end{indt}
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Topologie relative à une partie}}
+            \begin{indt}{\subsubsection{Définition (\textit{voisinage relatif})}}
+                Soit $A \in \mathcal P(E) \setminus \varnothing$, $a \in A$, et $W \in \mathcal P(A)$.
+
+                Alors $W$ est un \emph{voisinage relatif à $A$} de $a$ si
+                \[
+                    \exists W' \in v(a)\ |\ W = W' \cap A
+                \]
+
+                On note
+                \[
+                    v_A(a) = \set{W \in \mathcal P(A)\ |\ \exists W' \in v(a)\ |\ W = W' \cap A}
+                \]
+                l'ensemble des voisinages relatifs à $A$ de $a$.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Définition (\textit{ouvert, fermé relatif})}}
+                Soit $A \in \mathcal P(E)$, et $W \in \mathcal P(A)$.
+
+                \vspace{6pt}
+                
+                $\bullet$ Alors $W$ est un \emph{ouvert relatif à $A$} de $E$ si
+                \[
+                    \forall a \in A,\ W \in v_A(a)
+                \]
+
+                \vspace{6pt}
+                
+                $\bullet$ $W$ est un \emph{fermé relatif à $A$} de $E$ si c'est le complémentaire d'un ouvert relatif à $A$.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Caractérisation}}
+                Soit $A \in \mathcal P(E)$.
+
+                \vspace{6pt}
+                
+                $\bullet$ $\forall O \in \mathcal P(A)$, on a :
+                \[
+                    O\ \text{ouvert relatif à}\ A
+                    \ssi
+                    \exists O'\ \text{ouvert de}\ E\ |\ O = O' \cap A
+                \]
+
+                $\bullet$ $\forall W \in \mathcal P(A)$, on a :
+                \[
+                    W\ \text{fermé relatif à}\ A
+                    \ssi
+                    \exists W'\ \text{fermé de}\ E\ |\ W = W' \cap A
+                \]
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Caractérisation séquentielle}}
+                Soit $A \in \mathcal P(E)$.
+
+                $\forall F \in \mathcal (A)$, on a :
+                \[
+                    F\ \text{fermé relatif à}\ A
+                    \ssi
+                    \forall (x_n)_{n \in \N} \in F^\N,\
+                    (\exists \ell \in A\ |\ x_n \tendsto{n \to +\infty} \ell) \Rightarrow \ell \in F
+                \]
+            \end{indt}
+        \end{indt}
+    \end{indt}
+    
+\end{document}
+%--------------------------------------------End
