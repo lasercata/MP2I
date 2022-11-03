@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2022.10.31
+% Last modification     :   2023.11.03
 %
 %------------------------------------------------------------------------
 
@@ -237,6 +237,7 @@
 \newcommand{\set}[1]{\left\{ #1 \right\}}
 \newcommand{\abs}[1]{\left\lvert #1 \right\rvert}
 \newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+\newcommand{\nnorm}[2][-2pt]{{\left\lvert \kern#1 \left\lvert \kern#1 \left\lvert #2 \right\rvert \kern#1 \right\rvert \kern#1 \right\rvert}}
 \newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
 \newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
 \newcommand{\lrangle}[1]{\left\langle #1 \right\rangle}
@@ -567,6 +568,30 @@
                 $
 
                 $\bullet$ Deux normes équivalentes définissent la même notion de voisinage.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Extension à l'infini}}
+                On appelle \emph{voisinage de $+\infty$} (respectivement de $-\infty$) toute partie $V \in \mathcal P(\R)$ vérifiant
+                \[
+                    \exists A \in \R\ |\ \ ]A\ ;\ +\infty[\ \subset V
+                    \quad (\text{resp.}\ \ ] -\!\infty\ ;\ A[\ \subset V)
+                \]
+
+                On note
+                \[
+                    \begin{array}{rcl}
+                        v(+\infty)
+                        &=&
+                        \set{V \in \mathcal P(\R)\ |\ \exists A \in \R\ |\ \ ]A\ ;\ +\infty[\ \subset V}
+                        \vspace{6pt}
+                        \\
+                        v(-\infty)
+                        &=&
+                        \set{V \in \mathcal P(\R)\ |\ \exists A \in \R\ |\ \ ] -\!\infty\ ;\ A[\ \subset V}
+                    \end{array}
+                \]
             \end{indt}
         \end{indt}
 
@@ -966,6 +991,374 @@
                     (\exists \ell \in A\ |\ x_n \tendsto{n \to +\infty} \ell) \Rightarrow \ell \in F
                 \]
             \end{indt}
+        \end{indt}
+    \end{indt}
+
+    \begin{indt}{\section{Limites, continuité d'une application}}
+        Dans toute cette section, on pose deux $\K$-espaces vectoriel normés $[E, \norm \cdot _E]$ et $[F, \norm \cdot _F]$.
+
+        \begin{indt}{\subsection{Limites}}
+            \begin{indt}{\subsubsection{Définition (\textit{Limite en un point})}}
+                Soit $A \in \mathcal P(E) \setminus \varnothing$, $f \in F^A$, et $a \in \cj A$.
+
+                On dit que $f$ \emph{admet une limite $b \in F$ en $a$} si et seulement si :
+                \[
+                    \begin{array}{cl}
+                        &
+                        \forall \varepsilon \in \R^*_+,\
+                        \exists \delta_\varepsilon \in \R^*_+\ |\
+                        \forall x \in A,\
+                        \norm{x - a}_E \le \delta_\varepsilon \Rightarrow \norm{f(x) - b}_F \le \varepsilon
+                        \vspace{6pt}
+                        \\
+                        \ssi&
+                        \forall \varepsilon \in \R^*_+,\
+                        \exists \delta_\varepsilon\ |\
+                        f\!\lr{\mathscr B_f(a, \delta_\varepsilon) \cap A} \subset \mathscr B_f(b, \varepsilon)
+                        \vspace{6pt}
+                        \\
+                        \overset{\text{si } a \in A}\ssi&
+                        \forall V \in v_F(b),\ \exists W \in v_A(a)\ |\ f(W) \subset V
+                        \vspace{6pt}
+                        \\
+                        \overset{\text{si } a \in A}\ssi&
+                        \forall V \in v_F(b),\ f^{-1}(V) \in v_A(a)
+                    \end{array}
+                \]
+
+                \vspace{12pt}
+                
+                Remarque : deux normes équivalentes définissent la même notion de voisinage et d'adhérence, donc la même notion de convergence : changer de norme pour une autre qui lui est équivalente ne change pas l'existence ni la valeur d'une limite.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Caractérisation séquentielle de la limite}}
+                Soient $A \in \mathcal P(E) \setminus \varnothing$, $f \in F^A$, et $a \in \cj A$.
+
+                Alors $f$ admet une limite en $a$ si et seulement si
+                \[
+                    \forall (x_n)_{n \in \N} \in A^\N\ |\ x_n \tendsto{n \to +\infty} a,\
+                    \exists \ell \in F\ |\ f(x_n) \tendsto{n \to +\infty} \ell
+                \]
+
+                Et dans ce cas, la limite de $f$ est $\ell$.
+
+                \vspace{12pt}
+                
+                Remarque : peut être intéressant sans la valeur de la limite.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Propriété}}
+                Soient $n \in \N^*$, $(G_k)_{k \in \nset 1 n}$ des espaces vectoriels normés, $\displaystyle G = \prod_{k = 1}^n G_k$ que l'on munit de la norme produit, et $A \in \mathcal P(E) \setminus \varnothing$.
+
+                Soient $\forall k \in \nset 1 n,\ f_k \in {G_k}^A$, et :
+                \[
+                    \begin{array}{ccccc}
+                        f & : & A & \longrightarrow & G
+                        \\
+                          && x & \longmapsto & \lr{f_1(x), \ldots, f_n(x)}
+                    \end{array}
+                \]
+
+                Alors pour $\ell = (\ell_1, \ldots, \ell_n) \in G$ et $a \in \cj A$, on a :
+                \[
+                    \lim_a f = \ell
+                    \ssi
+                    \forall k \in \nset 1 n,\
+                    \lim_a f_k = \ell_k
+                \]
+            \end{indt}
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Continuité d'une application}}
+            \begin{indt}{\subsubsection{Définition}}
+                Soit $A \in \mathcal P(E) \setminus \varnothing$, et $f \in F^A$.
+
+                \vspace{6pt}
+                
+                $\bullet$ La fonction $f$ est \emph{continue en $a \in A$} si et seulement si
+                \[
+                    \exists \ell \in F\ |\ f(x) \tendsto{x \to a} \ell
+                \]
+                et dans ce cas, $\ell = f(a)$, \textit{i.e} si et seulement si
+                \[
+                    \forall \varepsilon \in \R^*_+,\
+                    \exists \delta_\varepsilon\ |\
+                    \forall x \in A,\
+                    \norm{x - a}_E \le \delta_\varepsilon \Rightarrow \norm{f(x) - f(a)}_F \le \varepsilon
+                \]
+
+                \vspace{6pt}
+                
+                $\bullet$ La fonction $f$ est \emph{continue} (sur $A$) si et seulement si elle est continue en tout point de $A$.
+
+                Dans ce cas, on note
+                \[
+                    f \in \mathcal C^0(A, F)
+                \]
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Propriétés}}
+                $\bullet$ Soient $n \in \N^*$, $(G_k)_{k \in \nset 1 n}$ des espaces vectoriels normés, $\displaystyle G = \prod_{k = 1}^n G_k$ que l'on munit de la norme produit, et $A \in \mathcal P(E) \setminus \varnothing$.
+
+                Soient $\forall k \in \nset 1 n,\ f_k \in {G_k}^A$, et :
+                \[
+                    \begin{array}{ccccc}
+                        f & : & A & \longrightarrow & G
+                        \\
+                          && x & \longmapsto & \lr{f_1(x), \ldots, f_n(x)}
+                    \end{array}
+                \]
+
+                Alors $f$ est continue en $a \in A$ si et seulement si
+                \[
+                    \forall k \in \nset 1 n,\
+                    f_k \in \mathcal C^0(A, G_k)
+                \]
+
+                \vspace{12pt}
+                
+                $\bullet$ Soit $A \in \mathcal P(E) \setminus \varnothing$, $a \in A$, et $f \in F^A$.
+
+                Alors si $f$ est continue en $a$, alors elle est bornée au voisinage de $a$.
+
+                \vspace{12pt}
+                
+                $\bullet$ Soit $A \in \mathcal P(E) \setminus \varnothing$. Alors $\mathcal C^0(A, F)$ est un $\K$-sous espace vectoriel de $F^A$.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Caractérisation séquentielle de la continuité}}
+                Soit $A \in \mathcal P(E)$, $a \in A$, et $f \in F^A$.
+
+                Alors $f$ est continue en $a$ si et seulement si
+                \[
+                    \forall \lr{x_n}_{n \in \N}\ |\ x_n \tendsto{n \to +\infty} a,\
+                    f(x_n) \tendsto{n \to +\infty} f(a)
+                \]
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Propriétés (exemples d'applications continues)}}
+                $\bullet$ Une application lipschitzienne est continue.
+
+                \vspace{12pt}
+                
+                $\bullet$ On suppose $E$ de dimension finie $n \in \N$, et on note $\mathcal B = \lr{e_k}_{k \in \nset 1 n}$ une de ses $\K$-bases.
+
+                On pose $I \in \mathcal P(\N^n) \setminus \varnothing$ finie, et $\lr{\lambda_i}_{i \in I} \subset \K$.
+
+                \vspace{6pt}
+                
+                Alors l'application polynômiale (en les coordonnées de $x$ dans $\mathcal B$)
+                \[
+                    \begin{array}{ccccl}
+                        f & : & E & \longrightarrow & \K
+                        \\
+                          && x & \longmapsto &
+                          \displaystyle
+                          \sum_{\substack{i \in I \\ i = (i_1, \ldots, i_n)}} \lambda_i \prod_{k = 1}^n \lr{e_k^*(x)}^{i_k}
+                    \end{array}
+                \]
+                est continue.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Lien avec les ouverts}}
+                Soit $A \in \mathcal P(E) \setminus \varnothing$, et $f \in F^A$.
+
+                Alors on a :
+                \[
+                    \begin{array}{rcl}
+                        f \in \mathcal C^0(A, F)
+                        &\ssi&
+                        \forall O\ \text{ouvert de}\ F,\
+                        f^{-1}(O)\ \text{ouvert relatif à}\ A
+                        \\
+                        &\ssi&
+                        \forall F\ \text{fermé de}\ F,\
+                        f^{-1}(F)\ \text{fermé relatif à}\ A
+                    \end{array}
+                \]
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Propriété}}
+                Soit $A \in \mathcal P(E) \setminus \varnothing$, $B \in \mathcal P(A)\ |\ \cj B = A$, et $f, g \in \mathcal C^0(A, F)$
+
+                Alors
+                \[
+                    f_{|B} = g_{|B}\
+                    \Rightarrow\
+                    f = g
+                \]
+            \end{indt}
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Cas des applications linéaires}}
+            \begin{indt}{\subsubsection{Théorème (CNS de continuité pour des applications linéaires)}}
+                Soit $f \in \mathcal L_\K(E, F)$.
+
+                On a :
+                \[
+                    \begin{array}{rcl}
+                        f \in \mathcal C^0(E, F)
+                        &\ssi&
+                        f\ \text{continue en}\ 0_E
+                        \vspace{6pt}
+                        \\
+                        &\ssi&
+                        \exists \alpha \in \R\ |\ \forall x \in E,\ \norm{f(x)}_F \le \alpha \norm x _E
+                        \vspace{6pt}
+                        \\
+                        &\ssi&
+                        f\ \text{lipschitzienne}
+                        \vspace{6pt}
+                        \\
+                        &\ssi&
+                        \exists M \in \R\ |\ \forall x \in E\ |\
+                        \norm x _E \le 1 \Rightarrow \norm{f(x)}_F \le M
+                        %\vspace{6pt}
+                        %\\
+                        %&\ssi&
+                        %\exists M \in \R\ |\ \forall x \in \mathscr B_f(0, 1),\ f(x) \in \mahtscr B_f(0, M)
+                    \end{array}
+                \]
+
+                \vspace{12pt}
+                
+                On note
+                \[
+                    \mathcal L_c(E, F) = \mathcal C^0(E, F) \cap \mathcal L(E, F)
+                \]
+
+                C'est un $\K$-sous espace vectoriel de $\mathcal L_\K(E, F)$
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Définition (\textit{norme d'opérateurs})}}
+                On peut munir le $\K$-espace vectoriel $\mathcal L_c(E, F)$ d'une norme dite \emph{subordonnée} (à $\norm \cdot _E$ et $\norm \cdot _F$), ou \emph{norme d'opérateurs}, par :
+                \[
+                    \begin{array}{rcl}
+                        \forall u \in \mathcal L_c(E, F),\
+                        \nnorm u
+                        =
+                        \norm u _{\rm op}
+                        &=&
+                        \sup\!\set{
+                            \norm{u(x)}_F\
+                            \begin{array}{|l}
+                                x \in E
+                                \\
+                                \norm x _E = 1
+                            \end{array}
+                            \vphantom{\dfrac a {\tfrac a a}}
+                        }
+                        \vspace{6pt}
+                        \\
+                        &=&
+                        \sup\!\set{
+                            \norm{u(x)}_F\
+                            \begin{array}{|l}
+                                x \in E
+                                \\
+                                \norm x _E \le 1
+                            \end{array}
+                            \vphantom{\dfrac a {\tfrac a a}}
+                        }
+                        \vspace{6pt}
+                        \\
+                        &=&
+                        \sup\!\set{
+                            \dfrac{\norm{u(x)}_F}{\norm x _E}\
+                            \left| \vphantom{\dfrac a a}\right.
+                            x \in E \setminus \set 0
+                            \vphantom{\dfrac a {\tfrac a a}}
+                        }
+                    \end{array}
+                \]
+
+                \vspace{6pt}
+                
+                Remarque : une norme subordonnée dépend des normes choisies sur $E$ et $F$.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Propriété (\textit{sous-multiplicabilité})}}
+                Soient $[E, \norm \cdot _E],\ [F, \norm \cdot _F],\ [G, \norm \cdot _G]$ des $\K$-espaces vectoriels normés.
+
+                Soient
+                $
+                    \begin{array}{|l}
+                        u \in \mathcal L_c(E, F)
+                        \\
+                        v \in \mathcal L_c(F, G)
+                    \end{array}
+                $.
+
+                \vspace{6pt}
+                
+                Alors
+                \[
+                    v \circ u \in \mathcal L_c(E, G)
+                \]
+                et
+                \[
+                    \nnorm{v \circ u} \le \nnorm{v} \cdot \nnorm u
+                \]
+            \end{indt}
+            
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Continuité d'une application multilinéaire}}
+                Soient $n \in \N^*$, $\lr{\lrb{A_k, \norm \cdot _{A_k}}}_{k \in \nset 1 n}$ des espaces vectoriels normés, $\displaystyle A = \prod_{k = 1}^n A_k$ munit de la norme produit, et $f \in F^A$ une application $n$-linéaire.
+
+                Alors
+                \[
+                    f \in \mathcal C^0(A, F)
+                    \ssi
+                    \exists \alpha \in \R_+\ |\
+                    \forall (x_1, \ldots, x_n) \in A,\
+                    \norm{f(x_1, \ldots, x_n)}_F \le \alpha \prod_{k = 1}^n \norm{x_k}_{A_k}
+                \]
+            \end{indt}
+        \end{indt}
+    \end{indt}
+
+    \vspace{12pt}
+    
+    \begin{indt}{\section{Compacité}}
+        On note, dans cette section, $[E, \norm \cdot _E]$ un $\K$-espace vectoriel normé.
+
+        \begin{indt}{\subsection{Définition (\textit{compact})}}
+            Soit $A \in \mathcal P(E)$.
+
+            Alors la partie $A$ est dite \emph{compacte} lorsque toute suite de points de $A$ admet au moins une valeur d'adhérence dans $A$, \textit{i.e} lorque
+            \[
+                \forall \lr{x_n}_{n \in \N} \in A^\N,\
+                \exists \varphi \in \N^\N\ \text{strictement croissante},\
+                \exists \ell \in A\ |\
+                x_{\varphi(n)} \tendsto{n \to +\infty} \ell
+            \]
+
+            \vspace{6pt}
+            
+            Remarque : deux normes équivalentes définissent la même notion de convergence et de limite, donc \textit{a fortiori} la même notion de compacité.
         \end{indt}
     \end{indt}
     
