@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2023.11.03
+% Last modification     :   2023.11.04
 %
 %------------------------------------------------------------------------
 
@@ -1051,7 +1051,7 @@
 
             \vspace{12pt}
             
-            \begin{indt}{\subsubsection{Propriété}}
+            \begin{indt}{\subsubsection{Propriété (limite d'une application définie sur un produit cartésien)}}
                 Soient $n \in \N^*$, $(G_k)_{k \in \nset 1 n}$ des espaces vectoriels normés, $\displaystyle G = \prod_{k = 1}^n G_k$ que l'on munit de la norme produit, et $A \in \mathcal P(E) \setminus \varnothing$.
 
                 Soient $\forall k \in \nset 1 n,\ f_k \in {G_k}^A$, et :
@@ -1076,7 +1076,7 @@
         \vspace{12pt}
         
         \begin{indt}{\subsection{Continuité d'une application}}
-            \begin{indt}{\subsubsection{Définition}}
+            \begin{indt}{\subsubsection{Définition (\textit{continuité})}}
                 Soit $A \in \mathcal P(E) \setminus \varnothing$, et $f \in F^A$.
 
                 \vspace{6pt}
@@ -1343,22 +1343,414 @@
     \vspace{12pt}
     
     \begin{indt}{\section{Compacité}}
-        On note, dans cette section, $[E, \norm \cdot _E]$ un $\K$-espace vectoriel normé.
+        On note, dans cette section, $[E, \norm \cdot _E]$ et $[F, \norm \cdot _F]$ deux $\K$-espaces vectoriels normés.
 
-        \begin{indt}{\subsection{Définition (\textit{compact})}}
-            Soit $A \in \mathcal P(E)$.
+        \begin{indt}{\subsection{Définition, propriétés}}
+            \begin{indt}{\subsubsection{Définition (\textit{compact})}}
+                Soit $A \in \mathcal P(E)$.
 
-            Alors la partie $A$ est dite \emph{compacte} lorsque toute suite de points de $A$ admet au moins une valeur d'adhérence dans $A$, \textit{i.e} lorque
-            \[
-                \forall \lr{x_n}_{n \in \N} \in A^\N,\
-                \exists \varphi \in \N^\N\ \text{strictement croissante},\
-                \exists \ell \in A\ |\
-                x_{\varphi(n)} \tendsto{n \to +\infty} \ell
-            \]
+                Alors la partie $A$ est dite \emph{compacte} lorsque toute suite de points de $A$ admet au moins une valeur d'adhérence dans $A$, \textit{i.e} lorque
+                \[
+                    \forall \lr{x_n}_{n \in \N} \in A^\N,\
+                    \exists \varphi \in \N^\N\ \text{strictement croissante},\
+                    \exists \ell \in A\ |\
+                    x_{\varphi(n)} \tendsto{n \to +\infty} \ell
+                \]
 
-            \vspace{6pt}
+                \vspace{6pt}
+                
+                Remarque : deux normes équivalentes définissent la même notion de convergence et de limite, donc \textit{a fortiori} la même notion de compacité.
+            \end{indt}
+
+            \vspace{12pt}
             
-            Remarque : deux normes équivalentes définissent la même notion de convergence et de limite, donc \textit{a fortiori} la même notion de compacité.
+            \begin{indt}{\subsubsection{Propriété (caractère fermé borné)}}
+                Soit $C \in \mathcal P(E)$ un compact de $E$.
+
+                Alors $C$ est un fermé borné de $E$, \textit{i.e}
+                \[
+                    \begin{cases}
+                        C = \cj C
+                        \\
+                        \exists r \in \R_+\ |\ C \subset \mathscr B_f(0, r)
+                    \end{cases}
+                \]
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Propriété (partie fermé d'un compact)}}
+                Soit $C \in \mathcal P(E)$ un compact.
+
+                Alors $\forall F \in \mathcal P(C)\ |\ \cj F = F,\ F$ est un compact.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Propriété (produit de compacts)}}
+                Soit $n \in \N$, $\lr{A_k}_{k \in \nset 1 n}$ des $\K$-espaces vectoriels normés, et $\forall k \in \nset 1 n,\ C_k \in \mathcal P(A_k)$ un compact de $A_k$.
+
+                On munit $\displaystyle \prod_{k = 0}^n A_k$ de la norme produit.
+
+                Alors
+                \[
+                    \prod_{k = 1}^n C_k
+                    \quad \text{est un compact de} \quad
+                    \prod_{k = 1}^n A_k
+                \]
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Propriété (convergence d'une suite sur un compact)}}
+                Soit $A \in \mathcal P(E)$ une partie compacte de $E$, et $\lr{x_n}_{n \in \N} \in A^\N$.
+
+                Alors
+                \[
+                    \lr{x_n}_{n \in \N}\ \text{converge}
+                    \ssi
+                    \exists! v \in E\ |\ v\ \text{valeur d'adhérence de}\ \lr{x_n}_{n \in \N}
+                \]
+            \end{indt}
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Fonctions continues sur un compact}}
+            \begin{indt}{\subsubsection{Propriété (image d'un compact par une fonction continue)}}
+                Soit $A \in \mathcal P(E)$, et $f \in \mathcal C^0(A, F)$.
+
+                \vspace{6pt}
+                
+                Alors $\forall B \in \mathcal P(A)\ \text{compacte},\ f(B)$ est un compact de $F$.
+
+                \vspace{6pt}
+                
+                Donc en particulier, $f_{|B}$ est bornée.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Corollaire (fonction continue sur un compact à valeurs réelles)}}
+                Soit $A \in \mathcal P(E)$, $B \in \mathcal P(A)$ un compact de $E$, et $f \in \mathcal C^0(A, \R)$.
+
+                \vspace{6pt}
+                
+                Alors $f_{|B}$ est bornée et atteint ses bornes, \textit{i.e} $\displaystyle \inf_B f\ \text{et}\ \sup_B f$ existent, et
+                \[
+                    \exists b_{\rm i}, b_{\rm s} \in B\
+                    \begin{array}{|l}
+                        \displaystyle
+                        \inf_B f = f\!\lr{b_{\rm i}}
+                        \\
+                        \displaystyle
+                        \sup_B f = f\!\lr{b_{\rm s}}
+                    \end{array}
+                \]
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Définition (\textit{fonction uniformément continue})}}
+                Soit $A \in \mathcal P(E)$, et $f \in F^A$.
+
+                Alors $f$ est \emph{uniformément continue sur $A$} si et seulement si
+                \[
+                    \forall \varepsilon \in \R^*_+,\
+                    \exists \delta_\varepsilon \in \R^*_+\ |\
+                    \forall (x, y) \in A^2,\
+                    \norm{x - y}_E \le \delta_\varepsilon \Rightarrow \norm{f(x) - f(y)}_F \le \varepsilon
+                \]
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Propriétés}}
+                Soit $A \in \mathcal P(E)$, et $f \in A^F$.
+
+                \vspace{6pt}
+                
+                $\bullet$ Si $f$ est uniformément continue sur $A$, alors elle est continue sur $A$.
+
+                \vspace{6pt}
+                
+                $\bullet$ Si $f$ est lipschitzienne, alors elle est uniformément continue.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Théorème de \textsc{Heine}}}
+                Soit $C \in \mathcal P(E)$ un compact de $E$, et $f \in \mathcal C^0(C, F)$.
+
+                \vspace{6pt}
+                
+                Alors $f$ est uniformément continue sur $C$.
+            \end{indt}
+        \end{indt}
+    \end{indt}
+
+    \vspace{12pt}
+    
+    \begin{indt}{\section{Connexité par arcs}}
+        On note, dans cette section, $[E, \norm \cdot _E]$ et $[F, \norm \cdot _F]$ deux $\K$-espaces vectoriels normé.
+
+        \begin{indt}{\subsection{Définitions}}
+            \begin{indt}{\subsubsection{Définition (\textit{chemin continu})}}
+                Soit $A \in \mathcal P(E)$
+
+                Un \emph{chemin continu (tracé) sur $A$} est une application
+                \[
+                    f \in \mathcal C^0\!\lr{\seg 0 1, A}
+                \]
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Propriété}}
+                \label{5.1.2}
+
+                Soit $A \in \mathcal P(E) \setminus \varnothing$, et $\mathcal R$ la relation sur $A^2$ définie par
+                \[
+                    \forall (a, b) \in A^2,\
+                    a \mathcal R b
+                    \ssi
+                    \exists \gamma \in \mathcal C^0\!\lr{\seg 0 1, E}\
+                    \begin{array}{|l}
+                        \gamma(0) = a
+                        \\
+                        \gamma(1) = b
+                        \\
+                        \forall t \in \seg 0 1,\ \gamma(t) \in A
+                    \end{array}
+                \]
+                \textit{i.e} $a \mathcal R b \ssi$ il existe un chemin continu tracé sur $A$ reliant $a$ à $b$.
+
+                \vspace{12pt}
+                
+                Alors $\mathcal R$ est une relation d'équivalence.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Définition (\textit{Composantes connexes par arcs})}}
+                On reprend les notations de la propriété précédente (\ref{5.1.2}).
+
+                \vspace{6pt}
+                
+                Alors les \emph{composantes connexes par arcs} de $A$ sont les classes d'équivalence de $\mathcal R$.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Définition (\textit{connexité par arcs})}}
+                Soit $A \in \mathcal P(E)$.
+
+                Alors $A$ est dite \emph{connexe par arcs} lorsque
+                \[
+                    \forall (a, b) \in A^2,\
+                    \exists \eta \in \mathcal C^0\!\lr{\seg 0 1, E}\
+                    \begin{array}{|l}
+                        \eta(0) = a
+                        \\
+                        \eta(1) = b
+                        \\
+                        \forall t \in \seg 0 1,\ \eta(t) \in A
+                    \end{array}
+                \]
+
+                \textit{i.e} lorsque $\forall (a, b) \in A^2,\ a \mathcal R b$ avec les notations de \ref{5.1.2}.
+
+                \vspace{12pt}
+                
+                \begin{indt}{Remarques :}
+                    $-$ Une composante connexe par arcs est connexe par arcs ;
+
+                    $-$ Une partie de $E$ est connexe par arcs lorsqu'elle n'a qu'une seule composante connexe par arcs.
+                \end{indt}
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Définition (\textit{Partie étoilée})}}
+                Soit $A \in \mathcal P(E)$.
+
+                \vspace{6pt}
+                
+                On dit que $A$ est \emph{étoilée} lorsque
+                \[
+                    \exists x_0 \in A\ |\
+                    \forall a \in A,\ \seg a {x_0} \subset A
+                \]
+
+                Dans ce cas, on dit que $A$ est \emph{étoilée par rapport à $x_0$}.
+
+                \vspace{12pt}
+                
+                Remarque : les parties convexes sont étoilées (par rapport à tous leurs points).
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Propriété (partie étoilée et connexité par arcs)}}
+                Soit $A \in \mathcal P(E)$ une partie étoilée.
+                
+                Alors $A$ est connexe par arcs.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Propriété}}
+                Les intervalles de $\R$ sont exactement les connexes par arcs de $\R$ (donc aussi les convexes de $\R$).
+            \end{indt}
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Fonctions continues sur une partie connexe}}
+            \begin{indt}{\subsubsection{Propriété (Image d'une partie connexe par une fonction continue)}}
+                Soit $A \in \mathcal P(E)$ connexe par arcs, et $f \in \mathcal C^0(A, F)$.
+
+                \vspace{6pt}
+                
+                Alors $f(A)$ est aussi connexe par arcs.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Théorème des valeurs intermédiaires généralisé}}
+                Soit $A \in \mathcal P(E)$ connexe par arcs, et $f \in \mathcal C^0(A, \R)$.
+
+                \vspace{6pt}
+                
+                Alors $f(A)$ est un intervalle, \textit{i.e}
+                \[
+                    \forall y_1, y_2 \in f(A),\
+                    \forall y \in \seg{y_1}{y_2},\
+                    \exists x \in A\ |\ y = f(x)
+                \]
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Corollaire}}
+                Soient $a, b \in E$, et $f \in \mathcal C^0(\seg a b, \R)$.
+
+                Alors $f\!\lr{\seg a b}$ est un segment de $\R$, \textit{i.e} un intervalle compact.
+            \end{indt}
+        \end{indt}
+    \end{indt}
+
+    \vspace{12pt}
+    
+    \begin{indt}{\section{Cas des espaces vectoriels de dimension finie}}
+        Dans cette section, on pose $[E, \norm \cdot _E]$ et $[F, \norm \cdot _F]$ deux $\K$-espaces vectoriels normés, avec $E$ de \Emph{\bf dimension finie} $n \in \N$, et $F$ de dimension quelconque.
+
+        \begin{indt}{\subsection{Normes}}
+            \begin{indt}{\subsubsection{Théorème de \textsc{Riesz}}}
+                Sur tout $\K$-espace vectoriel de dimension finie, toutes les normes sont équivalentes.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Conséquence}}
+                Dans un espace vectoriel de dimension finie, le caractère ouvert, fermé, compact, connexe par arcs d'une partie, et les notions de convergence, de limite d'une suite, et de voisinage ne dépendent pas de la norme choisie.
+            \end{indt}
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Compacité}}
+            \begin{indt}{\subsubsection{Propriété}}
+                Soit $A \in \mathcal P(E)$.
+
+                Alors on a
+                \[
+                    A\ \text{compact}
+                    \ssi
+                    A\ \text{fermé borné}
+                \]
+            \end{indt}
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Suites}}
+            \begin{indt}{\subsubsection{Propriété (convergence et composantes)}}
+                Soit $\mathcal B = \lr{e_k}_{k \in \nset 1 n}$ une base de $E$, et $\lr{x_n}_{n \in \N} \in E^\N$.
+
+                Alors
+                \[
+                    \exists \ell \in E\ |\ x_n \tendsto{n \to +\infty} \ell
+                    \ssi
+                    \forall k \in \nset 1 n,\
+                    \exists \ell_k \in E\ |\ e_k^*(x_n) \tendsto{n \to +\infty} \ell_k
+                \]
+
+                Et dans ce cas, on a
+                \[
+                    \ell = \sum_{k = 1}^n \ell_k e_k
+                \]
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Théorème de \textsc{Bolzano-Weierstrass}}}
+                Soit $\lr{x_n}_{n \in \N} \in E^\N$ une suite bornée, \textit{i.e}
+                \[
+                    \exists r \in \R_+\ |\ \set{x_n\ |\ n \in \N} \subset \mathscr B_f(0_E, r)
+                \]
+
+                Alors $\lr{x_n}_{n \in \N}$ admet au moins une valeur d'adhérence, \textit{i.e}
+                \[
+                    \exists \varphi \in \N^\N\ \text{strictement croissante},\
+                    \exists \ell \in E\ |\
+                    x_{\varphi(n)} \tendsto{n \to +\infty} \ell
+                \]
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Propriété (CNS de convergence d'une suite bornée)}}
+                Soit $\lr{x_n}_{n \in \N} \in E^\N$ une suite bornée.
+
+                Alors
+                \[
+                    \lr{x_n}_{n \in \N}\ \text{converge}
+                    \ssi
+                    \exists! v \in E\ |\ v\ \text{valeur d'adhérence de}\
+                    \lr{x_n}_{n \in \N}
+                \]
+            \end{indt}
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Continuité}}
+            \begin{indt}{\subsubsection{Propriété (continuité des applications linéaires)}}
+                On rappelle que $E$ est de dimension finie.
+
+                On a :
+                \[
+                    \mathcal L(E, F) \subset \mathcal C^0(E, F)
+                \]
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Propriété (continuité des applications multilinéaires)}}
+                Soit $m \in \N$, $\lr{A_k}_{k \in \nset 1 m}$ des espaces vectoriels normés, et
+                \[
+                    f : \prod_{k = 1}^m A_k \longrightarrow F
+                \]
+                une application $m$-linéaire.
+
+                \vspace{6pt}
+                
+                Alors
+                \[
+                    \displaystyle f \in \mathcal C^0\!\lr{\prod_{k = 1}^m A_k,\ F}
+                \]
+            \end{indt}
         \end{indt}
     \end{indt}
     
