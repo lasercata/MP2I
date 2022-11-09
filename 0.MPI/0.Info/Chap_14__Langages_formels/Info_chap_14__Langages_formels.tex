@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2022.10.28
+% Last modification     :   2022.11.09
 %
 %------------------------------------------------------------------------
 
@@ -3556,6 +3556,396 @@ unlock_door()\end{lstlisting}
                     
                     $-$ L'automate de \textsc{Glushkov} associé à une expression régulière a toujours un nombre d'états de l'ordre du nombre de symboles dans l'expression régulière (mais le déterminiser peut donner un nombre d'états exponentiel), mais l'expression régulière obtenue par l'algorithme de \textsc{Brzozwski} et Mc \textsc{Cuskey} (algorithme n°\ref{alg:4}, page \pageref{alg:4}) peut être de taille exponentielle en le nombre d'états de l'automate \boxed{\rm Exo}.
                 \end{indt}
+            \end{indt}
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Langages non réguliers / non reconnaissables}}
+            \begin{indt}{\subsubsection{Premier exemple}}
+                $L = \set{a^n b^n\ |\ n \in \N} \notin \Rec{\set{a, b}}$
+
+                \vspace{12pt}
+                
+                \begin{proof}
+                    Supposons que $L \in \Rec{\set{a, b}}$.
+
+                    Alors $\exists M = \lr{\Sigma, Q, q_0, F, \delta}\ \text{un AFD}\ |\ \mathcal L(M) = M$ et que l'on peut supposer complet.
+
+                    \[
+                        \begin{array}{ccccc}
+                            \varphi & : & \N & \longrightarrow & Q
+                            \\
+                                    && n & \longmapsto & \delta(q_0, a^n)
+                        \end{array}
+                    \]
+                    est bien définie (car $M$ complet) et non injective ($Q$ est fini).
+
+                    Donc $\exists n < m\ |\ \varphi(n) = \varphi(m)$
+
+                    Alors
+                    \[
+                        F \ni \delta(q_0, a^n b^n)
+                        = \delta(\delta(q_0, a^n), b^n)
+                        = \delta(\delta(q_0, a^m), b^n)
+                        = \delta(q_0, a^m b^n)
+                    \]
+                    Donc $a^m b^n \in L$ : absurde car $n \neq m$.
+                \end{proof}
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Second exemple}}
+                $L = \set{v \widetilde v w\ |\ v, w \in \set{a, b}^+} \notin \Rec{\set{a, b}}$, où $\widetilde v$ est le miroir du mot $v$.
+
+                \vspace{12pt}
+                
+                \begin{proof}
+                    On suppose $L \in \Rec{\set{a, b}}$.
+                    
+                    Alors $\exists M = \lr{\Sigma, Q, q_0, F, \delta}\ \text{un AFD complet}\ |\ \mathcal L(M) = L$.
+                    
+                    \[
+                        \begin{array}{ccccc}
+                            \varphi & : & \N^* & \longrightarrow & Q
+                            \\
+                                    && n & \longmapsto & \delta(q_0, (ab)^n)
+                        \end{array}
+                    \]
+                    est non injective, donc $\exists n < m \ |\ \varphi(n) = \varphi(m)$.
+                    
+                    \[
+                        \begin{array}{rcl}
+                            F &\ni& \delta(q_0, (ab)^n (ba)^n b)
+                            \\
+                            &=& \delta(\delta(q_0, (ab)^n), (ba)^n b)
+                            \\
+                            &=& \delta(\delta(q_0, (ab)^m), (ba)^n b)
+                            \\
+                            &=& \delta(q_0, (ab)^m (ba)^n b)
+                        \end{array}
+                    \]
+                    
+                    donc $(ab)^m (ba)^n b \in L$, donc $\exists v, w \in \set{a, b}^+\ |\ (ab)^m (ba)^n b = w \widetilde v w$.
+                    
+                    Le motif $v \widetilde v$ avec $v \neq \varepsilon$ impose la répétition de la dernière lettre de $v$.
+                    
+                    Donc comme l'unique répétition dans $(ab)^m (ba)^n b$ est celle du dernier $b$ de $(ab)^m$, on sait que $v = (ab)^m$, donc
+                    \[
+                        \abs{v \widetilde v w} \ge 4m + 1
+                    \]
+                    
+                    Or $\abs{(ab)^m (ba)^n b} = 2(n + m) + 1 < 4m + 1$ : absurde.
+                \end{proof}
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Théorème (lemme de l'étoile)}}
+                \label{2.5.3}
+
+                \begin{emphBox}
+                    Soit $\Sigma$ un alphabet, et $L$ un langage sur $\Sigma$.
+                    
+                    Si $L$ est reconnu par un AFD à $n$ états, alors
+                    \[
+                        \forall u \in L\ |\ \abs{u} \ge n,\
+                        \exists x, y, z \in \Sigma^*\
+                        \begin{array}{|l}
+                            u = xyz
+                            \\
+                            \abs{xy} \le n
+                            \\
+                            y \neq \varepsilon
+                            \\
+                            xy^*z \subseteq L
+                        \end{array}
+                    \]
+                \end{emphBox}
+
+                \vspace{6pt}
+                
+                \begin{proof}
+                    On note $u = u_1 \cdots u_{\abs u}$, et $M = \lr{\Sigma, Q, q_0, F, \delta}$ un AFD à $n$ états tel que $\mathcal L(M) = L$.
+
+                    \[
+                        \begin{array}{ccccc}
+                            \varphi & : & \nset 0 n & \longrightarrow & Q
+                            \\
+                                    && k & \longmapsto & \delta(q_0, u_1 \cdots u_k)
+                        \end{array}
+                    \]
+                    est non injective ($\abs{\nset 0 n} = n + 1 > n = \abs Q$), donc $\exists i, j \in \nset 0 n\ |\ i < j$ et tel que $\delta(q_0, u_1 \cdots u_i) = \delta(q_0, u_1 \cdots u_j)$
+                    \begin{center}
+                        \begin{tikzpicture}
+                            \node (0) at (0, 0) [state, initial, initial text={}] {$q_0$};
+                            \node (1) at (2, 0) [state] {$q_1$};
+                            \node (d) at (4, 0) {$\cdots$};
+                            \node (i) at (6, 0) [state] {$q_i = q_j$};
+                            \node (i') at (6, 2) [state] {$q_{i - 1}$};
+                            \node (f) at (8, -2) [state, accepting] {$q_{\abs u}$};
+
+                            \draw[->] (0) to node [above] {$u_1$} (1);
+                            \draw[->] (1) to node [above] {$u_2$} (d);
+                            \draw[->] (d) to node [above] {$u_i$} (i);
+
+                            \draw[->] (i) to [out=-90, in=135] node [left] {$u_{j + 1}$} (6, -2);
+                            \draw[->, dashed] (6, -2) to [out=-45, in=180] (f);
+
+                            \draw[->] (i') to node [left] {$u_j$} (i);
+
+                            \draw[->] (i) to node [above] {$u_{i + 1}$} (8, 0);
+                            \draw[->, dashed] (8, 0) to [out=0, in=20, looseness=1.5] (i');
+                        \end{tikzpicture}
+                    \end{center}
+
+                    On note $x = u_1 \cdots u_i,\ y = u_{i + 1} \cdots u_j,\ z = u_{j + 1} \cdots u_{\abs u}$.
+
+                    Alors $u = xyz,\ \abs{xy} = \abs{u_1 \cdots u_j} = j \le n,\ y \neq \varepsilon$ car $i + 1 \le j$.
+
+                    On montre par récurrence que $\forall k \in \N,\ xy^k \in L$ :
+
+                    \vspace{6pt}
+                    
+                    $\bullet$ $xy^0z = xz = u_1 \cdots u_i u_{j + 1} \cdots u_{\abs u}$
+
+                    \[
+                        \begin{array}{rcl}
+                            \delta(q_0, xz)
+                            &=& \delta(\delta(q_0, u_1 \cdots u_i), u_{j + 1} \cdots u_{\abs u})
+                            \\
+                            &=& \delta(\delta(q_0, u_1 \cdots u_j), u_{j + 1} \cdots u_{\abs u})
+                            \\
+                            &=& \delta(q_0, xyz) \in F
+                        \end{array}
+                    \]
+
+                    Donc $xy^0 z \in L$.
+
+                    \vspace{6pt}
+                    
+                    $\bullet$ Hérédité : si $xy^k z \in L$, alors
+                    \[
+                        \begin{array}{rcl}
+                            F \ni \delta(q_0, xy^k z)
+                            &=& \delta(\delta(q_0, x), y^kz)
+                            \\
+                            &=& \delta(\delta(q_0, xy), y^kz)
+                            \\
+                            &=& \delta(q_0, xy^{k + 1}z)
+                        \end{array}
+                    \]
+
+                    Donc $xy^{k + 1}z \in L$.
+                \end{proof}
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Application}}
+                On reprend $L = \set{a^n b^n |\ n \in \N}$
+
+                On suppose $L$ reconnu par un AFD, dont on note $n$ le nombre d'états.
+
+                On considère $u = a^n b^n \in L$.
+
+                Comme $\abs u \ge n$, par le lemme de l'étoile,
+                \[
+                    \exists x, y, z \in \Sigma^*\
+                    \begin{array}{|l}
+                        u = xyz
+                        \\
+                        \abs{xy} \le n
+                        \\
+                        y \neq \varepsilon
+                        \\
+                        xy^0z \subseteq L
+                    \end{array}
+                \]
+
+                Comme $\abs{xy} \le n$ et $xy$ est un préfixe de $u$, on sait que $xy$ est constitué uniquement de $a$.
+
+                Comme de plus $y \neq \varepsilon$,
+                \[
+                    \exists (n_1, n_2) \in \N \times \N^*\
+                    \begin{array}{|l}
+                        x = a^{n_1}
+                        \\
+                        y = a^{n_2}
+                        \\
+                        z = a^{n - n_1 - n_2}b^n
+                    \end{array}
+                \]
+
+                $xz \in xy^* z \subseteq L$, mais $xz = a^{n - n_2}b^n$ et $n - n_2 \neq u$ car $n_2 \neq 0$ : absurde.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Remarque}}
+                $\bullet$ Soit $\Sigma$ un alphabet, et $L$ un langage sur $\Sigma$.
+
+                \begin{indt}{Si $L$ est reconnu par une AFD à $n$ états :}
+                    $-$ Soit $\set{\abs u \ |\ u \in L} \subseteq \set 0 {n - 1}$, donc $L$ est fini ;
+
+                    $-$ Soit $\exists u \in L\ |\ \abs u \ge n$, donc par le lemme de l'étoile, $L$ est infini, et $\set{\abs v\ |\ v \in L}$ contient tous les termes d'une suite arithmétique ($\abs{xy^kz} = \abs {xz} + k \abs y$)
+                \end{indt}
+
+                On peut par exemple s'en servir pour montrer que $L = \set{a^{3^n}\ |\ n \in \N}$ n'est pas reconnaissable.
+
+                \vspace{6pt}
+                
+                $\bullet$ On peut reformuler le lemme de l'étoile de la manière suivante :
+
+                \begin{emphBox}
+                    Soit $\Sigma$ un alphabet, et $L$ un langage sur $\Sigma$.
+                    
+                    Si $L \in \Rec \Sigma$, alors
+                    \[
+                        \exists n \in \N\ |\
+                        \forall u \in L,\
+                        \abs u \ge n \Rightarrow \exists x, y, z \in \Sigma^*\
+                        \begin{array}{|l}
+                            u = xyz
+                            \\
+                            \abs{xy} \le n
+                            \\
+                            y \neq \varepsilon
+                            \\
+                            xy^*z \subseteq L
+                        \end{array}
+                    \]
+                \end{emphBox}
+
+                \vspace{6pt}
+                
+                Le lemme de l'étoile n'est pas infaillible : il existe des langages non reconnaissables qui vérifient la conclusion de cette version du lemme.
+
+                \vspace{12pt}
+                
+                Exemple :
+
+                $L = \set{v \widetilde v w\ |\ v, w \in \set{a, b}^+}$.
+                On prend $n = 4$.
+
+                Soit $u \in L\ |\ \abs u \ge 4$.
+
+                $\exists v, w \in \set{a, b}^+\ |\ u = v \widetilde v w$.
+
+                Comme $
+                    \begin{cases}
+                        v \neq \varepsilon
+                        \\
+                        w \neq \varepsilon
+                    \end{cases},\
+                    \exists a, v', b, w'\
+                    \begin{array}{|l}
+                        v = av'
+                        \\
+                        w = bw'
+                    \end{array}
+                $
+
+                Donc $u = av' \widetilde{v'} abw'$.
+
+                $-$ Si $v' = \varepsilon,\ u = aabw'$ et on note $x = aa,\ y = b,\ z = w'$
+
+                $xyz = u,\ \abs{xy} = 3 \le 4, \ y \neq \varepsilon$ et $ \forall k \in \N,\ xy^kz = aab^kw'$ s'écrit $v'' \widetilde{v''} w''$ avec
+                \[
+                    \begin{cases}
+                        v'' = a \neq \varepsilon
+                        \\
+                        w'' = b^k w' \neq \varepsilon
+                    \end{cases}
+                \]
+
+                même quand $k = 0$, car $w' \neq \varepsilon$ (sinon $u = aab$ et $\abs u < 4$)
+
+                \vspace{6pt}
+                
+                $-$ Si $v' \neq \varepsilon$, on prend $x = \varepsilon,\ y = a,\ z = v' \widetilde{v'} a b w'$.
+
+                $xyz = u,\ \abs {xy} = 1 \le 4,\ y \neq \varepsilon$, et $\forall k \in \N,\ xy^kz = a^k v' \widetilde{v'} a b w' \in L$ car :
+
+                $*$ si $k = 0,\ xy^0z = v' \widetilde{v'} \underbrace{abw'}_{\neq \varepsilon} \in L$
+
+                $*$ si $k = 1,\ xyz = u \in L$
+
+                $*$ si $k \ge 2,\ xy^kz = aa \underbrace{a^{k - 2} v' \widetilde {v'} a b w'}_{\neq \varepsilon} \in L$
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Théorème (H.P, autre version du lemme de l'étoile)}}
+                \begin{emphBox}
+                    Soit $\Sigma$ un langage, et $L$ un langage sur $\Sigma$.
+                    
+                    Si $L$ est reconnu par un AFD à $n$ états, alors $\forall u \in L\ |\ u$ admet un facteur $v$ vérifiant $\abs v \ge n$, en notant $u = u_1 v u_2$ avec $u_1, u_2 \in \Sigma^*$,
+                    \[
+                        \exists x, y, z \in \Sigma^*\
+                        \begin{array}{|l}
+                            u = xyz
+                            \\
+                            \abs{xy} \le n
+                            \\
+                            y \neq \varepsilon
+                            \\
+                            xy^*z \subseteq L
+                        \end{array}
+                    \]
+                \end{emphBox}
+
+                \begin{proof}
+                    Comme en \ref{2.5.3} (page \pageref{2.5.3}), en considérant
+                    \[
+                        \begin{array}{ccccc}
+                            \varphi & : & \nset 0 n & \longrightarrow & Q
+                            \\
+                                    && k & \longmapsto & \delta(\delta(q_0, u_1), v_1 \cdots v_k)
+                        \end{array}
+                    \]
+
+                    En effet, depuis $\delta(q_0, u_1)$, la lecture des $n$ premières lettres de $v$ construit un cycle que l'on peut itérer ou ignorer avant de lire la fin de $v$, puis $u_2$ afin d'aboutir à un état acceptant.
+                \end{proof}
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Application}}
+                $L = \set{a^mb^n\ |\ m \ge n} \notin \Rec{\set{a, b}}$
+
+                On suppose $L$ reconnu pat un automate à $n$ états, et on considère $u = a^n b^n$, de facteur $v = b^n\ |\ \abs v \ge n$.
+
+                Alors
+                \[
+                    \exists x, y, z \in \set{a, b}^*\
+                    \begin{array}{|l}
+                        v = xyz
+                        \\
+                        \abs{xy} \le n
+                        \\
+                        y \neq \varepsilon
+                        \\
+                        a^nx y^* z \subseteq L
+                    \end{array}
+                \]
+
+                Comme avant,
+                \[
+                    \exists (n_1, n_2) \in \N \times \N^*\
+                    \begin{array}{|l}
+                        x = b^{n_1}
+                        \\
+                        y = b^{n_2}
+                        \\
+                        z = b^{n - n_1 - n_2}
+                    \end{array}
+                \]
+
+                $\underbrace{a^n xy^2z}_{\in L} = a^n b^{n + n_2}$
+
+                Mais $n + n_2 > n$ car $n_2 \neq 0$ : absurde.
             \end{indt}
         \end{indt}
     \end{indt}
