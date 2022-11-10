@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2022.11.09
+% Last modification     :   2022.11.10
 %
 %------------------------------------------------------------------------
 
@@ -3058,6 +3058,8 @@ unlock_door()\end{lstlisting}
         \vspace{12pt}
         
         \begin{indt}{\subsection{Théorème de \textsc{Kleene}}}
+            \label{2.4}
+
             \begin{indt}{\subsubsection{Introduction}}
                 Le théorème de \textsc{Kleene} énonce le fait que les langages réguliers et les automates finis ont la même expressivité : les langages réguliers sont les mêmes langages que les langages reconnaissables.
 
@@ -3563,6 +3565,8 @@ unlock_door()\end{lstlisting}
         
         \begin{indt}{\subsection{Langages non réguliers / non reconnaissables}}
             \begin{indt}{\subsubsection{Premier exemple}}
+                \label{2.5.1}
+                
                 $L = \set{a^n b^n\ |\ n \in \N} \notin \Rec{\set{a, b}}$
 
                 \vspace{12pt}
@@ -3946,6 +3950,392 @@ unlock_door()\end{lstlisting}
                 $\underbrace{a^n xy^2z}_{\in L} = a^n b^{n + n_2}$
 
                 Mais $n + n_2 > n$ car $n_2 \neq 0$ : absurde.
+            \end{indt}
+        \end{indt}
+    \end{indt}
+
+    \vspace{12pt}
+    
+    \begin{indt}{\section{Grammaires non contextuelles}}
+        \begin{indt}{\subsection{Définitions}}
+            \begin{indt}{\subsubsection{Introduction}}
+                Les langages réguliers et leur implémentation sous forme d'automates restent insuffisantes pour certains des besoins exprimés en \ref{1.1.1} (page \pageref{1.1.1}).
+
+                \begin{indt}{Par exemple, dans le cadre de la compilation d'un programme :}
+                    $-$ On ne peut pas vérifier si un texte donné est est un programme syntaxiquement correct (vérifier qu'une expression est bien parenthésée est au moins aussi difficile que reconnaître le langage non régulier $\set{a^n b^n\ |\ n \in \N}$) ;
+
+                    $-$ Il est impossible d'analyser la structure du programme : un automate accepte un mot sans fournir d'information sur les propriétés structurelles du mot qui ont mené à son acceptation.
+                \end{indt}
+
+                \vspace{12pt}
+                
+                On a donc besoin d'un outil plus puissant que les automates.
+                On peut utiliser les \emph{grammaires}, qui sont séparées en plusieurs catégories, qui vont des \emph{grammaires régulières}, équivalentes au automates, aux \emph{grammaires formelles générales}, qui sont équivalents aux machines de \textsc{Turing} (\textit{cf}, hiérarchie de \textsc{Chamsky}, H.P).
+                Le programme de MPI se limite à l'étude des \emph{grammaires non contextuelles}.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Définition (\textit{grammaire non contextuelle})}}
+                \begin{indt}{Une \emph{grammaire non contextuelle} est un quadruplet $G = \lr{\Sigma, V, S, R}$, où :}
+                    $-$ $\Sigma$ est un alphabet dont les éléments sont appelés \emph{symboles terminaux} ;
+
+                    $-$ $V$ est un alphabet dont les éléments sont appelés \emph{symboles non terminaux}, ou \emph{variables}.
+                    On suppose $\Sigma \cap V = \varnothing$ ;
+
+                    $-$ $S \in V$ est appelé \emph{symbole initial}, ou \emph{axiome} ;
+
+                    $-$ $R \subseteq V \times \lr{\Sigma \cup V}^*$ est l'ensemble des règles de production.
+                \end{indt}
+
+                \vspace{12pt}
+                
+                \begin{indt}{Remarques :}
+                    $-$ On écrit en général les symboles non terminaux en capitale, et les symboles non terminaux en minuscule ;
+
+                    $-$ Les règles de production $(X, u) \in R$ sont notés $X \rightarrow u$, et on réunit souvent les règles de même membre gauche : si $(X, u_1), (X, u_2), \ldots, (X, u_n) \in \R$, on note $X \rightarrow u_1 | u_2 | \cdots | u_n$ ;
+
+                    $-$ Les grammaires non contextuelles sont aussi appelées grammaires \textit{hors contexte} (\textit{context-free grammar} en anglais) ou grammaires \textit{algébriques}.
+                    La non contextualité des grammaires algébriques vient de la forme des règles : une règle $uXw \Rightarrow uvw$ rendrait la grammaire contextuelle (H.P).
+                \end{indt}
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Exemples}}
+                $\bullet$ Nous avons déjà vu des grammaires pour la syntaxe des formules logiques (\textit{cf} chapitre 8)
+
+                $-$ Logique propositionnelle : $G = \lr{\Sigma, V, S, R}$, avec
+
+                \[
+                    \begin{array}{rcl}
+                        \Sigma &=& \set{\neg, \vee, \wedge, \rightarrow, (, ), x, y, z, \ldots}
+                        \\
+                        V &=& \set S
+                        \\
+                        R &:& S \rightarrow (S) | \neg S | S \vee S | S \wedge S | S \rightarrow S | x | y | z | \cdots
+                    \end{array}
+                \]
+
+                \vspace{12pt}
+                
+                $\bullet$ Logique de premier ordre : étant donné une signature $\Sigma'$, on construit $G = \lr{\Sigma, V, S, R}$, où
+                \[
+                    \begin{array}{rcl}
+                        \Sigma &=& \Sigma' \cup \set{(, ), \neg, \vee, \wedge, \rightarrow, x, y, z, \ldots, \forall, \exists}
+                        \\
+                        V &=& \set{S, T, X}
+                        \\
+                        R &:& S \rightarrow (S) | S \vee S | S \wedge S | \neg S | S \rightarrow S | \forall X\ S | \exists X \ S | p(T, \ldots, T)
+                        \\
+                          && X \rightarrow x | y | z | \cdots
+                        \\
+                          && T \rightarrow X | f(T, \ldots, T)
+                    \end{array}
+                \]
+
+                où $p \in \Sigma'$ est un symbole de prédicat, en respectant son arité, et $f \in \Sigma'$ est un symbole de fonction, en respectant l'arité.
+
+                \vspace{12pt}
+                
+                $\bullet$ Expressions arithmétiques : $G = \lr{\Sigma, V, S, R}$, où :
+                \[
+                    \begin{array}{rcl}
+                        \Sigma &=& \set{(, ), +, \times, a}
+                        \\
+                        V &=& \set{S}
+                        \\
+                        R &:& S \rightarrow (S) | S + S | S \times S | a
+                    \end{array}
+                \]
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Modèle de calcul associé}}
+                $\bullet$  Exemple : on considère une grammaire pout un mini langage de programmation : $G = \lr{\Sigma, V, S, R}$, où :
+                \[
+                    \begin{array}{rcl}
+                        \Sigma &=& \set{x, \mathtt{print}, 0, 1, \ldots, 9, =, +, ;, (, )}
+                        \\
+                        V &=& \set{S, I, E, X, N, C}
+                        \\
+                        R
+                        &:& S \rightarrow I ; S | \varepsilon
+                        \\
+                        && I \rightarrow \mathtt{print}(E) | X = E
+                        \\
+                        && E \rightarrow X | N | E + E
+                        \\
+                        && X \rightarrow xN
+                        \\
+                        && N \rightarrow C | CN
+                        \\
+                        && C \rightarrow 0 | \cdots | 9
+                    \end{array}
+                \]
+                Le programme $x0 = 42;$ est engendré ainsi :
+                    
+                \begin{tabular}{ll}
+                    $-$ on part de $S$ ;
+                    & $S$
+                    \\
+                    $-$ on applique la règle $S \rightarrow I ; S$
+                    & $I ; S$
+                    \\
+                    $-$ on applique $I \rightarrow X = E$ ;
+                    & $X = E ; S$
+                    \\
+                    $-$ on applique $X \rightarrow xN$ ;
+                    & $xN = E ; S$
+                    \\
+                    $-$ on applique $N \rightarrow C$ ;
+                    & $xC = E; S$
+                    \\
+                    $-$ on applique $C \rightarrow 0$ ;
+                    & $x0 = E; S$
+                    \\
+                    $-$ on applique $E \rightarrow N$ ;
+                    & $x0 = N; S$
+                    \\
+                    $-$ on applique $N \rightarrow CN$ ;
+                    & $x0 = CN; S$
+                    \\
+                    $-$ on applique $C \rightarrow 4$ ;
+                    & $x0 = 4N; S$
+                    \\
+                    $-$ on applique $N \rightarrow C$ puis $C \rightarrow 2$ ;
+                    & $x0 = 42; S$
+                    \\
+                    $-$ on applique $S \rightarrow \varepsilon$.
+                    & $x0 = 42;$
+                \end{tabular}
+
+                \vspace{6pt}
+                
+                La succession des règles appliqués est appelée \emph{dérivation} de $x0 = 42;$
+
+                \vspace{12pt}
+                
+                $\bullet$ Définition (\textit{dérivation immédiate}) : Soit $G = \lr{\Sigma, V, S, R}$ une grammaire non contextuelle.
+
+                $-$ Soit $u = u_1 X u_2 \in \lr{\Sigma \cup V}^* V \lr{\Sigma \cup V}^*$, et $v \in \lr{\Sigma \cup V}^*$.
+
+                On dit que $u$ se \emph{dérive immédiatement} en $v$, noté $u \Rightarrow v$, si et seulement si $\exists X \rightarrow w \in R\ |\ v = u_1 w u_2$.
+
+                \vspace{6pt}
+                
+                $-$ On note $\Rightarrow^*$ la clôture réflexive et transitive de $\Rightarrow$, \textit{i.e}
+                \[
+                    u \Rightarrow^* v
+                    \ssi
+                    \exists n \in \N^*,\ \exists u_0 \cdots u_n \in \lr{\Sigma \cup V}^*\
+                    \begin{array}{|l}
+                        u_0 = u
+                        \\
+                        u_n = v
+                        \\
+                        \forall i \in \nset 0 {n - 1},\ u_i \Rightarrow u_{i + 1}
+                    \end{array}
+                \]
+
+                Si $u \Rightarrow^* v$, on dit que $u$ \emph{se dérive en} $v$, et toute séquence de dérivations immédiates $u \Rightarrow \cdots \Rightarrow v$ est appelée \emph{dérivation de $v$ depuis $u$}.
+
+                \vspace{12pt}
+                
+                $\bullet$ Exemple : dans l'exemple précédent :
+
+                $X = E; S \Rightarrow xN = E; S$
+
+                $X = E; S \Rightarrow^* x0 = 4N; S$
+
+                $S \Rightarrow^* x0 = 42;$
+
+                C'est ce type de dérivation qui définit le langage engendré par la grammaire.
+
+                \vspace{12pt}
+                
+                $\bullet$ Définition (\textit{Langage engendré / non contextuel}) :
+
+                $-$ Soit $G = \lr{\Sigma, V, S, R}$ une grammaire non contextuelle.
+
+                Le langage engendré par $G$ est le langage $\mathcal L(G) = \set{u \in \Sigma^*\ |\ S \Rightarrow^* u}$
+
+                $-$ Soit $\Sigma$ un alphabet, et $L$ un langage sur $\Sigma$.
+
+                $L$ est dit \emph{non contextuel}, ou \emph{algébrique}, si et seulement si il existe une grammaire non contextuelle $G$ telle que $\mathcal L(G) = L$.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Théorème}}
+                \begin{emphBox}
+                    Soit $\Sigma$ un alphabet.
+                    
+                    $(1)$ $\Reg(\Sigma)$ est inclus dans l'ensemble des langages alébriques sur $\Sigma$
+                    
+                    $(2)$ Si $\abs \Sigma \ge 2$, alors cette inclusion est stricte.
+                \end{emphBox}
+
+                \vspace{6pt}
+                
+                \begin{proof}
+                    $(1)$ Par le théorème de \textsc{Kleene} (\ref{2.4}, page \pageref{2.4}) et l'algorithme de complétion (algorithme \ref{alg:2}, page \pageref{alg:2}), il suffit de montrer que pour tout AFD complet $M = \lr{\Sigma, Q, q_0, D, \delta},\ \mathcal L(M)$ est algébrique.
+
+                    On construit $G = \lr{\Sigma, V, X_{q_0}, R}$, où :
+                    \[
+                        \begin{array}{rcl}
+                            V &=& \set{X_q\ |\ q \in Q}
+                            \\
+                            R &:& X_q \rightarrow aX_{\delta(q, a)} \ \forall q \in Q\ \forall a \in \Sigma
+                            \\
+                              && X_q \rightarrow \varepsilon\ \forall q \in F
+                        \end{array}
+                    \]
+
+                    On montre par récurrence sur $n \in \N$ que $\forall u \in \Sigma^*$ de taille $n$, $\forall q, q' \in Q,\ X_q \Rightarrow^* uXq' \ssi \delta(q, u) = q'$
+
+                    \vspace{6pt}
+                    
+                    $-$ Initialisation :
+                    si $n = 0$, nécessairement $u = \varepsilon$, et
+                    \[
+                        \begin{array}{rcl}
+                            \forall q, q' \in Q,\
+                            X_q \Rightarrow^* X_{q'}
+                            &\ssi&
+                            X_q = X_{q'}
+                            \\
+                            &\ssi& q = q'
+                            \\
+                            &\ssi& \delta(q, \varepsilon) = q'
+                        \end{array}
+                    \]
+
+                    \vspace{6pt}
+                    
+                    $-$ Hérédité : on suppose la propriété vraie au rang $n \in \N$.
+
+                    Soit $u \in \Sigma^*\ |\ \abs u = n + 1$, soient $q, q' \in Q$.
+
+                    On sait que
+                    $
+                        \exists (v, a) \in \Sigma^* \times \Sigma\ 
+                        \begin{array}{|l}
+                            u = va
+                            \\
+                            \abs v = n
+                        \end{array}
+                    $
+
+                    \[
+                        \begin{array}{rcll}
+                            X_q \Rightarrow^* uX_{q'}
+                            &\ssi& X_q \Rightarrow^* vaX_{q'}
+                            \vspace{6pt}
+                            \\
+                            &\ssi& \exists q'' \in Q\
+                            \begin{array}{|l}
+                                X_q \Rightarrow^* vX_{q''}
+                                \\
+                                X_{q''} \Rightarrow aX_{q'}
+                            \end{array}
+                            &
+                            \text{d'après la forme des règles}
+                            \vspace{6pt}
+                            \\
+                            &\ssi&
+                            \multicolumn{2}{c}{
+                                \kern-13pt
+                                \exists q'' \in Q\
+                                \begin{array}{|ll}
+                                    \delta(q, v) = q''
+                                    & \text{par H.R}
+                                    \\
+                                    \delta(q'', a) = q'
+                                    & \text{par définition des règles}
+                                \end{array}
+                            }
+                            \vspace{6pt}
+                            \\
+                            &\ssi& \delta(\delta(q, v), a) = q'
+                            & \text{car l'automate est complet}
+                            \vspace{6pt}
+                            \\
+                            &\ssi& \delta(q, u) = q'
+                        \end{array}
+                    \]
+
+                    \vspace{6pt}
+                    
+                    $\bullet$ On en déduit que $\forall u \in \Sigma^*$,
+                    \[
+                        \begin{array}{rcl}
+                            u \in \mathcal L(M)
+                            &\ssi& \delta(q_0, u) \in F
+                            \\
+                            &\ssi& \exists q_F \in F\ |\ \delta(q_0, u) = q_F
+                            \\
+                            &\ssi& \exists q_F \in F\ |\ X_{q_0} \Rightarrow^* uX_{q_F}
+                            \\
+                            &\ssi& X_{q_0} \Rightarrow^* u
+                            \\
+                            &\ssi& u \in \mathcal L(G)
+                        \end{array}
+                    \]
+
+                    \vspace{12pt}
+                    
+                    $(2)$ Si $\abs \Sigma \ge 2,\ \exists a \neq b \in \Sigma$.
+
+                    Il suffit de montrer que $\set{a^n b^n\ |\ n \in \N}$ est algébrique (d'après \ref{2.5.1}, page \pageref{2.5.1}).
+
+                    On considère la grammaire $G = \lr{\Sigma, V, S, R}$, où :
+                    \[
+                        \begin{array}{rcl}
+                            V &=& \set S
+                            \\
+                            R &:& S \rightarrow aSb | \varepsilon
+                        \end{array}
+                    \]
+
+                    On montre par récurrence sur $n \in \N$ que l'unique mot sur $\Sigma$ engendré par une dérivation de longueur $n + 1$ est $a^n b^n$.
+
+                    \vspace{6pt}
+                    
+                    $-$ Initialisation : si $n = 0$, l'unique dérivation de longueur $1$ produisant un mot sur $\Sigma$ est $S \Rightarrow \varepsilon = a^0 b^0$
+
+                    \vspace{6pt}
+                    
+                    $-$ Hérédité : on suppose la propriété vraie pour $n$.
+
+                    On considère une dérivation de longueur $n + 2$ : $S \Rightarrow^* u \in \Sigma^*$.
+
+                    Comme $n = 2 \ge 2$, la première dérivation immédiate de cette dérivation est $S \Rightarrow aSb$, donc $u$ s'écrit $avb$ où $v$ est tel que $S \Rightarrow^* v$ par une dérivation de longueur $n + 1$.
+
+                    Par H.R, $v = a^n b^n$, donc $u ) a^n b^n b = a^{n + 1} b^{n + 1}$
+
+                    \vspace{12pt}
+                    
+                    $\bullet$  On a donc $\mathcal L(G) = \set{a^n b^n\ |\ n \in \N}$ car il n'existe pas de dérivation de longueur nulle d'un mot sur $\Sigma$.
+                \end{proof}
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Remarques}}
+                $\bullet$ Si $\abs \Sigma = 1$, alors tout langage algébrique est régulier (la démonstration nécessite des outils H.P)
+
+                \vspace{6pt}
+                
+                $\bullet$ Même si les grammaires non contextuelles sont strictement plus expressives que les AFD, elles restent équivalentes aux automates à pile (H.P).
+                Ces automates sont des automates munis d'une mémoire binaire sous la forme d'une pile (à chaque transition, on peut empiler ou dépiler un caractère).
+
+                \vspace{6pt}
+                
+                $\bullet$ Il existe une généralisation de lemme de l'étoile aux grammaires non contextuelles (H.P), qui permet de démontrer que certains langages ne sont pas algébriques.
+
+                Exemple : $\set{a^n b^n c^n\ |\ n \in \N}$
             \end{indt}
         \end{indt}
     \end{indt}
