@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2022.11.11
+% Last modification     :   2022.11.13
 %
 %------------------------------------------------------------------------
 
@@ -535,7 +535,7 @@
                 \begin{indt}{$\bullet$ Exemples :}
                     $-$ l'ensemble de tous les mots, noté $\Sigma^*$ (\textit{cf} \ref{1.3}, page \pageref{1.3}) ;
 
-                    $-$ l'ensemble des écritures binaires de multiples des 3 ($\Sigma = \set{0, 1}$) ;
+                    $-$ l'ensemble des écritures binaires des multiples de 3 ($\Sigma = \set{0, 1}$) ;
 
                     $-$ $\Sigma$ (si on voit les lettres comme des mots de longueur 1) ;
 
@@ -551,7 +551,7 @@
                 
                 C'est une question importante car souvent, comme dans les exemples en \ref{1.1.1} (page \pageref{1.1.1}), il faut pouvoir vérifier la structure d'un élément avant d'en extraire des données.
 
-                Malheureusement, on ne peut pas toujours répondre algorithmiquement à cette question. (\textit{cf} chap 16 et la notion de décidabilité et le problème de l'arêt), mais on peut y répondre pour une classe restreinte de langages.
+                Malheureusement, on ne peut pas toujours répondre algorithmiquement à cette question. (\textit{cf} chap 16 et la notion de décidabilité et le problème de l'arrêt), mais on peut y répondre pour une classe restreinte de langages.
             \end{indt}
         \end{indt}
 
@@ -679,7 +679,7 @@
 
                     \vspace{6pt}
                     
-                    $\bullet$ Héréditée :
+                    $\bullet$ Hérédité :
                     si $\forall k_1 \cdots k_n \in K,\ \forall l \in L,\ k_1 \cdots k_n l \in X$, considérons $u = k_1 \cdots k_{n + 1} l$, avec $k_1 \cdots k_{n + 1} \in K$ et $l \in L$.
 
                     $u = k_1(\underbrace{k_2 \cdots k_{n + 1}l}_{\in X\ \text{par H.R}}) \in KX \subseteq KX \cup L = X$, donc $u \in X$.
@@ -708,7 +708,7 @@
                         \bigcup_{j = 0}^0 K^j L \cup K^{0 + 1} X = L \cup KX = X
                     \]
 
-                    $\bullet$ Héréditée : Soit $k \in \nset 0 {n - 1} \ |\ X = \displaystyle \bigcup_{j = 0}^k K^j L \cup K^{k + 1} X$
+                    $\bullet$ Hérédité : Soit $k \in \nset 0 {n - 1} \ |\ X = \displaystyle \bigcup_{j = 0}^k K^j L \cup K^{k + 1} X$
 
                     \[
                         \begin{array}{rcl}
@@ -729,7 +729,7 @@
                         X = \bigcup_{j = 0}^n K^J L \cup K^{n + 1} X
                     \]
 
-                    Or $\forall v \in k^{n + 1}X,\ \abs v \ge n + 1$
+                    Or $\forall v \in K^{n + 1}X,\ \abs v \ge n + 1$
 
                     En effet, $\exists k_1 \cdots k_{n + 1} \in K,\ \exists x \in X\ |\ v = k_1 \cdots k_{n + 1} x$.
 
@@ -741,7 +741,7 @@
 
                     Donc, comme $\abs u = n < n + 1$,
                     \[
-                        \bigcup_{j = 0}^n K^j L \subseteq \cup_{j \in \N} K^J L = K^*L
+                        \bigcup_{j = 0}^n K^j L \subseteq \bigcup_{j \in \N} K^J L = K^*L
                     \]
                     Donc $u \in K^* L$, et $X \subseteq K^*L$
                 \end{proof}
@@ -1052,7 +1052,7 @@
 
                     \vspace{6pt}
                     
-                    \begin{indt}{$\bullet$ $e = l_0^*$ :}
+                    \begin{indt}{$\bullet$ $e = e_0^*$ :}
                         $-$ Si $\mathcal L(e_0) = \varnothing$, alors $\mathcal L(e) = \set \varepsilon = \mathcal L(\varepsilon)$
 
                         $-$ Sinon, on applique l'H.I à $e_0$ pour obtenir une expression régulière dont on prend l'étoile de \textsc{Kleene}
