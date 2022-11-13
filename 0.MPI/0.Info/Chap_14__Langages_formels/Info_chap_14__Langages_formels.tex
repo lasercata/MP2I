@@ -1805,9 +1805,9 @@
                         P_1 = \set{a \in \Sigma\ |\ (q_0, a) \in \mathrm{dom}(\delta)}
                         = \set{a \in \Sigma\ |\ \delta(q_0, a) = q_a}
                         \\
-                        S_1 = \set{a \in \Sigma\ |\ qa \in F}
+                        S_1 = \set{a \in \Sigma\ |\ q_a \in F}
                         \\
-                        F_2 = \set{ab \in \Sigma^2\ |\ (qa, b) \in \mathrm{dom}(\delta)}
+                        F_2 = \set{ab \in \Sigma^2\ |\ (q_a, b) \in \mathrm{dom}(\delta)}
                     \end{array}
                 \]
 
@@ -1923,7 +1923,7 @@ unlock_door()\end{lstlisting}
                 \end{center}
 
                 L'algorithme de retour sur trace revient à parcourir ce graphe selon les lettres lues en essayant de passer dans l'état 1 dès que possible et en revenant sur ce choix en cas d'impossibilité.
-                Ce type d'automate est appelé \emph{non déterministe} car on peut le voir comme une machine pouvant être dans plusieurs états à la fois ( par exemple 0 et 1 après la lecture d'un 4 depuis l'état 0).
+                Ce type d'automate est appelé \emph{non déterministe} car on peut le voir comme une machine pouvant être dans plusieurs états à la fois (par exemple 0 et 1 après la lecture d'un 4 depuis l'état 0).
                 Lorsqu'une transition est impossible, la machine n'est plus dans l'état associé (idée du retour sur trace), et l'objectif est que l'un des états de la machine sont acceptant en fin de lecture.
             \end{indt}
 
@@ -2222,7 +2222,7 @@ unlock_door()\end{lstlisting}
                             &\ssi& \delta(q_0, u) \in Q \setminus F
                             \\
                             &\ssi& \delta(q_0, u) \notin F
-                            & \text{car}\ (q_0, u)\  \text{existe car $M$ est complet}
+                            & \text{car}\ \delta(q_0, u)\  \text{existe car $M$ est complet}
                             \\
                             &\ssi& u \notin \mathcal L(M)
                             \\
@@ -2284,9 +2284,10 @@ unlock_door()\end{lstlisting}
                         \forall i \in \set{1, 2},\ \exists M_i = (\Sigma, Q_i, I_i, F_i, \delta_i)\ |\ \mathcal L(M_i) = L_i
                     \]
 
-                    On construit l'automate produit $M = (\Sigma, Q_1 \times Q_2, I_1 \times I_2, F_1 \times F_2, \delta)$
-
-                    où $\forall (q_1, q_2) \in Q_1 \times Q_2,\ \forall a \in \Sigma,\ \delta((q_1, q_2), a) = \delta_1(q_1, a) \times \delta_2(q_2, a)$
+                    On construit l'automate produit $M = (\Sigma, Q_1 \times Q_2,\ I_1 \times I_2,\ F_1 \times F_2,\ \delta)$, où :
+                    \[
+                        \forall (q_1, q_2) \in Q_1 \times Q_2,\ \forall a \in \Sigma,\ \delta((q_1, q_2), a) = \delta_1(q_1, a) \times \delta_2(q_2, a)
+                    \]
 
                     \boxed{\rm Exo} $\mathcal L(M) = \mathcal L(M_1) \cap \mathcal L(M_2)$
                 \end{proof}
@@ -3367,7 +3368,7 @@ unlock_door()\end{lstlisting}
                             \node (1) at (2, 0) [state] {$q'$};
 
                             \draw[->] (0) to [out=20, in=160] node [above] {$e$} (1);
-                            \draw[->] (1) to [out=-160, in=-20] node [below] {$f$} (0);
+                            \draw[->] (0) to [out=-20, in=-160] node [below] {$f$} (1);
                         \end{tikzpicture}
                     \end{center}
                     et si la lecture du mot $u$ depuis $q$ mène à $q'$, c'est que $u \in \mathcal L(e)$ ou $u \in \mathcal L(f)$ donc $u \in \mathcal L(e) \cup \mathcal L(f) = \mathcal L(e | f)$.
@@ -3708,7 +3709,7 @@ unlock_door()\end{lstlisting}
 
                     Alors $u = xyz,\ \abs{xy} = \abs{u_1 \cdots u_j} = j \le n,\ y \neq \varepsilon$ car $i + 1 \le j$.
 
-                    On montre par récurrence que $\forall k \in \N,\ xy^k \in L$ :
+                    On montre par récurrence que $\forall k \in \N,\ xy^k z \in L$ :
 
                     \vspace{6pt}
                     
