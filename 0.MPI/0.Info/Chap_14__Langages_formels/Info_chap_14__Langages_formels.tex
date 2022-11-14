@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2022.11.13
+% Last modification     :   2022.11.14
 %
 %------------------------------------------------------------------------
 
@@ -1753,7 +1753,7 @@
                 \begin{proof}
                     \boxed{\Rightarrow} On sait que
                     \[
-                        L \setminus \set \varepsilon = \lr{P_1(L) \Sigma^* \cap \Sigma^*S_1(L)} \setminus \lr{\Sigma^*\lr{\Sigma^2 (F_2(L)) \Sigma^*}}
+                        L \setminus \set \varepsilon = \lr{P_1(L) \Sigma^* \cap \Sigma^*S_1(L)} \setminus \lr{\Sigma^*\lr{\Sigma^2 \setminus F_2(L)} \Sigma^*}
                         \qquad (*)
                 \]
 
@@ -2766,6 +2766,7 @@ unlock_door()\end{lstlisting}
             \vspace{12pt}
             
             \begin{indt}{\subsubsection{Retour aux propriétés de clôture sur $\Rec \Sigma$}}
+                \label{2.3.6}
                 $\bullet$ Théorème :
                 \begin{emphBox}
                     \[
@@ -3066,7 +3067,7 @@ unlock_door()\end{lstlisting}
 
                 \vspace{12pt}
                 
-                Remarque : le théorème est déjà démontré : la construction de \textsc{Thompson} (\textit{cf} \ref{2.3.5}, page \pageref{2.3.5}) montre que les langages réguliers sont reconnaissables et on a vu qu'il était possible de déterminer le langage reconnu par un AFD à l'aide du lemme d'\textsc{Arden} (\textit{cf} \ref{2.1.3}, page \pageref{2.1.3}).
+                Remarque : le théorème est déjà démontré : la construction de \textsc{Thompson} (\textit{cf} \ref{2.3.6}, page \pageref{2.3.6}) montre que les langages réguliers sont reconnaissables et on a vu qu'il était possible de déterminer le langage reconnu par un AFD à l'aide du lemme d'\textsc{Arden} (\textit{cf} \ref{2.1.3}, page \pageref{2.1.3}).
                 Ce langage est construit à l'aide d'opérations régulières, donc il est régulier.
 
                 \vspace{12pt}
@@ -3283,9 +3284,9 @@ unlock_door()\end{lstlisting}
                 \begin{proof}
                     Soit $L \in \Rec \Sigma$. Il existe un AFD $M = (\Sigma, Q, q_0, F, \delta)\ |\ \mathcal L(M) = L$.
 
-                    On construit à partir de $M$ une expression régulière $e$ telle que $\mathcal L(e) = \mathcal L(M) = L$, en appliquant l'algorithme de \textsc{Brzozavski} et Mc \textsc{Cuskey} dont le principe est le suivant :
+                    On construit à partir de $M$ une expression régulière $e$ telle que $\mathcal L(e) = \mathcal L(M) = L$, en appliquant l'algorithme de \textsc{Brzozowski} et Mc \textsc{Cluskey} dont le principe est le suivant :
 
-                    \begin{indalgo}{\textsc{Brzozavski} et Mc \textsc{Cuskey}}
+                    \begin{indalgo}{\textsc{Brzozowski} et Mc \textsc{Cluskey}}
                         \label{alg:4}
 
                         On construit l'automate généralisé
@@ -3415,14 +3416,14 @@ unlock_door()\end{lstlisting}
                     \end{center}
                     que dans le cas où il existe un chemin de $q_0$ à un état $q \in F$, \textit{i.e} $q_0$ est co-accessible, \textit{i.e} $\mathcal L(M) \neq \varnothing$.
 
-                    Si $\mathcal L(M) = \varnothing$, ce que l'on peut vérifier en faisant un parcours du graphe de $M$ à partir de $q_0$, il est inutile d'appliquer l'algorithme de \textsc{Brzozwski} et Mc \textsc{Cuskey} (algorithme n°\ref{alg:4}, page \pageref{alg:4}) : l'expression régulière $\varnothing$ convient.
+                    Si $\mathcal L(M) = \varnothing$, ce que l'on peut vérifier en faisant un parcours du graphe de $M$ à partir de $q_0$, il est inutile d'appliquer l'algorithme de \textsc{Brzozowski} et Mc \textsc{Cluskey} (algorithme n°\ref{alg:4}, page \pageref{alg:4}) : l'expression régulière $\varnothing$ convient.
                 \end{proof}
             \end{indt}
 
             \vspace{12pt}
             
             \begin{indt}{\subsubsection{Exemple}}
-                L'algorithme de \textsc{Brzozwski} et Mc \textsc{Cuskey} (algorithme n°\ref{alg:4}, page \pageref{alg:4}) fonctionne également sur les AFND :
+                L'algorithme de \textsc{Brzozowski} et Mc \textsc{Cluskey} (algorithme n°\ref{alg:4}, page \pageref{alg:4}) fonctionne également sur les AFND :
 
                 \begin{center}
                     \begin{tikzpicture}
@@ -3557,7 +3558,7 @@ unlock_door()\end{lstlisting}
 
                     \vspace{6pt}
                     
-                    $-$ L'automate de \textsc{Glushkov} associé à une expression régulière a toujours un nombre d'états de l'ordre du nombre de symboles dans l'expression régulière (mais le déterminiser peut donner un nombre d'états exponentiel), mais l'expression régulière obtenue par l'algorithme de \textsc{Brzozwski} et Mc \textsc{Cuskey} (algorithme n°\ref{alg:4}, page \pageref{alg:4}) peut être de taille exponentielle en le nombre d'états de l'automate \boxed{\rm Exo}.
+                    $-$ L'automate de \textsc{Glushkov} associé à une expression régulière a toujours un nombre d'états de l'ordre du nombre de symboles dans l'expression régulière (mais le déterminiser peut donner un nombre d'états exponentiel), mais l'expression régulière obtenue par l'algorithme de \textsc{Brzozowski} et Mc \textsc{Cluskey} (algorithme n°\ref{alg:4}, page \pageref{alg:4}) peut être de taille exponentielle en le nombre d'états de l'automate \boxed{\rm Exo}.
                 \end{indt}
             \end{indt}
         \end{indt}
