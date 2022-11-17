@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2022.11.15
+% Last modification     :   2022.11.17
 %
 %------------------------------------------------------------------------
 
@@ -4725,6 +4725,345 @@ else
                     \set{a^i b^j c^k\ |\ i = j\ \text{ou}\ j = k}
                 \]
                 $a^nb^nc^n$
+            \end{indt}
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Analyse syntaxique}}
+            \begin{indt}{\subsubsection{Introduction}}
+                On s'intéresse à la question suivante : étant donné une grammaire non contextuelle $G = \lr{\Sigma, V, S, A}$ et un mot $u \in \mathcal L(G)$, comment construire une dérivation $S \Rightarrow^* u$ ?
+
+                Cette question est importante car la construction d'une dérivation $S \Rightarrow^* u$ permet de déterminer un arbre d'analyse de $u$ donc d'étudier la structure de mot $u$ vis à vis de la syntaxe définie par la grammaire.
+                C'est pour cela que l'on parle d'analyse syntaxique.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Remarque}}
+                Il existe plusieurs familles d'algorithmes d'analyse syntaxique. Certains peuvent s'appliquer à toutes les grammaires, tandis que d'autres, plus efficaces, ne s'appliquent qu'à certaines grammaires.
+                Certains de ces algorithmes procèdent en lisant le mot de gauche à droite, une seule fois, à la manière des automates (d'où le lien avec les automates à pile).
+
+                Parmi ces algorithmes, on distingue les analyseurs LL, qui construisent une dérivation à gauche, et les analyseurs LR, qui construisent une dérivation à droite.
+
+                Ces algorithmes sont H.P, mais nous allons les étudier sur des exemples.
+
+                On dit que les analyseurs LL appliquent une \emph{analyse descendante} : on part de l'axiome $S$ et on construit l'arbre d'analyse depuis la racine en se dirigeant vers les feuilles.
+
+                Inversement, les analyseurs LR appliquent une \emph{analyse ascendante} en partant du mot $u$, donc des feuilles de l'arbre d'analyse et en remontant dans l'arbre jusqu'à la racine.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Exemple : analyse descendante}}
+                On considère un langage de balises simplifié sur l'alphabet $\set{a, b, c}$.
+
+                Les symboles $a$ et $b$ désignent les balises ouvrante et fermante, et le symbole $c$ représente le contenu élémentaire placé entre les balises.
+                On peut imbriquer et juxtaposer les expressions arbitrairement tant que le résultat est bien parenthésé.
+
+                On considère la grammaire suivante, d'axiome $S$ :
+                \[
+                    \begin{array}{rcl}
+                        S
+                        &\rightarrow& TS \ |\ \varepsilon
+                        \\
+                        T
+                        &\rightarrow& aSb \ |\ c
+                    \end{array}
+                \]
+
+                On procède à l'analyse du mot $aacbbc$ :
+
+                $-$ Dérivation :
+                \[
+                    \begin{array}{rcl}
+                        S
+                        &\Rightarrow& TS
+                        \\
+                        &\Rightarrow& aSbS
+                        \\
+                        &\Rightarrow& aTSbS
+                        \\
+                        &\Rightarrow& aaSbSbS
+                        \\
+                        &\Rightarrow& aaTSbSbS
+                        \\
+                        &\Rightarrow& aacSbSbS
+                        \\
+                        &\Rightarrow& aacbSbS
+                        \\
+                        &\Rightarrow& aacbbS
+                        \\
+                        &\Rightarrow& aacbbTS
+                        \\
+                        &\Rightarrow& aacbbcS
+                        \\
+                        &\Rightarrow& aacbbc
+                    \end{array}
+                \]
+
+                \vspace{6pt}
+                
+                $-$ Arbre d'analyse :
+
+                \begin{center}
+                    \begin{tikzpicture}
+                        \node (0) at (0, 0) {$S$}
+                            child {node [xshift=-30pt] {$T$}
+                                child {node {$a$}}
+                                child {node {$S$}
+                                    child {node [xshift=-20pt] {$T$}
+                                        child {node {$a$}}
+                                        child {node {$S$}
+                                            child {node {$T$}
+                                                child {node {$c$}}
+                                            }
+                                            child {node {$S$}
+                                                child {node {$\varepsilon$}}
+                                            }
+                                        }
+                                        child {node {$b$}}
+                                    }
+                                    child {node [xshift=20pt] {$S$}
+                                        child {node {$\varepsilon$}}
+                                    }
+                                }
+                                child {node {$b$}}
+                            }
+                            child {node [xshift=30pt] {$S$}
+                                child {node {$T$}
+                                    child {node {$c$}}
+                                }
+                                child {node {$S$}
+                                    child {node {$\varepsilon$}}
+                                }
+                            }
+                        ;
+                    \end{tikzpicture}
+                \end{center}
+                
+                \vspace{6pt}
+                
+                $-$ Le mot étant non vide, la première règle est nécessairement $S \rightarrow TS$ ;
+
+                $-$ La première lettre du mot étant $a$, on applique la règle $T \rightarrow aSb$ ;
+
+                $-$ Les premières lettres du mot cible et du mot dérivé étant égales, on observe la deuxième lettre : on doit obtenir  un $a$ depuis le symbole $S$ donc on applique de même les règles $S \rightarrow TS$ puis $T \rightarrow aSb$ ;
+
+                $-$ On observe la troisième lettre : on doit obtenir un un $c$ depuis $S$. De même, on enchaîne les règles $S \rightarrow TS$ et $T \rightarrow c$ ;
+
+                $-$ On observe la quatrième lettre : on doit obtenir un $b$ depuis $S$. Ce n'est possible que si le $b$ a déjà été introduit par l'une des règles précédentes donc on applique la règle $S \rightarrow \varepsilon$ ;
+
+                $-$ Les quatrièmes lettres se correspondent et on applique la même analyse aux cinquièmes lettres : on applique $S \rightarrow \varepsilon$ ;
+
+                $-$ On observe les sixièmes lettres : on doit obtenir un $c$ depuis $S$, ce que l'on fait comme avant en appliquant les règles $S \rightarrow TS$ puis $T \rightarrow c$ ;
+
+                $-$ On a lu tous les caractères du mot cible mais le symbole courant du mot dérivé est $S$. On l'élimine en appliquant la règle $S \rightarrow \varepsilon$ ;
+
+                $-$ Il n'y a plus de symbole non terminal : la dérivation est terminée.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Remarque}}
+                $\bullet$ L'exemple précédent est une version simplifiée d'une analyse LL où la connaissance d'un seul symbole du mot cible permet de déterminer la règle à appliquer au symbole non terminal courant.
+                On parle d'analyse LL(1) et il est possible de généraliser cette analyse en analyse LL($k$)n où la connaissance de $k$ symboles du mot cible sert à déterminer la règle.
+
+                \vspace{6pt}
+                
+                Exemple : pour la grammaire
+                \[
+                    \begin{array}{rcl}
+                        S & \rightarrow & X + S \ |\ X
+                        \\
+                        X & \rightarrow & a | b
+                    \end{array}
+                \]
+                la connaissance d'un seul symbole ne suffit pas puisqu'on ne peut alors distinguer $a$ et $a + b$ : les règles $S \rightarrow X + S$ et $S \rightarrow X$ permettent toutes deux d'obtenir $a$ comme premier symbole.
+
+                Ici, la connaissance de des deux premiers symboles suffit à l'analyse : il ne peut y avoir qu'un $+$ en second symbole.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Application aux langages de programmation}}
+                Un cas d'usage important de l'analyse syntaxique est l'analyse de codes sources écrits dans un langage de programmation, mais en pratique, on ne cherche pas à construire l'arbre  d'analyse du code, mais plutôt à capturer l'essence de la structure du programme, dénuée des constructions purement syntaxique, dans une autre structure arborescente appelée arbre de syntaxe abstraite (AST : \textit{Abstract Syntax Tree}).
+
+                L'obtention d'un AST permet par exemple de travailler sur la structure du code pour l'optimisation sans se préoccuper des aspects syntaxiques, avant de regénérer un code source valide.
+
+                L'inconvénient de l'arbre d'analyse, aussi appelé arbre de syntaxe concrète, vis à vis de cet objectif, est qu'il est "pollué" par les éléments syntaxiques tels que des espaces, des parenthèses, $\ldots$
+
+                \vspace{12pt}
+                
+                Exemple : on considère le langage de programmation appelé $\lambda$-calcul, dont les constructions élémentaires sont les variables, les fonctions anonymes (\texttt{lambda} en Python, \texttt{fun x -> ...} en OCaml), et l'application de fonction.
+
+                Une grammaire pour ce langage est la suivante :
+                \[
+                    \begin{array}{rcl}
+                        S & \rightarrow & V \ |\ \lambda V \cdot S\ |\ S S \ |\ (S)
+                        \\
+                        V & \rightarrow & xN
+                        \\
+                        N & \rightarrow & C \ |\ CN
+                        \\
+                        C & \rightarrow & 0\ |\ \cdots \ |\ 9
+                    \end{array}
+                \]
+
+                Un AST pour ce langage est décrit par le type suivant :
+                \begin{lstlisting}[language=Caml, xleftmargin=80pt]
+type term =
+    | Var of int
+    | Lambda of int * term
+    | App of term * term\end{lstlisting}
+
+                \vspace{6pt}
+                
+                \begin{indt}{Pour construire l'AST associé à un code source, on procède en deux étapes :}
+                    $-$ L'analyse lexicale (\textit{lexing}), qui consiste à découper le mit en entrée en une liste d'unités lexicales atomiques, appelées \emph{lexèmes} (\textit{token}).
+
+                    On profite de cette étape pour éliminer certains symboles inutiles à l'analyse de la structure du programme (séparateurs, commentaires, ...).
+                    On peut implémenter cette étape à l'aide d'un automate (modifié pour produire des lexèmes en sortie).
+
+                    \vspace{6pt}
+                    
+                    Exemple : pour le $\lambda$-calcul, les lexèmes sont décrits par le type suivant :
+                    \begin{lstlisting}[language=Caml, xleftmargin=100pt]
+type token =
+    | Var of int
+    | LAMBDA
+    | DOT
+    | LPAR
+    | RPAR
+    | EOF\end{lstlisting}
+
+                    On peut effectuer l'analyse lexicale à l'aide de l'automate suivant :
+
+                    %\begin{center}
+                    %    \begin{tikzpicture}[scale=1.5]
+                    %        \node (0) at (0, 0) [state, initial above, initial text={}] {$q_0$};
+                    %        \node (LPAR) at (45: 3) [state] {$q_{\rm LPAR}$};
+                    %        \node (RPAR) at (0: 3) [state] {$q_{\rm RPAR}$};
+                    %        \node (DOT) at (-45: 3) [state] {$q_{\rm DOT}$};
+                    %        \node (l) at (-80: 3) [state] {$q_l$};
+                    %        \node (LBD) at (-120: 3) [state] {$q_{\rm LBD}$};
+                    %        \node (lb) at (-100: 4) [state] {$q_{\rm lb}$};
+                    %        \node (x) at (-160: 3) [state] {$q_x$};
+                    %        \node (VAR) at (160: 3) [state] {$q_{\rm VAR}$};
+                    %        \node (EOF) at (130: 3) [state, accepting] {$q_{\rm EOF}$};
+
+                    %        \draw[->] (0) to [out=55, in=-145] node [above left] {$($} (LPAR);
+                    %        \draw[->] (LPAR) to [out=-125, in=35] node [below, rotate=45] {\tiny{OUT: LPAR}} (0);
+
+                    %        \draw[->] (0) to [out=10, in=170] node [above] {$)$} (RPAR);
+                    %        \draw[->] (RPAR) to [out=-170, in=-10] node [below] {\tiny{OUT: RPAR}} (0);
+
+                    %        \draw[->] (0) to [out=-35, in=125] node [above right] {$\cdot$} (DOT);
+                    %        \draw[->] (DOT) to [out=145, in=-55] node [below, rotate=-45] {\tiny{OUT: DOT}} (0);
+
+                    %        \draw[->] (0) to node [right] {$l$} (l);
+                    %        \draw[->] (l) to node [below right] {$b$} (lb);
+                    %        \draw[->] (lb) to node [below left] {$d$} (LBD);
+                    %        \draw[->] (LBD) to node [above, rotate=60] {\tiny{OUT: LAMBDA}} (0);
+
+                    %        \draw[->] (0) to node [above left] {$x$} (x);
+                    %    \end{tikzpicture}
+                    %\end{center}
+
+
+                    \begin{center}
+                        \begin{tikzpicture}[scale=1.5]
+                            \node (0) at (0, 0) [state] {$q_0$};
+                            \node (LPAR) at (40: 3) [state] {$q_{\rm LPAR}$};
+                            \node (RPAR) at (0: 3) [state] {$q_{\rm RPAR}$};
+                            \node (DOT) at (320: 3) [state] {$q_{\rm DOT}$};
+                            \node (l) at (280: 3) [state] {$q_l$};
+                            \node (LBD) at (200: 3) [state] {$q_{\rm LBD}$};
+                            \node (lb) at (240: 3) [state] {$q_{\rm lb}$};
+                            \node (x) at (160: 3) [state] {$q_x$};
+                            \node (VAR) at (120: 3) [state] {$q_{\rm VAR}$};
+                            \node (EOF) at (80: 3) [state, accepting] {$q_{\rm EOF}$};
+
+                            %Initial arrow for the initial state.
+                            \draw[->] (240: .9) to (0);
+
+                            \draw[->] (0) to [out=50, in=-150] node [above left] {\small{$($}} (LPAR);
+                            \draw[->] (LPAR) to [out=-130, in=30] node [below, rotate=40] {\tiny{OUT: LPAR}} (0);
+
+                            \draw[->] (0) to [out=10, in=170] node [above] {\small{$)$}} (RPAR);
+                            \draw[->] (RPAR) to [out=-170, in=-10] node [below] {\tiny{OUT: RPAR}} (0);
+
+                            \draw[->] (0) to [out=-30, in=130] node [above right] {$\cdot$} (DOT);
+                            \draw[->] (DOT) to [out=150, in=-50] node [below, rotate=-40] {\tiny{OUT: DOT}} (0);
+
+                            \draw[->] (0) to node [right] {$l$} (l);
+                            \draw[->] (l) to node [below right] {$b$} (lb);
+                            \draw[->] (lb) to node [below left] {$d$} (LBD);
+                            \draw[->] (LBD) to node [above, rotate=20] {\tiny{OUT: LAMBDA}} (0);
+
+                            \draw[->] (0) to node [above right] {$x$} (x);
+                            \draw[->] (x) to node [above left] {$0 - 9$} (VAR);
+                            \draw[->] (VAR) to node [below, rotate=-60] {\tiny{OUT: VAR}} (0);
+
+                            \draw[->] (0) to node [above, rotate=80] {\tiny{OUT: EOF}} (EOF);
+                        \end{tikzpicture}
+                    \end{center}
+
+                    On doit se souvenir des chiffres lus : on sort du cadre des automates.
+
+                    \vspace{12pt}
+                    
+                    $-$ L'analyse syntaxique (\textit{parsing}) : on construit l'AST de la manière suivante : on considère l'ensemble des lexèmes comme l'ensemble des symboles terminaux de la grammaire du langage, et on procède à l'analyse syntaxique du "mot" représenté par la liste de lexèmes obtenue par l'analyse lexicale.
+                    On écrit un programme traduisant chaque règle de la grammaire en une étape de construction d'un AST : une dérivation complète permet d'obtenir l'AST en sortie.
+
+                    \vspace{6pt}
+                    
+                    Exemple : pour le $\lambda$-calcul, on considère la grammaire suivante :
+                    \[
+                        \begin{array}{rcl}
+                            S & \rightarrow & T\ \underbar{\rm{EOF}}
+                            \\
+                            T & \rightarrow & V\ |\ \underbar{\rm LPAR}\ \underbar{\rm LAMBDA}\ V\ \underbar{\rm DOT}\ T\ \underbar{\rm RPAR}\ |\ \underbar{\rm LPAR}\ T\ T\ \underbar{\rm RPAR}
+                            \\
+                            V & \rightarrow & \underline{\rm VAR}\ n
+                        \end{array}
+                    \]
+
+                    (On impose l'usage des parenthèses pour simplifier l'analyse).
+
+                    On peut implémenter l'analyse syntaxique de la manière suivante : on écrit des fonctions mutuellement récursives qui prennent en argument une liste de lexèmes correspondant  à l'une des règles de la grammaire.
+                    On associe une fonction à chaque symbole non terminal, et cette fonction doit construire une partie de l'AST et renvoyer les lexèmes restants.
+
+                    \begin{lstlisting}[language=Caml, xleftmargin=100pt]
+let rec parseS (l : token list) : term =
+    match parseT l with
+    | t, [EOF] -> t
+    | _ -> failwith "Syntax error"
+
+and parseT (l : token list) : term * token list =
+    match l with
+    | LPAR::LAMBDA::l ->
+        begin match parseV l with
+        | Var n, l ->
+            begin match parseT l with
+            | t, RPAR::q -> Lambda(n, t), q
+            | _ -> failwith "Syntax error"
+            end
+        | _ -> failwith "Impossible"
+        end
+    | LPAR::l ->
+        let t1, l = parseT l in
+        begin match parseT l with
+              | t2, RPAR::q -> App(t1, t2)
+              | _ -> failwith "Syntax error"
+        end
+    | _ -> parseV l
+
+and parseV (l : token list) : term * token list =
+    match l with
+    | VAR n :: q -> Var n, q
+    | _ -> failwith "Syntax error"\end{lstlisting}
+                \end{indt}
             \end{indt}
         \end{indt}
     \end{indt}
