@@ -540,7 +540,7 @@
 
                 $\bullet$ $
                     \forall a \in E,\
-                    \forall V \in v(a), a \in V
+                    \forall V \in v(a),\ a \in V
                 $
 
                 $\bullet$ $
@@ -550,13 +550,13 @@
 
                 \vspace{6pt}
                 
-                Soit $I \neq \varnothing$ un ensemble d'indexation, et $a \in E$.
+                $\bullet$ Soit $I \neq \varnothing$ un ensemble d'indexation, et $a \in E$.
                 \[
                     \forall \lr{V_i}_{i \in I} \subset v(a),\
                     \bigcup_{i \in I} V_i \in v(a)
                 \]
 
-                Soit $n \in \N$ et $a \in E$.
+                $\bullet$ Soit $n \in \N$ et $a \in E$.
                 \[
                     \forall \!\lr{V_k}_{k \in \nset 1 n} \subset v(a),\
                     \bigcap_{k = 1}^n V_k \in v(a)
@@ -983,7 +983,7 @@
             \begin{indt}{\subsubsection{Caractérisation séquentielle}}
                 Soit $A \in \mathcal P(E)$.
 
-                $\forall F \in \mathcal (A)$, on a :
+                $\forall F \in \mathcal P(A)$, on a :
                 \[
                     F\ \text{fermé relatif à}\ A
                     \ssi
@@ -994,6 +994,8 @@
         \end{indt}
     \end{indt}
 
+    \vspace{12pt}
+    
     \begin{indt}{\section{Limites, continuité d'une application}}
         Dans toute cette section, on pose deux $\K$-espaces vectoriel normés $[E, \norm \cdot _E]$ et $[F, \norm \cdot _F]$.
 
@@ -1063,7 +1065,14 @@
                     \end{array}
                 \]
 
-                Alors pour $\ell = (\ell_1, \ldots, \ell_n) \in G$ et $a \in \cj A$, on a :
+                Alors $\forall a \in \cj A$,
+                \[
+                    \exists \ell \in G\ |\ f(x) \tendsto{x \to a} \ell
+                    \ssi
+                    \forall k \in \nset 1 n,\ \exists \ell_k \in G_k\ |\ f_k(x) \tendsto{x \to a} \ell_k
+                \]
+
+                Et dans ce cas, pour $\ell = (\ell_1, \ldots, \ell_n) \in G$ et $a \in \cj A$, on a :
                 \[
                     \lim_a f = \ell
                     \ssi
@@ -1120,7 +1129,7 @@
                 Alors $f$ est continue en $a \in A$ si et seulement si
                 \[
                     \forall k \in \nset 1 n,\
-                    f_k \in \mathcal C^0(A, G_k)
+                    f_k(x) \tendsto{x \to a} f_k(a)
                 \]
 
                 \vspace{12pt}
@@ -1359,7 +1368,7 @@
 
                 \vspace{6pt}
                 
-                Remarque : deux normes équivalentes définissent la même notion de convergence et de limite, donc \textit{a fortiori} la même notion de compacité.
+                Remarque : deux normes équivalentes définissent la même notion de convergence et de limite, donc \textit{a posteriori} la même notion de compacité.
             \end{indt}
 
             \vspace{12pt}
@@ -1492,7 +1501,7 @@
     \vspace{12pt}
     
     \begin{indt}{\section{Connexité par arcs}}
-        On note, dans cette section, $[E, \norm \cdot _E]$ et $[F, \norm \cdot _F]$ deux $\K$-espaces vectoriels normé.
+        On note, dans cette section, $[E, \norm \cdot _E]$ et $[F, \norm \cdot _F]$ deux $\K$-espaces vectoriels normés.
 
         \begin{indt}{\subsection{Définitions}}
             \begin{indt}{\subsubsection{Définition (\textit{chemin continu})}}
