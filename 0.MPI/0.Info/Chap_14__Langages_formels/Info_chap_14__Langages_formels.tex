@@ -3993,9 +3993,9 @@ unlock_door()\end{lstlisting}
                 \vspace{12pt}
                 
                 \begin{indt}{Remarques :}
-                    $-$ On écrit en général les symboles non terminaux en capitale, et les symboles non terminaux en minuscule ;
+                    $-$ On écrit en général les symboles non terminaux en capitale, et les symboles terminaux en minuscule ;
 
-                    $-$ Les règles de production $(X, u) \in R$ sont notés $X \rightarrow u$, et on réunit souvent les règles de même membre gauche : si $(X, u_1), (X, u_2), \ldots, (X, u_n) \in \R$, on note $X \rightarrow u_1 \ |\ u_2 \ |\ \cdots \ |\ u_n$ ;
+                    $-$ Les règles de production $(X, u) \in R$ sont notés $X \rightarrow u$, et on réunit souvent les règles de même membre gauche : si $(X, u_1), (X, u_2), \ldots, (X, u_n) \in R$, on note $X \rightarrow u_1 \ |\ u_2 \ |\ \cdots \ |\ u_n$ ;
 
                     $-$ Les grammaires non contextuelles sont aussi appelées grammaires \textit{hors contexte} (\textit{context-free grammar} en anglais) ou grammaires \textit{algébriques}.
                     La non contextualité des grammaires algébriques vient de la forme des règles : une règle $uXw \Rightarrow uvw$ rendrait la grammaire contextuelle (H.P).
@@ -4163,7 +4163,10 @@ unlock_door()\end{lstlisting}
 
                 $-$ Soit $G = \lr{\Sigma, V, S, R}$ une grammaire non contextuelle.
 
-                Le langage engendré par $G$ est le langage $\mathcal L(G) = \set{u \in \Sigma^*\ |\ S \Rightarrow^* u}$
+                Le langage engendré par $G$ est le langage
+                \[
+                    \mathcal L(G) = \set{u \in \Sigma^*\ |\ S \Rightarrow^* u}.
+                \]
 
                 $-$ Soit $\Sigma$ un alphabet, et $L$ un langage sur $\Sigma$.
 
@@ -4188,16 +4191,19 @@ unlock_door()\end{lstlisting}
 
                     On construit $G = \lr{\Sigma, V, X_{q_0}, R}$, où :
                     \[
-                        \begin{array}{rcl}
+                        \begin{array}{rcll}
                             V &=& \set{X_q\ |\ q \in Q}
                             \\
-                            R &:& X_q \rightarrow aX_{\delta(q, a)} \ \forall q \in Q\ \forall a \in \Sigma
+                            R &:& X_q \rightarrow aX_{\delta(q, a)} & \forall q \in Q\ \forall a \in \Sigma
                             \\
-                              && X_q \rightarrow \varepsilon\ \forall q \in F
+                              && X_q \rightarrow \varepsilon & \forall q \in F
                         \end{array}
                     \]
 
-                    On montre par récurrence sur $n \in \N$ que $\forall u \in \Sigma^*$ de taille $n$, $\forall q, q' \in Q,\ X_q \Rightarrow^* uXq' \ssi \delta(q, u) = q'$
+                    On montre par récurrence sur $n \in \N$ que $\forall u \in \Sigma^*$ de taille $n$,
+                    \[
+                        \forall q, q' \in Q,\ X_q \Rightarrow^* uXq' \ssi \delta(q, u) = q'
+                    \]
 
                     \vspace{6pt}
                     
@@ -4441,17 +4447,15 @@ unlock_door()\end{lstlisting}
 
                     Comme $u_i \Rightarrow u_{i + 1}$ n'est pas à gauche,
                     \[
-                        \exists x, y, z \in \lr{\Sigma \cup V}^*,
+                        \exists x, y, z \in \lr{\Sigma \cup V}^*,\
                         \exists X_1, X_2 \in V\
                         \begin{array}{|l}
                             u_i = x X_1 y X_2 z
                             \\
                             x \in \Sigma^*
+                            \\
+                            \exists X_2 \rightarrow v \in R\ |\ u_{i + 1} = x X_1 yvz
                         \end{array}
-                    \]
-                    et
-                    \[
-                        \exists X_2 \rightarrow v \in R\ |\ u_{i + 1} = x X_1 yvz
                     \]
 
                     Comme $u_{n + 1} \in \Sigma^*,\ X_1$ n'y apparaît pas, donc $\exists j > i\ |\ u_k \Rightarrow u_{j + 1}$ élimine $X_1$.
@@ -4476,7 +4480,7 @@ unlock_door()\end{lstlisting}
                          \underbrace{xwyvz}_{= u_{i + 1} [X_1 := w]}
                          \Rightarrow \cdots
                          \Rightarrow
-                         \underbrace{u_j [X_ := w]}_{= u_{j + 1}}
+                         \underbrace{u_j [X_1 := w]}_{= u_{j + 1}}
                      \]
 
                      En appliquant les règles de la dérivation initiale.
@@ -4525,7 +4529,7 @@ unlock_door()\end{lstlisting}
 
                     $-$ La concaténation des étiquettes des feuilles de gauche à droite donne $u$ ;
 
-                    $-$ Pour chaque n\oe ud interne d'étiquette $X$ et dont les fils sont étiquetés de gauche à droite par $u_1, \ldots, u_n$, $X \rightarrow u_1 \cdots u_n \in R$
+                    $-$ Pour chaque n\oe ud interne d'étiquette $X$ et dont les fils sont étiquetés de gauche à droite par $u_1, \ldots, u_n$, $X \rightarrow u_1\ |\ \cdots\ |\ u_n \in R$
                 \end{indt}
 
                 \vspace{12pt}
@@ -4717,7 +4721,7 @@ else
 
                 \vspace{12pt}
                 
-                $\bullet$ Remarque : il existe des langages algébriques tels que toute grammaire en engendre le langage est ambiguë. On parle de langage inhéremment / intrinsèquement ambigu (H.P).
+                $\bullet$ Remarque : il existe des langages algébriques tels que toute grammaire qui engendre le langage est ambiguë. On parle de langage inhéremment / intrinsèquement ambigu (H.P).
 
                 Exemple :
 
@@ -4867,7 +4871,7 @@ else
             
             \begin{indt}{\subsubsection{Remarque}}
                 $\bullet$ L'exemple précédent est une version simplifiée d'une analyse LL où la connaissance d'un seul symbole du mot cible permet de déterminer la règle à appliquer au symbole non terminal courant.
-                On parle d'analyse LL(1) et il est possible de généraliser cette analyse en analyse LL($k$)n où la connaissance de $k$ symboles du mot cible sert à déterminer la règle.
+                On parle d'analyse LL(1) et il est possible de généraliser cette analyse en analyse LL($k$), où la connaissance de $k$ symboles du mot cible sert à déterminer la règle.
 
                 \vspace{6pt}
                 
