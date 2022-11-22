@@ -1,0 +1,563 @@
+\documentclass[a4paper, 12pt, twoside]{article}
+
+
+%------------------------------------------------------------------------
+%
+% Author                :   Lasercata
+% Last modification     :   2022.11.22
+%
+%------------------------------------------------------------------------
+
+
+%------ini
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+%\usepackage[english]{babel}
+
+
+%------geometry
+\usepackage[textheight=700pt, textwidth=500pt]{geometry}
+
+
+%------color
+\usepackage{xcolor}
+\definecolor{ff4500}{HTML}{ff4500}
+\definecolor{00f}{HTML}{0000ff}
+\definecolor{0ff}{HTML}{00ffff}
+\definecolor{656565}{HTML}{656565}
+
+%\renewcommand{\emph}{\textcolor{ff4500}}
+%\renewcommand{\em}{\color{ff4500}}
+
+\newcommand{\Emph}{\textcolor{ff4500}}
+
+\newcommand{\strong}[1]{\textcolor{ff4500}{\bf #1}}
+\newcommand{\st}{\color{ff4500}\bf}
+
+
+%------Code highlighting
+%---listings
+\usepackage{listings}
+
+\definecolor{cbg}{HTML}{272822}
+\definecolor{cfg}{HTML}{ececec}
+\definecolor{ccomment}{HTML}{686c58}
+\definecolor{ckw}{HTML}{f92672}
+\definecolor{cstring}{HTML}{e6db72}
+\definecolor{cstringlight}{HTML}{98980f}
+\definecolor{lightwhite}{HTML}{fafafa}
+
+\lstdefinestyle{DarkCodeStyle}{
+    backgroundcolor=\color{cbg},
+    commentstyle=\itshape\color{ccomment},
+    keywordstyle=\color{ckw},
+    numberstyle=\tiny\color{cbg},
+    stringstyle=\color{cstring},
+    basicstyle=\ttfamily\footnotesize\color{cfg},
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=4,
+    xleftmargin=\leftskip
+}
+
+\lstdefinestyle{LightCodeStyle}{
+    backgroundcolor=\color{lightwhite},
+    commentstyle=\itshape\color{ccomment},
+    keywordstyle=\color{ckw},
+    numberstyle=\tiny\color{cbg},
+    stringstyle=\color{cstringlight},
+    basicstyle=\ttfamily\footnotesize\color{cbg},
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=10pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=4,
+    frame=L,
+    xleftmargin=\leftskip
+}
+
+%\lstset{style=DarkCodeStyle}
+\lstset{style=LightCodeStyle}
+%Usage : \begin{lstlisting}[language=Caml, xleftmargin=xpt] ... \end{lstlisting}
+
+
+%---Algorithm
+\usepackage[linesnumbered,ruled,vlined]{algorithm2e}
+\SetKwInput{KwInput}{Input}
+\SetKwInput{KwOutput}{Output}
+
+\SetKwProg{Fn}{Function}{:}{}
+\SetKw{KwPrint}{Print}
+
+\newcommand\commfont[1]{\textit{\texttt{\textcolor{656565}{#1}}}}
+\SetCommentSty{commfont}
+\SetProgSty{texttt}
+\SetArgSty{textnormal}
+\SetFuncArgSty{textnormal}
+%\SetProgArgSty{texttt}
+
+\newenvironment{indalgo}[2][H]{
+    \begin{algoBox}
+        \begin{algorithm}[#1]
+            \caption{#2}
+}
+{
+        \end{algorithm}
+    \end{algoBox}
+}
+
+
+%---tcolorbox
+\usepackage[many]{tcolorbox}
+\DeclareTColorBox{emphBox}{O{black}O{lightwhite}}{
+    breakable,
+    outer arc=0pt,
+    arc=0pt,
+    top=0pt,
+    toprule=-.5pt,
+    right=0pt,
+    rightrule=-.5pt,
+    bottom=0pt,
+    bottomrule=-.5pt,
+    colframe=#1,
+    colback=#2,
+    enlarge left by=10pt,
+    width=\linewidth-\leftskip-10pt,
+}
+
+\DeclareTColorBox{algoBox}{O{black}O{lightwhite}}{
+    breakable,
+    arc=0pt,
+    top=0pt,
+    toprule=-.5pt,
+    right=0pt,
+    rightrule=-.5pt,
+    bottom=0pt,
+    bottomrule=-.5pt,
+    left=0pt,
+    leftrule=-.5pt,
+    colframe=#1,
+    colback=#2,
+    width=\linewidth-\leftskip-10pt,
+}
+
+
+%-------make the table of content clickable
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=black
+}
+
+
+%------pictures
+\usepackage{graphicx}
+%\usepackage{wrapfig}
+
+\usepackage{tikz}
+%\usetikzlibrary{babel}             %Uncomment this to use circuitikz
+%\usetikzlibrary{shapes.geometric}  % To draw triangles in trees
+%\usepackage{circuitikz}            %Electrical circuits drawing
+
+
+%------tabular
+%\usepackage{color}
+%\usepackage{colortbl}
+%\usepackage{multirow}
+
+
+%------Physics
+%---Packages
+%\usepackage[version=4]{mhchem} %$\ce{NO4^2-}$
+
+%---Commands
+\newcommand{\link}[2]{\mathrm{#1} \! - \! \mathrm{#2}}
+\newcommand{\pt}[1]{\cdot 10^{#1}} % Power of ten
+\newcommand{\dt}[2][t]{\dfrac{\mathrm d #2}{\mathrm d #1}} % Derivative
+
+
+%------math
+%---Packages
+%\usepackage{textcomp}
+%\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools} % For abs
+\usepackage{stmaryrd} %for \llbracket and \rrbracket
+\usepackage{mathrsfs} %for \mathscr{x} (different from \mathcal{x})
+
+%---Commands
+%-Sets
+\newcommand{\N}{\mathbb{N}} %set N
+\newcommand{\Z}{\mathbb{Z}} %set Z
+\newcommand{\Q}{\mathbb{Q}} %set Q
+\newcommand{\R}{\mathbb{R}} %set R
+\newcommand{\C}{\mathbb{C}} %set C
+\newcommand{\U}{\mathbb{U}} %set U
+\newcommand{\seg}[2]{\left[ #1\ ;\ #2 \right]}
+\newcommand{\nset}[2]{\left\llbracket #1\ ;\ #2 \right\rrbracket}
+
+%-Exponantial / complexs
+\newcommand{\e}{\mathrm{e}}
+\newcommand{\cj}[1]{\overline{#1}} %overline for the conjugate.
+
+%-Vectors
+\newcommand{\vect}{\overrightarrow}
+\newcommand{\veco}[3]{\displaystyle \vect{#1}\binom{#2}{#3}} %vector + coord
+
+%-Limits
+\newcommand{\lm}[2][{}]{\lim\limits_{\substack{#2 \\ #1}}} %$\lm{x \to a} f$ or $\lm[x < a]{x \to a} f$
+\newcommand{\Lm}[3][{}]{\lm[#1]{#2} \left( #3 \right)} %$\Lm{x \to a}{f}$ or $\Lm[x < a]{x \to a}{f}$
+\newcommand{\tendsto}[1]{\xrightarrow[#1]{}}
+
+%-Integral
+\newcommand{\dint}[4][x]{\displaystyle \int_{#2}^{#3} #4 \mathrm{d} #1} %$\dint{a}{b}{f(x)}$ or $\dint[t]{a}{b}{f(t)}$
+
+%-left right
+\newcommand{\lr}[1]{\left( #1 \right)}
+\newcommand{\lrb}[1]{\left[ #1 \right]}
+\newcommand{\lrbb}[1]{\left\llbracket #1 \right\rrbracket}
+\newcommand{\set}[1]{\left\{ #1 \right\}}
+\newcommand{\abs}[1]{\left\lvert #1 \right\rvert}
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
+\newcommand{\lrangle}[1]{\left\langle #1 \right\rangle}
+
+%-Others
+\newcommand{\para}{\ /\!/\ } %//
+\newcommand{\ssi}{\ \Leftrightarrow \ }
+\newcommand{\eqsys}[2]{\begin{cases} #1 \\ #2 \end{cases}}
+
+\newcommand{\med}[2]{\mathrm{med} \left[ #1\ ;\ #2 \right]}  %$\med{A}{B} -> med[A ; B]$
+\newcommand{\Circ}[2]{\mathscr{C}_{#1, #2}}
+
+\renewcommand{\le}{\leqslant}
+\renewcommand{\ge}{\geqslant}
+
+\newcommand{\oboxed}[1]{\textcolor{ff4500}{\boxed{\textcolor{black}{#1}}}} %orange boxed
+
+\newcommand{\rboxed}[1]{\begin{array}{|c} \hline #1 \\ \hline \end{array}} %boxed with right opened
+\newcommand{\lboxed}[1]{\begin{array}{c|} \hline #1 \\ \hline \end{array}} %boxed with left opened
+
+\newcommand{\orboxed}[1]{\textcolor{ff4500}{\rboxed{\textcolor{black}{#1}}}} %orange right boxed
+\newcommand{\olboxed}[1]{\textcolor{ff4500}{\lboxed{\textcolor{black}{#1}}}} %orange left boxed
+
+
+%------commands
+%---to quote
+\newcommand{\simplecit}[1]{\guillemotleft$\;$#1$\;$\guillemotright}
+\newcommand{\cit}[1]{\simplecit{\textcolor{656565}{#1}}}
+\newcommand{\quo}[1]{\cit{\it #1}}
+
+%---to indent
+\newcommand{\ind}[1][20pt]{\advance\leftskip + #1}
+\newcommand{\deind}[1][20pt]{\advance\leftskip - #1}
+
+%---to indent a text
+\newcommand{\indented}[2][20pt]{\par \ind[#1] #2 \par \deind[#1]}
+\newenvironment{indt}[2][20pt]{#2 \par \ind[#1]}{\par \deind} %Titled indented env
+
+%---title
+\newcommand{\thetitle}[2]{\begin{center}\textbf{{\LARGE \underline{\Emph{#1} :}} {\Large #2}}\end{center}}
+
+%---Maths environments
+%-Proofs
+\newenvironment{proof}[1][{}]{\begin{indt}{$\square$ #1}}{$\blacksquare$ \end{indt}}
+
+%-Maths parts (proposition, definition, ...)
+\newenvironment{mathpart}[1]{\begin{indt}{\boxed{\text{\textbf{#1}}}}}{\end{indt}}
+\newenvironment{mathbox}[1]{\boxed{\text{\textbf{#1}}}\begin{emphBox}}{\end{emphBox}}
+\newenvironment{mathul}[1]{\begin{indt}{\underline{\textbf{#1}}}}{\end{indt}}
+
+\newenvironment{theo}{\begin{mathpart}{Théorème}}{\end{mathpart}}
+\newenvironment{Theo}{\begin{mathbox}{Théorème}}{\end{mathbox}}
+
+\newenvironment{prop}{\begin{mathpart}{Proposition}}{\end{mathpart}}
+\newenvironment{Prop}{\begin{mathbox}{Proposition}}{\end{mathbox}}
+\newenvironment{props}{\begin{mathpart}{Propriétés}}{\end{mathpart}}
+
+\newenvironment{defi}{\begin{mathpart}{Définition}}{\end{mathpart}}
+\newenvironment{meth}{\begin{mathpart}{Méthode}}{\end{mathpart}}
+
+\newenvironment{Rq}{\begin{mathul}{Remarque :}}{\end{mathul}}
+\newenvironment{Rqs}{\begin{mathul}{Remarques :}}{\end{mathul}}
+
+\newenvironment{Ex}{\begin{mathul}{Exemple :}}{\end{mathul}}
+\newenvironment{Exs}{\begin{mathul}{Exemples :}}{\end{mathul}}
+
+
+%------Sections
+% To change section numbering :
+% \renewcommand\thesection{\Roman{section}}
+% \renewcommand\thesubsection{\arabic{subsection})}
+% \renewcommand\thesubsubsection{\textit \alph{subsubsection})}
+
+% To start numbering from 0
+% \setcounter{section}{-1}
+
+
+%------page style
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+
+\setlength{\headheight}{18pt}
+\setlength{\footskip}{50pt}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE, RO]{\textit{\textcolor{black}{\today}}}
+\fancyhead[RE, LO]{\large{\textsl{\Emph{\texttt{\jobname}}}}}
+
+\fancyfoot[RO, LE]{\textit{\texttt{\textcolor{black}{Page \thepage /}\pageref{LastPage}}}}
+\fancyfoot[LO, RE]{\includegraphics[scale=0.12]{/home/lasercata/Pictures/1.images_profil/logo/mieux/lasercata_logo_fly_fond_blanc.png}}
+
+
+%------init lengths
+\setlength{\parindent}{0pt} %To avoid using \noindent everywhere.
+\setlength{\parskip}{3pt}
+
+
+%---------------------------------Begin Document
+\begin{document}
+    
+    \thetitle{Chapitre 15}{Compléments de logique}
+    
+    \tableofcontents
+    \newpage
+    
+    \begin{indt}{\section{Notion formelle de démonstration}}
+        \begin{indt}{\subsection{Introduction}}
+            \begin{indt}{\subsubsection{Motivation}}
+                Nous avons vu dans le chapitre 8 la syntaxe des formules logiques, \textit{i.e} un cadre formel pour énoncer des faits, et une sémantique pour les formules propositionnelles, \textit{i.e} une définition de la vérité permettant donc de distinguer les faits avérés des énoncés erronés.
+
+                La notion de sémantique ne permet pas de formaliser la notion de raisonnement. La définition d'un système formel de démonstration permet de résoudre ce problème en donnant des règles qui autorisent à déduire un énoncé, appelé \emph{conclusion}, d'autres énoncés, appelés \emph{hypothèses}.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Syllogismes}}
+                Les travaux logiques visant à formaliser la notion de démonstration remontant à l'antiquité, en particulier avec les travaux d'\textsc{Aristote} (IV\textsuperscript{ème} siècle avant J.C) qui sont restés particulièrement importants dans le monde scientifique.
+
+                Au c\oe ur de ses travaux se trouve la notion de \emph{syllogisme} qui est une manière très codifié de représenter la notion de déduction.
+
+                Les syllogismes sont des règles qui permettent de déduire des faits d'autres faits.
+
+                \vspace{12pt}
+                
+                Exemple : \textsc{Socrate} est un homme, tous les hommes sont mortels, donc \textsc{Socrate} est mortel.
+
+                \vspace{12pt}
+                
+                \begin{indt}{Certains syllogismes sont assez importants pour avoir un nom. Par exemple :}
+                    $-$ Le \emph{modus ponens}, qui caractérise la notion d'implication : si on a établi les faits $A \rightarrow B$ et $A$, alors on peut déduire $B$.
+
+                    $-$ Le syllogisme \emph{barbara}, qui permet de combiner des implications : si on a établi les faits $A \rightarrow B$ et $B \rightarrow C$, alors on peut déduire $A \rightarrow C$.
+                \end{indt}
+
+                \vspace{6pt}
+                
+                Ce n'est que vers la fin du XIX\textsuperscript{ème} siècle que la logique connaît une forte évolution grâce à la volonté de donner des fondements rigoureux aux mathématiques (\textit{cf} le programme de \textsc{Hilbert})
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Vers la logique moderne}}
+                C'est Gottlob \textsc{Frege} qui débloque le monde de la logique en établissant formellement la logique des prédicats (\textit{cf} chapitre 8 2.2.) et en proposant la première formalisation de la théorie des ensembles, plus tard invalidée par Bertrand \textsc{Russell} avec le paradoxe de \textsc{Russell} : l'ensemble de tous les ensembles qui ne se contient pas se contient-il ?
+
+                C'est en 1934 que Gerhard \textsc{Gentzen} publie un système de règles de déduction visant à donner un système proche de la pratique mathématique des démonstrations : la \emph{déduction naturelle}.
+
+                Son approche repose sur le fait qu'à tout moment dans une démonstration, on a un ensemble de faits (hypothèses ou faits intermédiaires déjà démontrés), et un énoncé que l'on cherche à démontrer (ou conclusion).
+
+                En notant $\mathrm{hyp}_1, \ldots, \mathrm{hyp}_n \vdash \mathrm{concl}$ l'assertion : \quo{je peux déduire la conclusion $\mathrm{concl}$ des hypothèses $\mathrm{hyp}_1, \ldots, \mathrm{hyp}_n$}, le système de la déduction naturelle fournit des règles décrivant l'évolution de ces assertions (donc des ensembles d'hypothèses et de conclusion) au cours d'un raisonnement mathématique.
+
+                \vspace{12pt}
+                
+                Remarque : l'assertion $\Gamma \vdash A$ représente une forme de conséquence logique, d'où le choix d'un symbole proche de celui de la conséquence sémantique ($\Gamma \vDash A$, \textit{cf} chapitre 8, 3.2.3).
+            \end{indt}
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Définitions}}
+            \begin{indt}{\subsubsection{Rappels (\textit{cf} chapitre 5, 2.1)}}
+                \label{1.2.1}
+
+                $\bullet$ Définition (\emph{système de règles d'inférences}) :
+                Un système de règles d'inférences est constitué d'un ensemble d'assertions et de \emph{règles d'inférences} utilisées pour démontrer ces assertions.
+
+                Une \emph{règle d'inférence} est l'association d'un ensemble fini d'assertions appelées prémisses de la règle, et d'une assertion, appelée \emph{conclusion} de la règle.
+
+                Une telle règle est notée ainsi :
+                \[
+                    \dfrac{\text{prémisse}_1\ \cdots\ \text{prémisse}_n}{\mathrm{concl}}
+                \]
+
+                Une règle sans prémisse est appelée \emph{axiome}.
+
+                \vspace{12pt}
+                
+                $\bullet$ Définition (\emph{dérivation}) : étant donné un système de règles d'inférences, une assertion est dite \emph{dérivable} si et seulement si elle est la conclusion d'un axiome ou d'une règle dont les prémisses sont dérivables.
+
+                Cette définition inductive permet de définir la notion d'\emph{arbre de dérivation} : un dérivation de l'assertion $A$ est un arbre étiqueté par des règles d'inférence telles que $A$ est la conclusion de l'étiquette de la racine, les feuilles sont étiquetées par des axiomes, et pour tout n\oe ud interne, les prémisses de son étiquette sont les conclusions des étiquettes des ses fils.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Remarque}}
+                Nous avons vu que la notion de système de règles d'inférences permet de définir des ensembles par induction, comme par exemple l'ensemble des formules de la logique propositionnelle (\textit{cf} chapitre 8, 2.1.2), et qu'il est possible de raisonner par induction sur de tels ensembles (\textit{cf} chapitre 5 2.2).
+
+                La notion de dérivation étant elle-même définie inductivement, on peut raisonner par induction structurelle sur les dérivations (\textit{cf} chapitre 14, 1.3.6 par exemple).
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Séquents}}
+                $\bullet$ Définition : On note $F$ l'ensemble des formules logiques (propositionnelles, ou du premier ordre, ou autre).
+
+                On appelle \emph{séquent} tout couple $(\Gamma, A) \in \mathcal P_{\rm f}(F) \times F\ $ (où $\mathcal P_{\rm f}(F)$ : parties finies de $F$).
+
+                Un séquent $(\Gamma, A)$ est noté $\Gamma \vdash A$.
+
+                On appelle $\Gamma$ l'ensemble des hypothèses du séquent, et $A$ la conclusion du séquent.
+
+                \vspace{12pt}
+                
+                \begin{indt}{$\bullet$ Exemples :}
+                    $-$ Le \textit{modus ponens}, $A \rightarrow B,\ A \vdash B$ ;
+
+                    $-$ Le syllogisme barbara, $A \rightarrow B,\ B \rightarrow C \vdash A \rightarrow C$
+                    \[
+                        \dfrac{\Gamma \vdash A\ \ \Gamma \vdash B}{\Gamma \vdash A \wedge B}
+                    \]
+                \end{indt}
+
+                \vspace{12pt}
+                
+                \begin{indt}{$\bullet$ Remarques :}
+                    $-$ Un séquent est une assertion qui représente le fait que sa conclusion est une conséquence logique de ses hypothèses, donc on peut s'en servir pour définir un système de règles d'inférence.
+
+                    \vspace{6pt}
+                    
+                    $-$ On parle de séquent \emph{asymétrique}, par opposition aux séquents \emph{symétriques}, de la forme $\Gamma \vdash \Delta$, où $\Delta$ est un ensemble fini de formules, qui représentent le fait que la disjonction des formules de la conclusion est une conséquence logique de la conjonction des hypothèses du séquent.
+                \end{indt}
+
+                \vspace{12pt}
+                
+                Remarque :
+                \[
+                    A_1 \cdots A_n \vdash B_1 \cdots B_n
+                \]
+                peut être vu comme
+                \[
+                    A_1, \ldots, A_n, \neg B_1, \ldots, B_n \vdash \bot
+                \]
+
+                \textsc{Gentzen} a publié, également en 1934, un système de règles d'inférence pour les séquents symétriques, appelé \emph{calcul des séquents}, et on a montré l'équivalence des deux systèmes.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Arbre de preuve}}
+                $\bullet$ Définition (\emph{règle d'inférence}) une règle d'inférence pour la déduction naturelle ou pour tout autre système basé sur les séquents asymétriques est une règle d'inférence au sens de \ref{1.2.1} (page \pageref{1.2.1}), utilisant les séquents comme assertions.
+                C'est donc une règle de la forme
+                \[
+                    \dfrac{\Gamma_1 \vdash A_1 \ \cdots \ \Gamma_n \vdash A_n}{\Gamma \vdash A}
+                \]
+
+                Accessoirement, on peut utiliser comme assertion l'appartenance d'une formule aux hypothèses ($A \in P$) en l'appartenance d'une variable à l'ensemble des variables libres d'un ensemble de formules ($x \in \mathrm{FV}(\Gamma)$, \textit{cf} chapitre 8, 2.2.6).
+
+                \vspace{12pt}
+                
+                $\bullet$ On peut écrire l'\simplecit{axiome} $\dfrac{A \in P}{\Gamma \vdash A}$ ou bien la règle dite \emph{de coupure}
+                \[
+                    \dfrac{\Gamma \vdash A\ \Gamma, A \vdash B}{\Gamma \vdash B}
+                \]
+                qui représente l'introduction d'un lemme intermédiaire au cours d'une démonstration.
+
+                \vspace{12pt}
+                
+                $\bullet$ Définition (\emph{arbre de preuve}) : un arbre de preuve / arbre de dérivation / dérivation / démonstration d'un séquent $\Gamma \vdash A$ est un arbre de dérivation au sens de \ref{1.2.1} (page \pageref{1.2.1}), de conclusion le séquent $\Gamma \vdash A$.
+
+                On dit alors que $\Gamma \vdash A$ est \emph{démontrable} / \emph{dérivable}.
+
+                \vspace{12pt}
+                
+                $\bullet$ Exemple : on se donne comme règles d'inférence une réécriture du \textit{modus ponens}
+                \[
+                    \dfrac{\Gamma \vdash A \rightarrow B\ \Gamma \vdash A}{\Gamma \vdash B}
+                    \qquad
+                    \dfrac{\Gamma, A \vdash B}{\Gamma \vdash A \rightarrow B}
+                \]
+
+                On suppose donnés des arbres de preuve $T$ et $T'$ des séquents $\Gamma, A \vdash B$ et $\Gamma \vdash A$ et on construit l'arbre de preuve suivant :
+                \[
+                    \dfrac
+                    {
+                        \dfrac{\Gamma, A \vdash B}{\Gamma \vdash A \rightarrow B}
+                        \ \
+                        \Gamma \vdash A
+                    }
+                    {\Gamma \vdash B}
+                \]
+
+                \vspace{6pt}
+                
+                Remarque : on reconnaît la règle de coupure. On dit alors que la règle de coupure est dérivable dans le système de règles d'inférence que l'on s'est donné.
+
+                Plus généralement, une règle
+                \[
+                    \dfrac{\Gamma_1 \vdash A_1\ \cdots\ \Gamma_n \vdash A_n}{\Gamma \vdash A}
+                \]
+                est dite dérivable si l'on peut utiliser les règles su système pour prolonger des dérivation de $\Gamma_1 \vdash A_1\ \cdots \Gamma_n \vdash A_n$ en une dérivation de $\Gamma \vdash A$.
+
+                Plus généralement encore, une règle
+                \[
+                    \dfrac{\Gamma_1 \vdash A_1\ \cdots\ \Gamma_n \vdash A_n}{\Gamma \vdash A}
+                \]
+                est dite \emph{admissible} (H.P) si, dès lors que $\Gamma_1 \vdash A_1\ \cdots \Gamma_n \vdash A_n$ sont dérivables, on sait que $\Gamma \vdash A$ l'est aussi.
+
+                Les règles dérivables sont admissibles, mais la réciproque n'est pas forcément vraie.
+
+                Par exemple, la règle
+                \[
+                    \dfrac{\Gamma \vdash A\ \Gamma \subseteq \Gamma'}{\Gamma' \vdash A}
+                \]
+                est admissible, mais pas dérivable en déduction naturelle.
+
+                Démontrer qu'une règle est admissible se fait souvent par induction sur la dérivation de ses prémisses.
+            \end{indt}
+        \end{indt}
+    \end{indt}
+
+    \vspace{12pt}
+    
+    \begin{indt}{\section{Déduction naturelle}}
+        \begin{indt}{\subsection{Règles de la déduction naturelle}}
+            \begin{indt}{\subsubsection{Remarque}}
+                On donne ici un système de règles pour la déduction naturelle, mais il en existe plusieurs.
+
+                On présente un système pour des formules logiques dont la syntaxe inclut une tautologie $\top$ et une antilogie $\bot$.
+                L'antilogie est particulièrement utile pour définir les règles de la négation, même si on pourrait s'en passer.
+
+                (Remarque : on pourrait se passer de la négation en définissant $\neg A$ comme $A \rightarrow \bot$).
+            \end{indt}
+        \end{indt}
+    \end{indt}
+    
+\end{document}
+%--------------------------------------------End
