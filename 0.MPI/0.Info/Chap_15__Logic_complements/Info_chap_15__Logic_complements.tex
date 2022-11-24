@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2022.11.22
+% Last modification     :   2022.11.24
 %
 %------------------------------------------------------------------------
 
@@ -180,6 +180,10 @@
 %\usepackage{color}
 %\usepackage{colortbl}
 %\usepackage{multirow}
+
+
+%------Mathpartir (inference rules)
+\usepackage{mathpartir}
 
 
 %------Physics
@@ -404,7 +408,7 @@
 
                 Une telle règle est notée ainsi :
                 \[
-                    \dfrac{\text{prémisse}_1\ \cdots\ \text{prémisse}_n}{\mathrm{concl}}
+                    \inferrule{\text{prémisse}_1 \\ \cdots \\ \text{prémisse}_n}{\mathrm{concl}}
                 \]
 
                 Une règle sans prémisse est appelée \emph{axiome}.
@@ -442,7 +446,7 @@
 
                     $-$ Le syllogisme barbara, $A \rightarrow B,\ B \rightarrow C \vdash A \rightarrow C$
                     \[
-                        \dfrac{\Gamma \vdash A\ \ \Gamma \vdash B}{\Gamma \vdash A \wedge B}
+                        \inferrule{\Gamma \vdash A \\ \Gamma \vdash B}{\Gamma \vdash A \wedge B}
                     \]
                 \end{indt}
 
@@ -476,7 +480,7 @@
                 $\bullet$ Définition (\emph{règle d'inférence}) une règle d'inférence pour la déduction naturelle ou pour tout autre système basé sur les séquents asymétriques est une règle d'inférence au sens de \ref{1.2.1} (page \pageref{1.2.1}), utilisant les séquents comme assertions.
                 C'est donc une règle de la forme
                 \[
-                    \dfrac{\Gamma_1 \vdash A_1 \ \cdots \ \Gamma_n \vdash A_n}{\Gamma \vdash A}
+                    \inferrule{\Gamma_1 \vdash A_1 \\ \cdots \\ \Gamma_n \vdash A_n}{\Gamma \vdash A}
                 \]
 
                 Accessoirement, on peut utiliser comme assertion l'appartenance d'une formule aux hypothèses ($A \in P$) en l'appartenance d'une variable à l'ensemble des variables libres d'un ensemble de formules ($x \in \mathrm{FV}(\Gamma)$, \textit{cf} chapitre 8, 2.2.6).
@@ -485,7 +489,7 @@
                 
                 $\bullet$ On peut écrire l'\simplecit{axiome} $\dfrac{A \in P}{\Gamma \vdash A}$ ou bien la règle dite \emph{de coupure}
                 \[
-                    \dfrac{\Gamma \vdash A\ \Gamma, A \vdash B}{\Gamma \vdash B}
+                    \inferrule{\Gamma \vdash A \\ \Gamma, A \vdash B}{\Gamma \vdash B}
                 \]
                 qui représente l'introduction d'un lemme intermédiaire au cours d'une démonstration.
 
@@ -499,17 +503,17 @@
                 
                 $\bullet$ Exemple : on se donne comme règles d'inférence une réécriture du \textit{modus ponens}
                 \[
-                    \dfrac{\Gamma \vdash A \rightarrow B\ \Gamma \vdash A}{\Gamma \vdash B}
+                    \inferrule{\Gamma \vdash A \rightarrow B \\ \Gamma \vdash A}{\Gamma \vdash B}
                     \qquad
-                    \dfrac{\Gamma, A \vdash B}{\Gamma \vdash A \rightarrow B}
+                    \inferrule{\Gamma, A \vdash B}{\Gamma \vdash A \rightarrow B}
                 \]
 
                 On suppose donnés des arbres de preuve $T$ et $T'$ des séquents $\Gamma, A \vdash B$ et $\Gamma \vdash A$ et on construit l'arbre de preuve suivant :
                 \[
-                    \dfrac
+                    \inferrule*
                     {
-                        \dfrac{\Gamma, A \vdash B}{\Gamma \vdash A \rightarrow B}
-                        \ \
+                        \inferrule*{\Gamma, A \vdash B}{\Gamma \vdash A \rightarrow B}
+                        \\
                         \Gamma \vdash A
                     }
                     {\Gamma \vdash B}
@@ -521,13 +525,13 @@
 
                 Plus généralement, une règle
                 \[
-                    \dfrac{\Gamma_1 \vdash A_1\ \cdots\ \Gamma_n \vdash A_n}{\Gamma \vdash A}
+                    \inferrule{\Gamma_1 \vdash A_1 \\ \cdots \\ \Gamma_n \vdash A_n}{\Gamma \vdash A}
                 \]
                 est dite dérivable si l'on peut utiliser les règles su système pour prolonger des dérivation de $\Gamma_1 \vdash A_1\ \cdots \Gamma_n \vdash A_n$ en une dérivation de $\Gamma \vdash A$.
 
                 Plus généralement encore, une règle
                 \[
-                    \dfrac{\Gamma_1 \vdash A_1\ \cdots\ \Gamma_n \vdash A_n}{\Gamma \vdash A}
+                    \inferrule{\Gamma_1 \vdash A_1 \\ \cdots \\ \Gamma_n \vdash A_n}{\Gamma \vdash A}
                 \]
                 est dite \emph{admissible} (H.P) si, dès lors que $\Gamma_1 \vdash A_1\ \cdots \Gamma_n \vdash A_n$ sont dérivables, on sait que $\Gamma \vdash A$ l'est aussi.
 
@@ -535,7 +539,7 @@
 
                 Par exemple, la règle
                 \[
-                    \dfrac{\Gamma \vdash A\ \Gamma \subseteq \Gamma'}{\Gamma' \vdash A}
+                    \inferrule{\Gamma \vdash A \\ \Gamma \subseteq \Gamma'}{\Gamma' \vdash A}
                 \]
                 est admissible, mais pas dérivable en déduction naturelle.
 
@@ -555,6 +559,320 @@
                 L'antilogie est particulièrement utile pour définir les règles de la négation, même si on pourrait s'en passer.
 
                 (Remarque : on pourrait se passer de la négation en définissant $\neg A$ comme $A \rightarrow \bot$).
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Déduction naturelle intuitionniste, cas propositionel}}
+                \begin{indt}{$\bullet$ Les règles de la déduction naturelle se répartissent en trois catégories :}
+                    $-$ L'axiome, seul dans sa catégorie : il n'y a rien à démontrer si la conclusion fait partie des hypothèses ;
+
+                    $-$ Les règles d'introduction : elles permettent, pour chaque connecteur logique $C$, d'établir les conditions qui permettent de démontrer une conclusion dont le symbole de tête est $C$ ;
+
+                    $-$ Les règles d'élimination : elles permettent, pour chaque connecteur logique $C$, d'établir les règles de déduction d'une formule à partir d'une formule dont le connecteur de tête est $C$.
+                \end{indt}
+
+                \vspace{12pt}
+                
+                $\bullet$ L'axiome : $\inferrule{A \in \Gamma}{\Gamma \vdash A}$
+
+                \vspace{12pt}
+                
+                \begin{indt}{$\bullet$ Règles de l'implication :}
+                    $-$ Introduction : pour démontrer $A \rightarrow B$, on suppose $A$, et in démontre $B$ :
+                    \[
+                        \inferrule*[Right={$\rightarrow_{\text{intro}}$}]{\Gamma, A \vdash B}{\Gamma \vdash A \rightarrow B}
+                    \]
+
+                    $-$ \'Elimination : si on a démontré $A \rightarrow B$ et $A$, on peut déduire $B$ (\textit{modus ponens}) :
+                    \[
+                        \inferrule*[Right={$\rightarrow_{\text{élim}}$}]{\Gamma \vdash A \rightarrow B \\ \Gamma \vdash A}{\Gamma \vdash B}
+                    \]
+                \end{indt}
+
+                \vspace{12pt}
+                
+                \begin{indt}{$\bullet$ Règle de la conjonction :}
+                    $-$ Introduction : pour démontrer $A \wedge B$, on démontre $A$ et on démontre $B$ :
+                    \[
+                        \inferrule*[Right={$\wedge_{\rm intro}$}]{\Gamma \vdash A \\ \Gamma \vdash B}{\Gamma \vdash A \wedge B}
+                    \]
+
+                    $-$ \'Elimination : de $A \wedge B$, on peut déduire $A$ ou alors $B$, donc deux règles :
+                    \[
+                        \inferrule*[right={$\wedge_{\text{élim}_g}$}]{\Gamma \vdash A \wedge B}{\Gamma \vdash A}
+                        \qquad
+                        \inferrule*[Right={$\wedge_{\text{élim}_d}$}]{\Gamma \vdash A \wedge B}{\Gamma \vdash B}
+                    \]
+                \end{indt}
+
+                \vspace{12pt}
+                
+                \begin{indt}{$\bullet$ Règles de la disjonction :}
+                    $-$ Introduction : pour démontrer $A \vee B$, soit on démontre $A$, soit on démontre $B$ : deux règles :
+                    \[
+                        \inferrule*[right={$\vee_{\text{intro}_g}$}]{\Gamma \vdash A}{\Gamma \vdash A \vee B}
+                        \qquad
+                        \inferrule*[Right={$\vee_{\text{intro}_d}$}]{\Gamma \vdash B}{\Gamma \vdash A \vee B}
+                    \]
+
+                    $-$ \'Elimination : si $A \vee B$ est démontré, on peut faire une disjonction de cas afin de démontrer une autre formule
+                    \[
+                        \inferrule*[Right={$\vee_{\text{élim}}$}]{\Gamma \vdash A \vee B \\ \Gamma, A \vdash C \\ \Gamma, B \vdash C}{\Gamma \vdash C}
+                    \]
+                \end{indt}
+
+                \vspace{12pt}
+                
+                \begin{indt}{$\bullet$ Règles de la tautologie :}
+                    $-$ Introduction : $\top$ est toujours vraie
+                    \[
+                        \inferrule*[Right={$\top_{\rm intro}$}]{ }{\Gamma \vdash \top}
+                    \]
+
+                    $-$ \'Elimination : on ne peut rien déduire de la vérité, donc pas de règle.
+                \end{indt}
+
+                \begin{indt}{$\bullet$ Règles de l'antilogie :}
+                    $-$ Introduction : on ne doit pas pouvoir démontrer de contradiction : pas de règle
+
+                    $-$ \'Elimination : du faux, on peut tout déduire. C'est le principe d'\emph{explosion} (\textit{ex falso quadlilet} en latin)
+                    \[
+                        \inferrule*[Right={$\bot_{\text{élim}}$}]{\Gamma \vdash \bot}{\Gamma \vdash A}
+                    \]
+                \end{indt}
+
+                \vspace{12pt}
+                
+                \begin{indt}{$\bullet$ Règles de la négation :}
+                    $-$ Introduction : pour démontrer $\neg A$, on suppose $A$ et on démontre une contradiction
+                    \[
+                        \inferrule*[Right={$\neg_{\text{intro}}$}]{\Gamma, A \vdash \bot}{\Gamma \vdash \neg A} 
+                    \]
+
+                    $-$ \'Elimination : de $\neg A$, on peut déduire une contradiction si on démontre aussi $A$
+                    \[
+                        \inferrule*[Right={$\neg_{\text{élim}}$}]{\Gamma \vdash \neg A \\ \Gamma \vdash A}{\Gamma \vdash \bot}
+                    \]
+                \end{indt}
+
+                \vspace{12pt}
+                
+                $\bullet$ Exemple de démonstration :
+                \[
+                    \inferrule*[Right={$\wedge_{\rm intro}$}]{
+                        \inferrule*[Right={$$}]{
+                            \inferrule*[Right={$$}]{
+                                \inferrule*[Right={$$}]{
+                                    \inferrule*[Right=ax.]{ }{\neg A, A \vdash \neg A}
+                                    \\
+                                    \inferrule*[Right=ax.]{ }{\neg A, A \vdash A}
+                                }
+                                {\neg A, A \vdash \bot}
+                            }
+                            {\neg A \vdash A \rightarrow \bot}
+                        }
+                        {\vdash \neg A \rightarrow A \rightarrow \bot}
+                        \\
+                        \inferrule*[Right={$$}]{
+                            \inferrule*[Right={$$}]{
+                                \inferrule*[Right={$$}]{
+                                    \inferrule*[Right=ax.]{ }{A \rightarrow \bot, A \vdash A \rightarrow \bot}
+                                    \\
+                                    \inferrule*[Right=ax.]{ }{A \rightarrow \bot, A \vdash A}
+                                }
+                                {A \rightarrow \bot, A \vdash \bot}
+                            }
+                            {A \rightarrow \bot \vdash \neg A}
+                        }
+                        {\vdash (A \rightarrow \bot) \rightarrow \neg A}
+                    }
+                    {\vdash \neg A \leftrightarrow (A \rightarrow \bot)}
+                \]
+
+                \[
+                    \inferrule*[Right={$\rightarrow_{\rm intro}$}]{
+                        \inferrule*[Right={$\rightarrow_{\rm intro}$}]{
+                            \inferrule*[Right={$\vee_{\text{élim}}$}]{
+                                \inferrule*[Right=ax.]{ }{\Gamma \vdash (C \rightarrow A) \vee (C \rightarrow B)}
+                                \\
+                                \inferrule*[Right={$\vee_{\text{intro}_g}$}, rightskip=-10pt]{
+                                    \inferrule*[Right={$\rightarrow_{\text{élim}}$}]{
+                                        \inferrule*[Right=ax.]{ }{\Gamma, C \rightarrow A \vdash C \rightarrow A}
+                                        \\
+                                        \inferrule*[Right=ax.]{ }{\Gamma, C \rightarrow A \vdash C}
+                                    }
+                                    {\Gamma, C \rightarrow A \vdash A}
+                                }
+                                {\Gamma, C \rightarrow A \vdash A \vee B}
+                                \\
+                                \inferrule*[Right={$\vee_{\text{intro}_d}$}]{
+                                    \inferrule*[Right={$\rightarrow_{\text{élim}}$}]{
+                                        \inferrule*[Right=ax.]{ }{\Gamma, C \rightarrow B \vdash C \rightarrow B}
+                                        \\
+                                        \inferrule*[Right=ax.]{ }{\Gamma, C \rightarrow B \vdash C}
+                                    }
+                                    {\Gamma, C \rightarrow B \vdash B}
+                                }
+                                {\Gamma, C \rightarrow B \vdash A \vee B}
+                            }
+                            {\Gamma = \lr{(C \rightarrow A) \vee (C \rightarrow B), C} \vdash A \vee B}
+                        }
+                        {(C \rightarrow A) \vee (C \rightarrow B) \vdash C \rightarrow A \vee B}
+                    }
+                    {\vdash (C \rightarrow A) \vee (C \rightarrow B) \rightarrow (C \rightarrow A \vee B)}
+                \]
+
+                Pour démontrer la réciproque, on aimerait distinguer les cas où $C$ est vraie ou $C$ est fausse, car dans le cas où $C$ est fausse, on peut démontrer toute implication $C \rightarrow D$ et dans le cas où $C$ est vraie, on peut faire une disjonction de cas selon que $A$ ou $B$ est vraie.
+
+                La formule $C \vee \neg C$, appelée \emph{tiers exclu}, n'est démontrable qu'en logique classique.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Déduction naturelle classique, cas propositionnel}}
+                La différence entre la logique classique et intuitionniste est la réponse que l'on apporte à la question \simplecit{Ne pas être faux, est-ce être vrai ?}
+
+                Une certitude : une formule vraie n'est pas fausse :
+                \[
+                    \inferrule*[Right={$\rightarrow_{\rm intro}$}]{
+                        \inferrule*[Right={$\neg_{\rm intro}$}]{
+                            \inferrule*[Right={$\neg_{\text{élim}}$}]{
+                                \inferrule*[Right=ax.]{ }{A, \neg A \vdash \neg A}
+                                \\
+                                \inferrule*[Right=ax.]{ }{A, \neg A \vdash A}
+                            }
+                            {A, \neg A \vdash \bot}
+                        }
+                        {A \vdash \neg \neg A}
+                    }
+                    {\vdash A \rightarrow \neg \neg A}
+                \]
+
+                On remarque que la réciproque est le principe du raisonnement par l'absurde.
+
+                $\bullet$ Règles de la déduction naturelle classique :
+
+                Il suffit de remplacer $\bot_{\text{élim}}$ par
+                \[
+                    \inferrule*[Right=RAA]{\Gamma, \neg A \vdash \bot}{\Gamma \vdash A}
+                \]
+                (\textit{Reductio Ad Absurdum})
+
+                \[
+                    \inferrule*[Right=RAA]{
+                        \inferrule*[Right={$\neg_{\text{élim}}$}]{
+                            \inferrule*[Right=ax.]{ }{\neg (A \vee \neg A) \vdash \neg (A \vee \neg A)}
+                            \\
+                            \inferrule*[Right={$\vee_{\text{intro}_d}$}]{
+                                \inferrule*[Right={$\neg_{\rm intro}$}]{
+                                    \inferrule*[Right={$\neg_{\text{élim}}$}]{
+                                        \inferrule*[right={$\vee_{\text{intro}_g}$}]{
+                                            \inferrule*[Right=ax.]{ }{\Gamma \vdash A}
+                                        }
+                                        {\Gamma \vdash A \vee \neg A}
+                                        \\
+                                        \inferrule*[Right=ax.]{ }{\Gamma \vdash \neg (A \vee \neg A)}
+                                    }
+                                    {\Gamma = \lr{\neg (A \vee \neg A), A} \vdash \bot}
+                                }
+                                {\neg (A \vee \neg A) \vdash \neg A}
+                            }
+                            {\neg (A \vee \neg A) \vdash A \vee \neg A}
+                        }
+                        {\neg (A \vee \neg A) \vdash \bot}
+                    }
+                    {\vdash A \vee \neg A}
+                \]
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Déduction naturelle pour la logique du premier ordre}}
+                \begin{indt}{$\bullet$ On doit ajouter des règles pour les quantificateurs. Elles sont les mêmes dans les cas classiques et intuitionniste :}
+                    \begin{indt}{$-$ Règles du quantificateur}
+                        $+$ Introduction : pour démontrer $\forall x\ A$, on introduit un $x$ quelconque (\simplecit{soit $x$}), et on démontre $A$
+                        \[
+                            \inferrule*[Right={$\forall_{\rm intro}$}]{\Gamma \vdash A \quad x \notin \mathrm{FV}(\Gamma)}{\Gamma \vdash \forall x\ A}
+                        \]
+
+                        La condition $x \notin \mathrm{FV}(\Gamma)$ exprime le fait que $x$ est bien quelconque : il n'entre pas en conflit avec une variable pour laquelle on dispose d'hypothèses.
+
+                        \vspace{6pt}
+                        
+                        $+$ \'Elimination : de $\forall x\ A$, on peut déduire $A$ pour n'importe quelle valeur de $x$
+                        \[
+                            \inferrule*[Right={$\forall_{\text{élim}}$}]{\Gamma \vdash \forall x\ A}{\Gamma \vdash A[x := t]}
+                        \]
+
+                        Ici, $t$ est un terme quelconque de votre choix.
+                    \end{indt}
+
+                    \vspace{6pt}
+                    
+                    \begin{indt}{$-$ Règles du quantificateur existentiel :}
+                        $+$ Introduction : pour démontrer $\exists x\ A$, il suffit d'exhiber une valeur de $x$ qui rend $A$ démontrable.
+                        \[
+                            \inferrule*[Right={$\exists_{\text{intro}}$}]{\Gamma \vdash A[x := t]}{\Gamma \vdash \exists x\ A}
+                        \]
+
+                        $+$ \'Elimination : si on a démontré $\exists x\ A$, on peut se donner un $x$ tel que $A$ est vraie et poursuivre le raisonnement
+                        \[
+                            \inferrule*[Right={$\exists_{\text{élim}}$}]{\Gamma \vdash \exists x\ A \\ \Gamma, A \vdash B \\ x \notin \mathrm{FV}(\Gamma, B)}{\Gamma \vdash B}
+                        \]
+
+                        Ici aussi, $x$ ne doit pas pas être en conflit avec des variables déjà introduites.
+                    \end{indt}
+                \end{indt}
+
+                \vspace{12pt}
+                
+                $\bullet$ Exemple : on illustre l'importance de la condition de fraîcheur des noms à l'aide d'une preuve fausse :
+                \[
+                    \inferrule*[Right={$\rightarrow_{\rm intro}$}]{
+                        \inferrule*[Right={$\exists_{\rm intro} [x := x]$}]{
+                            \inferrule*[Right={$\wedge_{\rm intro}$}]{
+                                \inferrule*[right={$\exists_{\text{élim}} \text{!!}$}]{
+                                    \inferrule*[right={$\wedge_{\text{élim}_g}$}, rightskip=20pt]{
+                                        \inferrule*[Right=ax.]{ }{\Gamma \vdash \exists x\ A(x) \wedge \exists x\ B(x)}
+                                    }
+                                    {\Gamma \vdash \exists x\ A(x)}
+                                    \\
+                                    \inferrule*[Right=ax.]{ }{\Gamma, A(x) \vdash A(x)}
+                                }
+                                {\Gamma = \lr{\exists x\ A(x) \wedge \exists x\ B(x)} \vdash A(x)}
+                                \\
+                                \inferrule*{\cdots}{\exists x\ A(x) \wedge \exists x\ B(x) \vdash B(x)}
+                            }
+                            {\exists x\ A(x) \wedge \exists x\ B(x) \vdash A(x) \wedge B(x)}
+                        }
+                        {\exists x \ A(x) \wedge \exists x\ B(x) \vdash \exists x\ (A(x) \wedge B(x))}
+                    }
+                    {\vdash (\exists x\ A(x) \wedge \exists x\ B(x)) \rightarrow \exists x\ (A(x) \wedge B(x))}
+                \]
+
+                $-$ Une preuve correcte :
+                \[
+                    \inferrule*[Right={$\neg_{\rm intro}$}]{
+                        \inferrule*[Right={$\exists_{\text{élim}}$}]{
+                            \inferrule*[Right=ax.]{ }{\Gamma \vdash \exists x\ \neg A}
+                            \\
+                            \inferrule*[Right={$\neg_{\text{élim}}$}]{
+                                \inferrule*[Right=ax.]{ }{\Gamma, \neg A \vdash \neg A}
+                                \\
+                                \inferrule*[Right={$\forall_{\text{élim}}$}]{
+                                    \inferrule*[Right=ax.]{ }{\Gamma, \neg A \vdash \forall x\ A}
+                                }
+                                {\Gamma, \neg A \vdash A}
+                            }
+                            {\Gamma, \neg A \vdash \bot}
+                            \\
+                            x \notin \mathrm{FV}(\Gamma, \bot)
+                        }
+                        {\Gamma = \lr{\forall x\ A, \exists x\ \neg A} \vdash \bot}
+                    }
+                    {\forall x\ A \vdash \neg \exists x\ \neg A}
+                \]
             \end{indt}
         \end{indt}
     \end{indt}
