@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2022.11.24
+% Last modification     :   2022.11.25
 %
 %------------------------------------------------------------------------
 
@@ -661,9 +661,9 @@
                 $\bullet$ Exemple de démonstration :
                 \[
                     \inferrule*[Right={$\wedge_{\rm intro}$}]{
-                        \inferrule*[Right={$$}]{
-                            \inferrule*[Right={$$}]{
-                                \inferrule*[Right={$$}]{
+                        \inferrule*[Right={$\rightarrow_{\rm intro}$}, rightskip=-10pt]{
+                            \inferrule*[Right={$\rightarrow_{\rm intro}$}]{
+                                \inferrule*[Right={$\neg_{\text{élim}}$}]{
                                     \inferrule*[Right=ax.]{ }{\neg A, A \vdash \neg A}
                                     \\
                                     \inferrule*[Right=ax.]{ }{\neg A, A \vdash A}
@@ -674,9 +674,9 @@
                         }
                         {\vdash \neg A \rightarrow A \rightarrow \bot}
                         \\
-                        \inferrule*[Right={$$}]{
+                        \inferrule*[Right={$\rightarrow_{\rm intro}$}]{
                             \inferrule*[Right={$$}]{
-                                \inferrule*[Right={$$}]{
+                                \inferrule*[Right={$\rightarrow_{\text{élim}}$}]{
                                     \inferrule*[Right=ax.]{ }{A \rightarrow \bot, A \vdash A \rightarrow \bot}
                                     \\
                                     \inferrule*[Right=ax.]{ }{A \rightarrow \bot, A \vdash A}
