@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2022.11.25
+% Last modification     :   2022.11.27
 %
 %------------------------------------------------------------------------
 
@@ -417,7 +417,7 @@
                 
                 $\bullet$ Définition (\emph{dérivation}) : étant donné un système de règles d'inférences, une assertion est dite \emph{dérivable} si et seulement si elle est la conclusion d'un axiome ou d'une règle dont les prémisses sont dérivables.
 
-                Cette définition inductive permet de définir la notion d'\emph{arbre de dérivation} : un dérivation de l'assertion $A$ est un arbre étiqueté par des règles d'inférence telles que $A$ est la conclusion de l'étiquette de la racine, les feuilles sont étiquetées par des axiomes, et pour tout n\oe ud interne, les prémisses de son étiquette sont les conclusions des étiquettes des ses fils.
+                Cette définition inductive permet de définir la notion d'\emph{arbre de dérivation} : une dérivation de l'assertion $A$ est un arbre étiqueté par des règles d'inférence telles que $A$ est la conclusion de l'étiquette de la racine, les feuilles sont étiquetées par des axiomes, et pour tout n\oe ud interne, les prémisses de son étiquette sont les conclusions des étiquettes des ses fils.
             \end{indt}
 
             \vspace{12pt}
@@ -431,7 +431,7 @@
             \vspace{12pt}
             
             \begin{indt}{\subsubsection{Séquents}}
-                $\bullet$ Définition : On note $F$ l'ensemble des formules logiques (propositionnelles, ou du premier ordre, ou autre).
+                $\bullet$ Définition (\emph{séquent}) : On note $F$ l'ensemble des formules logiques (propositionnelles, ou du premier ordre, ou autre).
 
                 On appelle \emph{séquent} tout couple $(\Gamma, A) \in \mathcal P_{\rm f}(F) \times F\ $ (où $\mathcal P_{\rm f}(F)$ : parties finies de $F$).
 
@@ -477,7 +477,7 @@
             \vspace{12pt}
             
             \begin{indt}{\subsubsection{Arbre de preuve}}
-                $\bullet$ Définition (\emph{règle d'inférence}) une règle d'inférence pour la déduction naturelle ou pour tout autre système basé sur les séquents asymétriques est une règle d'inférence au sens de \ref{1.2.1} (page \pageref{1.2.1}), utilisant les séquents comme assertions.
+                $\bullet$ Définition (\emph{règle d'inférence}) : une règle d'inférence pour la déduction naturelle ou pour tout autre système basé sur les séquents asymétriques est une règle d'inférence au sens de \ref{1.2.1} (page \pageref{1.2.1}), utilisant les séquents comme assertions.
                 C'est donc une règle de la forme
                 \[
                     \inferrule{\Gamma_1 \vdash A_1 \\ \cdots \\ \Gamma_n \vdash A_n}{\Gamma \vdash A}
@@ -633,9 +633,13 @@
                     $-$ \'Elimination : on ne peut rien déduire de la vérité, donc pas de règle.
                 \end{indt}
 
+                \vspace{6pt}
+                
                 \begin{indt}{$\bullet$ Règles de l'antilogie :}
-                    $-$ Introduction : on ne doit pas pouvoir démontrer de contradiction : pas de règle
+                    $-$ Introduction : on ne doit pas pouvoir démontrer de contradiction : pas de règle.
 
+                    \vspace{6pt}
+                    
                     $-$ \'Elimination : du faux, on peut tout déduire. C'est le principe d'\emph{explosion} (\textit{ex falso quadlilet} en latin)
                     \[
                         \inferrule*[Right={$\bot_{\text{élim}}$}]{\Gamma \vdash \bot}{\Gamma \vdash A}
@@ -675,7 +679,7 @@
                         {\vdash \neg A \rightarrow A \rightarrow \bot}
                         \\
                         \inferrule*[Right={$\rightarrow_{\rm intro}$}]{
-                            \inferrule*[Right={$$}]{
+                            \inferrule*[Right={$\neg_{\text{intro}}$}]{
                                 \inferrule*[Right={$\rightarrow_{\text{élim}}$}]{
                                     \inferrule*[Right=ax.]{ }{A \rightarrow \bot, A \vdash A \rightarrow \bot}
                                     \\
@@ -789,7 +793,7 @@
             \vspace{12pt}
             
             \begin{indt}{\subsubsection{Déduction naturelle pour la logique du premier ordre}}
-                \begin{indt}{$\bullet$ On doit ajouter des règles pour les quantificateurs. Elles sont les mêmes dans les cas classiques et intuitionniste :}
+                \begin{indt}{$\bullet$ On doit ajouter des règles pour les quantificateurs. Elles sont les mêmes dans les cas classique et intuitionniste :}
                     \begin{indt}{$-$ Règles du quantificateur}
                         $+$ Introduction : pour démontrer $\forall x\ A$, on introduit un $x$ quelconque (\simplecit{soit $x$}), et on démontre $A$
                         \[
@@ -830,7 +834,7 @@
                 $\bullet$ Exemple : on illustre l'importance de la condition de fraîcheur des noms à l'aide d'une preuve fausse :
                 \[
                     \inferrule*[Right={$\rightarrow_{\rm intro}$}]{
-                        \inferrule*[Right={$\exists_{\rm intro} [x := x]$}]{
+                        \inferrule*[Right={$\exists_{\rm intro} [x := x]$}, rightskip=-20pt]{
                             \inferrule*[Right={$\wedge_{\rm intro}$}]{
                                 \inferrule*[right={$\exists_{\text{élim}} \text{!!}$}]{
                                     \inferrule*[right={$\wedge_{\text{élim}_g}$}, rightskip=20pt]{
