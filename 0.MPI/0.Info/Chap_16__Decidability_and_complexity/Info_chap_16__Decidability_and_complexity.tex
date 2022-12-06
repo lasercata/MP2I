@@ -1,0 +1,595 @@
+\documentclass[a4paper, 12pt, twoside]{article}
+
+
+%------------------------------------------------------------------------
+%
+% Author                :   Lasercata
+% Last modification     :   2022.12.06
+%
+%------------------------------------------------------------------------
+
+
+%------ini
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+%\usepackage[english]{babel}
+
+
+%------geometry
+\usepackage[textheight=700pt, textwidth=500pt]{geometry}
+
+
+%------color
+\usepackage{xcolor}
+\definecolor{ff4500}{HTML}{ff4500}
+\definecolor{00f}{HTML}{0000ff}
+\definecolor{0ff}{HTML}{00ffff}
+\definecolor{656565}{HTML}{656565}
+
+%\renewcommand{\emph}{\textcolor{ff4500}}
+%\renewcommand{\em}{\color{ff4500}}
+
+\newcommand{\Emph}{\textcolor{ff4500}}
+
+\newcommand{\strong}[1]{\textcolor{ff4500}{\bf #1}}
+\newcommand{\st}{\color{ff4500}\bf}
+
+
+%------Code highlighting
+%---listings
+\usepackage{listings}
+
+\definecolor{cbg}{HTML}{272822}
+\definecolor{cfg}{HTML}{ececec}
+\definecolor{ccomment}{HTML}{686c58}
+\definecolor{ckw}{HTML}{f92672}
+\definecolor{cstring}{HTML}{e6db72}
+\definecolor{cstringlight}{HTML}{98980f}
+\definecolor{lightwhite}{HTML}{fafafa}
+
+\lstdefinestyle{DarkCodeStyle}{
+    backgroundcolor=\color{cbg},
+    commentstyle=\itshape\color{ccomment},
+    keywordstyle=\color{ckw},
+    numberstyle=\tiny\color{cbg},
+    stringstyle=\color{cstring},
+    basicstyle=\ttfamily\footnotesize\color{cfg},
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=4,
+    xleftmargin=\leftskip
+}
+
+\lstdefinestyle{LightCodeStyle}{
+    backgroundcolor=\color{lightwhite},
+    commentstyle=\itshape\color{ccomment},
+    keywordstyle=\color{ckw},
+    numberstyle=\tiny\color{cbg},
+    stringstyle=\color{cstringlight},
+    basicstyle=\ttfamily\footnotesize\color{cbg},
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=10pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=4,
+    frame=L,
+    xleftmargin=\leftskip
+}
+
+%\lstset{style=DarkCodeStyle}
+\lstset{style=LightCodeStyle}
+%Usage : \begin{lstlisting}[language=Caml, xleftmargin=xpt] ... \end{lstlisting}
+
+
+%---Algorithm
+\usepackage[linesnumbered,ruled,vlined]{algorithm2e}
+\SetKwInput{KwInput}{Input}
+\SetKwInput{KwOutput}{Output}
+
+\SetKwProg{Fn}{Function}{:}{}
+\SetKw{KwPrint}{Print}
+
+\newcommand\commfont[1]{\textit{\texttt{\textcolor{656565}{#1}}}}
+\SetCommentSty{commfont}
+\SetProgSty{texttt}
+\SetArgSty{textnormal}
+\SetFuncArgSty{textnormal}
+%\SetProgArgSty{texttt}
+
+\newenvironment{indalgo}[2][H]{
+    \begin{algoBox}
+        \begin{algorithm}[#1]
+            \caption{#2}
+}
+{
+        \end{algorithm}
+    \end{algoBox}
+}
+
+
+%---tcolorbox
+\usepackage[many]{tcolorbox}
+\DeclareTColorBox{emphBox}{O{black}O{lightwhite}}{
+    breakable,
+    outer arc=0pt,
+    arc=0pt,
+    top=0pt,
+    toprule=-.5pt,
+    right=0pt,
+    rightrule=-.5pt,
+    bottom=0pt,
+    bottomrule=-.5pt,
+    colframe=#1,
+    colback=#2,
+    enlarge left by=10pt,
+    width=\linewidth-\leftskip-10pt,
+}
+
+\DeclareTColorBox{algoBox}{O{black}O{lightwhite}}{
+    breakable,
+    arc=0pt,
+    top=0pt,
+    toprule=-.5pt,
+    right=0pt,
+    rightrule=-.5pt,
+    bottom=0pt,
+    bottomrule=-.5pt,
+    left=0pt,
+    leftrule=-.5pt,
+    colframe=#1,
+    colback=#2,
+    width=\linewidth-\leftskip-10pt,
+}
+
+
+%-------make the table of content clickable
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=black
+}
+
+
+%------pictures
+\usepackage{graphicx}
+%\usepackage{wrapfig}
+
+\usepackage{tikz}
+%\usetikzlibrary{babel}             %Uncomment this to use circuitikz
+%\usetikzlibrary{shapes.geometric}  % To draw triangles in trees
+%\usepackage{circuitikz}            %Electrical circuits drawing
+
+
+%------tabular
+%\usepackage{color}
+%\usepackage{colortbl}
+%\usepackage{multirow}
+
+
+%------Physics
+%---Packages
+%\usepackage[version=4]{mhchem} %$\ce{NO4^2-}$
+
+%---Commands
+\newcommand{\link}[2]{\mathrm{#1} \! - \! \mathrm{#2}}
+\newcommand{\pt}[1]{\cdot 10^{#1}} % Power of ten
+\newcommand{\dt}[2][t]{\dfrac{\mathrm d #2}{\mathrm d #1}} % Derivative
+
+
+%------math
+%---Packages
+%\usepackage{textcomp}
+%\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools} % For abs
+\usepackage{stmaryrd} %for \llbracket and \rrbracket
+\usepackage{mathrsfs} %for \mathscr{x} (different from \mathcal{x})
+
+%---Commands
+%-Sets
+\newcommand{\N}{\mathbb{N}} %set N
+\newcommand{\Z}{\mathbb{Z}} %set Z
+\newcommand{\Q}{\mathbb{Q}} %set Q
+\newcommand{\R}{\mathbb{R}} %set R
+\newcommand{\C}{\mathbb{C}} %set C
+\newcommand{\U}{\mathbb{U}} %set U
+\newcommand{\seg}[2]{\left[ #1\ ;\ #2 \right]}
+\newcommand{\nset}[2]{\left\llbracket #1\ ;\ #2 \right\rrbracket}
+
+%-Exponantial / complexs
+\newcommand{\e}{\mathrm{e}}
+\newcommand{\cj}[1]{\overline{#1}} %overline for the conjugate.
+
+%-Vectors
+\newcommand{\vect}{\overrightarrow}
+\newcommand{\veco}[3]{\displaystyle \vect{#1}\binom{#2}{#3}} %vector + coord
+
+%-Limits
+\newcommand{\lm}[2][{}]{\lim\limits_{\substack{#2 \\ #1}}} %$\lm{x \to a} f$ or $\lm[x < a]{x \to a} f$
+\newcommand{\Lm}[3][{}]{\lm[#1]{#2} \left( #3 \right)} %$\Lm{x \to a}{f}$ or $\Lm[x < a]{x \to a}{f}$
+\newcommand{\tendsto}[1]{\xrightarrow[#1]{}}
+
+%-Integral
+\newcommand{\dint}[4][x]{\displaystyle \int_{#2}^{#3} #4 \mathrm{d} #1} %$\dint{a}{b}{f(x)}$ or $\dint[t]{a}{b}{f(t)}$
+
+%-left right
+\newcommand{\lr}[1]{\left( #1 \right)}
+\newcommand{\lrb}[1]{\left[ #1 \right]}
+\newcommand{\lrbb}[1]{\left\llbracket #1 \right\rrbracket}
+\newcommand{\set}[1]{\left\{ #1 \right\}}
+\newcommand{\abs}[1]{\left\lvert #1 \right\rvert}
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
+\newcommand{\lrangle}[1]{\left\langle #1 \right\rangle}
+
+%-Others
+\newcommand{\para}{\ /\!/\ } %//
+\newcommand{\ssi}{\ \Leftrightarrow \ }
+\newcommand{\eqsys}[2]{\begin{cases} #1 \\ #2 \end{cases}}
+
+\newcommand{\med}[2]{\mathrm{med} \left[ #1\ ;\ #2 \right]}  %$\med{A}{B} -> med[A ; B]$
+\newcommand{\Circ}[2]{\mathscr{C}_{#1, #2}}
+
+\renewcommand{\le}{\leqslant}
+\renewcommand{\ge}{\geqslant}
+
+\newcommand{\oboxed}[1]{\textcolor{ff4500}{\boxed{\textcolor{black}{#1}}}} %orange boxed
+
+\newcommand{\rboxed}[1]{\begin{array}{|c} \hline #1 \\ \hline \end{array}} %boxed with right opened
+\newcommand{\lboxed}[1]{\begin{array}{c|} \hline #1 \\ \hline \end{array}} %boxed with left opened
+
+\newcommand{\orboxed}[1]{\textcolor{ff4500}{\rboxed{\textcolor{black}{#1}}}} %orange right boxed
+\newcommand{\olboxed}[1]{\textcolor{ff4500}{\lboxed{\textcolor{black}{#1}}}} %orange left boxed
+
+
+%------commands
+%---to quote
+\newcommand{\simplecit}[1]{\guillemotleft$\;$#1$\;$\guillemotright}
+\newcommand{\cit}[1]{\simplecit{\textcolor{656565}{#1}}}
+\newcommand{\quo}[1]{\cit{\it #1}}
+
+%---to indent
+\newcommand{\ind}[1][20pt]{\advance\leftskip + #1}
+\newcommand{\deind}[1][20pt]{\advance\leftskip - #1}
+
+%---to indent a text
+\newcommand{\indented}[2][20pt]{\par \ind[#1] #2 \par \deind[#1]}
+\newenvironment{indt}[2][20pt]{#2 \par \ind[#1]}{\par \deind} %Titled indented env
+
+%---title
+\newcommand{\thetitle}[2]{\begin{center}\textbf{{\LARGE \underline{\Emph{#1} :}} {\Large #2}}\end{center}}
+
+%---Maths environments
+%-Proofs
+\newenvironment{proof}[1][{}]{\begin{indt}{$\square$ #1}}{$\blacksquare$ \end{indt}}
+
+%-Maths parts (proposition, definition, ...)
+\newenvironment{mathpart}[1]{\begin{indt}{\boxed{\text{\textbf{#1}}}}}{\end{indt}}
+\newenvironment{mathbox}[1]{\boxed{\text{\textbf{#1}}}\begin{emphBox}}{\end{emphBox}}
+\newenvironment{mathul}[1]{\begin{indt}{\underline{\textbf{#1}}}}{\end{indt}}
+
+\newenvironment{theo}{\begin{mathpart}{Théorème}}{\end{mathpart}}
+\newenvironment{Theo}{\begin{mathbox}{Théorème}}{\end{mathbox}}
+
+\newenvironment{prop}{\begin{mathpart}{Proposition}}{\end{mathpart}}
+\newenvironment{Prop}{\begin{mathbox}{Proposition}}{\end{mathbox}}
+\newenvironment{props}{\begin{mathpart}{Propriétés}}{\end{mathpart}}
+
+\newenvironment{defi}{\begin{mathpart}{Définition}}{\end{mathpart}}
+\newenvironment{meth}{\begin{mathpart}{Méthode}}{\end{mathpart}}
+
+\newenvironment{Rq}{\begin{mathul}{Remarque :}}{\end{mathul}}
+\newenvironment{Rqs}{\begin{mathul}{Remarques :}}{\end{mathul}}
+
+\newenvironment{Ex}{\begin{mathul}{Exemple :}}{\end{mathul}}
+\newenvironment{Exs}{\begin{mathul}{Exemples :}}{\end{mathul}}
+
+
+%------Sections
+% To change section numbering :
+% \renewcommand\thesection{\Roman{section}}
+% \renewcommand\thesubsection{\arabic{subsection})}
+% \renewcommand\thesubsubsection{\textit \alph{subsubsection})}
+
+% To start numbering from 0
+% \setcounter{section}{-1}
+
+
+%------page style
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+
+\setlength{\headheight}{18pt}
+\setlength{\footskip}{50pt}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE, RO]{\textit{\textcolor{black}{\today}}}
+\fancyhead[RE, LO]{\large{\textsl{\Emph{\texttt{\jobname}}}}}
+
+\fancyfoot[RO, LE]{\textit{\texttt{\textcolor{black}{Page \thepage /}\pageref{LastPage}}}}
+\fancyfoot[LO, RE]{\includegraphics[scale=0.12]{/home/lasercata/Pictures/1.images_profil/logo/mieux/lasercata_logo_fly_fond_blanc.png}}
+
+
+%------init lengths
+\setlength{\parindent}{0pt} %To avoid using \noindent everywhere.
+\setlength{\parskip}{3pt}
+
+
+%---------------------------------Begin Document
+\begin{document}
+    
+    \thetitle{Chapitre 16}{Décidabilité et complexité}
+    
+    \tableofcontents
+    \newpage
+    
+    \begin{indt}{\section{Décidabilité}}
+        \begin{indt}{\subsection{Modèles de calcul et universalité}}
+            \begin{indt}{\subsubsection{Introduction}}
+                L'objet de ce chapitre es l'étude de ce qu'il est possible de calculer avec un algorithme, avec ou sans contrainte de complexité temporelle.
+
+                Afin de pouvoir énoncer précisément des propriétés, il faut une définition formelle de la notion d'algorithme.
+            \end{indt}
+
+            \begin{indt}{\subsubsection{Modèles de calcul historiques (H.P)}}
+                $\bullet$ Nous avons vu dans le chapitre 14 plusieurs modèles de calcul, dont certains étaient équivalents (AFD, AFND, $\varepsilon$-AFND) et d'autres plus généraux (grammaires non contextuelle).
+                On peut se demander s'il existe un modèle de calcul le plus général, capable de caractériser ce qu'il est possible de calculer mécaniquement.
+
+                $\bullet$ Plusieurs modèles de calcul ont étés proposés dans les années 1930, et se sont révélés équivalents et plus généraux que les modèles précédents : les machines de \textsc{Turing}, et le $\lambda$-calcul de \textsc{Church}.
+
+                Les modèles les plus généraux conçus ultérieurement, comme les fonctions récursives, sont équivalents à ces deux modèles et on admet l'hypothèse, nommée thèse de \textsc{Church}--\textsc{Turing}, que ces modèles caractérisent vraiment la notion d'algorithme.
+                On dit aujourd'hui qu'un langage de programmation est \emph{Turing-complet} s'il est capable d'écrire les mêmes algorithmes que ceux impémentables par machine de \textsc{Turing}.
+
+                \vspace{6pt}
+                
+                $\bullet$ machine de \textsc{Turing} : informellement, une machine de \textsc{Turing} est une machine finie travaillant sur un ruban infini qui lui sert de mémoire.
+                La machine dispose d'une tête de lecture lui permettant d'accéder à une case du ruban et de règles de transition décrivant les opérations réalisées sur les cases et les déplacements de la tête de lecture.
+
+                \begin{center}
+                    \begin{tabular}{ccccccccccc}
+                        \hline
+                        $\cdots$ & \vline & $u_1$ & \vline & $u_2$ & \vline & $\cdots$ & \vline & $u_n$ & \vline & $\cdots$
+                        \\
+                        \hline
+                                 &&&& $\uparrow$
+                        \\
+                                 &&& \multicolumn{3}{c}{machine}
+                    \end{tabular}
+                \end{center}
+
+                \`A la manière des automates, les machines de \textsc{Turing} ont un ensemble fini d'états, d'où la définition suivante :
+
+                \begin{emphBox}
+                    Une machine de \textsc{Turing} est un octuplet
+                    \[
+                        \lr{\Sigma, \Gamma, B, Q, q_0, q_a, q_r, \delta}
+                    \]
+                    où
+
+                    $-$ $\Sigma$ est l'alphabet d'entrée 
+
+                    ....................................................
+
+                    $-$ $\Gamma$ est l'alphabet de ruban, ou de travail, tel que $\Sigma \subseteq \Gamma$ ;
+
+                    $-$ $B \in \Gamma \setminus \Sigma$ est le symbole "blanc" représantant les cases vides ;
+
+                    $-$ $Q$ est un ensemble fini non vide d'états ;
+
+                    $-$ $q_0 \in Q$ est l'état initial ;
+
+                    $-$ $q_a, q_r \in Q$ sont les états finaux de la machine : $q_a$ est appelé l'état acceptant, $q_r$ l'état rejetant ;
+
+                    $-$ $\delta$ est la fonction de transition :
+                    \[
+                        \begin{array}{ccccc}
+                            \delta
+                            & : & \lr{Q \setminus \set{q_a, q_r}} \times \Gamma
+                            & \longrightarrow & Q \times \Gamma \times \set{\leftarrow, \rightarrow}
+                            \\
+                            && (q, a)
+                            & \longmapsto
+                            & (q', b, d)
+                        \end{array}
+                    \]
+                \end{emphBox}
+
+                Si $\delta(q, a) = (q', b, d)$, alors lorsque la machine lit le symbole $a$ sur le ruban en étant dans l'état $q$, elle écrit le symbole $b$ à la place, déplace sa tête de lecture selon le déplacement $d$ et passe dans l'état $q'$.
+
+                La machine accepte un mot $u \in \Sigma^*$ si et seulement si, en partant de l'état initial avec le ruban $B^\infty u B^\infty$ et la tête de lecture sur la première de $u$ (si elle existe), l'exécution mène à l'état $q_a$. Elle rejette $u$ si et seulement si elle atteint l'état $q_r$ et elle peut également ne pas terminer.
+
+                \vspace{6pt}
+                
+                Une machine de \textsc{Turing} peut aussi calculer une fonction : l'argument est placé sur le ruban et le contenu du ruban à la fin de l'exécution est le résultat de la fonction.
+
+                \vspace{12pt}
+                
+                $\bullet$ Exemple :
+                \[
+                    M = \lr{\set{0, 1}, \set{0, 1, B}, B, \set{q_0, q_1, q_2, q_a, q_r}, q_0, q_a, q_r, \delta}
+                \]
+                où $\delta$ est définie par la table :
+                \begin{center}
+                    \begin{tabular}{c|ccc}
+                        & 0 & 1 & $B$
+                        \\
+                        \hline
+                        $q_0$ & $(q_0, 0, \rightarrow)$ & $(q_1, 1, \rightarrow)$ & $(q_a, B, \leftarrow)$
+                        \\
+                        $q_1$ & $(q_1, 0, \rightarrow)$ & $(q_1, 1, \rightarrow)$ & $(q_2, B, \leftarrow)$
+                        \\
+                        $q_2$ & $(q_a, B, \rightarrow)$ & $(q_a, B, \rightarrow)$ & /
+                    \end{tabular}
+                \end{center}
+
+                \begin{tabular}{c|c|c|c|c}
+                    \hline
+                    $\cdots$ & 0 & 0 & 0 & $\cdots$
+                    \\
+                    \hline
+                             &&& $\uparrow$
+                \end{tabular}
+                 ...................
+
+                 Cette machine de \textsc{Turing} calcule la fonction
+                 \[
+                     \begin{array}{ccc}
+                         \set{0, 1}^* & \longrightarrow & \set{0, 1}^*
+                         \\
+                         x & \longmapsto & y
+                     \end{array}
+                 \]
+                 avec $\lrangle y _2 = \floor{\dfrac{\lrangle x _2} 2}$
+
+                 On dit plus généralement que la machine calcule
+                 \[
+                     \begin{array}{ccc}
+                         \N & \longrightarrow & \N
+                         \\
+                         n & \longmapsto \floor{\dfrac n 2}
+                     \end{array}
+                 \]
+
+                 De même, si on supprime $q_2$ et on remplace $\delta$ par la table
+
+                 ......
+
+                 On obtient une machine qui reconnaît le langage $\set{u \in \set{0, 1}^*\ |\ \lrangle u _2 \equiv 0\ [2]}$.
+
+                 Autrement dit, la machine calcule $1/2\N$
+
+                 \vspace{12pt}
+                 
+                 $\bullet$ Les modèles du $\lambda$-calcul et des machines de \textsc{Turing} sont pertinents pour l'étude théorique de la calculabilité grâce à leur "simplicité", mais ne sont pas pratiques pour l'écriture d'algorithmes concrets. C'est pourquoi on utilise en général un modèle différent pour l'écriture des algorithmes.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Modèle de calcul au programme de la MPI}}
+                Le modèle de calcul considéré est celui d'un programme C ou OCaml qui s'exécute sur une machine à mémoire infinie.
+
+                En particulier, il n'y a jamais de dépassement de capacité de la pile d'exécution et on peut toujours allouer de la mémoire sur le tas.
+
+                Il est aisé de simuler une machine de \textsc{Turing} avec un programme C ou OCaml.
+                Le sens réciproque est beaucoup plus difficile.
+
+                Nous appelons \emph{algorithme} tout objet qui est un programme C ou OCaml, une machine de \textsc{Turing}, ou un $\lambda$-calcul.
+
+                On s'autorisera l'usage du pseudo-code pour l'écriture d'algorithmes.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Caclulabilité}}
+                Le terme \emph{fonction} étant ambigu (fonction mathématique, fonctions dans un programme), on utilisera ce terme uniquement pour les fonctions mathématiques. Un algorithme peut être vu comme une réalisation d'une fonction mathématique partielle : celle qui à chaque entrée de l'algorithme sur la pile d'exécution se termine associe la valeur de retour de l'algorithme.
+
+                \vspace{12pt}
+                
+                $\bullet$ Définition (\emph{fonction calculable}) : une fonction $f : A \longrightarrow B$ est dite \emph{calculable} s'il existe un algorithme $M$ tel que $\forall a \in A$, l'exécution de $M$ sur $a$ termine en temps fini, et renvoie $f(a)$.
+
+                \vspace{12pt}
+                
+                $\bullet$ Remarque :
+
+                $-$ Il est "facile" de montrer qu'une fonction est calculable : il "suffit" d'exhiber un algorithme qui convient.
+
+                Il est en revanche beaucoup plus difficile de montrer qu'une fonction n'est pas calculable : il faut montrer qu'aucun algorithme ne peut convenir.
+
+                \vspace{6pt}
+                
+                \begin{indt}{$-$ On va se limiter aux fonctions de $\N \longrightarrow \N$. En effet :}
+                    $+$ si $A$ est fini, on peut se contenter de tabuler les valeurs de $f$ et d'écrire un algorithme qui va chercher dans la table la bonne valeur.
+
+                    $+$ Si $A$ est indémontrable, on a un problème de représentation de l'entrée : on a besoin de représentation infinies, ce qui est peu pertinent dans l'optique d'étudier ce qu'une machine réelle peut calculer.
+
+                    $+$ On utilise en général des encodages pour représenter les données manipulées et un encodage binaire peut être vu comme un entier non signé (donc un entier naturel).
+                \end{indt}
+
+                \vspace{12pt}
+                
+                $\bullet$ Proposition :
+
+                \begin{emphBox}
+                    Il existe une infinité de fonctions non calculables.
+                \end{emphBox}
+
+                \vspace{6pt}
+                
+                \begin{proof}
+                    Il suffit de montrer que $\N^\N$ est indénombrable car l'ensemble des algorithmes est dénombrable (l'ensemble des codes sources s'injecte dans l'ensemble des chaînes de caractères, dénombrable).
+
+                    $\N^\N$ est indénombrable car $\set{0, 1}^\N$ l'est déjà d'après le théorème de \textsc{Cantor} (on voit une fonction $\N \longrightarrow \set{0, 1}$ comme la fonction indicatrice d'une partie de $\N$).
+
+                    \vspace{12pt}
+                    
+                    Argument diagonal (pour montrer que $\set{0, 1}^\N$ n'est pas dénombrable) : on suppose que $\set{0, 1}^\N$ est dénombrable. Alors on peut numéroter les suites de $\set{0, 1}$ :
+                    \[
+                        \begin{array}{ccccc}
+                            s_0 & 0 & 0 & 0 & \cdots
+                            \\
+                            s_1 & 1 & 0 & 0 & \cdots
+                            \\
+                            s_2 & 1 & 1 & 1 & \cdots
+                            \\
+                            \vdots
+                        \end{array}
+                    \]
+
+                    On a $\lr{s_n}_{n \in \N} \in \lr{\set{0, 1}^\N}^\N$.
+                    Soit $\forall n \in \N,\ u_n = 1 - s_n$. Alors :
+                    \[
+                        \lr{u_n}_{n \in \N} \in \set{0, 1}^\N
+                    \]
+
+                    Mais $\forall n \in \N,\ s_n \neq \lr{u_k}_{k \in \N}$ : absurde.
+                \end{proof}
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Universalité}}
+                $\bullet$ On utilise souvent un argument diagonal pour montrer qu'une fonction n'est pas calculable : on procède par l'absurde en supposant l'existence d'un algorithme $M$ convenable et en construisant un algorithme qui utilise $M$, souvent en faisant référence à son propre code source, pour aboutir à une absurdité (\textit{cf} \ref{1.2.4}, page \pageref{1.2.4}).
+
+                \begin{indt}{Ce type de démonstration nécessite deux propriétés essentielles :}
+                    $-$ L'autoréférence, \textit{i.e} la possibilité de faire référence à son propre code source. C'est possible car l'ensemble des algorithmes est dénombrable : on peut faire référence à un algorithme par son numéro.
+
+                    $-$ La simulation : il faut pouvoir simuler l'exécution d'un algorithme afin d'exploiter le résultat.
+                \end{indt}
+
+                \vspace{12pt}
+                
+                $\bullet$ Théorème :
+                \begin{emphBox}
+                    Il existe un algorithme, appelé machine universelle, d'entrée un algorithme $M$ et une entrée $x$ pour $M$, qui simule l'exécution de $M$ sur $x$.
+                \end{emphBox}
+
+                \begin{proof}
+                    (démonstration informelle)
+
+                    On passe par les machines de \textsc{Turing}.
+
+                    Comme les machines à plusieurs rubans sont équivalentes aux machines à un ruban, on construit une machine qui a le code de $M$ sur son ruban d'entrée, l'état courant de $M$ dans l'exécution sur $x$, dans un deuxième ruban et le ruban de travail de $M$ dans un troisième ruban.
+                \end{proof}
+            \end{indt}
+        \end{indt}
+    \end{indt}
+    
+\end{document}
+%--------------------------------------------End
