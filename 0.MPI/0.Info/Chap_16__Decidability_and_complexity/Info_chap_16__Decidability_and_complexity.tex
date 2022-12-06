@@ -439,14 +439,209 @@
                     \end{tabular}
                 \end{center}
 
-                \begin{tabular}{c|c|c|c|c}
-                    \hline
-                    $\cdots$ & 0 & 0 & 0 & $\cdots$
-                    \\
-                    \hline
-                             &&& $\uparrow$
-                \end{tabular}
-                 ...................
+                Avec $\lrangle{000}_2$ en entrée :
+                \[
+                    \begin{array}{ccc}
+                        \begin{array}{ccccccccc}
+                            q_0
+                            \\
+                            \hline
+                            \cdots & \vline & 0 & \vline & 0 & \vline & 0 & \vline & \cdots
+                            \\
+                            \hline
+                            && \uparrow
+                        \end{array}
+                        &
+                        &
+                        \begin{array}{ccccccccc}
+                            q_0
+                            \\
+                            \hline
+                            \cdots & \vline & \Emph 0 & \vline & 0 & \vline & 0 & \vline & \cdots
+                            \\
+                            \hline
+                            &&&&  \uparrow
+                        \end{array}
+                        \\
+                        \begin{array}{ccccccccc}
+                            q_0
+                            \\
+                            \hline
+                            \cdots
+                            & \vline & 0 & \vline & \Emph 0 & \vline & 0 & \vline & \cdots
+                            \\
+                            \hline
+                            &&&&&& \uparrow
+                        \end{array}
+                        &
+                        &
+                        \begin{array}{ccccccccc}
+                            q_0
+                            \\
+                            \hline
+                            \cdots
+                            & \vline & 0 & \vline & 0 & \vline & \Emph 0 & \vline & \cdots
+                            \\
+                            \hline
+                            &&&&&&&&  \uparrow
+                        \end{array}
+                        \\
+                        \begin{array}{ccccccccc}
+                            q_a
+                            \\
+                            \hline
+                            \cdots
+                            & \vline & 0 & \vline & 0 & \vline & 0 & \vline & \cdots
+                            \\
+                            \hline
+                            &&&&&& \uparrow
+                        \end{array}
+                    \end{array}
+                \]
+
+                Avec $\lrangle{010}_2$ en entrée :
+                \[
+                    \begin{array}{ccc}
+                        \begin{array}{ccccccccc}
+                            q_0
+                            \\
+                            \hline
+                            \cdots & \vline & 0 & \vline & 1 & \vline & 0 & \vline & \cdots
+                            \\
+                            \hline
+                            && \uparrow
+                        \end{array}
+                        &
+                        &
+                        \begin{array}{ccccccccc}
+                            q_0
+                            \\
+                            \hline
+                            \cdots & \vline & \Emph 0 & \vline & 1 & \vline & 0 & \vline & \cdots
+                            \\
+                            \hline
+                            &&&&  \uparrow
+                        \end{array}
+                        \\
+                        \begin{array}{ccccccccc}
+                            q_1
+                            \\
+                            \hline
+                            \cdots
+                            & \vline & 0 & \vline & \Emph 1 & \vline & 0 & \vline & \cdots
+                            \\
+                            \hline
+                            &&&&&& \uparrow
+                        \end{array}
+                        &
+                        &
+                        \begin{array}{ccccccccc}
+                            q_1
+                            \\
+                            \hline
+                            \cdots
+                            & \vline & 0 & \vline & 1 & \vline & \Emph 0 & \vline & \cdots
+                            \\
+                            \hline
+                            &&&&&&&&  \uparrow
+                        \end{array}
+                        \\
+                        \begin{array}{ccccccccc}
+                            q_2
+                            \\
+                            \hline
+                            \cdots
+                            & \vline & 0 & \vline & 1 & \vline & 0 & \vline & \cdots
+                            \\
+                            \hline
+                            &&&&&& \uparrow
+                        \end{array}
+                        &
+                        &
+                        \begin{array}{ccccccccc}
+                            q_a
+                            \\
+                            \hline
+                            \cdots
+                            & \vline & 0 & \vline & 1 & \vline &  & \vline & \cdots
+                            \\
+                            \hline
+                            &&&&&&&& \uparrow
+                        \end{array}
+                    \end{array}
+                \]
+
+                Avec $\lrangle{111}_2$ en entrée :
+                \[
+                    \begin{array}{ccc}
+                        \begin{array}{ccccccccc}
+                            q_0
+                            \\
+                            \hline
+                            \cdots & \vline & 1 & \vline & 1 & \vline & 1 & \vline & \cdots
+                            \\
+                            \hline
+                            && \uparrow
+                        \end{array}
+                        &
+                        &
+                        \begin{array}{ccccccccc}
+                            q_1
+                            \\
+                            \hline
+                            \cdots & \vline & \Emph 1 & \vline & 1 & \vline & 1 & \vline & \cdots
+                            \\
+                            \hline
+                            &&&&  \uparrow
+                        \end{array}
+                        \\
+                        \begin{array}{ccccccccc}
+                            q_1
+                            \\
+                            \hline
+                            \cdots
+                            & \vline & 1 & \vline & \Emph 1 & \vline & 1 & \vline & \cdots
+                            \\
+                            \hline
+                            &&&&&& \uparrow
+                        \end{array}
+                        &
+                        &
+                        \begin{array}{ccccccccc}
+                            q_1
+                            \\
+                            \hline
+                            \cdots
+                            & \vline & 1 & \vline & 1 & \vline & \Emph 1 & \vline & \cdots
+                            \\
+                            \hline
+                            &&&&&&&&  \uparrow
+                        \end{array}
+                        \\
+                        \begin{array}{ccccccccc}
+                            q_2
+                            \\
+                            \hline
+                            \cdots
+                            & \vline & 1 & \vline & 1 & \vline & 1 & \vline & \cdots
+                            \\
+                            \hline
+                            &&&&&& \uparrow
+                        \end{array}
+                        &
+                        &
+                        \begin{array}{ccccccccc}
+                            q_a
+                            \\
+                            \hline
+                            \cdots
+                            & \vline & 1 & \vline & 1 & \vline &  & \vline & \cdots
+                            \\
+                            \hline
+                            &&&&&&&& \uparrow
+                        \end{array}
+                    \end{array}
+                \]
 
                  Cette machine de \textsc{Turing} calcule la fonction
                  \[
@@ -468,8 +663,16 @@
                  \]
 
                  De même, si on supprime $q_2$ et on remplace $\delta$ par la table
-
-                 ......
+                 \[
+                     \begin{array}{c|ccc}
+                         & 0 & 1 & B
+                         \\
+                         \hline
+                         q_0 & (q_0, 0, \rightarrow) & (q_0, 1, \rightarrow) & (q_1, B, \leftarrow)
+                         \\
+                         q_1 & (q_a, 0, \rightarrow) & (q_r, 1, \rightarrow) & /
+                     \end{array}
+                 \]
 
                  On obtient une machine qui reconnaît le langage $\set{u \in \set{0, 1}^*\ |\ \lrangle u _2 \equiv 0\ [2]}$.
 
