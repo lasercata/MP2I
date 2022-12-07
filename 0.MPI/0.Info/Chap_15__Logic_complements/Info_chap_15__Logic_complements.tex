@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2022.11.27
+% Last modification     :   2022.12.07
 %
 %------------------------------------------------------------------------
 
@@ -877,6 +877,568 @@
                     }
                     {\forall x\ A \vdash \neg \exists x\ \neg A}
                 \]
+            \end{indt}
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Théorème de complétude}}
+            \begin{indt}{\subsubsection{Introduction}}
+                Le théorème de complétude de la déduction naturelle exprime l'équivalence entre le fait pour une formule d'être démontrable et celui d'être sémantiquement vraie.
+                Comme la sémantique de la logique du premier ordre est H.P, on se limitera au cas propositionnel.
+                On le démontre en deux temps : d'abord la correction de la déduction (toute formule démontrable est une tautologie), puis sa complétude (toute tautologie est démontrable).
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Théorème (correction de la déduction naturelle, cas propositionnel)}}
+                \begin{emphBox}
+                    Soit $A$ une formule propositionnelle.
+
+                    Si $\vdash A$, alors $\vDash A$.
+                \end{emphBox}
+
+                \vspace{6pt}
+                
+                \begin{proof}
+                    On montre $\forall \Gamma, A$, si $\Gamma \vdash A$, alors $\vDash A$ par induction sur une dérivation de $\Gamma \vdash A$ en faisant une disjonction de cas selon la dernière règle.
+
+                    \vspace{6pt}
+                    
+                    $\bullet$ $\inferrule*[right=ax]{A \in \Gamma}{\Gamma \vdash A}$ :
+                    Si $d$ est un modèle de $\Gamma$, alors comme $A \in \Gamma$, on sait que $\lrbb A _d = V$.
+
+                    Donc $\Gamma \vDash A$.
+
+                    \vspace{6pt}
+                    
+                    $\bullet$ $\inferrule*[right={$\rightarrow_{\rm intro}$}]{\Gamma, A \vdash B}{\Gamma \vdash A \rightarrow B}$ :
+                    Soit $d$ un modèle de $\Gamma$.
+
+                    $-$ Si $\lrbb A _d = V$, alors $d$ est un modèle de $\Gamma, A$, donc par H.I, $\lrbb B _d = V$, donc par définition de l'implication, $\lrbb{A \rightarrow B}_d = V$.
+
+                    $-$ Si $\lrbb A _d = F$, $\lrbb{A \rightarrow B}_d = V$ par définition.
+
+                    Donc $\Gamma \vDash A \rightarrow B$.
+
+                    \vspace{6pt}
+                    
+                    $\bullet$ $\inferrule*[right={$\rightarrow_{\text{élim}}$}]{\Gamma \vdash A \rightarrow B \\ \Gamma \vdash A}{\Gamma \vdash B}$ :
+                    Si $d$ est un modèle de $\Gamma$, alors $\lrbb{A \rightarrow B}_d = V = \lrbb{A}_d$ par H.I.
+
+                    Donc $\lrbb B _d = V$ par définition de $\lrbb{A \rightarrow B}_d$.
+
+                    Donc $\Gamma \vDash B$.
+
+                    \vspace{6pt}
+                    
+                    $\bullet$ $\inferrule*[right={$\vee_{\text{élim}}$}]{\Gamma \vdash A \vee B \\ \Gamma , A \vdash C \\ \Gamma, B \vdash C}{\Gamma \vdash C}$ :
+                    Soit $d$ un modèle de $\Gamma$. Par H.I, $\lrbb{A \vee B}_d = V$, donc par définition, $\lrbb A _d = V$ ou $\lrbb B _d = V$
+
+                    $-$ Si $\lrbb A _d = V$, $d$ est un modèle de $\Gamma, A$, donc par H.I, $\lrbb C _d = V$.
+
+                    $-$ Si $\lrbb B _d = V$, de même $\lrbb C _d = V$.
+
+                    Donc $\Gamma \vDash C$.
+
+                    \vspace{6pt}
+                    
+                    $\bullet$ $\inferrule*[right={RAA}]{\Gamma, \neg A \vdash \bot}{\Gamma \vdash A}$ :
+                    Soit $d$ un modèle de $\Gamma$.
+
+                    $-$ Si $\lrbb A _d = V$, ok.
+
+                    $-$ Si $\lrbb A _d = F$, alors par définition $\lrbb{\neg A}_d = V$, donc $d$ est un modèle de $\Gamma, \neg A$, donc par H.I, $\lrbb \bot _d = V$ : absurde.
+
+                    Donc $\Gamma \vDash A$.
+
+                    \vspace{6pt}
+                    
+                    $\bullet$ Ect. \boxed{\rm Exo}.
+                \end{proof}
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Théorème (complétude de la déduction naturelle, cas propositionnel)}}
+                \begin{emphBox}
+                    Soit $A$ une formule propositionnelle.
+
+                    Si $\vDash A$, alors $\vdash A$.
+                \end{emphBox}
+
+                \vspace{12pt}
+                
+                \begin{proof}
+                    Pour toute formule $A$ et toute valuation (distribution de vérité) $d$, on note $\varphi(A, d)$ la formule
+                    \[
+                        \varphi(A, d)
+                        =
+                        \bigwedge_{i = 1}^n \delta(X_i, d)
+                    \]
+
+                    où :
+
+                    $-$ $X_1, \ldots, X_n$ sont les variables de $A$ dans leur ordre d'apparition dans un parcours en profondeur de l'arbre représentant $A$ (avec répétition) ;
+
+                    $-$ $\forall i \in \nset 1 n$,
+                    \[
+                        \delta(X_i, d)
+                        =
+                        \begin{cases}
+                            X_i
+                            & \text{si}\ \lrbb{X_i}_d = V
+                            \\
+                            \neg X_i
+                            & \text{sinon}
+                        \end{cases}
+                    \]
+
+                    Exemple : $A = ((X \wedge Y) \rightarrow Z) \vee \neg X$,
+                    $d = \set{(X, V), (Y, F), (Z, F)}$, alors
+                    $\varphi(A, d) = X \wedge \neg Y \wedge \neg Z \wedge X$.
+
+                    \vspace{6pt}
+                    
+                    $\bullet$ Lemme 1 :
+                    \begin{emphBox}
+                        $\forall A, B$, et $\forall \oplus \in \set{\rightarrow, \vee, \wedge}$ connecteur, $\forall d$ valuation,
+                        \[
+                            \begin{array}{rcl}
+                                \vdash \varphi(A \oplus B, d)
+                                &\leftrightarrow& \varphi(A, d) \wedge \varphi(B, d)
+                                \\
+                                \vdash \varphi(\neg A, d)
+                                &\leftrightarrow& \varphi(A, d)
+                            \end{array}
+                        \]
+                    \end{emphBox}
+
+                    \begin{proof}
+                        On remarque que $\varphi(\neg A, d) = \varphi(A, d)$ \boxed{\rm Exo}.
+
+                        Si $A, B$ ont toutes deux des variables,
+                        \[
+                            \varphi(A \oplus B, d) = \varphi(A, d) \wedge \varphi(B, d)
+                        \]
+                        (à associativité de $\wedge$ près)
+
+                        Si $A$ n'a pas de variable, $\varphi(A \oplus B, d) = \varphi(B, d)$.
+
+                        Si $B$ n'a pas de variable, $\varphi(A \oplus B, d) = \varphi(A, d)$.
+
+                        Il suffit donc de démontrer que pour toute formule $C$,
+                        \[
+                            \begin{array}{l}
+                                \vdash C \leftrightarrow C
+                                \\
+                                \vdash C \leftrightarrow \top \wedge C
+                                \\
+                                \vdash C \leftrightarrow C \wedge \top
+                            \end{array}
+                        \]
+
+                        \[
+                            \inferrule*[Right={$\wedge_{\rm intro}$}]{
+                                \inferrule*[Right={$\rightarrow_{\rm intro}$}, rightskip=-10pt]{
+                                    \inferrule*[Right=ax]{ }{C \vdash C}
+                                }
+                                {\vdash C \rightarrow C}
+                                \\
+                                \inferrule*[Right={$\rightarrow_{\rm intro}$}]{
+                                    \inferrule*[Right=ax]{ }{C \vdash C}
+                                }
+                                {\vdash C \rightarrow C}
+                            }
+                            {\vdash C \leftrightarrow C}
+                        \]
+
+                        \[
+                            \inferrule*[Right={$\wedge_{\text{intro}}$}]{
+                                \inferrule*[Right={$\rightarrow_{\rm intro}$}, rightskip=-10pt]{
+                                    \inferrule*[Right={$\wedge_{\rm intro}$}]{
+                                        \inferrule*[Right={$\top_{\rm intro}$}, rightskip=-10pt]{ }{C \vdash \top}
+                                        \\
+                                        \inferrule*[Right={ax}]{ }{C \vdash C}
+                                    }
+                                    {C \vdash \top \wedge C}
+                                }
+                                {\vdash C \rightarrow \top \wedge C}
+                                \\
+                                \inferrule*[Right={$\rightarrow_{\rm intro}$}]{
+                                    \inferrule*[Right={$\wedge_{\text{élim}_d}$}]{
+                                        \inferrule*[Right={ax}]{ }{\top \wedge C \vdash \top \wedge C}
+                                    }
+                                    {\top \wedge C \vdash C}
+                                }
+                                {\vdash \top \wedge C \rightarrow C}
+                            }
+                            {\vdash C \leftrightarrow \top \wedge C}
+                        \]
+
+                        $\vdash C \leftrightarrow C \wedge \top$ en \boxed{\rm Exo}.
+                    \end{proof}
+
+                    \vspace{12pt}
+                    
+                    $\bullet$ Lemme 2 :
+                    \begin{emphBox}
+                        $\forall A$, et $\forall d$ valuation,
+                        \[
+                            \varphi(A, d) \vdash
+                            \begin{cases}
+                                A
+                                & \text{si}\ \lrbb A _d = V
+                                \\
+                                \neg A
+                                & \text{si}\ \lrbb A _d = F
+                            \end{cases}
+                        \]
+                    \end{emphBox}
+
+                    \vspace{6pt}
+                    
+                    \begin{proof}
+                        Par induction sur $A$ :
+
+                        $-$ $A = \top$ : $\lrbb A _d = V$, et
+                        \[
+                            \inferrule*[Right={$\top_{\rm intro}$}]{ }{\varphi(A, d) \vdash A}
+                        \]
+
+                        $-$ $A = \bot$ : $\lrbb A _d = F$, et
+                        \[
+                            \inferrule*[Right={$\neg_{\rm intro}$}]{
+                                \inferrule*[Right=ax]{ }{\varphi(A, d), \bot \vdash \bot}
+                            }
+                            {\varphi(A, d) \vdash \neg \bot}
+                        \]
+
+                        $-$ $A = X$ : si $\lrbb A _d = V$, alors $\varphi(A, d) = X$, et $\inferrule*[Right=ax]{ }{X \vdash X}$
+
+                        Si $\lrbb A _d = F$, alors $\varphi(A, d) = \neg X$, et $\inferrule*[right=ax]{ }{\neg X \vdash \neg X}$.
+
+                        \vspace{6pt}
+                        
+                        $-$ $A = \neg B$ :
+                        si $\lrbb A _d = V$, alors par définition $\lrbb B _d = F$, donc par H.I, $\underbrace{\varphi(B, d)}_{= \varphi(A, d)} \vdash \underbrace{\neg B}_{= A}$
+
+                        Si $\lrbb A _d = F$, alors $\lrbb B _d = V$, donc par H.I, $\underbrace{\varphi(B, d)}_{= \varphi(A, d)} \vdash B$
+
+                        \[
+                            \inferrule*[Right={$\neg_{\rm intro}$}]{
+                                \inferrule*[Right={$\neg_{\text{élim}}$}]{
+                                    \inferrule*[Right=ax]{ }{\varphi(A, d), A \vdash \neg B}
+                                    \\
+                                    \varphi(A, d), A \vdash B
+                                }
+                                {\varphi(A, d), A \vdash \bot}
+                            }
+                            {\varphi(A, d) \vdash \neg A}
+                        \]
+
+                        \vspace{6pt}
+                        
+                        $-$ $A = B \oplus C$, où $\oplus \in \set{\rightarrow, \vee, \wedge}$
+
+                        Par le lemme 1, il suffit de démontrer $\varphi(B, d), \varphi(C, d) \vdash B \oplus C$ ou $\neg (B \oplus C)$ (selon le cas).
+
+                        En effet, si $\vdash \varphi \leftrightarrow \varphi_1 \wedge \varphi_2$ et $\varphi_1, \varphi_2 \vdash \psi$, alors :
+                        \[
+                            \inferrule*[Right={$\rightarrow_{\text{élim}}$}]{
+                                \inferrule*[Right={$\rightarrow_{\rm intro}$}, rightskip=-10pt]{
+                                    \inferrule*[Right={$\rightarrow_{\text{élim}}$}]{
+                                        \inferrule*[Right={$\rightarrow_{\mathrm{intro}}$}, rightskip=-7pt]{
+                                            \inferrule*[Right={aff}, fraction={===}]{
+                                                \varphi_1, \varphi_2 \vdash \psi
+                                            }
+                                            {\varphi, \varphi_1 \wedge \varphi_2, \varphi_1 \vdash \psi}
+                                        }
+                                        {\varphi, \varphi_1 \wedge \varphi_2 \vdash \varphi_1 \rightarrow \psi}
+                                        \\
+                                        \inferrule*[Right={$\wedge_{\text{élim}_g}$}]{
+                                            \inferrule*[Right=ax]{ }
+                                            {\varphi, \varphi_1 \wedge \varphi_2 \vdash \varphi_1 \wedge \varphi_2}
+                                        }
+                                        {\varphi, \varphi_1 \wedge \varphi_2 \vdash \varphi_1}
+                                    }
+                                    {\varphi, \varphi_1 \wedge \varphi_2 \vdash \psi}
+                                }
+                                {\varphi \vdash \varphi_1 \wedge \varphi_2 \rightarrow \psi}
+                                \\
+                                \inferrule*[Right={$\rightarrow_{\text{élim}}$}]{
+                                    \inferrule*[Right={$\wedge_{\text{élim}_g}$}, rightskip=-5pt]{
+                                        \inferrule*[Right={aff}, fraction={===}]{
+                                            \vdash \varphi \leftrightarrow \varphi_1 \wedge \varphi_2
+                                        }
+                                        {\varphi \vdash \varphi \leftrightarrow \varphi_1 \wedge \varphi_2}
+                                    }
+                                    {\varphi \vdash \varphi \rightarrow \varphi_1 \wedge \varphi_2}
+                                    \\
+                                    \inferrule*[Right={ax}]{ }
+                                    {\varphi \vdash \varphi}
+                                }
+                                {\varphi \vdash \varphi_1 \wedge \varphi_2}
+                            }
+                            {\varphi \vdash \psi}
+                        \]
+
+                        $+$ Si $\oplus = V$, et $\lrbb{B \vee C}_d = V$, on doit montrer $\varphi(B, d), \varphi(C, d) \vdash B \vee C$
+
+                        Par définition, soit $\lrbb B _d = V$, soit $\lrbb C _d = V$.
+
+                        Si $\lrbb B _d = V$, alors par H.I, $\varphi(B, d) \vdash B$.
+
+                        \[
+                            \inferrule*[Right=aff, fraction={===}]{
+                                \inferrule*[Right={$\vee_{\text{intro}_g}$}, fraction={---}]{
+                                    \varphi(B, d) \vdash B
+                                }
+                                {\varphi(B, d) \vdash B \vee C}
+                            }
+                            {\varphi(B, d), \varphi(C, d) \vdash B \vee C}
+                        \]
+
+                        De même si $\lrbb C _d = V$.
+
+                        \vspace{6pt}
+                        
+                        $+$ Si $\oplus = V$ et $\lrbb{B \vee C}_d = F$, on doit montrer $\varphi(B, d), \varphi(C, d) \vdash \neg (B \vee C)$.
+
+                        Par définition, $\lrbb{B}_d = F = \lrbb C _d$, donc par H.I,
+                        \[
+                            \begin{cases}
+                                \varphi(B, d) \vdash \neg B
+                                \\
+                                \varphi(C, d) \vdash \neg C
+                            \end{cases}
+                        \]
+
+                        \[
+                            \inferrule*[Right={$\neg_{\rm intro}$}]{
+                                \inferrule*[Right={$\vee_{\text{élim}}$}]{
+                                    \inferrule*[Right=ax]{ }{\Gamma \vdash B \vee C}
+                                    \\
+                                    \inferrule*[Right={$\neg_{\text{élim}}$}]{
+                                        \inferrule*[Right={aff}, fraction={===}]{
+                                            \varphi(B, d) \vdash \neg B
+                                        }
+                                        {\Gamma, B \vdash \neg B}
+                                        \\
+                                        \inferrule*[Right=ax]{ }
+                                        {\Gamma, B \vdash B}
+                                    }
+                                    {\Gamma, B \vdash \bot}
+                                    \\
+                                    \inferrule*[Right={$\neg_{\text{élim}}$}]{
+                                        \inferrule*[Right={aff}, fraction={===}]{
+                                            \varphi(C, d) \vdash \neg C
+                                        }
+                                        {\Gamma, C \vdash \neg C}
+                                        \\
+                                        \inferrule*[Right=ax]{ }
+                                        {\Gamma, C \vdash C}
+                                    }
+                                    {\Gamma, C \vdash \bot}
+                                }
+                                {\Gamma = (\varphi(B, d), \varphi(C, d), B \vee C) \vdash \bot}
+                            }
+                            {\varphi(B, d), \varphi(C, d) \vdash \neg (B \vee C)}
+                        \]
+
+                        + etc. \boxed{\rm Exo}
+                    \end{proof}
+
+                    \vspace{12pt}
+                    
+                    $\bullet$ Lemme 3 :
+                    \begin{emphBox}
+                        Si $A$ est une tautologie, alors
+                        \[
+                            \bigvee_{d} \varphi(A, d) \vdash A
+                        \]
+                    \end{emphBox}
+
+                    \vspace{6pt}
+                    
+                    \begin{proof}
+                        On numérote les valuations et on montre $\displaystyle \bigvee_{i = 1}^n \varphi(A, d_i) \vdash A$.
+
+                        On montre par récurrence finie que $\forall k \in \nset 1 n,\ \displaystyle \bigvee_{i = 1}^n \varphi(A, d_i) \vdash A$.
+
+                        \vspace{6pt}
+                        
+                        $*$ $k = 1$ $\varphi(A, d_1) \vdash A$ vrai car $\lrbb A _{d_1} = V$ ($A$) est une tautologie + lemme 2.
+
+                        \vspace{6pt}
+                        
+                        $*$ Hérédité :
+
+                        Si $\displaystyle \bigvee_{i = 1}^k \varphi(A, d_i) \vdash A$
+
+                        \[
+                            \inferrule*[Right={$\vee_{\text{élim}}$}]{
+                                \inferrule*[Right=ax]{ }{\bigvee_{i = A}^{k + 1} \varphi(A, d_i \vdash \bigvee_{i=1}^{k + 1} \varphi(A, d_i))}
+                                \\
+                                \inferrule*[Right=aff, fraction={===}]{
+                                    \bigvee_{i = 1}^k \varphi(A, d_i) \vdash A
+                                }
+                                {\bigvee_{i = 1}^{k + 1} \varphi(A, d_i), \bigvee_{i = 1}^{k} \varphi(A, d_i) \vdash A}
+                                \\
+                                \inferrule*[Right=aff, fraction={===}]{
+                                    \inferrule*[fraction={---}]{\text{lemme 2}}{\varphi(A, d_{k + 1}) \vdash A}
+                                }
+                                {\bigvee_{i = 1}^{k + 1} \varphi(A, d_i), \varphi(A, d_{k + 1}) \vdash A \vphantom{\dfrac{\dfrac {\dfrac a a} a}a}}
+                            }
+                            {\bigvee_{i = 1}^{k + 1} \varphi(A, d_i) \vdash A}
+                        \]
+                    \end{proof}
+
+                    \vspace{12pt}
+                    
+                    $\bullet$ Lemme 4 :
+                    \begin{emphBox}
+                        $\forall A$,
+                        \[
+                            \bigvee_d \varphi(A, d)
+                        \]
+                        est démontrable
+                    \end{emphBox}
+
+                    \vspace{6pt}
+                    
+                    Le lemme permet de conclure : si $\vDash A$, alors
+                    \[
+                        \inferrule*[Right={$\rightarrow_{\text{élim}}$}]{
+                            \inferrule*[Right={$\rightarrow_{\rm intro}$}, rightskip=-10pt]{
+                                \inferrule*{\text{lemme 3 car}\ \vDash A}
+                                {\bigvee_d \varphi(A, d) \vdash A}
+                            }
+                            {\vdash \bigvee_d \varphi(A, d) \rightarrow A}
+                            \\
+                            \inferrule*{\text{lemme 4}}{\vdash \bigvee_d \varphi(A, d)}
+                        }
+                        {\neg A}
+                    \]
+
+                    \vspace{12pt}
+                    
+                    \begin{proof}
+                        (lemme 4) : on procède par récurrence sur le nombre de variables de $A$.
+
+                        $*$ Pas de variable : $\forall d, \varphi(A, d) = \top$, donc
+
+                        \[
+                            \inferrule*[Right={$\vee_{\text{intro}_d}$}]{
+                                \inferrule*[Right={$\top_{\rm intro}$}]{ }{\vdash \top}
+                            }
+                            {\vdash \bigvee_d \varphi(A, d)}
+                        \]
+
+                        $*$ Hérédité :
+                        si la propriété est vraie pour toute formule à $n \in \N$ variables,
+
+                        Soit $A$ une formule à $n + 1$ variables $X_1, \ldots, X_{n + 1}$ dans l'ordre d'apparition.
+
+                        \[
+                            \begin{array}{rcl}
+                                \forall d, \ \varphi(A, d)
+                                &=& \displaystyle \bigwedge_{i = 1}^{n + 1} \delta(X_i, d)
+                                \vspace{6pt}
+                                \\
+                                &=& \displaystyle
+                                \lr{\bigwedge_{i = 1}^n \delta(X_i, d) } \wedge \delta(X_{n + 1}, d)
+                                \vspace{6pt}
+                                \\
+                                &=& \displaystyle
+                                \varphi\!\lr{\bigwedge_{i = 1}^n X_i, d} \wedge \delta(X_{n + 1}, d)
+                            \end{array}
+                        \]
+
+                        $\displaystyle \bigvee_d \varphi(A, d) = \bigvee_d \lr{\varphi\!\lr{\bigwedge_{i = 1}^n X_i, d} \wedge \delta(X_{n + 1}, d)}$
+
+                        Donc
+                        \[
+                            \vdash \bigvee_d \varphi(A, d)
+                            \leftrightarrow
+                            \lr{\bigvee_{\substack{d \\ d(X_{n + 1}) = V}} \lr{\varphi\!\lr{\bigwedge_{i = 1}^n X_i, d} \wedge X_{n + 1}}}
+                            \wedge
+                            \lr{\bigvee_{\substack{d \\ d(X_{n + 1}) = F}} \lr{\varphi\!\lr{\bigwedge_{i = 1}^n X_i, d} \wedge \neg X_{n + 1}}}
+                        \]
+                        (commutativité + commutativité disjonction + récurrence)
+
+                        Donc
+                        \[
+                            \vdash \bigvee_d \varphi(A, d)
+                            \leftrightarrow
+                            \lr{X_{n + 1} \wedge \bigvee_{\substack{d \\ d(X_{n + 1}) = V}} \lr{\varphi\!\lr{\bigwedge_{i = 1}^n X_i, d}}}
+                            \wedge
+                            \lr{\neg X_{n + 1} \wedge \bigvee_{\substack{d \\ d(X_{n + 1}) = F}} \lr{\varphi\!\lr{\bigwedge_{i = 1}^n X_i, d}}}
+                        \]
+
+                        On remarque que
+                        \[
+                            \bigvee_{\substack{d \\ d(X_{n + 1}) = V}} \varphi\!\lr{\bigwedge_{i = 1}^n X_i, d}
+                            =
+                            \bigvee_{\substack{d \\ d(X_{n + 1}) = F}} \varphi\!\lr{\bigwedge_{i = 1}^n X_i, d}
+                        \]
+
+                        Comme pour tout $B$, $\vdash B \vee B \leftrightarrow B$, on a alors :
+                        \[
+                            \vdash
+                            \bigvee_d \varphi(A, d)
+                            \leftrightarrow
+                            \underbrace{
+                                \lr{
+                                    X_{n + 1}
+                                    \wedge
+                                    \overbrace{
+                                        \bigvee_d \varphi\!\lr{\bigwedge_{i = 1}^n X_i, d}
+                                    }^C
+                                }
+                                \vee
+                                \lr{
+                                    \neg X_{n + 1}
+                                    \wedge
+                                    \bigvee_d \varphi\!\lr{\bigwedge_{i = 1}^n X_i, d}
+                                }
+                            }_{B}
+                        \]
+
+                        \[
+                            \inferrule*[Right={$\rightarrow_{\text{élim}}$}]{
+                                \inferrule*[Right={$\wedge_{\text{élim}_d}$}, rightskip=-10pt]{
+                                    \vdash \bigvee_d \varphi(A, d) \leftrightarrow B
+                                }
+                                {\vdash B \rightarrow \bigvee_d \varphi(A, d)}
+                                \\
+                                \inferrule*{
+                                    \inferrule*[rightskip=20pt]{
+                                        \text{tiers exclus}
+                                    }
+                                    {\vdash X_{n + 1} \vee \neg X_{n + 1}}
+                                    \\
+                                    \inferrule*[rightskip=20pt]{
+                                        \inferrule*{
+                                            \inferrule*[Right=ax]{ }{X_{n + 1} \vdash X_{n + 1}}
+                                            \\
+                                            \inferrule*[fraction={===}]{
+                                                \inferrule*[fraction={---}]{\text{H.R}}{\vdash C}
+                                            }
+                                            {X_{n + 1} \vdash C}
+                                        }
+                                        {X_{n + 1} \vdash X_{n + 1} \wedge C}
+                                    }
+                                    {X_{n + 1} \vdash B}
+                                    \\
+                                    \inferrule*{\text{idem}}{\neg X_{n + 1} \vdash B}
+                                }
+                                {\vdash B}
+                            }
+                            {\vdash \bigvee_d \varphi(A, d)}
+                        \]
+                    \end{proof}
+                \end{proof}
             \end{indt}
         \end{indt}
     \end{indt}
