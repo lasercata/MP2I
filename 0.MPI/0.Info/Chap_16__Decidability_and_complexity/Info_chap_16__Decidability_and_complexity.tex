@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2022.12.06
+% Last modification     :   2022.12.08
 %
 %------------------------------------------------------------------------
 
@@ -701,6 +701,8 @@
             \vspace{12pt}
             
             \begin{indt}{\subsubsection{Caclulabilité}}
+                \label{1.1.4}
+
                 Le terme \emph{fonction} étant ambigu (fonction mathématique, fonctions dans un programme), on utilisera ce terme uniquement pour les fonctions mathématiques. Un algorithme peut être vu comme une réalisation d'une fonction mathématique partielle : celle qui à chaque entrée de l'algorithme sur la pile d'exécution se termine associe la valeur de retour de l'algorithme.
 
                 \vspace{12pt}
@@ -768,6 +770,8 @@
             \vspace{12pt}
             
             \begin{indt}{\subsubsection{Universalité}}
+                \label{1.1.5}
+
                 $\bullet$ On utilise souvent un argument diagonal pour montrer qu'une fonction n'est pas calculable : on procède par l'absurde en supposant l'existence d'un algorithme $M$ convenable et en construisant un algorithme qui utilise $M$, souvent en faisant référence à son propre code source, pour aboutir à une absurdité (\textit{cf} \ref{1.2.4}, page \pageref{1.2.4}).
 
                 \begin{indt}{Ce type de démonstration nécessite deux propriétés essentielles :}
@@ -790,6 +794,326 @@
 
                     Comme les machines à plusieurs rubans sont équivalentes aux machines à un ruban, on construit une machine qui a le code de $M$ sur son ruban d'entrée, l'état courant de $M$ dans l'exécution sur $x$, dans un deuxième ruban et le ruban de travail de $M$ dans un troisième ruban.
                 \end{proof}
+            \end{indt}
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Décidabilité}}
+            \begin{indt}{\subsubsection{Introduction}}
+                On s'intéresse maintenant à des fonctions particulières : les \emph{prédicats}, \textit{i.e} les fonctions à valeur dans les booléens (ou $\set{0, 1}$).
+                Ces fonctions sont importantes car elles expriment des propriétés des éléments de l'ensemble qui constitue le domaine du prédicat : on veut pouvoir déterminer si un objet satisfait une propriété à l'aide d'un algorithme.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Problèmes de décision, d'optimisation}}
+                \label{1.2.2}
+
+                $\bullet$ Définition (\textit{problème de décision}) :
+                Un problème de décision sur un domaine $A$ est défini par une fonction totale $P$ de $A$ dans l'ensemble des booléens.
+
+                Un élément $a \in A$ est appelé une \emph{instance} du problème $P$ et un algorithme $M$ résout $P$ si et seulement si $\forall a \in A,\ M$ appliqué à $a$ termine et revoie $P(a)$.
+
+                \vspace{12pt}
+                
+                $\bullet$ Remarques :
+
+                $-$ On utilise rarement la définition d'un prédicat pour caractériser un problème de décision mais on préfère utiliser un énoncé en langue naturelle.
+
+                Exemple : SAT : \simplecit{étant donné une formule propositionnelle $A$, $A$ est-elle satisfiable ?}
+
+                plutôt que
+                \[
+                    \begin{array}{ccccl}
+                        \mathrm{SAT}
+                        & : & \mathrm{Formules\_prop}
+                        & \longrightarrow & \set{0, 1}
+                        \\
+                        && A & \longmapsto &
+                        \begin{cases}
+                            0 & \text{si}\ \vDash \neg A
+                            \\
+                            1 & \text{sinon}
+                        \end{cases}
+                    \end{array}
+                \]
+
+                Attention lors de l'expression d'un problème de décision, ne pas se limiter à une instance : par exemple, l'énoncé \simplecit{la formule $X \vee \neg X$ est-elle satisfait ?} n'est pas un problème de décision car la réponse à cette question est \simplecit{oui} ou \simplecit{non}, mais pas un algorithme, même s'il est possible d'utiliser un algorithme pour déterminer cette réponse.
+
+                Remarque : on pourrait reformuler cette question pour écrire un problème de décision (de domaine $\set{X \vee \neg X}$) mais comme dans le cas de la calculabilité, les problèmes de décision de domaine fini sont peu intéressants car on peut tabuler les réponses et écrire un algorithme allant chercher dans la table la réponse à l'instance considérée.
+
+                Attention, même si ces problèmes sont triviaux du point de vue de la décidabilité, ils peuvent être beaucoup plus complexes d'un point de vue algorithmique car il peut être en pratique impossible de tabuler les réponses.
+
+                Exemple : étant donné une position au jeu d'échecs, le joueur au trait est-il gagnant ?
+
+                \vspace{6pt}
+                
+                $-$ De nombreux problèmes de décision intéressants découlent de problèmes d'optimisation.
+
+                \vspace{12pt}
+                
+                $\bullet$ Définition (\textit{problème d'optimisation}) :
+                Un problème d'optimisation sur un domaine d'entrées $A$ et un domaine de solutions $B$ est caractérisé par une relation $\mathcal R \subseteq A \times B$ qui lie les instances $a \in A$ aux solutions $b \in B$ possibles pour cette instance, et une fonction de coût $c : B \longrightarrow \R_+$.
+
+                Une \emph{solution} à un problème d'optimisation est un algorithme $M$ qui termine et renvoie une solution $b_{\rm min} \in B$ telle que
+                \[
+                    \begin{cases}
+                        a \mathcal R b_{\rm min}
+                        \\
+                        c(b_{\rm min}) = \min \set{c(b)\ |\ a \mathcal R b}
+                    \end{cases}
+                \]
+
+                \vspace{12pt}
+                
+                $\bullet$ Exemple : étant donné un graphe $G = (S, A')$, trouver une coloration de $G$ ayant un nombre minimal de couleurs.
+                \[
+                    \begin{array}{rcl}
+                        A
+                        &=& \text{ensemble des graphes}
+                        \\
+                        B
+                        &=& \text{ensemble des colorations}
+                        \\
+                        G \mathcal R f
+                        &\ssi&
+                        \begin{cases}
+                            \mathrm{dom}(f) = S
+                            \\
+                            \forall a = \set{s, s'} \in A',\ f(s) \neq f(s')
+                        \end{cases}
+                        \\
+                        &\ssi& f\ \text{est une coloration valide de}\ G
+                        \\
+                        c
+                        &=& \text{fonction qui à chaque coloration associe le nombre de couleurs utilisées}
+                    \end{array}
+                \]
+
+                \vspace{12pt}
+                
+                $\bullet$ On transforme un problème d'optimisation en problème de décision en introduisant un plafond sur les coûts $c_{\rm max}$ et en considérant le prédicat
+                \[
+                    \begin{array}{ccccc}
+                        P_{c_{\rm max}}
+                        & : & A & \longrightarrow & \set{0, 1}
+                        \\
+                        && a & \longmapsto &
+                        \begin{cases}
+                            1 & \text{si}\ \exists b \in B\
+                            \begin{array}{|l}
+                                a \mathcal R b
+                                \\
+                                c(b) \le c_{\rm max}
+                            \end{array}
+                            \\
+                            0 & \text{sinon}
+                        \end{cases}
+                    \end{array}
+                \]
+
+                Exemple : un graphe $G$ est-il 3-coloriable ? ou 4-coloriable ?
+
+                On peut également inclure le plafond dans le domaine du problème de décision :
+                \[
+                    \begin{array}{ccccl}
+                        P
+                        & : & A \times \R^+ & \longrightarrow & \set{0, 1}
+                        \\
+                        && (a, c_{\rm max}) & \longmapsto &
+                        \begin{cases}
+                            1 & \text{si}\ \exists b \in B\
+                            \begin{array}{|l}
+                                a \mathcal R b
+                                \\
+                                c(b) \le c_{\rm max}
+                            \end{array}
+                            \\
+                            0 & \text{sinon}
+                        \end{cases}
+                    \end{array}
+                \]
+
+                Exemple : étant donné un graphe $G$ et un entier $k$, $G$ est-il $k$-coloriable ?
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Problèmes décidables / indécidables}}
+                $\bullet$ Définition : un problème de décision caractérisé par un prédicat $P$ est dit \emph{décidable} si et seulement si il existe un algorithme qui le résout, ou de façon équivalente, si et seulement si $P$ est calculable.
+
+                Dans le cas contraire, $P$ est dit \emph{indécidable}.
+
+                \vspace{12pt}
+                
+                $\bullet$ Exemples :
+
+                $-$ Une liste d'entiers est-elle triée ? (domaine : ensemble des listes d'entiers)
+
+                $-$ Un entier est-il premier ? (domaine : $\N$)
+
+                $-$ Un graphe est-il acyclique ? (domaine : ensemble des graphes)
+
+                $-$ Un mot $m$ est-il accepté par un AFD $M$ ? (domaine : produit cartésien de $\Sigma^*$ et de l'ensemble des automates finis déterministes sur $\Sigma$, pour $\Sigma$ fixé).
+                \vspace{12pt}
+                
+                $\bullet$ Proposition
+                \begin{emphBox}
+                    Il existe une infinité de problèmes indécidables
+                \end{emphBox}
+                
+                \begin{proof}
+                    \textit{Cf} \ref{1.1.4}, page \pageref{1.1.4}.
+                \end{proof}
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Problème de l'arrêt}}
+                \label{1.2.4}
+
+                $\bullet$ Définition : le \emph{problème de l'arrêt} est le problème de décision suivant : étant donné un algorithme $M$ et une entrée $e$ pour $M$, l'exécution de $M$ sur $e$ termine-t-elle ?
+
+                \vspace{12pt}
+                
+                $\bullet$ Remarque : en pratique, le domaine de ce problème de décision est contraint à partir de l'ensemble des codes sources des algorithmes car il faut une représentation manipulable par un algorithme (comme en \ref{1.1.4}, page \pageref{1.1.4}, on s'intéresse aux algorithmes d'entrées des chaînes de caractère ou des écritures binaires).
+
+                \vspace{12pt}
+                
+                $\bullet$ Théorème
+                \begin{emphBox}
+                    Le problème de l'arrêt est indécidable.
+                \end{emphBox}
+
+                \vspace{6pt}
+                
+                \begin{proof}
+                    Par l'absurde, avec un argument diagonal comme évoqué en \ref{1.1.5}, page \pageref{1.1.5}.
+
+                    On suppose qu'il existe un algorithme $H$ qui résout le problème de l'arrêt.
+
+                    On construit l'algorithme $D$ d'entrées un algorithme $M$ et de pseudo-code :
+                    \begin{indalgo}{$D$}
+                        Simuler $H$ sur l'entrée $(M, M)$\;
+
+                        \If{résultat est vrai}{
+                            Boucler indéfiniment\;
+                        }
+                        \Else{
+                            Terminer\;
+                        }
+                    \end{indalgo}
+
+                    On observe alors l'exécution de $D$ sur l'entrée $D$.
+
+                    $-$ Si $H$ renvoie vrai pour l'entrée $(D, D)$, c'est que $D$ termine sur son propre code.
+                    Mais dans ce cas, $D$ boucle indéfiniment : absurde.
+
+                    $-$ Si $H$ revoie faux pour l'entrée $(D, D)$, c'est que $D$ ne termine pas sur son propre code.
+
+                    Mais dans ce cas, $D$ termine bien d'après la suite du code : absurde.
+
+                    $H$ réalisant une fonction totale, il termine toujours, donc on a traité tous les cas.
+                \end{proof}
+
+                \vspace{12pt}
+                
+                $\bullet$ Remarque : c'est une réécriture du paradoxe du barbier : un algorithme qui ne termine pas sur le code de tout algorithme qui termine sur son propre code termine-t-il sur son propre code ?
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Problèmes semi-décidables (H.P)}}
+                $\bullet$ Définition : un problème de décision caractérisé par un prédicat $P$ est dit semi-décidable si et seulement si il existe un algorithme $M$ tel que $\forall a \in A$,
+
+                $-$ Si $P(a)$, alors $M$ termine sur $a$, et renvoie vrai ;
+
+                $-$ Si $\neg P(a)$, alors soit $M$ termine sur $a$ et renvoie faux, soit $M$ ne termine pas sur $a$.
+
+                \vspace{12pt}
+                
+                $\bullet$ Proposition :
+                \begin{emphBox}
+                    Le problème de l'arrêt est semi-décidable.
+                \end{emphBox}
+
+                \vspace{6pt}
+                
+                \begin{proof}
+                    Sur l'entrée $(M, e)$, il suffit de simuler $M$ sur $e$ puis de renvoyer vrai.
+
+                    Si $M$ termine sur $e$, l'algorithme renvoie bien vrai, sinon il ne termine pas.
+                \end{proof}
+
+                \vspace{12pt}
+                
+                $\bullet$ Proposition
+                \begin{emphBox}
+                    Soit $P$ un problème de décision.
+
+                    On appelle $\mathrm{co}(P)$ le problème de décision associé au prédicat $\neg P$.
+
+                    Si $P$ et $\mathrm{co}(P)$ sont semi-décidables, alors $P$ est décidable.
+                \end{emphBox}
+
+                \vspace{6pt}
+                
+                \begin{proof}
+                    On se donne des algorithmes $M_P$ et $M_{\mathrm{co}(P)}$ tels que $\forall A \in \set{P, \mathrm{co}(P)}$, $M_A$ termine et revoie vrai sur toute instance $a$ telle que $A(a)$ et ne termine pas ou renvoie faux sinon.
+
+                    On construit l'algorithme suivant, qui résout $P$ :
+
+                    \begin{indalgo}{}
+                        \KwInput{une instance $a$}
+
+                        \BlankLine
+
+                        Simuler en parallèle $M_P$ et $M_{\mathrm{co}(P)}$ sur $a$\;
+
+                        \If{$M_P$ termine}{
+                            Renvoyer son résultat\;
+                        }
+                        \If{$\mathrm{co}(P)$ termine}{
+                            Renvoyer la négation de son résultat\;
+                        }
+                    \end{indalgo}
+
+                    On sait que cet algorithme termine sur toute entrée $a$ car soit $P(a)$, soit $\neg P(a)$ (tiers exclus).
+                \end{proof}
+
+                \vspace{12pt}
+                
+                $\bullet$ Corollaire :
+                \begin{emphBox}
+                    co Arrêt n'est pas semi-décidable.
+                \end{emphBox}
+
+                \'Etant donné un algorithme $M$ et une entrée $e$, l'exécution de $M$ sur $e$ est-elle finie ?
+
+                \vspace{12pt}
+                
+                $\bullet$ Remarque : la réciproque de la proposition est vraie \boxed{\rm Exo}.
+
+                \vspace{12pt}
+                
+                $\bullet$ Exemple : un autre problème non semi-décidable : \simplecit{étant donné un algorithme $M$, est-ce que $M$ ne renvoie pas vrai sur son propre code source, \textit{i.e} est-ce que $M$ appliqué à son code renvoie faux ou ne termine pas ?}
+
+                Par un argument diagonal : si $D$ termine et renvoie vrai sur tout $M$ respectant la propriété et renvoie faux ou ne termine pas sur les autres.
+
+                Si l'exécution de $D$ sur $D$ :
+
+                $-$ ne termine pas, alors par définition de la semi-décidabilité, $D$ doit renvoyer vrai sur son code : absurde
+
+                $-$ termine avec le résultat faux, de même : absurde
+
+                $-$ termine avec le résultat vrai, alors $D$ ne renvoie pas vrai sur son code : absurde
+
+                \vspace{21pt}
+                
+                Remarque : le co-problème de ce problème de décision est semi-décidable et indécidable.
+
+                Il existe des problèmes  non semi-décidables dont le co-problème n'est pas semi-décidable (\textit{cf} TD$_{45}$)
             \end{indt}
         \end{indt}
     \end{indt}
