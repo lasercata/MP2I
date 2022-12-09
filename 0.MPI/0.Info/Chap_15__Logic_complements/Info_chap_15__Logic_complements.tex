@@ -355,9 +355,9 @@
             \vspace{12pt}
             
             \begin{indt}{\subsubsection{Syllogismes}}
-                Les travaux logiques visant à formaliser la notion de démonstration remontant à l'antiquité, en particulier avec les travaux d'\textsc{Aristote} (IV\textsuperscript{ème} siècle avant J.C) qui sont restés particulièrement importants dans le monde scientifique.
+                Les travaux logiques visant à formaliser la notion de démonstration remontent à l'antiquité, en particulier avec les travaux d'\textsc{Aristote} (IV\textsuperscript{ème} siècle avant J.C) qui sont restés particulièrement importants dans le monde scientifique.
 
-                Au c\oe ur de ses travaux se trouve la notion de \emph{syllogisme} qui est une manière très codifié de représenter la notion de déduction.
+                Au c\oe ur de ses travaux se trouve la notion de \emph{syllogisme} qui est une manière très codifiée de représenter la notion de déduction.
 
                 Les syllogismes sont des règles qui permettent de déduire des faits d'autres faits.
 
@@ -381,7 +381,7 @@
             \vspace{12pt}
             
             \begin{indt}{\subsubsection{Vers la logique moderne}}
-                C'est Gottlob \textsc{Frege} qui débloque le monde de la logique en établissant formellement la logique des prédicats (\textit{cf} chapitre 8 2.2.) et en proposant la première formalisation de la théorie des ensembles, plus tard invalidée par Bertrand \textsc{Russell} avec le paradoxe de \textsc{Russell} : l'ensemble de tous les ensembles qui ne se contient pas se contient-il ?
+                C'est Gottlob \textsc{Frege} qui débloque le monde de la logique en établissant formellement la logique des prédicats (\textit{cf} chapitre 8, 2.2.) et en proposant la première formalisation de la théorie des ensembles, plus tard invalidée par Bertrand \textsc{Russell} avec le paradoxe de \textsc{Russell} : l'ensemble de tous les ensembles qui ne se contient pas se contient-il ?
 
                 C'est en 1934 que Gerhard \textsc{Gentzen} publie un système de règles de déduction visant à donner un système proche de la pratique mathématique des démonstrations : la \emph{déduction naturelle}.
 
@@ -423,7 +423,7 @@
             \vspace{12pt}
             
             \begin{indt}{\subsubsection{Remarque}}
-                Nous avons vu que la notion de système de règles d'inférences permet de définir des ensembles par induction, comme par exemple l'ensemble des formules de la logique propositionnelle (\textit{cf} chapitre 8, 2.1.2), et qu'il est possible de raisonner par induction sur de tels ensembles (\textit{cf} chapitre 5 2.2).
+                Nous avons vu que la notion de système de règles d'inférences permet de définir des ensembles par induction, comme par exemple l'ensemble des formules de la logique propositionnelle (\textit{cf} chapitre 8, 2.1.2), et qu'il est possible de raisonner par induction sur de tels ensembles (\textit{cf} chapitre 5, 2.2).
 
                 La notion de dérivation étant elle-même définie inductivement, on peut raisonner par induction structurelle sur les dérivations (\textit{cf} chapitre 14, 1.3.6 par exemple).
             \end{indt}
@@ -442,9 +442,9 @@
                 \vspace{12pt}
                 
                 \begin{indt}{$\bullet$ Exemples :}
-                    $-$ Le \textit{modus ponens}, $A \rightarrow B,\ A \vdash B$ ;
+                    $-$ Le \textit{modus ponens}, $A \rightarrow B, A \vdash B$ ;
 
-                    $-$ Le syllogisme barbara, $A \rightarrow B,\ B \rightarrow C \vdash A \rightarrow C$
+                    $-$ Le syllogisme barbara, $A \rightarrow B, B \rightarrow C \vdash A \rightarrow C$
                     \[
                         \inferrule{\Gamma \vdash A \\ \Gamma \vdash B}{\Gamma \vdash A \wedge B}
                     \]
@@ -468,7 +468,7 @@
                 \]
                 peut être vu comme
                 \[
-                    A_1, \ldots, A_n, \neg B_1, \ldots, B_n \vdash \bot
+                    A_1, \ldots, A_n, \neg B_1, \ldots, \neg B_n \vdash \bot
                 \]
 
                 \textsc{Gentzen} a publié, également en 1934, un système de règles d'inférence pour les séquents symétriques, appelé \emph{calcul des séquents}, et on a montré l'équivalence des deux systèmes.
@@ -483,7 +483,7 @@
                     \inferrule{\Gamma_1 \vdash A_1 \\ \cdots \\ \Gamma_n \vdash A_n}{\Gamma \vdash A}
                 \]
 
-                Accessoirement, on peut utiliser comme assertion l'appartenance d'une formule aux hypothèses ($A \in P$) en l'appartenance d'une variable à l'ensemble des variables libres d'un ensemble de formules ($x \in \mathrm{FV}(\Gamma)$, \textit{cf} chapitre 8, 2.2.6).
+                Accessoirement, on peut utiliser comme assertion l'appartenance d'une formule aux hypothèses ($A \in P$) ou l'appartenance d'une variable à l'ensemble des variables libres d'un ensemble de formules ($x \in \mathrm{FV}(\Gamma)$, \textit{cf} chapitre 8, 2.2.6).
 
                 \vspace{12pt}
                 
@@ -527,13 +527,13 @@
                 \[
                     \inferrule{\Gamma_1 \vdash A_1 \\ \cdots \\ \Gamma_n \vdash A_n}{\Gamma \vdash A}
                 \]
-                est dite dérivable si l'on peut utiliser les règles su système pour prolonger des dérivation de $\Gamma_1 \vdash A_1\ \cdots \Gamma_n \vdash A_n$ en une dérivation de $\Gamma \vdash A$.
+                est dite dérivable si l'on peut utiliser les règles du système pour prolonger des dérivation de $\Gamma_1 \vdash A_1\ \cdots \Gamma_n \vdash A_n$ en une dérivation de $\Gamma \vdash A$.
 
                 Plus généralement encore, une règle
                 \[
                     \inferrule{\Gamma_1 \vdash A_1 \\ \cdots \\ \Gamma_n \vdash A_n}{\Gamma \vdash A}
                 \]
-                est dite \emph{admissible} (H.P) si, dès lors que $\Gamma_1 \vdash A_1\ \cdots \Gamma_n \vdash A_n$ sont dérivables, on sait que $\Gamma \vdash A$ l'est aussi.
+                est dite \emph{admissible} (H.P) si, dès lors que $\Gamma_1 \vdash A_1\ \cdots\ \Gamma_n \vdash A_n$ sont dérivables, on sait que $\Gamma \vdash A$ l'est aussi.
 
                 Les règles dérivables sont admissibles, mais la réciproque n'est pas forcément vraie.
 
@@ -563,7 +563,7 @@
 
             \vspace{12pt}
             
-            \begin{indt}{\subsubsection{Déduction naturelle intuitionniste, cas propositionel}}
+            \begin{indt}{\subsubsection{Déduction naturelle intuitionniste, cas propositionnel}}
                 \begin{indt}{$\bullet$ Les règles de la déduction naturelle se répartissent en trois catégories :}
                     $-$ L'axiome, seul dans sa catégorie : il n'y a rien à démontrer si la conclusion fait partie des hypothèses ;
 
@@ -579,7 +579,7 @@
                 \vspace{12pt}
                 
                 \begin{indt}{$\bullet$ Règles de l'implication :}
-                    $-$ Introduction : pour démontrer $A \rightarrow B$, on suppose $A$, et in démontre $B$ :
+                    $-$ Introduction : pour démontrer $A \rightarrow B$, on suppose $A$, et on démontre $B$ :
                     \[
                         \inferrule*[Right={$\rightarrow_{\text{intro}}$}]{\Gamma, A \vdash B}{\Gamma \vdash A \rightarrow B}
                     \]
