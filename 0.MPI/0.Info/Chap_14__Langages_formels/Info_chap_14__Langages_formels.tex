@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2022.11.17
+% Last modification     :   2022.12.11
 %
 %------------------------------------------------------------------------
 
@@ -4778,37 +4778,29 @@ else
 
                 On procède à l'analyse du mot $aacbbc$ :
 
-                $-$ Dérivation :
-                \[
-                    \begin{array}{rcl}
-                        S
-                        &\Rightarrow& TS
-                        \\
-                        &\Rightarrow& aSbS
-                        \\
-                        &\Rightarrow& aTSbS
-                        \\
-                        &\Rightarrow& aaSbSbS
-                        \\
-                        &\Rightarrow& aaTSbSbS
-                        \\
-                        &\Rightarrow& aacSbSbS
-                        \\
-                        &\Rightarrow& aacbSbS
-                        \\
-                        &\Rightarrow& aacbbS
-                        \\
-                        &\Rightarrow& aacbbTS
-                        \\
-                        &\Rightarrow& aacbbcS
-                        \\
-                        &\Rightarrow& aacbbc
-                    \end{array}
-                \]
-
                 \vspace{6pt}
                 
-                $-$ Arbre d'analyse :
+                $-$ Le mot étant non vide, la première règle est nécessairement $S \rightarrow TS$ ;
+
+                $-$ La première lettre du mot étant $a$, on applique la règle $T \rightarrow aSb$ ;
+
+                $-$ Les premières lettres du mot cible et du mot dérivé étant égales, on observe la deuxième lettre : on doit obtenir  un $a$ depuis le symbole $S$ donc on applique de même les règles $S \rightarrow TS$ puis $T \rightarrow aSb$ ;
+
+                $-$ On observe la troisième lettre : on doit obtenir un un $c$ depuis $S$. De même, on enchaîne les règles $S \rightarrow TS$ et $T \rightarrow c$ ;
+
+                $-$ On observe la quatrième lettre : on doit obtenir un $b$ depuis $S$. Ce n'est possible que si le $b$ a déjà été introduit par l'une des règles précédentes donc on applique la règle $S \rightarrow \varepsilon$ ;
+
+                $-$ Les quatrièmes lettres se correspondent et on applique la même analyse aux cinquièmes lettres : on applique $S \rightarrow \varepsilon$ ;
+
+                $-$ On observe les sixièmes lettres : on doit obtenir un $c$ depuis $S$, ce que l'on fait comme avant en appliquant les règles $S \rightarrow TS$ puis $T \rightarrow c$ ;
+
+                $-$ On a lu tous les caractères du mot cible mais le symbole courant du mot dérivé est $S$. On l'élimine en appliquant la règle $S \rightarrow \varepsilon$ ;
+
+                $-$ Il n'y a plus de symbole non terminal : la dérivation est terminée.
+
+                \vspace{12pt}
+                
+                $\bullet$ Arbre d'analyse, dérivation :
 
                 \begin{center}
                     \begin{tikzpicture}
@@ -4843,28 +4835,37 @@ else
                                 }
                             }
                         ;
+
+                        \node (1) at (6, -3) {
+                            $
+                            \begin{array}{rcl}
+                                S
+                                &\Rightarrow& TS
+                                \\
+                                &\Rightarrow& aSbS
+                                \\
+                                &\Rightarrow& aTSbS
+                                \\
+                                &\Rightarrow& aaSbSbS
+                                \\
+                                &\Rightarrow& aaTSbSbS
+                                \\
+                                &\Rightarrow& aacSbSbS
+                                \\
+                                &\Rightarrow& aacbSbS
+                                \\
+                                &\Rightarrow& aacbbS
+                                \\
+                                &\Rightarrow& aacbbTS
+                                \\
+                                &\Rightarrow& aacbbcS
+                                \\
+                                &\Rightarrow& aacbbc
+                            \end{array}
+                            $
+                        };
                     \end{tikzpicture}
                 \end{center}
-                
-                \vspace{6pt}
-                
-                $-$ Le mot étant non vide, la première règle est nécessairement $S \rightarrow TS$ ;
-
-                $-$ La première lettre du mot étant $a$, on applique la règle $T \rightarrow aSb$ ;
-
-                $-$ Les premières lettres du mot cible et du mot dérivé étant égales, on observe la deuxième lettre : on doit obtenir  un $a$ depuis le symbole $S$ donc on applique de même les règles $S \rightarrow TS$ puis $T \rightarrow aSb$ ;
-
-                $-$ On observe la troisième lettre : on doit obtenir un un $c$ depuis $S$. De même, on enchaîne les règles $S \rightarrow TS$ et $T \rightarrow c$ ;
-
-                $-$ On observe la quatrième lettre : on doit obtenir un $b$ depuis $S$. Ce n'est possible que si le $b$ a déjà été introduit par l'une des règles précédentes donc on applique la règle $S \rightarrow \varepsilon$ ;
-
-                $-$ Les quatrièmes lettres se correspondent et on applique la même analyse aux cinquièmes lettres : on applique $S \rightarrow \varepsilon$ ;
-
-                $-$ On observe les sixièmes lettres : on doit obtenir un $c$ depuis $S$, ce que l'on fait comme avant en appliquant les règles $S \rightarrow TS$ puis $T \rightarrow c$ ;
-
-                $-$ On a lu tous les caractères du mot cible mais le symbole courant du mot dérivé est $S$. On l'élimine en appliquant la règle $S \rightarrow \varepsilon$ ;
-
-                $-$ Il n'y a plus de symbole non terminal : la dérivation est terminée.
             \end{indt}
 
             \vspace{12pt}
