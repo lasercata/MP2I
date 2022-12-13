@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2022.12.08
+% Last modification     :   2022.12.13
 %
 %------------------------------------------------------------------------
 
@@ -1025,6 +1025,8 @@
             \vspace{12pt}
             
             \begin{indt}{\subsubsection{Problèmes semi-décidables (H.P)}}
+                \label{1.2.5}
+
                 $\bullet$ Définition : un problème de décision caractérisé par un prédicat $P$ est dit semi-décidable si et seulement si il existe un algorithme $M$ tel que $\forall a \in A$,
 
                 $-$ Si $P(a)$, alors $M$ termine sur $a$, et renvoie vrai ;
@@ -1114,6 +1116,260 @@
                 Remarque : le co-problème de ce problème de décision est semi-décidable et indécidable.
 
                 Il existe des problèmes  non semi-décidables dont le co-problème n'est pas semi-décidable (\textit{cf} TD$_{45}$)
+            \end{indt}
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Réduction}}
+            \begin{indt}{\subsubsection{Introduction}}
+                Pour montrer qu'un problème de décision $P$ est décidable ou indécidable, une technique courante consiste à lier ce problème à un problème dont la décidabilité ou l'indécidabilité est déjà connue.
+                En effet, si $P'$ est décidable et si on peut ramener algorithmiquement la résolution de $P$ à celle de $P'$, alors $P$ est décidable.
+
+                Inversement, si on peut ramener la résolution d'un problème $P'$ indécidable à celle de $P$, alors $P$ est indécidable.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Exemple}}
+                On considère le problème de la trivialité : étant donné un algorithme $M$ à valeurs booléennes, $M$ renvoie-t-il \texttt{true} sur toute entrée ?
+
+                On montre que ce problème est indécidable en le liant au problème de l'arrêt.
+
+                On suppose donc l'existence d'un algorithme $M_T$ qui résout le problème de la trivialité et on construit l'algorithme suivant, d'entrées un algorithme $M$ et une entrée $e$ pour $M$ :
+
+                \begin{algoBox}
+                    \begin{algorithm}[H]
+                        \KwInput{$M$, $e$}
+                    
+                        \BlankLine
+
+                        Construire l'algorithme $M'$ d'entrée $e'$ et de code :
+                        \begin{algorithm}[H]
+                            \KwInput{$e'$}
+
+                            \BlankLine
+
+                            Simuler $M$ sur $e$\;
+                            Renvoyer \texttt{true}\;
+
+                            \caption{$M'$}
+                        \end{algorithm}
+                    
+                        \BlankLine
+                    
+                        Simuler $M_T$ sur $M'$ et renvoyer son résultat\;
+                        %\caption{test}
+                    \end{algorithm}
+                \end{algoBox}
+
+                Comme $M_T$ réalise une fonction totale, $M_T$ termine sur toute entrée, donc l'algorithme ci-dessus aussi.
+
+                On montre que cet algorithme résout le problème de l'arrêt : sur l'entrée $(M, e)$, l'algorithme renvoie \texttt{true}
+                $\ssi$ si $M_T$ renvoie \texttt{true} sur l'entrée $M'$
+                $\ssi$ $M'$ renvoie \texttt{true} sur toute entrée,
+                $\ssi$ $M$ termine sur $e$.
+
+                On a donc un algorithme qui résout le problème de l'arrêt, ce qui est absurde d'après \ref{1.2.4} (page \pageref{1.2.4}).
+                Donc le problème de la trivialité est indécidable.
+
+                \vspace{12pt}
+                
+                Remarque : on a écrit un algorithme qui transforme toute instance du problème de l'arrêt en une instance "équivalente" du problème de la trivialité.
+                On dit donc que l'on a \emph{réduit} le problème de l'arrêt au problème de la trivialité.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Réduction calculatoire}}
+                \label{1.3.3}
+
+                $\bullet$ Définition :
+                soient deux prédicats $P_1 : E_1 \longrightarrow \mathtt{bool}$ et $P_2 : E_2 \longrightarrow \mathtt{bool}$.
+
+                On dit que le problème de décision associé à $P_1$ se \emph{réduit calculatoirement} à celui associé à $P_2$ s'il existe une fonction $f : E_1 \longrightarrow E_2$ calculable telle que $\forall e \in E_1,\ P_1(e) \leftrightarrow P_2(f(e))$.
+
+                On note alors $P_1 \le_m P_2$ et on dit que $f$ est une \emph{réduction} de $P_1$ à $P_2$.
+
+                \vspace{12pt}
+                
+                $\bullet$ Remarques :
+
+                $-$ On utiliser un symbole lié aux relations d'ordre car les réductions permettent "d'ordonner" les problèmes selon leur difficulté : si $P_1 \le_m P_2$, alors $P_2$ est plus difficile à résoudre que $P_1$ car si l'on dispose des moyens nécessaires à la résolution de $P_2$, on sait également résoudre $P_1$ \textit{via} la réduction.
+
+                $-$ Le $m$ du symbole $\le_m$ vient du mot anglais de cette notion de réduction : on parle de \emph{mapping reducibility}, ou de \emph{many-to-one / many-one reducibility} (car $f$ n'est pas forcément injective).
+
+                On parle aussi parfois de \emph{computational reducibility}.
+
+                \vspace{12pt}
+                
+                $\bullet$ Proposition :
+                \begin{emphBox}
+                    Soient $P_1, P_2$ deux problèmes de décision tels que $P_1 \le_m P_2$.
+
+                    Alors
+
+                    (1) Si $P_2$ est décidable, alors $P_1$ aussi.
+
+                    (2) Si $P_1$ est indécidable, alors $P_2$ aussi.
+                \end{emphBox}
+
+                \vspace{6pt}
+                
+                \begin{proof}
+                    (2) est la contraposée de (1), donc on démontre seulement (1).
+
+                    Il existe un algorithme $M_2$ qui résout $P_2$.
+
+                    Comme $P_1 \le_m P_2$, il existe un algorithme $M_f$ qui réalise une réduction de $P_1$ à $P_2$.
+
+                    On construit l'algorithme $M_1$ d'entrée un instance $e$ de $P_1$ :
+
+                    \begin{indalgo}{$M_1$}
+                        Simuler $M_f$ sur $e$ et noter $e'$ son résultat\;
+
+                        Simuler $M_2$ sur $e'$ et renvoyer son résultat\;
+                    \end{indalgo}
+
+                    $M_1$ termine sur toute entrée car c'est le cas pour $M_f$ et $M_2$.
+
+                    Pour une instance $e$ de $P_1$, $M_1$ renvoie vrai
+                    \[
+                        \begin{array}{cl}
+                            \ssi & M_2\ \text{renvoie vrai sur l'instance $e'$ associée à $e$}
+                            \\
+                            \ssi & M_2\ \text{renvoie vrai sur}\ f(e)
+                            \\
+                            \ssi & P_2(f(e)) \ \text{est vrai}
+                            \\
+                            \ssi & P_1(e) \ \text{est vrai}
+                        \end{array}
+                    \]
+
+                    Donc l'algorithme $M_1$ résout $P_1$.
+                \end{proof}
+
+                \vspace{12pt}
+                
+                $\bullet$ Attention à ne pas se tromper sur le sens de la réduction : 
+
+                Exemple : on considère le problème de l'accessibilité dans un graphe : étant donné un graphe $G = (S, A)$ et $s, t \in S$, existe-t-il un chemin de $s$ à $t$ dans $G$ ?
+
+                Ce problème est décidable : on lance un parcours de $G$ depuis $s$ et on revoie \texttt{true} si et seulement si $t$ est atteint.
+
+                On montre que \textsc{Accessibilité} $\le_m$ \textsc{Arrêt}, ce qui n'apporte aucune information : le problème de l'arrêt est plus difficile que tout problème décidable puisqu'il est indécidable.
+
+                Voici un réduction, d'entrée $G, s, t$ :
+
+                \begin{algoBox}
+                    \begin{algorithm}[H]
+                        \KwInput{$G, s, t$}
+                    
+                        \BlankLine
+                    
+                        Définir l'algorithme $M_{G, s}$, d'entrée un sommet $u$ :
+                        \begin{algorithm}[H]
+                            \KwInput{$u$}
+                    
+                            \BlankLine
+                    
+                            \For{chaque $n \in \N$}{
+                                \For{chaque séquence $s_0 \cdots s_n$ de sommets}{
+                                    \If{$s_0 \cdots s_n$ est un chemin dans $G$ de $s$ à $u$}{
+                                        \Return \texttt{true}\;
+                                    }
+                                }
+                            }
+
+                            \caption{$M_{G, s}$}
+                        \end{algorithm}
+
+                        \BlankLine
+                    
+                        \Return $(M_{G, s}, t)$\;
+
+                        \caption{Réduction de \textsc{Accessibilité} à \textsc{Arrêt}}
+                    \end{algorithm}
+                \end{algoBox}
+
+                On remarque qu'il existe un chemin de $s$ à $t$ dans $G$ si et seulement si l'algorithme $M_{G, s}$ termine sur $t$.
+
+                On a donc bien construit une réduction calculatoire du problème de l'accessibilité au problème de l'arrêt.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Réduction \textsc{Turing}}}
+                $\bullet$ Remarque : la notion de réduction calculatoire est insuffisante pour capturer l'intuition de la notion de réduction. En effet, intuitivement, \textsc{Arrêt} et co(\textsc{Arrêt}) devraient être réductibles l'un à l'autre car si l'on sait résoudre l'un, on peut résoudre l'autre en inversant les réponses d'un algorithme de décision.
+                Cependant, si on avait co(\textsc{Arrêt}) $\le_m$ \textsc{Arrêt}, alors co(\textsc{Arrêt}) serait semi-décidable \boxed{\rm Exo}, ce qui est absurde d'après \ref{1.2.5} (page \pageref{1.2.5}).
+
+                Nous avons donc besoin d'une notion plus générale de réduction.
+
+                \vspace{12pt}
+                
+                $\bullet$ Définition (\emph{réduction \textsc{Turing}}) :
+                Soient $P_1 : E_1 \longrightarrow \mathtt{bool}$ et $P_2 : E_2 \longrightarrow \mathtt{bool}$ deux problèmes de décision.
+
+                On dit que $P_1$ est \emph{\textsc{Turing}-réductible} à $P_2$ si, en supposant l'existence d'un algorithme qui résout $P_2$, il existe un algorithme qui résout $P_1$.
+
+                On note alors $P_1 \le_T P_2$, et on dit que $P_1$ est décidable relativement à $P_2$.
+
+                \vspace{12pt}
+                
+                $\bullet$ Remarque : cette notion est liée aux machines de \textsc{Turing} à oracle (H.P), qui sont des machines pouvant effectuer des requêtes à un oracle, \textit{i.e} à un outil qui peut "magiquement" résoudre le problème associé, même si ce problème est indécidable.
+
+                \vspace{12pt}
+                
+                $\bullet$ Proposition :
+                \begin{emphBox}
+                    Soient $P_1, P_2$ deux problèmes de décision tels que $P_1 \le_T P_2$.
+
+                    Alors :
+
+                    (1) Si $P_2$ est décidable, alors $P_1$ aussi.
+
+                    (2) Si $P_1$ est indécidable, alors $P_2$ aussi.
+                \end{emphBox}
+
+                \vspace{12pt}
+                
+                \begin{proof}
+                    Comme en \ref{1.3.3} (page \pageref{1.3.3}), il suffit de montrer (1).
+
+                    Il existe un algorithme $M_2$ qui résout $P_2$.
+
+                    Par définition de $P_1 \le_T P_2$, il existe donc un algorithme $M_1$ qui résout $P_1$.
+
+                    En pratique, cet algorithme est construit ainsi : on utilise la machine à oracle qui résout $P_1$ à l'aide d'un oracle pour $P_2$ et on remplace cet oracle par l'algorithme $M_2$, ce qui donne un algorithme sans oracle qui résout $P_1$.
+                \end{proof}
+
+                \vspace{12pt}
+                
+                $\bullet$ Exemple : co(\textsc{Arrêt}) $\le_T$ \textsc{Arrêt}.
+
+                On suppose qu'il existe un algorithme $M_H$ qui résout le problème de l'arrêt.
+
+                On construit alors l'algorithme $M_{\neg H}$, d'entrée un algorithme $M$ et une entrée $e$ pour $M$ :
+
+                \begin{indalgo}{}
+                    Simuler $M_H$ sur $(M, e)$ et noter $b$ son résultat\;
+
+                    Renvoyer $\neg b$\;
+                \end{indalgo}
+
+                Cet algorithme termine sur toute entrée car c'est le cas pour $M_H$.
+
+                Sur l'entrée $(M, e)$, $M_{\neg H}$ renvoie \texttt{true} $\ssi$ $M_H$ renvoie \texttt{false} sur $(M, e)$ $\ssi$ $M$ ne termine pas sur $e$.
+
+                Donc $M_{\neg H}$ résout co(\textsc{Arrêt}) et co(\textsc{Arrêt}) $\le_T$ \textsc{Arrêt}.
+
+                \vspace{12pt}
+                
+                $\bullet$ Remarque : cette réduction ne pose aucun problème du point de vue de la semi-décidabilité : une machine à oracle pour \textsc{Arrêt} faisant appel à l'algorithme de semi-décision pour \textsc{Arrêt} sur une instance sur laquelle il ne termine pas (donc une entrée $(M, e)$ telle que $M$ ne termine pas sur $e$), alors la machine ne peut s'arrêter pour renvoyer la réponse "vrai" pour co(\textsc{Arrêt}), ce qui empêche d'avoir un algorithme de semi-décision pour co(\textsc{Arrêt}).
+
+                La différence entre réduction calculatoire et réduction \textsc{Turing} est la suivante : dans le cas d'une réduction calculatoire, in ne peut faire qu'un appel à l'oracle et on doit renvoyer directement son résultat alors que dans le cas d'une réduction \textsc{Turing} on peut effectuer des calculs supplémentaires qui dépendent de la réponse de l'oracle.
+
+                Autrement dit, si $P_1 \le_m P_2$, alors $P_1 \le_T P_2$, mais la réciproque est fausse.
             \end{indt}
         \end{indt}
     \end{indt}
