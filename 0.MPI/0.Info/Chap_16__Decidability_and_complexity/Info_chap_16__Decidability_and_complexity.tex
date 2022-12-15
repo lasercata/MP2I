@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2022.12.13
+% Last modification     :   2022.12.15
 %
 %------------------------------------------------------------------------
 
@@ -343,7 +343,7 @@
     \begin{indt}{\section{Décidabilité}}
         \begin{indt}{\subsection{Modèles de calcul et universalité}}
             \begin{indt}{\subsubsection{Introduction}}
-                L'objet de ce chapitre es l'étude de ce qu'il est possible de calculer avec un algorithme, avec ou sans contrainte de complexité temporelle.
+                L'objet de ce chapitre est l'étude de ce qu'il est possible de calculer avec un algorithme, avec ou sans contrainte de complexité temporelle.
 
                 Afin de pouvoir énoncer précisément des propriétés, il faut une définition formelle de la notion d'algorithme.
             \end{indt}
@@ -1370,6 +1370,301 @@
                 La différence entre réduction calculatoire et réduction \textsc{Turing} est la suivante : dans le cas d'une réduction calculatoire, in ne peut faire qu'un appel à l'oracle et on doit renvoyer directement son résultat alors que dans le cas d'une réduction \textsc{Turing} on peut effectuer des calculs supplémentaires qui dépendent de la réponse de l'oracle.
 
                 Autrement dit, si $P_1 \le_m P_2$, alors $P_1 \le_T P_2$, mais la réciproque est fausse.
+            \end{indt}
+        \end{indt}
+    \end{indt}
+
+    \vspace{12pt}
+    
+    \begin{indt}{\section{Classes de complexité}}
+        \begin{indt}{\subsection{Introduction}}
+            \begin{indt}{\subsubsection{Motivation}}
+                Jusqu'ici, nous n'avons évoqué la que la complexité d'un algorithme donné.
+                Un problème de décision donné peut être résolu par plusieurs algorithme : comment définir la complexité d'un problème de décision ?
+
+                Idée : on pourrait considérer la complexité du meilleur algorithme qui résout le problème.
+                Pas clair : existe-il un algorithme de complexité meilleure que celle de tous les autres ?
+
+                On va donc inverser le point de vue : au lieu d'associer une complexité à un problème, on associe un ensemble de problème à chaque complexité.
+                Un problème de décision appartient à une classe de complexité s'il peut être résolu avec un algorithme de la complexité associé à la classe.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Complexité}}
+                On rappelle que le modèle de calcul est celui d'un programme C ou OCaml s'exécutant sur une machine à mémoire infinie.
+
+                \vspace{12pt}
+                
+                $\bullet$ Définition (\textit{opération élémentaire}) :
+                On appelle \emph{valeur atomique} toute valeur qui s'écrit avec un nombre fini fixé à l'avance de bits (par exemple : un mot machine).
+
+                \begin{indt}{Les opérations élémentaires sont :}
+                    $-$ Les opérations arithmétiques sur les valeurs atomiques ;
+
+                    $-$ Les comparaisons de valeurs atomiques ;
+
+                    $-$ Les lectures et écritures en mémoire de valeurs atomiques.
+                \end{indt}
+
+                \vspace{12pt}
+                
+                $\bullet$ Définition (\textit{complexité d'un algorithme}) :
+                Soit $M$ un algorithme.
+
+                On appelle \emph{complexité} (temporelle dans le pire cas) de $M$ la fonction de $\N \longrightarrow \N$ qui à tout $n \in \N$ associe le maximum du nombre d'opérations élémentaires exécutées par $M$ sur une entrée de taille $n$, où la taille d'une entrée est le nombre de valeurs atomiques nécessaires à sa description.
+
+                \vspace{12pt}
+                
+                $\bullet$ Remarque : plutôt que d'exprimer la complexité d'un algorithme $M$, on a l'habitude d'en donner l'ordre de grandeur (symbole $\Theta$) ou un majorant (symbole $\mathcal O$).
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Classes de complexité}}
+                \label{2.1.3}
+
+                On se limite aux classes de complexité temporelles (les classes de complexité spatiales sont H.P).
+
+                \vspace{12pt}
+                
+                $\bullet$ Définition :
+                Soit $t : \N \longrightarrow \N$.
+
+                On note $\mathrm{DTIME}(t(n))$ l'ensemble des problèmes de décision résolubles avec un algorithme de complexité $\mathcal O(t(n))$.
+
+                \vspace{12pt}
+                
+                $\bullet$ Remarque : le D de DTIME signifie \emph{déterministe} : le modèle de calcul est celui des algorithmes déterministes : pas d'algorithmes randomisés / probabilistes (\textit{cf} chapitre 17).
+
+                \vspace{12pt}
+                
+                $\bullet$ Exemple : On considère le problème $P_{\rm sort}$ : étant donné deux tableaux de taille $t_1$ et $t_2$, $t_2$ est-il une version tirée de $t_1$ ?
+
+                En testant l'égalité entre $t_2$ et toutes les permutations de $t_1$, on montre que $P_{\rm sort} \in \mathrm{DTIME}(n! \cdot n)$.
+
+                En triant $t_1$ et en comparant avec $t_2$, on montre que $P_{\rm sort} \in \mathrm{DTIME}(n \log n)$.
+
+                \vspace{12pt}
+                
+                $\bullet$ Proposition :
+                \begin{emphBox}
+                    Soient $f, g \in \N^\N\ |\ f(n) = \mathcal O(g(n))$.
+
+                    Alors
+                    \[
+                        \mathrm{DTIME}(f(n)) \subseteq \mathrm{DTIME}(g(n))
+                    \]
+                \end{emphBox}
+
+                \vspace{6pt}
+                
+                \begin{proof}
+                    $f(n) = \mathcal O(g(n))$, donc
+                    \[
+                        \exists C > 0,\ \exists N \in \N\ |\
+                        \forall n \ge N,\
+                        f(n) \le C g(n)
+                    \]
+
+                    Soit $P \in \mathrm{DTIME}(f(n))$.
+
+                    Il existe $M$ qui résout $P$ avec une complexité $\mathcal O(f(n))$, \textit{i.e}
+                    $
+                        \exists C' > 0,\ \exists N' \in \N\ |\
+                        \forall n \ge N',\
+                        \forall e\ \text{entrée de taille}\ n
+                    $,
+                    l'exécution de $M$ sur $e$ effectue $\le C'C g(n)$ opérations élémentaires
+
+                    Donc $M$ est de complexité $\mathcal O(g(n))$.
+
+                    Donc $P \in \mathrm{DTIME}(g(n))$.
+                \end{proof}
+            \end{indt}
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Les classes $\mathbf P$ et $\mathbf{NP}$}}
+            \begin{indt}{\subsubsection{La classe $\mathbf P$}}
+                $\bullet$ Définition : la classe $\mathbf P$ est
+                \[
+                    \bigcup_{k \in \N} \mathrm{DTIME}\!\lr{n^k}
+                \]
+
+                \textit{i.e} la classe des problèmes de décision résoluble en temps polynomial.
+
+                \vspace{12pt}
+                
+                $\bullet$ Exemples :
+
+                $-$ Le problème de l'accessibilité (\textit{cf} \ref{1.3.3}, page \pageref{1.3.3}) appartient à $\mathbf P$ : on le résout à l'aide d'un parcours du graphe, donc en temps linéaire en la taille du graphe.
+
+                $-$ Le meilleurs algorithme de tri par comparaison est de complexité $\mathcal O(n \log n) = \mathcal O(n^2)$, donc polynomiale, mais le problème \simplecit{trier un tableau donné} n'est pas un problème de décision.
+
+                En revanche, le problème $P_{\rm sort}$ vu en \ref{2.1.3} (page \pageref{2.1.3}) appartient à $\mathbf P$.
+
+                $-$ Le problème suivant : \simplecit{étant donné une grammaire algébrique sous forme normale de \textsc{Chomsky} $G$ et un mot $u$, a-t-on $u \in \mathcal L(G)$ ?} appartient à $\mathbf P$ (\textit{cf} TP$_{22}$)
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Vérification}}
+                \label{2.2.2}
+
+                $\bullet$ Exemple : on considère le problème \textsc{Chemin\_Hamiltonien} : \simplecit{étant donné un graphe $G$ et deux sommets $s$ et $t$, existe-il dans $G$ un chemin hamiltonien de $s$ à $t$ ?}
+
+                (un chemin hamiltonien est un chemin passant exactement une fois par chaque sommet).
+
+                On peut résoudre ce problème en temps $\mathcal O(n!)$ : il suffit de tester toutes les permutations de l'ensemble des sommets qui commencent par $s$ et finissent par $t$.
+
+                On ne sait pas si \textsc{Chemin\_Hamiltonien} $\in \mathbf P$, en revanche on peut facilement vérifier si une solution à ce problème est correcte : étant donné un chemin, on vérifie en temps linéaire si c'est un chemin hamiltonien de $s$ à $t$.
+                On dit que le chemin à vérifier est un certificat pour ce problème.
+
+                \vspace{12pt}
+                
+                $\bullet$ Définition (\emph{vérificateur}) :
+                Soit $P$ un problème de décision sur un domaine $E$.
+
+                Un \emph{vérificateur} pour $P$ est un algorithme $V$ d'entrées une instance e $e \in E$ de $P$ et une valeur $c$ appelée \emph{certificat} et à valeur dans les booléens tel que
+                \[
+                    \set{e \in E |\ P(e)}
+                    = \set{e \in E \ |\ V\ \text{termine et renvoie vrai sur l'entrée}\ (e, c)}
+                \]
+
+                \vspace{12pt}
+                
+                $\bullet$ Exemple : pour le problème de coloration de graphe vu en \ref{1.2.2}, on écrit le vérificateur suivant, d'entrées une instance $(G, k)$, où $G$ est un graphe, et $k$ un entier, et $c$ une coloration :
+
+                \begin{indalgo}{Vérificateur du problème de coloration}
+                    \KwInput{$(G, k), c$}
+
+                    \BlankLine
+
+                    Parcourir $S$ en comptant le nombre de couleurs distinctes\;
+
+                    \If{ce nombre est $> k$}{
+                        \Return \texttt{false}\;
+                    }
+
+                    \For{tout $\set{s, s'} \in A$}{
+                        \If{$c(s) = c(s')$}{
+                            \Return \texttt{false}\;
+                        }
+                    }
+
+                    \Return \texttt{true}\;
+                \end{indalgo}
+
+                Ce vérificateur est de complexité $\mathcal O\!\lr{\abs S ^2}$ (si on l'implémente naïvement).
+
+                \vspace{12pt}
+                
+                $\bullet$ Remarque : en général, on exprime la complexité d'un vérificateur uniquement  en fonction de la taille de l'instance.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{La classe $\mathbf{NP}$}}
+                $\bullet$ Définition : La classe $\mathbf{NP}$ est celle des problèmes de décision admettant un vérificateur de complexité polynomiale en la taille de l'instance.
+
+                \vspace{12pt}
+                
+                $\bullet$ La contrainte de complexité justifie le fait d'ignorer la taille du certificat : un certificat trop grand ne pourra de toute façon pas être lu dans son intégralité par un algorithme de complexité polynomiale en la taille de l'instance.
+
+                On pourrait imposer au certificat d'être de taille polynomiale en celle de l'instance et considérer des vérificateurs de complexité polynomiale en la taille de leurs deux entrées.
+
+                Le $N$ de $\mathbf{NP}$ signifie \emph{non déterministe}, en raison du modèle H.P des machines de \textsc{Turing} non déterministes qui généralisent les machines de \textsc{Turing} déterministes de la même façon que les AFND généralisent les AFD.
+                Un problème appartient à $\mathbf{NP}$ s'il existe une machine de \textsc{Turing} non déterministe qui le résout en temps polynomial.
+
+                \vspace{12pt}
+                
+                $\bullet$ Théorème :
+                \begin{emphBox}
+                    \[
+                        \mathbf P \subset \mathbf{NP}
+                    \]
+                \end{emphBox}
+
+                \vspace{6pt}
+                
+                \begin{proof}
+                    Soit $D$ un problème de décision qui appartient à $\mathbf P$.
+
+                    Il existe donc un algorithme $M$ qui résout $D$ en temps polynomial.
+
+                    On construit le vérificateur $V$ d'entrée une instance $e$ de $D$ et un certificat que l'on ignore (chaîne de caractères quelconque), et dont le code est :
+
+                    \begin{indalgo}{$V$}
+                        \KwInput{$e, c$}
+
+                        \BlankLine
+
+                        Simuler $M$ sur $e$\;
+
+                        \Return le résultat de $M$\;
+                    \end{indalgo}
+
+                    $V$ est de complexité polynomiale en la taille de $e$ car c'est le cas pour $M$.
+
+                    \[
+                        \begin{array}{rcl}
+                            \exists c\ |\ V(e, c)\ \text{renvoie \texttt{true}}
+                            &\ssi&
+                            \forall c,\ V(e, c)\ \text{renvoie \texttt{true}}
+                            \\
+                            &\ssi& M(e) \text{renvoie \texttt{true}}
+                            \\
+                            &\ssi& D(e)
+                        \end{array}
+                    \]
+
+                    Donc $V$ est un vérificateur pour $D$ de complexité polynomiale, donc $D \in \mathbf{NP}$.
+                \end{proof}
+
+                \vspace{12pt}
+                
+                $\bullet$ Exemples :
+
+                $-$ Les vérificateurs en \ref{2.2.2} (page \pageref{2.2.2}) montrent que le problème de coloration et \textsc{Chemin\_Hamiltonien} appartiennent à $\mathbf{NP}$.
+
+                $-$ \textsc{Clique} : étant donné un graphe $G = (S, A)$ et un entier $k \in \N$, existe-t-il une clique de taille $k$ dans $G$, \textit{i.e} un ensemble $S' \subseteq S$ de taille $k$ telle que $G_{S'}$ est un graphe complet.
+
+                On montre que \textsc{Clique} $\in \mathbf{NP}$ grâce au vérificateur suivant :
+
+                \begin{indalgo}{Vérificateur de \textsc{Clique}}
+                    \KwInput{$G = (S, A), k, S'$}
+
+                    \BlankLine
+
+                    \If{$\abs{S'} \neq k$}{
+                        \Return \texttt{false}\;
+                    }
+
+                    \For{chaque $s \in S'$}{
+                        \For{chaque $s' \in S' \setminus \set s$}{
+                            \If{$\set{s, s'} \notin A$}{
+                                \Return \texttt{false}\;
+                            }
+                        }
+                    }
+
+                    \Return \texttt{true}\;
+                \end{indalgo}
+
+                Ce vérificateur est de complexité $\mathcal O\!\lr{\abs{S'}^2} = \mathcal O\!\lr{\abs{S}^2}$ donc polynomiale en la taille de $(G, k)$.
+
+                Attention, la taille de $k$ est $\mathcal O(\log k)$.
+
+                \boxed{\rm Exo} Montrer que le problème suivant appartient à $\mathbf{NP}$ :
+
+                \textsc{Subset\_Sum} : étant donné un ensemble (multi-ensemble : les répétitions sont autorisées) fini et un entier $S$, existe-t-il
+                \[
+                    E' \subseteq E\ |\
+                    \sum_{n \in E'} n = S
+                \]
+                ?
             \end{indt}
         \end{indt}
     \end{indt}
