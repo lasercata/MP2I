@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2022.12.15
+% Last modification     :   2022.12.19
 %
 %------------------------------------------------------------------------
 
@@ -355,23 +355,41 @@
                 $\bullet$ Plusieurs modèles de calcul ont étés proposés dans les années 1930, et se sont révélés équivalents et plus généraux que les modèles précédents : les machines de \textsc{Turing}, et le $\lambda$-calcul de \textsc{Church}.
 
                 Les modèles les plus généraux conçus ultérieurement, comme les fonctions récursives, sont équivalents à ces deux modèles et on admet l'hypothèse, nommée thèse de \textsc{Church}--\textsc{Turing}, que ces modèles caractérisent vraiment la notion d'algorithme.
-                On dit aujourd'hui qu'un langage de programmation est \emph{Turing-complet} s'il est capable d'écrire les mêmes algorithmes que ceux impémentables par machine de \textsc{Turing}.
+                On dit aujourd'hui qu'un langage de programmation est \emph{Turing-complet} s'il est capable d'écrire les mêmes algorithmes que ceux implémentables par machine de \textsc{Turing}.
 
                 \vspace{6pt}
                 
                 $\bullet$ machine de \textsc{Turing} : informellement, une machine de \textsc{Turing} est une machine finie travaillant sur un ruban infini qui lui sert de mémoire.
                 La machine dispose d'une tête de lecture lui permettant d'accéder à une case du ruban et de règles de transition décrivant les opérations réalisées sur les cases et les déplacements de la tête de lecture.
 
+                %\begin{center}
+                %    \begin{tabular}{ccccccccccc}
+                %        \hline
+                %        $\cdots$ & \vline & $u_1$ & \vline & $u_2$ & \vline & $\cdots$ & \vline & $u_n$ & \vline & $\cdots$
+                %        \\
+                %        \hline
+                %                 &&&& $\uparrow$
+                %        \\
+                %                 &&& \multicolumn{3}{c}{\boxed{\rm machine}}
+                %    \end{tabular}
+                %\end{center}
+
                 \begin{center}
-                    \begin{tabular}{ccccccccccc}
-                        \hline
-                        $\cdots$ & \vline & $u_1$ & \vline & $u_2$ & \vline & $\cdots$ & \vline & $u_n$ & \vline & $\cdots$
-                        \\
-                        \hline
-                                 &&&& $\uparrow$
-                        \\
-                                 &&& \multicolumn{3}{c}{machine}
-                    \end{tabular}
+                    \begin{tikzpicture}
+                        \node (r) at (0, 0) {
+                            $
+                                \begin{array}{c|c|c|c|c|c}
+                                    \hline
+                                    \cdots & u_1 & u_2 & \cdots & u_n & \cdots
+                                    \\
+                                    \hline
+                                \end{array}
+                            $
+                        };
+                        \node (m) at (-.4, -1) [rectangle, draw] {machine};
+
+                        \draw[->] (m) to (-.4, -.3);
+                    \end{tikzpicture}
                 \end{center}
 
                 \`A la manière des automates, les machines de \textsc{Turing} ont un ensemble fini d'états, d'où la définition suivante :
@@ -563,7 +581,7 @@
                             \\
                             \hline
                             \cdots
-                            & \vline & 0 & \vline & 1 & \vline &  & \vline & \cdots
+                            & \vline & 0 & \vline & 1 & \vline & \Emph B & \vline & \cdots
                             \\
                             \hline
                             &&&&&&&& \uparrow
@@ -635,7 +653,7 @@
                             \\
                             \hline
                             \cdots
-                            & \vline & 1 & \vline & 1 & \vline &  & \vline & \cdots
+                            & \vline & 1 & \vline & 1 & \vline & \Emph B & \vline & \cdots
                             \\
                             \hline
                             &&&&&&&& \uparrow
@@ -658,7 +676,7 @@
                      \begin{array}{ccc}
                          \N & \longrightarrow & \N
                          \\
-                         n & \longmapsto \floor{\dfrac n 2}
+                         n & \longmapsto & \floor{\dfrac n 2}
                      \end{array}
                  \]
 
@@ -676,7 +694,7 @@
 
                  On obtient une machine qui reconnaît le langage $\set{u \in \set{0, 1}^*\ |\ \lrangle u _2 \equiv 0\ [2]}$.
 
-                 Autrement dit, la machine calcule $1/2\N$
+                 Autrement dit, la machine calcule $2\N$.
 
                  \vspace{12pt}
                  
@@ -711,7 +729,7 @@
 
                 \vspace{12pt}
                 
-                $\bullet$ Remarque :
+                $\bullet$ Remarques :
 
                 $-$ Il est "facile" de montrer qu'une fonction est calculable : il "suffit" d'exhiber un algorithme qui convient.
 
@@ -751,14 +769,15 @@
                             \\
                             s_1 & 1 & 0 & 0 & \cdots
                             \\
-                            s_2 & 1 & 1 & 1 & \cdots
+                            s_2 & 0 & 1 & 0 & \cdots
                             \\
                             \vdots
                         \end{array}
                     \]
 
-                    On a $\lr{s_n}_{n \in \N} \in \lr{\set{0, 1}^\N}^\N$.
-                    Soit $\forall n \in \N,\ u_n = 1 - s_n$. Alors :
+                    On a $\forall n \in \N,\ s_n = \lr{s_{n, k}}_{k \in \N} \in \set{0, 1}^\N$, \textit{i.e} $\lr{s_{n, k}}_{n, k \in \N} \in \lr{\set{0, 1}^\N}^\N$.
+
+                    Soit $\forall n \in \N,\ u_n = 1 - s_{n, n}$. Alors :
                     \[
                         \lr{u_n}_{n \in \N} \in \set{0, 1}^\N
                     \]
@@ -839,7 +858,7 @@
                     \end{array}
                 \]
 
-                Attention lors de l'expression d'un problème de décision, ne pas se limiter à une instance : par exemple, l'énoncé \simplecit{la formule $X \vee \neg X$ est-elle satisfait ?} n'est pas un problème de décision car la réponse à cette question est \simplecit{oui} ou \simplecit{non}, mais pas un algorithme, même s'il est possible d'utiliser un algorithme pour déterminer cette réponse.
+                Attention lors de l'expression d'un problème de décision, ne pas se limiter à une instance : par exemple, l'énoncé \simplecit{la formule $X \vee \neg X$ est-elle satisfiable ?} n'est pas un problème de décision car la réponse à cette question est \simplecit{oui} ou \simplecit{non}, mais pas un algorithme, même s'il est possible d'utiliser un algorithme pour déterminer cette réponse.
 
                 Remarque : on pourrait reformuler cette question pour écrire un problème de décision (de domaine $\set{X \vee \neg X}$) mais comme dans le cas de la calculabilité, les problèmes de décision de domaine fini sont peu intéressants car on peut tabuler les réponses et écrire un algorithme allant chercher dans la table la réponse à l'instance considérée.
 
@@ -1115,7 +1134,7 @@
                 
                 Remarque : le co-problème de ce problème de décision est semi-décidable et indécidable.
 
-                Il existe des problèmes  non semi-décidables dont le co-problème n'est pas semi-décidable (\textit{cf} TD$_{45}$)
+                Il existe des problèmes  non semi-décidables dont le co-problème n'est pas semi-décidable (\textit{cf} TD$_{45}$).
             \end{indt}
         \end{indt}
 
@@ -1145,6 +1164,8 @@
                         \BlankLine
 
                         Construire l'algorithme $M'$ d'entrée $e'$ et de code :
+
+                        \setcounter{algocf}{3}
                         \begin{algorithm}[H]
                             \KwInput{$e'$}
 
@@ -1159,9 +1180,13 @@
                         \BlankLine
                     
                         Simuler $M_T$ sur $M'$ et renvoyer son résultat\;
-                        %\caption{test}
+
+                        \setcounter{algocf}{2}
+                        \caption{Réduction de \textsc{Arrêt} à \textsc{Trivialité}}
                     \end{algorithm}
                 \end{algoBox}
+
+                \setcounter{algocf}{4}
 
                 Comme $M_T$ réalise une fonction totale, $M_T$ termine sur toute entrée, donc l'algorithme ci-dessus aussi.
 
@@ -1281,6 +1306,8 @@
                                 }
                             }
 
+
+                            \setcounter{algocf}{6}
                             \caption{$M_{G, s}$}
                         \end{algorithm}
 
@@ -1288,9 +1315,12 @@
                     
                         \Return $(M_{G, s}, t)$\;
 
+                        \setcounter{algocf}{5}
                         \caption{Réduction de \textsc{Accessibilité} à \textsc{Arrêt}}
                     \end{algorithm}
                 \end{algoBox}
+
+                \setcounter{algocf}{7}
 
                 On remarque qu'il existe un chemin de $s$ à $t$ dans $G$ si et seulement si l'algorithme $M_{G, s}$ termine sur $t$.
 
