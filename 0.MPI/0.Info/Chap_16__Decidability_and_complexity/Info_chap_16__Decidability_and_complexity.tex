@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2022.12.19
+% Last modification     :   2023.01.03
 %
 %------------------------------------------------------------------------
 
@@ -1597,6 +1597,8 @@
             \vspace{12pt}
             
             \begin{indt}{\subsubsection{La classe $\mathbf{NP}$}}
+                \label{2.2.3}
+
                 $\bullet$ Définition : La classe $\mathbf{NP}$ est celle des problèmes de décision admettant un vérificateur de complexité polynomiale en la taille de l'instance.
 
                 \vspace{12pt}
@@ -1695,6 +1697,291 @@
                     \sum_{n \in E'} n = S
                 \]
                 ?
+            \end{indt}
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Réductions et complétude}}
+            \begin{indt}{\subsubsection{Réduction polynomiale}}
+                \label{2.3.1}
+
+                $\bullet$ Définition : Soient $P_1, P_2$ des problèmes de décision.
+
+                On dit que $P_1$ se réduit en temps polynomial à $P_2$ si et seulement si il existe un réduction de $P_1$ à $P_2$ calculable en temps polynomial, \textit{i.e} s'il existe une fonction $f$ du domaine de $P_1$ vers celui de $P_2$ telle que $\forall e\ \text{instance de}\ P_1,\ P_1(e) \ssi P_2(f(e))$ et un algorithme $M$ réalisant $f$ et de complexité polynomiale.
+
+                On note alors $P_1 \le_{\rm p} P_2$.
+
+                \vspace{12pt}
+                
+                $\bullet$ Remarques :
+
+                $-$ Si on sait résoudre $P_2$, alors il y a un surcoût polynomial pour résoudre $P_1$.
+
+                $-$ On peut aussi généraliser aux réductions \textsc{Turing} la notion de réduction polynomiale.
+
+                \vspace{12pt}
+                
+                $\bullet$ Exemple : on a vu que SAT $\le_{\rm p}$ 3-SAT \textit{via} la transformation de \textsc{Tseitin} (\textit{cf} chapitre 8, 3.3.5).
+
+                Rappel : Si $\varphi$ est une formule propositionnelle, on ajoute des variables propositionnelles $p_\psi$, $\forall \psi \in SF(\varphi)$ et on construit des 3-FNC $f_\psi$ qui représentent l'équivalence $\psi \leftrightarrow p_\psi$ :
+                \[
+                    \begin{array}{rcl}
+                        f_x &=& (\neg x \vee p_x) \wedge (\neg p_x \vee x)
+                        \\
+                        f_{\neg \psi} &=& (\neg p_{\neg \psi} \vee \neg p_\psi) \wedge (p_\psi \vee p_{\neg \psi})
+                        \\
+                        f_{\psi_1 \vee \psi_2} &=& (\neg p_{\psi_1 \vee \psi_2} \vee p_{\psi_1} \vee p_{\psi_2}) \wedge (\neg p_{\psi_1} \vee p_{\psi_1 \vee \psi_2}) \wedge (\neg p_{\psi_2} \vee p_{\psi_2 \vee p_{\psi_1 \vee \psi_2}})
+                        \\
+                        f_{\psi_1 \wedge \psi_2} &=& (\neg p_{\psi_1 \wedge \psi_2} \vee p_{\psi_1}) \wedge (\neg p_{\psi_1 \wedge \psi_2} \vee p_{\psi_2}) \wedge (\neg p_{\psi_1} \vee \neg p_{\psi_2} \vee p_{\psi_1 \wedge \psi_2})
+                    \end{array}
+                \]
+
+                On réécrit les sous-formules de la forme $\psi_1 \rightarrow \psi_2$ en $\neg \psi_1 \vee \psi_2$, ce qui ne fait que doubler la taille de la formule dans le pire cas.
+
+                On considère alors la 3-FNC
+                \[
+                    p_\varphi \wedge \bigwedge_{\psi \in SF(\varphi)} f_\psi
+                \]
+
+                Cette formule est équisatisfiable à $\varphi$ \boxed{\rm Exo}, et calculable en temps linéaire en la taille de $\varphi$.
+
+                Donc SAT $\le_{\rm p}$ 3-SAT.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{$\mathbf{NP}$-complétude}}
+                $\bullet$ Introduction : L'idée de la complétude est d'exploiter la notion de réduction afin de se focaliser sur des problèmes qui sont plus difficiles que tous les problèmes de leur classe de complexité.
+
+                En effet, si la complexité associée est super-polynomiale (polynomiale ou plus), alors le coût de la réduction est absorbé, donc on a un algorithme de même complexité pour chaque problème de la classe concernée, \textit{i.e} la classe de complexité est stable par réduction polynomiale.
+
+                \vspace{12pt}
+                
+                $\bullet$ Proposition :
+                Soient $P_1, P_2$ des problèmes de décision tels que $P_1 \le_{\rm p} P_2$.
+
+                Si $P_2 \in \mathbf{P}$ (resp. $P_2 \in \mathbf{NP}$), alors $P_1 \in \mathbf P$ (resp. $P_1 \in \mathbf{NP}$).
+
+                \vspace{6pt}
+                
+                \begin{proof}
+                    Il existe une réduction $f$ de $P_1$ à $P_2$ et un algorithme $M_f$ réalisant $f$ et de complexité $\mathcal O(p_f(\abs e))$ où $p_f$ est un polynôme et $e$ une instance de $P_1$.
+
+                    $-$ On suppose $P_2 \in \mathbf P$. Il existe donc un algorithme $M_2$ résolvant $P_2$, de complexité $\mathcal O(p_2(\abs{e_2}))$, où $p_2$ est un polynôme, et $e_2$ une instance de $P_2$.
+
+                    On construit l'algorithme $M_1$, d'entrée une instance $e$ de $P_1$  et de code :
+                    \begin{indalgo}{$M_1$}
+                        \KwInput{$e$}
+
+                        \BlankLine
+
+                        Simuler $M_f$ sur $e$ pour obtenir $f(e)$\;
+                        Simuler $M_2$ sur $f(e)$ et renvoyer son résultat\;
+                    \end{indalgo}
+
+                    $M_1$ résout $P_1$ et est de complexité $\mathcal O(p_f(\abs e) + p_2(\abs{f(e)}))$.
+
+                    Or $\abs{f(e)} = \mathcal O(p_f(\abs e))$, donc $M_1$ est de complexité $\mathcal O((\underbrace{p_f + p_2 \circ p_f}_{\text{polynôme}})(\abs e))$.
+
+                    Donc $P_1 \in \mathbf P$.
+
+                    \vspace{6pt}
+                    
+                    $-$ On suppose $P_2 \in \mathbf{NP}$. Il existe donc un vérificateur $V_2$ pour $P_2$, de complexité polynomiale en la taille de l'instance de $P_2$ passé en entrée.
+
+                    On montre de même que $P_1 \in \mathbf{NP}$ grâce au vérificateur $V_1$, d'entrées une instance $e$ de $P_1$ et un certificat $c$ (pour $P_2$), et de code :
+                    \begin{indalgo}{$V_1$}
+                        \KwInput{$e, c$}
+
+                        \BlankLine
+
+                        Simuler $M_f$ sur $e$ pour obtenir $f(e)$\;
+
+                        Simuler $V_2$ sur l'entrée $(f(e), c)$ et renvoyer son résultat\;
+                    \end{indalgo}
+                \end{proof}
+
+                \vspace{12pt}
+                
+                $\bullet$ Définition (\textit{\textbf{NP}-complétude}) :
+                Soit $P_0$ un problème de décision.
+
+                $-$ On dit que $P_0$ est \emph{\textbf{NP}-difficile} si et seulement si
+                \[
+                    \forall P_1 \in \mathbf{NP},\ P_1 \le{\rm p} P_0
+                \]
+
+                $-$ On dit que $P_0$ est \emph{\textbf{NP}-complet} si et seulement si
+                \[
+                    \begin{cases}
+                        P_0 \in \mathbf{NP}
+                        \\
+                        P_0\ \text{est \textbf{NP}-difficile}
+                    \end{cases}
+                \]
+
+                \vspace{12pt}
+                
+                $\bullet$ Proposition :
+                Soit $P_0$ un problème \textbf{NP}-complet.
+
+                Si $P_0 \in \mathbf P$, alors $\mathbf P = \mathbf{NP}$.
+
+                \vspace{6pt}
+                
+                \begin{proof}
+                    On sait déjà que $\mathbf P \subseteq \mathbf{NP}$ (\textit{i.e} \ref{2.2.3}, page \pageref{2.2.3}).
+
+                    Soit $P_1 \in \mathbf{NP}$.
+
+                    Comme $P_0$ est $\mathbf{NP}$-difficile, $P_1 \le_{\rm p} P_0$, donc par la proposition précédente, comme $P_0 \in \mathbf P,\ P_1 \in \mathbf P$, donc $\mathbf{NP} \subseteq \mathbf P$ et $\mathbf P = \mathbf{NP}$.
+                \end{proof}
+
+                \vspace{12pt}
+                
+                $\bullet$ Théorème (\textsc{Cook-Levin}) : SAT est \textbf{NP}-complet.
+
+                \vspace{6pt}
+                
+                \begin{proof}
+                    (démonstration informelle, H.P).
+
+                    $-$ SAT $\in \mathbf{NP}$ : on considère comme certificat une valuation des variables de l'instance (donc de taille linéaire en la taille de l'instance) et on évalue la formule avec cette valuation (en temps linéaire) puis on vérifie que le résultat vaut $V$.
+
+                    \vspace{6pt}
+                    
+                    $-$ SAT est \textbf{NP}-difficile : on considère $P_0 \in \mathbf{NP}$ et un vérificateur $V$ pour $P_0$.
+
+                    On veut montrer que $P_0 \le_{\rm p}$ SAT. On voit une exécution de $V$ comme une suite de configurations (plus facile avec les machines de \textsc{Turing}) et on construit une FNC exprimant que l'enchaînement des configurations est valide et dépendent de variables représentant la valeur du certificat. La formule sera satisfiable si et seulement si il existe un valeur du certificat menant à une exécution valide et acceptante de $V$.
+
+                    On peut borner la taille du certificat et le nombre de configuration à enchaîner grâce à un polynôme qui borne la complexité de $V$, d'où une réduction polynômiale.
+                \end{proof}
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Preuves de \textbf{NP}-complétude}}
+                \label{2.3.3}
+
+                $\bullet$ Remarques : comme pour la décidabilité, l'usage de réductions (polynomiales) est un outil important.
+
+                \vspace{12pt}
+                
+                $\bullet$ Prop : Soit $P_0$ un problème de décision.
+
+                Alors
+                \[
+                    P_0\ \text{est \textbf{NP}-complet}
+                    \ssi
+                    \begin{cases}
+                        P_0 \in \mathbf{NP}
+                        \\
+                        \exists P_1 \ \text{\textbf{NP}-complet}\ |\ P_1 \le_{\rm p} P_0
+                    \end{cases}
+                \]
+
+                \begin{proof}
+                    \boxed{\Rightarrow} $P_0 \in \mathbf{NP}$ par définition.
+
+                    Par le théorème de \textsc{Cook-Levin}, SAT est \textbf{NP}-complet, donc comme $P_0$ est $\mathbf{NP}$- difficile, SAT $\le_{\rm p} P_0$.
+
+                    \vspace{6pt}
+                    
+                    \boxed{\Leftarrow} $P_0 \in \mathbf{NP}$ par hypothèse.
+
+                    $P_0$ est \textbf{NP}-difficile : si $P_2 \in \mathbf{NP}$, alors comme $P_1$ est \textbf{NP}-complet, on a $P_2 \le_{\rm p} P_1 \le_{\rm p} P_0$.
+
+                    Donc, comme $\le_{\rm p}$ est transitive (car la composition de polynômes est un polynôme),
+                    \[
+                        P_2 \le_{\rm p} P_0
+                    \]
+                \end{proof}
+
+                \vspace{12pt}
+                
+                $\bullet$ Exemple : 3-SAT est \textbf{NP}-complet.
+
+                $-$ 3-SAT $\in \mathbf{NP}$ : on utilise le même vérificateur que celui vu pour SAT en \ref{2.3.3} (page \pageref{2.3.3}).
+
+                $-$ SAT est \textbf{NP}-complet (\textit{cf} \ref{2.3.3}, page \pageref{2.3.3}) et SAT $\le_{\rm p}$ 3-SAT (\textit{cf} \ref{2.3.1}, page \pageref{2.3.1}).
+
+                \vspace{6pt}
+                
+                De même, $\forall k \ge 3$, $k$-SAT est $\mathbf{NP}$-complet :
+
+                $-$ $k$-SAT $\in \mathbf{NP}$ pour la même raison que $3$-SAT ;
+
+                $-$ $3$-SAT est \textbf{NP}-complet et la fonction identité est une réduction polynomiale de $3$-SAT à $k$-SAT car $k \ge 3$.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{\textsc{Clique}}}
+                $\bullet$ Définition :
+                Soit $G = (S, A)$ un GNO.
+
+                Une clique dans $G$ est une ensemble $S' \subseteq S\ |\ \forall s \neq s' \in S',\ \set{s, s'} \in A$.
+
+                On dit que $\abs{S'}$ est la taille de la clique.
+
+                \vspace{6pt}
+                
+                On s'intéresse au problème \textsc{Clique} suivant : étant donné un GNO $G$ et un entier $k$, existe-t-il une clique de taille $k$ dans $G$ ?
+
+                \vspace{12pt}
+                
+                $\bullet$ Proposition :
+                \begin{emphBox}
+                    \textsc{Clique} est \textbf{NP}-complet.
+                \end{emphBox}
+
+                \vspace{6pt}
+                
+                \begin{proof}
+                    $-$ \textsc{Clique} $\in \mathbf{NP}$ : on utilise $S'$ come certificat : on vérifie en $\mathcal O(\abs{S'}) = \mathcal O(\abs S)$ que $S' \subseteq S$ et $\abs{S'} = k$.
+
+                    On vérifie en $\mathcal O\!\lr{\abs{S'}^2} = \mathcal O\!\lr{\abs S ^2}$ que $\forall s \neq s' \in S',\ \set{s, s'} \in A$.
+
+                    Donc on a bien un vérificateur de complexité $\mathcal O\!\lr{\abs S ^2}$, donc polynomiale en la taille de $(G, k)$.
+
+                    \vspace{6pt}
+                    
+                    $-$ On montre que $3$-SAT $\le_{\rm p}$ \textsc{Clique} :
+
+                    Soit $\varphi$ une instance de 3-SAT. On veut construire une instance $(G, k)$ de \textsc{Clique} en temps polynomial en $\abs \varphi$ telle que $G$ contient une clique de taille $k$ si et seulement si $\varphi$ est satisfiable.
+
+                    $G = (S, A)$ est construit ainsi :
+
+                    $+$ $S$ contient chaque littéral de $\varphi$ avec multiplicité ;
+
+                    $+$ Deux littéraux $l, l'$ sont liés dans $A$ si et seulement si $l$ et $l'$ ne sont pas la négation l'un de l'autre et $l, l'$ appartiennent à des clauses différentes.
+
+                    $k$ est le nombre de clauses de $\varphi$.
+
+                    $(G, k)$ est calculable en temps quadratique (donc polynomial) en $\abs \varphi$.
+
+                    \vspace{6pt}
+                    
+                    Il reste à montrer que $\varphi$ est satisfiable si et seulement si $G$ contient une clique de taille $k$ :
+
+                    \boxed{\Rightarrow} Il existe une valuation $v$ telle que $\lrbb \varphi _v = V$, donc chaque clause de $\varphi$ (numérotées de 1 à $k$), il existe un littéral $l_i$ de la clause tel que $\lrbb{l_i}_v = V$.
+
+                    On note alors $S' = \set{l_i\ |\ i \in \nset 1 k}$ et on montre que $S'$ est une clique de taille $k$ dans $G$.
+
+                    $S' \subseteq S$, $\abs{S'} = k$ et $\forall i \neq i \in \nset 1 k,\ l_i$ et $k_j$ appartiennent à des clauses différentes et $l_i, l_j$ ne peuvent être négation l'un de l'autre car  $\lrbb{l_i}_v = V = \lrbb{l_j}_v$.
+
+                    Donc $S'$ est une clique de taille $k$ dans $G$.
+
+                    \vspace{6pt}
+                    
+                    \boxed{\Leftarrow}
+                    Par définition de $A$, les littéraux de $S'$ proviennent tous de clauses différentes donc on a exactement un littéral par clause.
+
+                    Par définition de $A$, les littéraux de $S'$ ne se contredisent pas, donc on peut construire une valuation qui rend vrai chaque littéral de $S'$ et prolonger de manière quelconque cette valuation aux variables de $\varphi$ qui n'apparaissent pas dans les littéraux de $S'$.
+
+                    Par ce qui précède, cette valuation rend vrai un littéral de chaque clause de $\varphi$, donc c'est un modèle de $\varphi$.
+                \end{proof}
             \end{indt}
         \end{indt}
     \end{indt}
