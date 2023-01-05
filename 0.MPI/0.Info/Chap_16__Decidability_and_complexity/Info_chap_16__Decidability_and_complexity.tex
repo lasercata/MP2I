@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2023.01.03
+% Last modification     :   2023.01.05
 %
 %------------------------------------------------------------------------
 
@@ -1809,7 +1809,7 @@
 
                 $-$ On dit que $P_0$ est \emph{\textbf{NP}-difficile} si et seulement si
                 \[
-                    \forall P_1 \in \mathbf{NP},\ P_1 \le{\rm p} P_0
+                    \forall P_1 \in \mathbf{NP},\ P_1 \le_{\rm p} P_0
                 \]
 
                 $-$ On dit que $P_0$ est \emph{\textbf{NP}-complet} si et seulement si
@@ -1921,7 +1921,7 @@
                 $\bullet$ Définition :
                 Soit $G = (S, A)$ un GNO.
 
-                Une clique dans $G$ est une ensemble $S' \subseteq S\ |\ \forall s \neq s' \in S',\ \set{s, s'} \in A$.
+                Une clique dans $G$ est un ensemble $S' \subseteq S\ |\ \forall s \neq s' \in S',\ \set{s, s'} \in A$.
 
                 On dit que $\abs{S'}$ est la taille de la clique.
 
@@ -1982,6 +1982,331 @@
 
                     Par ce qui précède, cette valuation rend vrai un littéral de chaque clause de $\varphi$, donc c'est un modèle de $\varphi$.
                 \end{proof}
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{\textsc{Vertex\_Cover}}}
+                $\bullet$ Définition : Soit $G = (S, A)$ une GNO.
+
+                Une \emph{couverture par les sommets} de $G$ est un ensemble $S' \subseteq S\ |\ \forall \in A$, au moins l'une des extrémités de $a$ appartient à $S'$.
+
+                On appelle $\abs{S'}$ la taille de la couverture.
+
+                \vspace{6pt}
+                
+                On s'intéresse au problème suivant : étant donné un GNO $G$ et un entier $k$, existe-t-il une couverture par les sommets de $G$ de taille $k$ ?
+
+                \vspace{12pt}
+                
+                $\bullet$ Propriété :
+                \begin{emphBox}
+                    \textsc{Vertex\_Cover} est \textbf{NP}-complet.
+                \end{emphBox}
+
+                \vspace{6pt}
+                
+                \begin{proof}
+                    $-$ \textsc{Vertex\_Cover} $\in \mathbf{NP}$ : on considère l'ensemble $S'$ comme certificat.
+                    On peut vérifier $\abs{S'}$ en temps $\mathcal O(\abs S)$ et on peut tester pour chaque arête l'appartenance de l'une de ses extrémité à $S'$, ce qui donne un vérificateur de complexité $\mathcal O(\abs S + \abs A)$, donc polynomiale en la taille de l'instance $(G, k)$.
+
+                    \vspace{6pt}
+                    
+                    $-$ \textsc{Clique} $\le_{\rm p}$ \textsc{Vertex\_Cover} :
+                    Soit $(G, k)$ une instance de \textsc{Clique}.
+
+                    On veut construire une instance $(G', k')$ de \textsc{Vertex\_Cover} en temps polynomial telle que $G'$ admet une couverture par les sommets de taille $k'$ si et seulement si $G$ admet une clique de taille $k$.
+
+                    On considère le graphe complémentaire $\cj G = (S, \cj A)$, où
+                    $
+                        \cj A =
+                        \set{
+                            \set{s, s'}\ |\
+                            \begin{array}{|l}
+                                s \neq s'
+                                \\
+                                \set{s, s'} \notin A
+                            \end{array}
+                        }
+                    $
+                    et on note $\cj k = \abs S - k$.
+
+                    \vspace{6pt}
+                    
+                    $(\cj G, \cj k)$ est l'instance de \textsc{Vertex\_Cover} recherchée :
+
+                    $+$ On peut la construire en temps $\mathcal O\!\lr{\abs S ^2}$ ($\abs S - k$ est calculé en temps $\mathcal O(\log \abs S + \log k) = \mathcal O\!\lr{\abs S ^2}$)
+
+                    $+$ Si $G$ admet une clique $S'$ de taille $k$, $\abs{S \setminus S'} = \set S - k$, et $\forall \set{s, s'} \in A$, on sait que $s \in S \setminus S'$ ou $s' \in S \setminus S'$ car sinon $s, s' \in S'$ et comme $S'$ est une clique, on aurait $\set{s, s'} \in A$.
+                    Donc $S \setminus S'$ est une couverture de $\cj G$ de taille $\abs S - k$.
+
+                    $+$ Si $\cj G$ admet une couverture $S'$ de taille $\abs S - k$, on vérifie de même que $S \setminus S'$ est une clique de $G$ de taille $k$.
+                \end{proof}
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{\textsc{Cycle\_Hamiltonien}}}
+                $\bullet$ Définition : Soit $G = (S, A)$ un GNO.
+
+                $G$ est \emph{hamiltonien} si et seulement si $G$ contient un cycle hamiltonien, \textit{i.e} un cycle passant exactement une fois par chaque sommet de $G$.
+
+                \vspace{6pt}
+                
+                On s'intéresse au problème suivant : étant donné un graphe non orienté $G$, est-il hamiltonien ?
+
+                \vspace{12pt}
+                
+                $\bullet$ Proposition :
+                \begin{emphBox}
+                    \textsc{Cycle\_Hamiltonien} est \textbf{NP}-complet.
+                \end{emphBox}
+
+                \vspace{6pt}
+                
+                \begin{proof}
+                    $-$ \textsc{Cycle\_Hamiltonien} $\in \mathbf{NP}$ : on prend une séquence de sommets $s_0 \cdots s_n$ en certificat et on vérifie $s_0 = s_n$ ($\mathcal O(1)$), on construit un tableau de booléens associant à chaque sommet $s \in S$ son appartenance à la séquence en parcourant la séquence et en échouant dès qu'un sommet déjà vu est rencontré (sauf $s_n$) puis on vérifie que le tableau ne contient que la valeur \texttt{true} ($\mathcal O(\abs S)$) et enfin on vérifie que $\forall i \in \nset 0 {n - 1},\ \set{s_i, s_{i + 1}} \in A$ ($\mathcal O(\abs S)$).
+
+                    On a donc un vérificateur de complexité polynomiale en la taille de $G$.
+
+                    \vspace{12pt}
+                    
+                    $-$ \textsc{Vertex\_Cover} $\le_{\rm p}$ \textsc{Cycle\_Hamiltonien} :
+
+                    Soit $(G, k)$ une instance de \textsc{Vertex\_Cover}.
+
+                    On veut construire en temps polynomial un graphe $G'$ tel que $G'$ est hamiltonien si et seulement si $G$ admet une couverture par les sommets de taille $k$.
+
+                    \vspace{6pt}
+                    
+                    On utilise pour cela la notion de \emph{gadget} : on construit des parties de graphe d'une forme particulière afin de garantir certaines propriétés sur le graphe obtenu. Ici, on veut contraindre la manière de traverser un gadget avec un chemin hamiltonien.
+
+                    On utilise le gadget suivant : $\forall \set{u, v} \in A$, on construit le gadget $W_{u, v}$ dont les sommets sont nommés $[u, v, i]$ et $[v, u, i]$ pour $i \in \nset 1 6$, et dont la représentation est la suivante :
+
+                    \begin{center}
+                        \begin{tikzpicture}
+                            \foreach \i in {1, ..., 6}{
+                                \node (\i) at (0, -\i) [circle, draw] {};
+                                \node (\i') at (2, -\i) [circle, draw] {};
+                            }
+
+                            \node at (-1, -1) {$[u, v, 1]$};
+                            \node at (3, -1) {$[v, u, 1]$};
+
+                            \node at (-1, -6) {$[u, v, 6]$};
+                            \node at (3, -6) {$[v, u, 6]$};
+
+                            \node at (-1, -2) {$\vdots$};
+                            \node at (3, -2) {$\vdots$};
+
+                            \draw (1) -- (2) -- (3) -- (4) -- (5) -- (6);
+                            \draw (1') -- (2') -- (3') -- (4') -- (5') -- (6');
+
+                            \draw (1) -- (3');
+                            \draw (1') -- (3);
+
+                            \draw (6) -- (4');
+                            \draw (6') -- (4);
+                        \end{tikzpicture}
+                    \end{center}
+
+                    Les sommets $[u, v, 1], [v, u, 1], [u, v, 6], [v, u, 6]$ seront les seuls à être reliés à d'autres parties du graphe $G'$.
+
+                    Un chemin hamiltonien ne peut passer dans ce gadget qu'en entrant et sortant du même côté : si le chemin entre en $[u, v, 1]$ (resp. $[v, u, 1]$), il doit ressortir en $[u, v, 6]$ (resp. $[v, u, 6]$), soit en passant par tous les sommets de $W_{u, v}$, soit en ne passant que par les sommets $[u, v, i]$ (resp. $[v, u, i]$) pour $i \in \nset 1 6$
+
+                    Les trois manières de traverser le gadget avec un chemin hamiltonien sont les suivantes :
+
+                    \begin{center}
+                        \begin{tikzpicture}
+                            \foreach \i in {1, ..., 6}{
+                                \node (\i) at (0, -\i) [circle, draw] {};
+                                \node (\i') at (2, -\i) [circle, draw] {};
+                            }
+
+                            \foreach \i in {1, ..., 6}{
+                                \node (\i-) at (5, -\i) [circle, draw] {};
+                                \node (\i-') at (7, -\i) [circle, draw] {};
+                            }
+
+                            \foreach \i in {1, ..., 6}{
+                                \node (\i") at (10, -\i) [circle, draw] {};
+                                \node (\i"') at (12, -\i) [circle, draw] {};
+                            }
+
+                            \draw[color=ff4500] (-.5, -.5) -- (1) -- (2) -- (3) -- (1') -- (2') -- (3') -- (4') -- (5') -- (6') -- (4) -- (5) -- (6) -- (-.5, -6.5);
+
+                            \draw[color=ff4500] (7.5, -.5) -- (1-') -- (2-') -- (3-') -- (1-) -- (2-) -- (3-) -- (4-) -- (5-) -- (6-) -- (4-') -- (5-') -- (6-') -- (7.5, -6.5);
+
+                            \draw[color=ff4500] (9.5, -.5) -- (1") -- (2") -- (3") -- (4") -- (5") -- (6") -- (9.5, -6.5);
+                            \draw[color=ff4500] (12.5, -.5) -- (1"') -- (2"') -- (3"') -- (4"') -- (5"') -- (6"') -- (12.5, -6.5);
+                        \end{tikzpicture}
+                    \end{center}
+
+                    Pour compléter $G'$, on ajoute $k$ sommets $s_1 \cdots s_k$ qui représentent les sommets d'une éventuelle couverture de $G$.
+
+                    \begin{indt}{On ajoute également des arêtes :}
+                        $-$ pour lier les gadgets associés à un sommet $u$ donné : on note $u_1 \cdots u_{d(u)}$ les voisins de $u$ dans $G$ et on construit "un chemin de gadgets $W_{u, u_1} \cdots W_{u, u_{d(u)}}$" en ajoutant les arêtes
+                        \[
+                            \set{[u, u_i, 6], [u, u_{i + 1}, 1]}\ \forall i \in \nset{1}{d(u) - 1}
+                        \]
+
+                        \begin{center}
+                            \begin{tikzpicture}
+                                \node (0) at (0, 0) {$W_{u, u_1}$};
+                                \draw[->] (-1, 1) to (-.5, .5) to (-.5, -1) to (1, -1) to (1.5, 1);
+                                \draw (.5, .5) to (.5, -.5);
+
+
+                                \node (1) at (2.5, 0) {$W_{u, u_2}$};
+                                \draw[->] (1.5, 1) to (2, .5) to (2, -1) to (3.5, -1) to (4, 1);
+                                \draw (3, .5) to (3, -.5);
+
+                                \node at (4.5, 0) {$\cdots$};
+
+                                \node (3) at (6.4, 0) {$W_{u, u_{d(u) - 1}}$};
+                                \draw (5, 1) to (5.5, .5) to (5.5, -.5); M to (7, -1) to (7.5, 1);
+                                \draw (7.3, .5) to (7.3, -.5);
+                            \end{tikzpicture}
+                        \end{center}
+
+                        $-$ Pour lier les sommets de couverture $s_1 \cdots s_k$ aux chemins de gadget : $\forall i \in \nset 1 k,\ \forall u \in S$, on ajoute les arêtes $\set{s_i\ |\ [u, u_1, 1]}$ et $\set{s_i, [u, u_{d(u)}, 6]}$.
+                    \end{indt}
+
+                    L'idée de la construction de ce graphe est la suivante : si on a une couverture de taille $k$, on construit un cycle hamiltonien en partant de $s_1$, en visitant le chemin de gadgets associé au premier sommet de la couverture, puis en allant en $s_2$, ..., etc jusqu'au chemin de gadgets du $k$-ième sommet dont on sort pour revenir en $s_k$.
+
+                    Les différents objets formant $G'$ se calculent grâce à des parcours des arêtes de $G$, donc il suffit de montrer que la taille de $G'$ est polynomiale en celle de $(G, k)$ pour montrer que la réduction est polynomiale.
+
+                    Le nombre de sommets de $G'$ est
+                    \[
+                        \underbrace{12\abs A}_{\text{12 sommets par gadget}}
+                        + \underbrace{k}_{\text{sommets de couverture}}
+                        = \mathcal O(\abs A + \abs S)
+                    \]
+
+                    Le nombre d'arêtes de $G'$ est
+                    \[
+                        \underbrace{14\abs A}_{\substack{\text{14 arêtes internes} \\ \text{à un gadget}}}
+                        + \underbrace{2k\abs S}_{\substack{\text{2 arêtes par} \\ \text{couple (sommet} \\ \text{de $G$, sommet} \\ \text{de couverture)}}}
+                        + \displaystyle \overbrace{\underbrace{\sum_{s_i \in S} (d(u) - 1)}_{2\abs A - \abs S}}^{\text{arêtes constituant les chemins de gadgets}}
+                        = \mathcal O(\abs S ^2)
+                    \]
+
+                    La réduction est donc bien polynomiale.
+
+                    On montre que $G$ admet une couverture par les sommets de taille $k$ si et seulement si $G'$ est hamiltonien :
+
+                    \vspace{6pt}
+                    
+                    \boxed{\Rightarrow} On note $\set{u^{(1)}, \ldots, u^{(k)}}$ une couverture de $G$.
+
+                    On construit un cycle hamiltonien dans $G'$ en partant de $s_1$, en suivant l'arête $\set{s_1, [u^{(1)}, u_1^{(1)}, 1]}$ en parcourant le chemin de gadgets associé à $u^{(1)}$, en suivant l'arête $\set{[u^{(1)}, u_{d(u^{(1)})}^{(1)}, 6], s_2}$, puis $\set{s_2, [u^{(2)}, u_1^{(2)}, 1]}$, etc, jusqu'au chemin de gadgets associé à $u^{(k)}$, suivi de l'arête $\set{[u^{(k)}, u_{d(u^{(k)})}^{(k)}, 6], s_1}$.
+
+                    Le gadget $W_{u^{(i)}, u^{(i)}}$ est traversé ainsi : on passe par tous les sommets si $u_j^{(i)}$ ne font pas partie des $u^{(p)}$ et seulement les sommets $[u^{(i)}, u_j^{(i)}, l],\ l \in \nset 1 6$ sinon (car les autres seront parcourus dans le chemin de gadgets associé à $u_j^{(i)}$).
+
+                    On passe bien par tous les gadgets puisque toutes les arêtes sont couvertes par les sommets $u^{(1)}, \ldots, u^{(k)}$.
+
+                    \vspace{6pt}
+                    
+                    \boxed{\Leftarrow} S'il existe un cycle hamiltonien $C$ dans $G'$, alors
+                    \[
+                        \set{u \in S\ |\ \exists i \in \nset 1 k\ |\ \set{s_i, [u, u_1, 1]} \in C}
+                    \]
+                    est une couverture de $G$ de taille $k$.
+
+                    Idée : on décompose $C$ en chemins maximaux de $s_i$ à $s_j$ sans passer par un autre $s_p$.
+
+                    Par construction, ces chemins ne passent que par des $W_{u, v}$ pour un $u$ fixé, que l'on associe à $s_i$.
+
+                    Comme le cycle est hamiltonien, chaque $s_i$ est visité une seule fois, donc on sélectionne bien $k$ sommets.
+                    De plus, tous les gadgets sont traversé par le cycle donc toutes les arêtes sont couvertes par les sommets sélectionnés.
+                \end{proof}
+
+                \vspace{12pt}
+                
+                $\bullet$ Exemple : on considère le graphe
+
+                \begin{center}
+                    \begin{tikzpicture}
+                        \node (w) at (0, 0) [circle, draw] {$w$};
+                        \node (x) at (2, 0) [circle, draw] {$x$};
+                        \node (z) at (0, -2) [circle, draw] {$z$};
+                        \node (y) at (2, -2) [circle, draw] {$y$};
+
+                        \draw (z) -- (w) -- (y) -- (x) -- (w);
+                    \end{tikzpicture}
+                \end{center}
+                admettant une couverture de taille 2 $\set{w, y}$.
+
+                Le cycle hamiltonien dans le graphe $G'$ associé est le suivant :
+
+                \begin{center}
+                    \begin{tikzpicture}[scale=.9]
+                        \node (s1) at (3, 2) [circle, draw] {$s_1$};
+                        \node (s2) at (8, 2) [circle, draw] {$s_2$};
+
+                        \foreach \i in {1, ..., 6}{
+                            \node (1-\i) at (0, -\i) [circle, draw] {};
+                            \node (1-\i') at (2, -\i) [circle, draw] {};
+                        }
+
+                        \foreach \i in {1, ..., 6}{
+                            \node (2-\i) at (5, -\i) [circle, draw] {};
+                            \node (2-\i') at (7, -\i) [circle, draw] {};
+                        }
+
+                        \foreach \i in {1, ..., 6}{
+                            \node (3-\i) at (10, -\i) [circle, draw] {};
+                            \node (3-\i') at (12, -\i) [circle, draw] {};
+                        }
+
+                        \foreach \i in {1, ..., 6}{
+                            \node (4-\i) at (15, -\i) [circle, draw] {};
+                            \node (4-\i') at (17, -\i) [circle, draw] {};
+                        }
+
+                        \foreach \i in {1, ..., 4}{
+                            \draw (\i-1) -- (\i-2) -- (\i-3) -- (\i-4) -- (\i-5) -- (\i-6);
+                            \draw (\i-1') -- (\i-2') -- (\i-3') -- (\i-4') -- (\i-5') -- (\i-6');
+                        }
+
+                        \draw[color=ff4500] (s1) to (1-1');
+                        \draw[color=ff4500] (s1) to [out=-80, in=135] (2-6);
+                        \draw[color=ff4500] (s2) [out=-170, in=45] to (1-1');
+                        \draw[color=ff4500, rounded corners=10pt] (s2) to (4, 0) to (4, -6) to (2-6);
+                        \draw[color=ff4500] (1-6') to (2-1);
+
+                        \draw[color=ff4500] (1-1) to (1-3');
+                        \draw[color=ff4500] (1-6) to (1-4');
+
+                        \draw[color=blue] (s1) to (1-1);
+                        \draw[color=blue] (s2) to (2-1');
+
+                        \draw[color=blue] (1-3) to (1-1');
+                        \draw[color=blue] (1-4) to (1-6');
+
+                        \draw[color=blue] (2-1) to (2-3');
+                        \draw[color=blue] (2-6) to (2-4');
+
+                        \draw[color=blue] (4-3) to (4-1');
+                        \draw[color=blue] (4-4) to (4-6');
+
+                        %\draw[color=blue, rounded corners=10pt] (1-6) to (0, -7) to (9, -7) to [out=90, in=-150, looseness=.5] (3-1);
+                        \draw[color=blue, rounded corners=10pt] (1-6) to (0, -7) to (9, -7) to (9, -1) to (3-1);
+
+                        \draw[color=blue, rounded corners=10pt] (s1) to (-1, 0) to (-1, -8) to (12, -8) to (3-6');
+
+                        \draw[color=blue, rounded corners=10pt] (2-6') to (8, -6) to (8, 0) to (12, 0) to (3-1');
+
+                        \draw[color=blue, rounded corners=10pt] (s2) to (18, 0) to (18, -7) to (15, -7) to (4-6);
+
+                        \draw[color=blue, rounded corners=10pt] (3-6) to (10, -7) to (13, -7) to (14, -1) to (4-1);
+
+                        \node at (1, -9) {$W_{w, x}$};
+                        \node at (6, -9) {$W_{x, y}$};
+                        \node at (11, -9) {$W_{w, y}$};
+                        \node at (16, -9) {$W_{w, z}$};
+                    \end{tikzpicture}
+                \end{center}
             \end{indt}
         \end{indt}
     \end{indt}
