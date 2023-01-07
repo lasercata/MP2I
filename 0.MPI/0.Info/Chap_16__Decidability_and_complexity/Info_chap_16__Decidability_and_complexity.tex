@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2023.01.05
+% Last modification     :   2023.01.07
 %
 %------------------------------------------------------------------------
 
@@ -1410,12 +1410,12 @@
         \begin{indt}{\subsection{Introduction}}
             \begin{indt}{\subsubsection{Motivation}}
                 Jusqu'ici, nous n'avons évoqué la que la complexité d'un algorithme donné.
-                Un problème de décision donné peut être résolu par plusieurs algorithme : comment définir la complexité d'un problème de décision ?
+                Un problème de décision donné peut être résolu par plusieurs algorithmes : comment définir la complexité d'un problème de décision ?
 
                 Idée : on pourrait considérer la complexité du meilleur algorithme qui résout le problème.
                 Pas clair : existe-il un algorithme de complexité meilleure que celle de tous les autres ?
 
-                On va donc inverser le point de vue : au lieu d'associer une complexité à un problème, on associe un ensemble de problème à chaque complexité.
+                On va donc inverser le point de vue : au lieu d'associer une complexité à un problème, on associe un ensemble de problèmes à chaque complexité.
                 Un problème de décision appartient à une classe de complexité s'il peut être résolu avec un algorithme de la complexité associé à la classe.
             \end{indt}
 
@@ -1469,7 +1469,7 @@
 
                 \vspace{12pt}
                 
-                $\bullet$ Exemple : On considère le problème $P_{\rm sort}$ : étant donné deux tableaux de taille $t_1$ et $t_2$, $t_2$ est-il une version tirée de $t_1$ ?
+                $\bullet$ Exemple : On considère le problème $P_{\rm sort}$ : étant donné deux tableaux de même taille $t_1$ et $t_2$, $t_2$ est-il une version tirée de $t_1$ ?
 
                 En testant l'égalité entre $t_2$ et toutes les permutations de $t_1$, on montre que $P_{\rm sort} \in \mathrm{DTIME}(n! \cdot n)$.
 
@@ -1557,9 +1557,9 @@
                 $\bullet$ Définition (\emph{vérificateur}) :
                 Soit $P$ un problème de décision sur un domaine $E$.
 
-                Un \emph{vérificateur} pour $P$ est un algorithme $V$ d'entrées une instance e $e \in E$ de $P$ et une valeur $c$ appelée \emph{certificat} et à valeur dans les booléens tel que
+                Un \emph{vérificateur} pour $P$ est un algorithme $V$ d'entrées une instance $e \in E$ de $P$ et une valeur $c$ appelée \emph{certificat} et à valeur dans les booléens tel que
                 \[
-                    \set{e \in E |\ P(e)}
+                    \set{e \in E\ |\ P(e)}
                     = \set{e \in E \ |\ V\ \text{termine et renvoie vrai sur l'entrée}\ (e, c)}
                 \]
 
@@ -1661,7 +1661,7 @@
 
                 $-$ Les vérificateurs en \ref{2.2.2} (page \pageref{2.2.2}) montrent que le problème de coloration et \textsc{Chemin\_Hamiltonien} appartiennent à $\mathbf{NP}$.
 
-                $-$ \textsc{Clique} : étant donné un graphe $G = (S, A)$ et un entier $k \in \N$, existe-t-il une clique de taille $k$ dans $G$, \textit{i.e} un ensemble $S' \subseteq S$ de taille $k$ telle que $G_{S'}$ est un graphe complet.
+                $-$ \textsc{Clique} : étant donné un graphe $G = (S, A)$ et un entier $k \in \N$, existe-t-il une clique de taille $k$ dans $G$, \textit{i.e} un ensemble $S' \subseteq S$ de taille $k$ telle que $G_{S'}$ est un graphe complet ?
 
                 On montre que \textsc{Clique} $\in \mathbf{NP}$ grâce au vérificateur suivant :
 
@@ -1708,7 +1708,7 @@
 
                 $\bullet$ Définition : Soient $P_1, P_2$ des problèmes de décision.
 
-                On dit que $P_1$ se réduit en temps polynomial à $P_2$ si et seulement si il existe un réduction de $P_1$ à $P_2$ calculable en temps polynomial, \textit{i.e} s'il existe une fonction $f$ du domaine de $P_1$ vers celui de $P_2$ telle que $\forall e\ \text{instance de}\ P_1,\ P_1(e) \ssi P_2(f(e))$ et un algorithme $M$ réalisant $f$ et de complexité polynomiale.
+                On dit que $P_1$ se \emph{réduit en temps polynomial} à $P_2$ si et seulement si il existe une réduction de $P_1$ à $P_2$ calculable en temps polynomial, \textit{i.e} s'il existe une fonction $f$ du domaine de $P_1$ vers celui de $P_2$ telle que $\forall e\ \text{instance de}\ P_1,\ P_1(e) \ssi P_2(f(e))$ et un algorithme $M$ réalisant $f$ et de complexité polynomiale.
 
                 On note alors $P_1 \le_{\rm p} P_2$.
 
@@ -1752,6 +1752,8 @@
             \vspace{12pt}
             
             \begin{indt}{\subsubsection{$\mathbf{NP}$-complétude}}
+                \label{2.3.2}
+
                 $\bullet$ Introduction : L'idée de la complétude est d'exploiter la notion de réduction afin de se focaliser sur des problèmes qui sont plus difficiles que tous les problèmes de leur classe de complexité.
 
                 En effet, si la complexité associée est super-polynomiale (polynomiale ou plus), alors le coût de la réduction est absorbé, donc on a un algorithme de même complexité pour chaque problème de la classe concernée, \textit{i.e} la classe de complexité est stable par réduction polynomiale.
@@ -1759,15 +1761,27 @@
                 \vspace{12pt}
                 
                 $\bullet$ Proposition :
-                Soient $P_1, P_2$ des problèmes de décision tels que $P_1 \le_{\rm p} P_2$.
-
-                Si $P_2 \in \mathbf{P}$ (resp. $P_2 \in \mathbf{NP}$), alors $P_1 \in \mathbf P$ (resp. $P_1 \in \mathbf{NP}$).
+                \begin{emphBox}
+                    Soient $P_1, P_2$ des problèmes de décision tels que $P_1 \le_{\rm p} P_2$.
+                    
+                    %Si $P_2 \in \mathbf{P}$ (resp. $P_2 \in \mathbf{NP}$), alors $P_1 \in \mathbf P$ (resp. $P_1 \in \mathbf{NP}$).
+                    Alors
+                    \[
+                        \begin{array}{rcl}
+                            P_2 \in \mathbf{P} &\Rightarrow& P_1 \in \mathbf{P}
+                            \\
+                            P_2 \in \mathbf{NP} &\Rightarrow& P_1 \in \mathbf{NP}
+                        \end{array}
+                    \]
+                \end{emphBox}
 
                 \vspace{6pt}
                 
                 \begin{proof}
                     Il existe une réduction $f$ de $P_1$ à $P_2$ et un algorithme $M_f$ réalisant $f$ et de complexité $\mathcal O(p_f(\abs e))$ où $p_f$ est un polynôme et $e$ une instance de $P_1$.
 
+                    \vspace{6pt}
+                    
                     $-$ On suppose $P_2 \in \mathbf P$. Il existe donc un algorithme $M_2$ résolvant $P_2$, de complexité $\mathcal O(p_2(\abs{e_2}))$, où $p_2$ est un polynôme, et $e_2$ une instance de $P_2$.
 
                     On construit l'algorithme $M_1$, d'entrée une instance $e$ de $P_1$  et de code :
@@ -1824,14 +1838,16 @@
                 \vspace{12pt}
                 
                 $\bullet$ Proposition :
-                Soit $P_0$ un problème \textbf{NP}-complet.
-
-                Si $P_0 \in \mathbf P$, alors $\mathbf P = \mathbf{NP}$.
+                \begin{emphBox}
+                    Soit $P_0$ un problème \textbf{NP}-complet.
+                    
+                    Si $P_0 \in \mathbf P$, alors $\mathbf P = \mathbf{NP}$.
+                \end{emphBox}
 
                 \vspace{6pt}
                 
                 \begin{proof}
-                    On sait déjà que $\mathbf P \subseteq \mathbf{NP}$ (\textit{i.e} \ref{2.2.3}, page \pageref{2.2.3}).
+                    On sait déjà que $\mathbf P \subseteq \mathbf{NP}$ (\textit{cf} \ref{2.2.3}, page \pageref{2.2.3}).
 
                     Soit $P_1 \in \mathbf{NP}$.
 
@@ -1840,7 +1856,10 @@
 
                 \vspace{12pt}
                 
-                $\bullet$ Théorème (\textsc{Cook-Levin}) : SAT est \textbf{NP}-complet.
+                $\bullet$ Théorème (\textsc{Cook-Levin}) :
+                \begin{emphBox}
+                    SAT est \textbf{NP}-complet.
+                \end{emphBox}
 
                 \vspace{6pt}
                 
@@ -1868,18 +1887,21 @@
 
                 \vspace{12pt}
                 
-                $\bullet$ Prop : Soit $P_0$ un problème de décision.
-
-                Alors
-                \[
-                    P_0\ \text{est \textbf{NP}-complet}
-                    \ssi
-                    \begin{cases}
-                        P_0 \in \mathbf{NP}
-                        \\
-                        \exists P_1 \ \text{\textbf{NP}-complet}\ |\ P_1 \le_{\rm p} P_0
-                    \end{cases}
-                \]
+                $\bullet$ Proposition :
+                \begin{emphBox}
+                    Soit $P_0$ un problème de décision.
+                    
+                    Alors
+                    \[
+                        P_0\ \text{est \textbf{NP}-complet}
+                        \ssi
+                        \begin{cases}
+                            P_0 \in \mathbf{NP}
+                            \\
+                            \exists P_1 \ \text{\textbf{NP}-complet}\ |\ P_1 \le_{\rm p} P_0
+                        \end{cases}
+                    \]
+                \end{emphBox}
 
                 \begin{proof}
                     \boxed{\Rightarrow} $P_0 \in \mathbf{NP}$ par définition.
@@ -1902,9 +1924,9 @@
                 
                 $\bullet$ Exemple : 3-SAT est \textbf{NP}-complet.
 
-                $-$ 3-SAT $\in \mathbf{NP}$ : on utilise le même vérificateur que celui vu pour SAT en \ref{2.3.3} (page \pageref{2.3.3}).
+                $-$ 3-SAT $\in \mathbf{NP}$ : on utilise le même vérificateur que celui vu pour SAT en \ref{2.3.2} (page \pageref{2.3.2}).
 
-                $-$ SAT est \textbf{NP}-complet (\textit{cf} \ref{2.3.3}, page \pageref{2.3.3}) et SAT $\le_{\rm p}$ 3-SAT (\textit{cf} \ref{2.3.1}, page \pageref{2.3.1}).
+                $-$ SAT est \textbf{NP}-complet (\textit{cf} \ref{2.3.2}, page \pageref{2.3.2}) et SAT $\le_{\rm p}$ 3-SAT (\textit{cf} \ref{2.3.1}, page \pageref{2.3.1}).
 
                 \vspace{6pt}
                 
@@ -1951,11 +1973,11 @@
 
                     Soit $\varphi$ une instance de 3-SAT. On veut construire une instance $(G, k)$ de \textsc{Clique} en temps polynomial en $\abs \varphi$ telle que $G$ contient une clique de taille $k$ si et seulement si $\varphi$ est satisfiable.
 
-                    $G = (S, A)$ est construit ainsi :
+                    \begin{indt}{$G = (S, A)$ est construit ainsi :}
+                        $+$ $S$ contient chaque littéral de $\varphi$ avec multiplicité ;
 
-                    $+$ $S$ contient chaque littéral de $\varphi$ avec multiplicité ;
-
-                    $+$ Deux littéraux $l, l'$ sont liés dans $A$ si et seulement si $l$ et $l'$ ne sont pas la négation l'un de l'autre et $l, l'$ appartiennent à des clauses différentes.
+                        $+$ Deux littéraux $l, l'$ sont liés dans $A$ si et seulement si $l$ et $l'$ ne sont pas la négation l'un de l'autre et $l, l'$ appartiennent à des clauses différentes.
+                    \end{indt}
 
                     $k$ est le nombre de clauses de $\varphi$.
 
@@ -1989,13 +2011,13 @@
             \begin{indt}{\subsubsection{\textsc{Vertex\_Cover}}}
                 $\bullet$ Définition : Soit $G = (S, A)$ une GNO.
 
-                Une \emph{couverture par les sommets} de $G$ est un ensemble $S' \subseteq S\ |\ \forall \in A$, au moins l'une des extrémités de $a$ appartient à $S'$.
+                Une \emph{couverture par les sommets} (\textit{vertex cover}) de $G$ est un ensemble $S' \subseteq S\ |\ \forall a \in A$, au moins l'une des extrémités de $a$ appartient à $S'$.
 
                 On appelle $\abs{S'}$ la taille de la couverture.
 
                 \vspace{6pt}
                 
-                On s'intéresse au problème suivant : étant donné un GNO $G$ et un entier $k$, existe-t-il une couverture par les sommets de $G$ de taille $k$ ?
+                On s'intéresse au problème \textsc{Vertex\_Cover} suivant : étant donné un GNO $G$ et un entier $k$, existe-t-il une couverture par les sommets de $G$ de taille $k$ ?
 
                 \vspace{12pt}
                 
@@ -2033,14 +2055,14 @@
 
                     \vspace{6pt}
                     
-                    $(\cj G, \cj k)$ est l'instance de \textsc{Vertex\_Cover} recherchée :
-
-                    $+$ On peut la construire en temps $\mathcal O\!\lr{\abs S ^2}$ ($\abs S - k$ est calculé en temps $\mathcal O(\log \abs S + \log k) = \mathcal O\!\lr{\abs S ^2}$)
-
-                    $+$ Si $G$ admet une clique $S'$ de taille $k$, $\abs{S \setminus S'} = \set S - k$, et $\forall \set{s, s'} \in A$, on sait que $s \in S \setminus S'$ ou $s' \in S \setminus S'$ car sinon $s, s' \in S'$ et comme $S'$ est une clique, on aurait $\set{s, s'} \in A$.
-                    Donc $S \setminus S'$ est une couverture de $\cj G$ de taille $\abs S - k$.
-
-                    $+$ Si $\cj G$ admet une couverture $S'$ de taille $\abs S - k$, on vérifie de même que $S \setminus S'$ est une clique de $G$ de taille $k$.
+                    \begin{indt}{$(\cj G, \cj k)$ est l'instance de \textsc{Vertex\_Cover} recherchée :}
+                        $+$ On peut la construire en temps $\mathcal O\!\lr{\abs S ^2}$ ($\abs S - k$ est calculé en temps $\mathcal O(\log \abs S + \log k) = \mathcal O\!\lr{\abs S ^2}$)
+                        
+                        $+$ Si $G$ admet une clique $S'$ de taille $k$, $\abs{S \setminus S'} = \set S - k$, et $\forall \set{s, s'} \in A$, on sait que $s \in S \setminus S'$ ou $s' \in S \setminus S'$ car sinon $s, s' \in S'$ et comme $S'$ est une clique, on aurait $\set{s, s'} \in A$.
+                        Donc $S \setminus S'$ est une couverture de $\cj G$ de taille $\abs S - k$.
+                        
+                        $+$ Si $\cj G$ admet une couverture $S'$ de taille $\abs S - k$, on vérifie de même que $S \setminus S'$ est une clique de $G$ de taille $k$.
+                    \end{indt}
                 \end{proof}
             \end{indt}
 
@@ -2053,7 +2075,7 @@
 
                 \vspace{6pt}
                 
-                On s'intéresse au problème suivant : étant donné un graphe non orienté $G$, est-il hamiltonien ?
+                On s'intéresse au problème \textsc{Cycle\_Hamiltonien} suivant : étant donné un graphe non orienté $G$, est-il hamiltonien ?
 
                 \vspace{12pt}
                 
@@ -2199,7 +2221,7 @@
                     
                     \boxed{\Rightarrow} On note $\set{u^{(1)}, \ldots, u^{(k)}}$ une couverture de $G$.
 
-                    On construit un cycle hamiltonien dans $G'$ en partant de $s_1$, en suivant l'arête $\set{s_1, [u^{(1)}, u_1^{(1)}, 1]}$ en parcourant le chemin de gadgets associé à $u^{(1)}$, en suivant l'arête $\set{[u^{(1)}, u_{d(u^{(1)})}^{(1)}, 6], s_2}$, puis $\set{s_2, [u^{(2)}, u_1^{(2)}, 1]}$, etc, jusqu'au chemin de gadgets associé à $u^{(k)}$, suivi de l'arête $\set{[u^{(k)}, u_{d(u^{(k)})}^{(k)}, 6], s_1}$.
+                    On construit un cycle hamiltonien dans $G'$ en partant de $s_1$, en suivant l'arête $\set{s_1, [u^{(1)}, u_1^{(1)}, 1]}$ en parcourant le chemin de gadgets associé à $u^{(1)}$, en suivant l'arête $\set{\lrb{u^{(1)}, u_{d(u^{(1)})}^{(1)}, 6}, s_2}$, puis $\set{s_2, [u^{(2)}, u_1^{(2)}, 1]}$, etc, jusqu'au chemin de gadgets associé à $u^{(k)}$, suivi de l'arête $\set{\lrb{u^{(k)}, u_{d(u^{(k)})}^{(k)}, 6}, s_1}$.
 
                     Le gadget $W_{u^{(i)}, u^{(i)}}$ est traversé ainsi : on passe par tous les sommets si $u_j^{(i)}$ ne font pas partie des $u^{(p)}$ et seulement les sommets $[u^{(i)}, u_j^{(i)}, l],\ l \in \nset 1 6$ sinon (car les autres seront parcourus dans le chemin de gadgets associé à $u_j^{(i)}$).
 
@@ -2270,9 +2292,10 @@
                         }
 
                         \draw[color=ff4500] (s1) to (1-1');
-                        \draw[color=ff4500] (s1) to [out=-80, in=135] (2-6);
+                        %\draw[color=ff4500] (s1) to [out=-80, in=135] (2-6);
+                        \draw[color=ff4500, rounded corners=10pt] (s1) to (3.3, 0) to (3.3, -5) to (2-6);
                         \draw[color=ff4500] (s2) [out=-170, in=45] to (1-1');
-                        \draw[color=ff4500, rounded corners=10pt] (s2) to (4, 0) to (4, -6) to (2-6);
+                        \draw[color=ff4500, rounded corners=10pt] (s2) to (4, 0) to (4, -5) to (2-6);
                         \draw[color=ff4500] (1-6') to (2-1);
 
                         \draw[color=ff4500] (1-1) to (1-3');
