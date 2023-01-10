@@ -1,0 +1,624 @@
+\documentclass[a4paper, 12pt, twoside]{article}
+
+
+%------------------------------------------------------------------------
+%
+% Author                :   Lasercata
+% Last modification     :   2023.01.10
+%
+%------------------------------------------------------------------------
+
+
+%------ini
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+%\usepackage[english]{babel}
+
+
+%------geometry
+\usepackage[textheight=700pt, textwidth=500pt]{geometry}
+
+
+%------color
+\usepackage{xcolor}
+\definecolor{ff4500}{HTML}{ff4500}
+\definecolor{00f}{HTML}{0000ff}
+\definecolor{0ff}{HTML}{00ffff}
+\definecolor{656565}{HTML}{656565}
+
+%\renewcommand{\emph}{\textcolor{ff4500}}
+%\renewcommand{\em}{\color{ff4500}}
+
+\newcommand{\Emph}{\textcolor{ff4500}}
+
+\newcommand{\strong}[1]{\textcolor{ff4500}{\bf #1}}
+\newcommand{\st}{\color{ff4500}\bf}
+
+
+%------Code highlighting
+%---listings
+\usepackage{listings}
+
+\definecolor{cbg}{HTML}{272822}
+\definecolor{cfg}{HTML}{ececec}
+\definecolor{ccomment}{HTML}{686c58}
+\definecolor{ckw}{HTML}{f92672}
+\definecolor{cstring}{HTML}{e6db72}
+\definecolor{cstringlight}{HTML}{98980f}
+\definecolor{lightwhite}{HTML}{fafafa}
+
+\lstdefinestyle{DarkCodeStyle}{
+    backgroundcolor=\color{cbg},
+    commentstyle=\itshape\color{ccomment},
+    keywordstyle=\color{ckw},
+    numberstyle=\tiny\color{cbg},
+    stringstyle=\color{cstring},
+    basicstyle=\ttfamily\footnotesize\color{cfg},
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=4,
+    xleftmargin=\leftskip
+}
+
+\lstdefinestyle{LightCodeStyle}{
+    backgroundcolor=\color{lightwhite},
+    commentstyle=\itshape\color{ccomment},
+    keywordstyle=\color{ckw},
+    numberstyle=\tiny\color{cbg},
+    stringstyle=\color{cstringlight},
+    basicstyle=\ttfamily\footnotesize\color{cbg},
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=10pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=4,
+    frame=L,
+    xleftmargin=\leftskip
+}
+
+%\lstset{style=DarkCodeStyle}
+\lstset{style=LightCodeStyle}
+%Usage : \begin{lstlisting}[language=Caml, xleftmargin=xpt] ... \end{lstlisting}
+
+
+%---Algorithm
+\usepackage[linesnumbered,ruled,vlined]{algorithm2e}
+\SetKwInput{KwInput}{Input}
+\SetKwInput{KwOutput}{Output}
+
+\SetKwProg{Fn}{Function}{:}{}
+\SetKw{KwPrint}{Print}
+
+\newcommand\commfont[1]{\textit{\texttt{\textcolor{656565}{#1}}}}
+\SetCommentSty{commfont}
+\SetProgSty{texttt}
+\SetArgSty{textnormal}
+\SetFuncArgSty{textnormal}
+%\SetProgArgSty{texttt}
+
+\newenvironment{indalgo}[2][H]{
+    \begin{algoBox}
+        \begin{algorithm}[#1]
+            \caption{#2}
+}
+{
+        \end{algorithm}
+    \end{algoBox}
+}
+
+
+%---tcolorbox
+\usepackage[many]{tcolorbox}
+\DeclareTColorBox{emphBox}{O{black}O{lightwhite}}{
+    breakable,
+    outer arc=0pt,
+    arc=0pt,
+    top=0pt,
+    toprule=-.5pt,
+    right=0pt,
+    rightrule=-.5pt,
+    bottom=0pt,
+    bottomrule=-.5pt,
+    colframe=#1,
+    colback=#2,
+    enlarge left by=10pt,
+    width=\linewidth-\leftskip-10pt,
+}
+
+\DeclareTColorBox{algoBox}{O{black}O{lightwhite}}{
+    breakable,
+    arc=0pt,
+    top=0pt,
+    toprule=-.5pt,
+    right=0pt,
+    rightrule=-.5pt,
+    bottom=0pt,
+    bottomrule=-.5pt,
+    left=0pt,
+    leftrule=-.5pt,
+    colframe=#1,
+    colback=#2,
+    width=\linewidth-\leftskip-10pt,
+}
+
+
+%-------make the table of content clickable
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=black
+}
+
+
+%------pictures
+\usepackage{graphicx}
+%\usepackage{wrapfig}
+
+\usepackage{tikz}
+%\usetikzlibrary{babel}             %Uncomment this to use circuitikz
+%\usetikzlibrary{shapes.geometric}  % To draw triangles in trees
+%\usepackage{circuitikz}            %Electrical circuits drawing
+
+
+%------tabular
+%\usepackage{color}
+%\usepackage{colortbl}
+%\usepackage{multirow}
+
+
+%------Physics
+%---Packages
+%\usepackage[version=4]{mhchem} %$\ce{NO4^2-}$
+
+%---Commands
+\newcommand{\link}[2]{\mathrm{#1} \! - \! \mathrm{#2}}
+\newcommand{\pt}[1]{\cdot 10^{#1}} % Power of ten
+\newcommand{\dt}[2][t]{\dfrac{\mathrm d #2}{\mathrm d #1}} % Derivative
+
+
+%------math
+%---Packages
+%\usepackage{textcomp}
+%\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools} % For abs
+\usepackage{stmaryrd} %for \llbracket and \rrbracket
+\usepackage{mathrsfs} %for \mathscr{x} (different from \mathcal{x})
+
+%---Commands
+%-Sets
+\newcommand{\N}{\mathbb{N}} %set N
+\newcommand{\Z}{\mathbb{Z}} %set Z
+\newcommand{\Q}{\mathbb{Q}} %set Q
+\newcommand{\R}{\mathbb{R}} %set R
+\newcommand{\C}{\mathbb{C}} %set C
+\newcommand{\U}{\mathbb{U}} %set U
+\newcommand{\seg}[2]{\left[ #1\ ;\ #2 \right]}
+\newcommand{\nset}[2]{\left\llbracket #1\ ;\ #2 \right\rrbracket}
+
+%-Exponantial / complexs
+\newcommand{\e}{\mathrm{e}}
+\newcommand{\cj}[1]{\overline{#1}} %overline for the conjugate.
+
+%-Vectors
+\newcommand{\vect}{\overrightarrow}
+\newcommand{\veco}[3]{\displaystyle \vect{#1}\binom{#2}{#3}} %vector + coord
+
+%-Limits
+\newcommand{\lm}[2][{}]{\lim\limits_{\substack{#2 \\ #1}}} %$\lm{x \to a} f$ or $\lm[x < a]{x \to a} f$
+\newcommand{\Lm}[3][{}]{\lm[#1]{#2} \left( #3 \right)} %$\Lm{x \to a}{f}$ or $\Lm[x < a]{x \to a}{f}$
+\newcommand{\tendsto}[1]{\xrightarrow[#1]{}}
+
+%-Integral
+\newcommand{\dint}[4][x]{\displaystyle \int_{#2}^{#3} #4 \mathrm{d} #1} %$\dint{a}{b}{f(x)}$ or $\dint[t]{a}{b}{f(t)}$
+
+%-left right
+\newcommand{\lr}[1]{\left( #1 \right)}
+\newcommand{\lrb}[1]{\left[ #1 \right]}
+\newcommand{\lrbb}[1]{\left\llbracket #1 \right\rrbracket}
+\newcommand{\set}[1]{\left\{ #1 \right\}}
+\newcommand{\abs}[1]{\left\lvert #1 \right\rvert}
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
+\newcommand{\lrangle}[1]{\left\langle #1 \right\rangle}
+
+%-Others
+\newcommand{\para}{\ /\!/\ } %//
+\newcommand{\ssi}{\ \Leftrightarrow \ }
+\newcommand{\eqsys}[2]{\begin{cases} #1 \\ #2 \end{cases}}
+
+\newcommand{\med}[2]{\mathrm{med} \left[ #1\ ;\ #2 \right]}  %$\med{A}{B} -> med[A ; B]$
+\newcommand{\Circ}[2]{\mathscr{C}_{#1, #2}}
+
+\renewcommand{\le}{\leqslant}
+\renewcommand{\ge}{\geqslant}
+
+\newcommand{\oboxed}[1]{\textcolor{ff4500}{\boxed{\textcolor{black}{#1}}}} %orange boxed
+
+\newcommand{\rboxed}[1]{\begin{array}{|c} \hline #1 \\ \hline \end{array}} %boxed with right opened
+\newcommand{\lboxed}[1]{\begin{array}{c|} \hline #1 \\ \hline \end{array}} %boxed with left opened
+
+\newcommand{\orboxed}[1]{\textcolor{ff4500}{\rboxed{\textcolor{black}{#1}}}} %orange right boxed
+\newcommand{\olboxed}[1]{\textcolor{ff4500}{\lboxed{\textcolor{black}{#1}}}} %orange left boxed
+
+
+%------commands
+%---to quote
+\newcommand{\simplecit}[1]{\guillemotleft$\;$#1$\;$\guillemotright}
+\newcommand{\cit}[1]{\simplecit{\textcolor{656565}{#1}}}
+\newcommand{\quo}[1]{\cit{\it #1}}
+
+%---to indent
+\newcommand{\ind}[1][20pt]{\advance\leftskip + #1}
+\newcommand{\deind}[1][20pt]{\advance\leftskip - #1}
+
+%---to indent a text
+\newcommand{\indented}[2][20pt]{\par \ind[#1] #2 \par \deind[#1]}
+\newenvironment{indt}[2][20pt]{#2 \par \ind[#1]}{\par \deind} %Titled indented env
+
+%---title
+\newcommand{\thetitle}[2]{\begin{center}\textbf{{\LARGE \underline{\Emph{#1} :}} {\Large #2}}\end{center}}
+
+%---Maths environments
+%-Proofs
+\newenvironment{proof}[1][{}]{\begin{indt}{$\square$ #1}}{$\blacksquare$ \end{indt}}
+
+%-Maths parts (proposition, definition, ...)
+\newenvironment{mathpart}[1]{\begin{indt}{\boxed{\text{\textbf{#1}}}}}{\end{indt}}
+\newenvironment{mathbox}[1]{\boxed{\text{\textbf{#1}}}\begin{emphBox}}{\end{emphBox}}
+\newenvironment{mathul}[1]{\begin{indt}{\underline{\textbf{#1}}}}{\end{indt}}
+
+\newenvironment{theo}{\begin{mathpart}{Théorème}}{\end{mathpart}}
+\newenvironment{Theo}{\begin{mathbox}{Théorème}}{\end{mathbox}}
+
+\newenvironment{prop}{\begin{mathpart}{Proposition}}{\end{mathpart}}
+\newenvironment{Prop}{\begin{mathbox}{Proposition}}{\end{mathbox}}
+\newenvironment{props}{\begin{mathpart}{Propriétés}}{\end{mathpart}}
+
+\newenvironment{defi}{\begin{mathpart}{Définition}}{\end{mathpart}}
+\newenvironment{meth}{\begin{mathpart}{Méthode}}{\end{mathpart}}
+
+\newenvironment{Rq}{\begin{mathul}{Remarque :}}{\end{mathul}}
+\newenvironment{Rqs}{\begin{mathul}{Remarques :}}{\end{mathul}}
+
+\newenvironment{Ex}{\begin{mathul}{Exemple :}}{\end{mathul}}
+\newenvironment{Exs}{\begin{mathul}{Exemples :}}{\end{mathul}}
+
+
+%------Sections
+% To change section numbering :
+% \renewcommand\thesection{\Roman{section}}
+% \renewcommand\thesubsection{\arabic{subsection})}
+% \renewcommand\thesubsubsection{\textit \alph{subsubsection})}
+
+% To start numbering from 0
+% \setcounter{section}{-1}
+
+
+%------page style
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+
+\setlength{\headheight}{18pt}
+\setlength{\footskip}{50pt}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE, RO]{\textit{\textcolor{black}{\today}}}
+\fancyhead[RE, LO]{\large{\textsl{\Emph{\texttt{\jobname}}}}}
+
+\fancyfoot[RO, LE]{\textit{\texttt{\textcolor{black}{Page \thepage /}\pageref{LastPage}}}}
+\fancyfoot[LO, RE]{\includegraphics[scale=0.12]{/home/lasercata/Pictures/1.images_profil/logo/mieux/lasercata_logo_fly_fond_blanc.png}}
+
+
+%------init lengths
+\setlength{\parindent}{0pt} %To avoid using \noindent everywhere.
+\setlength{\parskip}{3pt}
+
+
+%---------------------------------Begin Document
+\begin{document}
+    
+    \thetitle{Chapitre 17}{Complément d'algorithmique}
+    
+    \tableofcontents
+    \newpage
+    
+    \begin{indt}{\section{Optimisation}}
+        \begin{indt}{\subsection{Optimisation exacte}}
+            \begin{indt}{\subsubsection{Introduction}}
+                On s'intéresse ici à la résolution de problèmes d'optimisation au sens de la définition du chapitre 16, en 1.2.2 : on cherche un algorithme calculant une solution optimale \textbf{pour toute instance}.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Exemple : le problème du sac à dos}}
+                \label{1.1.2}
+
+                Le problème est le suivant : on dispose d'objets de poids respectifs $w_0, \ldots, w_{n - 1}$ et de valeurs respectives $p_0, \ldots, p_{n - 1}$ et d'un sac à dos capable de supporter un poids $W$. On souhaite sélectionner des objets de sorte à maximiser la valeur totale sans dépasser la capacité du sac à dos.
+
+                Dans la version en variables réelles, on suppose que l'on peut prendre des fractions des objets. Le problème d'optimisation se formule ainsi :
+
+                Maximiser $\displaystyle \sum_{i = 0}^{n - 1} x_i p_i$ sous les contraintes :
+                \[
+                    \begin{cases}
+                        \displaystyle
+                        \sum_{i = 0}^{n - 1} x_i w_i \le W
+                        \\
+                        \forall i \in \nset 0 {n - 1},\ x_i \in \seg 0 1
+                    \end{cases}
+                \]
+
+                Ce problème est résolu par un algorithme glouton :
+
+                \begin{indalgo}{Solution du problème du sac à dos, version en variables réelles}
+                    \label{alg:1}
+                    Trier les objets par $\dfrac{p_i}{w_i}$ décroissant\;
+
+                    \While{que possible en considérant les objets dans cet ordre}{
+                        Fixer $x_i$ à 1\;
+                    }
+
+                    Lorsque cela n'est plus possible, prendre la fraction de l'objet courant permettant de remplir le sac\;
+                \end{indalgo}
+
+                Cet algorithme calcule bien une solution optimale : si on note $i$ l'objet de $\dfrac{p_i}{w_i}$ maximal non encore sélectionné et si une solution optimale coïncidant avec l'algorithme sur les objets avant $i$, et ne sélectionne pas cet objet dans son intégralité, alors $\exists j$ tel que la solution optimale sélectionne une fraction de l'objet $j$ qui est $> x_j$.
+
+                Dans ce cas, il existe $\delta_j > 0$ tel que l'on peut ajouter une quantité $\dfrac{\delta_j}{w_i}$ de l'objet $i$ et retirer une quantité $\dfrac{\delta_j}{w_j}$ de l'objet $j$ à la solution optimale.
+
+                La variation de poids est $\dfrac{\delta_j}{w_i}w_i - \dfrac{\delta_j}{w_j}w_j = 0$, donc on a toujours une solution.
+
+                La variation de valeur est
+                \[
+                    \dfrac{\delta_j}{w_i} p_i - \dfrac{\delta_j}{w_j} p_j
+                    = \underbrace{\delta_j}_{> 0}\underbrace{\lr{\dfrac{p_i}{w_i} - \dfrac{p_j}{w_j}}}_{\ge 0}
+                \]
+
+                Donc la solution reste optimale.
+
+                On peut donc modifier la solution optimale jusqu'à l'obtention d'une solution optimale ayant choisi l'objet $i$ dans son intégralité.
+
+                L'invariant \simplecit{il existe une solution optimale ayant fait les mêmes choix que l'algorithme glouton} est vrai.
+
+                \vspace{12pt}
+                
+                Remarque : le problème du sac à dos, dans sa version entière (les $x_i \in \set{0, 1}$) ne peut pas être résolu par l'algorithme glouton (algorithme n°\ref{alg:1}) auquel on retire la dernière étape ne prenant qu'une fraction du dernier objet.
+
+                \begin{center}
+                    \begin{tabular}{l|ccc}
+                        Poids & 5 & 5 & 7
+                        \\
+                        \hline
+                        Valeur & 5 & 5 & 8
+                    \end{tabular}
+                    $\qquad W = 10$
+                \end{center}
+
+                \textit{Cf} l'exemple ci-dessus : l'algorithme glouton donne une solution de valeur $8$ en prenant l'objet de poids 7 alors qu'une solution optimale est de valeur 10 : on prend les deux objets de poids 5.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Séparation et évaluation (\textit{branch and bound})}}
+                $\bullet$ Une technique de résolution des problèmes d'optimisation consiste à effectuer une exploration exhaustive de l'ensemble des solutions et à conserver la meilleure solution.
+
+                Cependant, on se heurte à des problèmes de complexité (exemple : pour le sac à dos en variables entières, il y a $2^n$ solutions potentielles à tester).
+
+                On peut parfois accélérer la recherche grâce à l'heuristique du retour sur trace (\textit{cf} chapitre 8, 4.3).
+
+                Par exemple, pour le problème du sac à dos, il y a surement de nombreuses combinaisons d'objets qui dépassent la capacité du sac à dos. On peut donc sélectionner les objets un à un et lorsque l'on s'aperçoit que la capacité du sac à dos est dépassée, on revient sur le dernier choix.
+
+                En pratique, cela revient à construire un arbre binaire dans lequel tous les n\oe uds de même profondeur correspondent à un même objet et pour ces n\oe uds, le fils gauche correspond au cas où l'on a sélectionné l'objet et le fils droit au cas où l'objet n'est pas sélectionné.
+
+                On élague les branches correspondant à des sélections dépassant la capacité du sac à dos.
+
+                Si $w_1 + w_2 > W$,
+
+                \begin{center}
+                    \begin{tikzpicture}
+                        \node (0) at (0, 0) {$\bullet$}
+                            child [xshift=-90pt] {node {$\bullet$}
+                                child [xshift=-30pt] {node {$\bullet$}
+                                    child {node {} edge from parent [dashed]}
+                                    edge from parent [above left] node {$x_2 = 1$}
+                                }
+                                child [xshift=30pt] {node {$\bullet$}
+                                    child {node {$\bullet$}
+                                        child {node {} edge from parent [dashed]}
+                                        edge from parent [above left] node {$x_3 = 1$}
+                                    }
+                                    child {node {$\bullet$}
+                                        child {node {} edge from parent [dashed]}
+                                        edge from parent [above right] node {$x_3 = 0$}
+                                    }
+                                    edge from parent [above right] node {$x_2 = 0$}
+                                }
+                                edge from parent [above left] node {$x_1 = 1$}
+                            }
+                            child [xshift=90pt] {node {$\bullet$}
+                                child [xshift=-30pt] {node {$\bullet$}
+                                    child {node {$\bullet$}
+                                        child {node {} edge from parent [dashed]}
+                                        edge from parent [above left] node {$x_3 = 1$}
+                                    }
+                                    child {node {$\bullet$}
+                                        child {node {} edge from parent [dashed]}
+                                        edge from parent [above right] node {$x_3 = 0$}
+                                    }
+                                    edge from parent [above left] node {$x_2 = 1$}
+                                }
+                                child [xshift=30pt] {node {$\bullet$}
+                                    child {node {$\bullet$}
+                                        child {node {} edge from parent [dashed]}
+                                        edge from parent [above left] node {$x_3 = 1$}
+                                    }
+                                    child {node {$\bullet$}
+                                        child {node {} edge from parent [dashed]}
+                                        edge from parent [above right] node {$x_3 = 0$}
+                                    }
+                                    edge from parent [above right] node {$x_2 = 0$}
+                                }
+                                edge from parent [above right] node {$x_1 = 0$}
+                            }
+                        ;
+
+                        \node (1) at (-6, -6) {
+                            \begin{tabular}{c}
+                                Sous-arbre non parcouru
+                                \\
+                                car dépasse la capacité
+                            \end{tabular}
+                        };
+                        \draw[->] (1) to (-5.7, -4.5);
+                    \end{tikzpicture}
+                \end{center}
+
+                Dans le cadre de la résolution d'un problème d'optimisation, on peut parfois élaguer encore plus l'arbre de recherche en considérant le coût des solutions construites : si on sait évaluer une borne du meilleur possible pour une série de choix sans parcourir l'intégralité du sous-arbre correspondant, on peut parfois élaguer ce sous-arbre si on connaît déjà une solution de coût meilleur que cette borne.
+
+                \begin{indt}{Cette méthode consiste à concevoir un algorithme par séparation et évaluation :}
+                    $-$ La séparation consiste à diviser le problème en sous-problèmes, donc à créer un branchement dans l'arbre de reverche.
+
+                    Exemple : pour le problème du sac à dos, on a deux sous-problèmes, selon que l'objet $i$ est sélectionné ou non.
+
+                    \vspace{6pt}
+                    
+                    $-$ L'évaluation consiste à déterminer une borne sur le coût d'une solution optimale \textbf{réalisable avec les choix déjà faits} et à le comparer avec une borne connue pour savoir s'il est nécessaire de poursuivre l'exploration du sous-arbre.
+                \end{indt}
+
+                \vspace{12pt}
+                
+                \begin{indt}{Pour que cette méthode soit efficace, on a besoin de bonnes heuristiques pour :}
+                    $-$ La séparation : si les choix initiaux convergent rapidement vers une \simplecit{bonne solution}, on élaguera plus de branches dans la suite de l'exploration.
+
+                    \vspace{6pt}
+                    
+                    $-$ L'évaluation : on doit pouvoir calculer \emph{efficacement} une borne \emph{la plus juste possible} pour avoir de bonnes chances d'élaguer des branches.
+                \end{indt}
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Exemple : le problème du sac à dos}}
+                $\bullet$ Pour la séparation, on sélectionne ou pas un objet, avec l'heuristique suivante : on considère les objets par $\dfrac{p_i}{w_i}$ décroissant.
+
+                \vspace{6pt}
+                
+                $\bullet$ Pour l'évaluation, on utilise l'heuristique de relaxation : on relâche certaines contraintes, ce qui élargit le domaine des solutions donc permet potentiellement d'atteindre un meilleur coût.
+                Si le problème relâché est plus simple à résoudre, le coût d'une solution optimale est donc la borne recherchée.
+
+                Ici, on effectue une relaxation continue : on n'impose plus aux $x_i$ d'être des entiers, ce qui nous ramène au problème vu en \ref{1.1.2} (page \pageref{1.1.2}), que l'on sait résoudre efficacement (en $\mathcal O(n)$ car les objets seront triés une seule fois au début de l'algorithme pour l'heuristique de séparation).
+
+                Remarque : si l'algorithme nous donne une solution entière : on a trouvé la solution optimale (selon les choix qui sont déjà fait).
+
+                Si l'algorithme nous donne une solution avec un terme dans $]0, 1[$, la partie entière de la valeur de cette solution est une borne supérieure sur la solution optimale du problème entier.
+
+                \vspace{12pt}
+                
+                Exemple : on considère l'instance suivante :
+
+                \begin{center}
+                    \begin{tabular}{r|cccc}
+                        $i$ & 1 & 2 & 3 & 4
+                        \\
+                        \hline
+                        $p_i$ & 1 & 1 & 5 & 3
+                        \\
+                        \hline
+                        $w_i$ & 3 & 2 & 4 & 2
+                    \end{tabular}
+                    $\qquad W = 5$
+                \end{center}
+
+                Le tri des objets indique qu'on doit les traiter dans l'ordre suivant : 4, 3, 2, 1.
+
+                On note au cours de l'exécution, $W$ la capacité courante du sac à dos, et $V$ la valeur totale courante des objets sélectionnés.
+
+                \begin{center}
+                    \begin{tikzpicture}[scale=1.6]
+                        \node (0) at (0, 0) [rectangle, draw] {$W = 5, V = 0, \sup = \floor{3 + \dfrac 3 4 5} = 6$}
+                            child [xshift=-60pt] {node [rectangle, draw] {$W = 3, V = 3, \sup = 6$}
+                                child [xshift=-20pt] {node [rectangle, draw] {$W = -1$}
+                                edge from parent [above left] node {$x_3 = 1$}}
+                                child [xshift=20pt] {node [rectangle, draw] {$
+                                        \begin{array}{c}
+                                            W = 3, V = 3
+                                            \\
+                                            \sup = 3 + \floor{1 + \frac 1 3} = 4
+                                        \end{array}
+                                $}
+                                    child [xshift=-20pt] {node [rectangle, draw] {$
+                                            \begin{array}{c}
+                                                W = 1, V = 4
+                                                \\
+                                                \sup = 4 + \floor{\frac 1 3} = 4 = V
+                                            \end{array}
+                                    $} edge from parent [left] node {$x_2 = 1$}}
+                                    child [xshift=20pt] {node [rectangle, draw] {$
+                                            \begin{array}{c}
+                                                W = 3, V = 3
+                                                \\
+                                                \sup = 4 = \mathrm{inf}
+                                            \end{array}
+                                    $} edge from parent [right] node {$x_2 = 0$}}
+                                    edge from parent [above right] node {$x_3 = 0$}
+                                }
+                                edge from parent [above left] node {$x_4 = 1$}
+                            }
+                            child [xshift=60pt] {node [rectangle, draw] {$
+                                    \begin{array}{c}
+                                        W = 5, V = 0
+                                        \\
+                                        \sup = \floor{5 + \frac 1 2} = 5
+                                    \end{array}
+                            $}
+                                child [xshift=-20pt] {node [rectangle, draw] {$
+                                        \begin{array}{c}
+                                            W = 1, V = 5
+                                            \\
+                                            \sup = 5 = V > \mathrm{inf}
+                                        \end{array}
+                                $} edge from parent [left] node {$x_3 = 1$}}
+                                edge from parent [above right] node {$x_4 = 0$}
+                            }
+                        ;
+                        
+                        \node (1) at (-4.4, -3.5) {\huge{$\times$}};
+                        \node (1) at (.3, -5.2) {\huge{$\times$}};
+                    \end{tikzpicture}
+                \end{center}
+
+                Solution $(0, 1, 0, 1)$, et $\inf = 4$
+
+                Solution $(0, 0, 1, 0)$, et $\inf = 5$
+
+                \vspace{12pt}
+                
+                Conclusion : sélectionner uniquement l'objet $3$ est une solution optimale.
+
+                \vspace{6pt}
+                
+                \boxed{\rm Exo} écrire l'exécution de l'algorithme si l'heuristique de séparation consiste à prendre les objets par ordre d'indice ou par ordre de poids décroissant ou de valeur décroissante.
+
+                Tester aussi l'heuristique d'évaluation qui consiste à prendre la borne des valeurs des objets comme borne supérieure.
+            \end{indt}
+        \end{indt}
+    \end{indt}
+    
+\end{document}
+%--------------------------------------------End
