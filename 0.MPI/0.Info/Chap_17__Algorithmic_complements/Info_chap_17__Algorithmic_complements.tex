@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2023.01.10
+% Last modification     :   2023.01.12
 %
 %------------------------------------------------------------------------
 
@@ -331,6 +331,9 @@
 \setlength{\parindent}{0pt} %To avoid using \noindent everywhere.
 \setlength{\parskip}{3pt}
 
+\usepackage{bbm}
+\newcommand{\1}{\mathbbm 1}
+
 
 %---------------------------------Begin Document
 \begin{document}
@@ -616,6 +619,300 @@
                 \boxed{\rm Exo} écrire l'exécution de l'algorithme si l'heuristique de séparation consiste à prendre les objets par ordre d'indice ou par ordre de poids décroissant ou de valeur décroissante.
 
                 Tester aussi l'heuristique d'évaluation qui consiste à prendre la borne des valeurs des objets comme borne supérieure.
+            \end{indt}
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Optimisation et \textbf{NP}-complétude}}
+            \begin{indt}{\subsubsection{Introduction}}
+                On considère un problème d'optimisation caractérisé par une relation $\mathcal R \subseteq A \times B$ et une fonction de coût $c : B \longrightarrow \R^+$.
+                On rappelle que le problème de décision associé à ce problème d'optimisation s'énonce ainsi : étant donné une instance $a \in A$ et un entier $k \in \N$, existe-t-il une solution $b \in B$ telle que
+                \[
+                    \begin{cases}
+                        a \mathcal R b
+                        \\
+                        c(b) \le k
+                    \end{cases}
+                \]
+
+                Remarque : on peut aussi considérer des problèmes de maximisation et la condition à satisfaire est alors $c(k) \ge k$.
+
+                \vspace{6pt}
+                
+                Fait : s'il existe un algorithme de complexité polynomiale qui résout le problème d'optimisation, alors le problème de décision associé appartient à la classe $\mathrm{P}$.
+                En effet, il suffit pour une instance $a$ d'exécuter l'algorithme qui résout le problème d'optimisation sur $a$ (complexité polynomiale en la taille de $a$) puis de comparer le coût de la solution optimale obtenue et $k$ (complexité $\mathcal O(\log k)$).
+                Cela donne un algorithme polynomial qui résout le problème de décision.
+
+                \vspace{12pt}
+                
+                Conséquence : si le problème de décision associé à un problème d'optimisation est \textbf{NP}-complet, alors on a peu d'espoir de trouver un algorithme polynomial qui résout le problème d'optimisation.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Retour au problème du sac à dos}}
+                On sait que le problème en variables réelles peut être résolu en temps $\mathcal O(n\log n)$ par un algorithme glouton et que cet algorithme ne fonctionne pas pour le problème en variables entières.
+
+                \vspace{12pt}
+                
+                $\bullet$ Résolution par programmation dynamique : on considère une instance
+                \[
+                    (w_1, \ldots, w_n, p_1, \ldots, p_n, W)
+                \]
+                du problème du sac à dos en variables entières.
+
+                $\forall i \in \nset 0 n,\ \forall w \in \nset 0 W$, on note $V(i, w)$ la valeur maximale que l'on peut atteindre en sélectionnant des objets parmi ceux d'indices 1 à $i$ dans un sac à dos de capacité $w$.
+
+                On cherche à obtenir $V(n, W)$.
+
+                $
+                    \forall i \in \nset 0 {n - 1},\
+                    \forall w \in \nset 0 W,\
+                $
+                \[
+                    V(i + 1, w) =
+                    \begin{cases}
+                        \vspace{-32pt}
+                        \\
+                        V(i, w)
+                        & \text{si}\ \overbrace{w_{i + 1} > w}^{\substack{\text{on ne peut pas} \\ \text{sélectionner l'objet $i + 1$}}}
+                        \vspace{6pt}
+                        \\
+                        \max(\!\!\!\!\!\! \underbrace{V(i, w)}_{\substack{\text{on ne sélectionne} \\ \text{pas l'objet $i + 1$}}}\!\!\!\!\!\!\!,\ \, \underbrace{p_{i + 1} + V(i, w - w_{i + 1})}_{\substack{\text{on sélectionne} \\ \text{l'objet $i + 1$}}})
+                        & \text{sinon}
+                        \vspace{-21pt}
+                    \end{cases}
+                \]
+
+                \vspace{12pt}
+
+                $\forall w \in \nset 0 W,\ V(0, W) = 0$
+
+                On peut donc remplir la matrice $V$ ligne par ligne (par $i$ croissant) et retrouver une solution réalisant $V(n, W)$ en temps $\mathcal O(W_n)$.
+
+                Conclusion ? Aucune car c'est un algorithme de complexité exponentielle en la taille de l'instance ($W$ est de taille $\mathcal O(\log w)$).
+
+                \vspace{12pt}
+                
+                $\bullet$ Proposition
+
+                \begin{emphBox}
+                    On considère le problème de décision suivant :
+
+                    \textsc{Sac\_a\_dos} : étant donné $n$ poids $w_1, \ldots, w_n \in \N$, $n$ valeurs $x_1, \ldots, x_n \in \set{0, 1}$ telles que
+                    \[
+                        \begin{cases}
+                            \displaystyle
+                            \sum_{i = 1}^n x_i p_i \ge k
+                            \\
+                            \displaystyle
+                            \sum_{i = 1}^n x_i w_i \le W
+                        \end{cases}
+                        \qquad
+                        \text{?}
+                    \]
+
+                    \vspace{6pt}
+                    
+                    \textsc{Sac\_a\_dos} est \textbf{NP}-complet.
+                \end{emphBox}
+
+                \vspace{6pt}
+                
+                \begin{proof}
+                    $-$ \textsc{Sac\_a\_dos} $\in \mathbf{NP}$ : $x_1, \ldots, x_n$ est un certificat vérifiable en temps polynomial.
+
+                    \vspace{6pt}
+                    
+                    $-$ \textsc{Sac\_a\_dos} est \textbf{NP}-difficile : on procède par réduction de $2$-\textsc{Partition} (\textit{cf} TD$_{46}$) : étant donné $S = \set{a_1, \ldots, a_n} \subseteq \N$, existe-t-il $I \subseteq \nset 1 n$ tel que
+                    \[
+                        \sum_{i \in I} a_i = \sum_{i \in \nset 1 n \setminus I} a_i
+                        \qquad \text{?}
+                    \]
+
+                    Soit $S = \set{a_1, \ldots, a_n}$ une instance de 2-\textsc{Partition}.
+
+                    On construit l'instance suivante de \textsc{Sac\_a\_dos} :
+                    \[
+                        \begin{cases}
+                            \forall i \in \nset 1 n,\ w_i = p_i = a_i
+                            \\
+                            \displaystyle
+                            W = k = \dfrac 1 2 \sum_{i = 1}^n a_i
+                        \end{cases}
+                    \]
+
+                    \begin{indt}{Cette instance est calculable en temps polynomial en la taille de $S$ et cela constitue une réduction :}
+                        $+$ Si $\exists I \subseteq \nset 1 n\ |\ \displaystyle \sum_{i \in I} a_i = \sum_{i \in \nset 1 n \setminus I} a_i$, alors
+                        \[
+                            \sum_{i = 1}^n a_i
+                            = \sum_{i \in I} a_i + \sum_{i \in \nset 1 n \setminus I} a_i
+                            = 2\sum_{i \in I} a_i
+                        \]
+
+                        donc en notant $\forall i \in \nset 1 n,\ x_i = \1_I(i)$, on obtient
+                        \[
+                            \sum_{i = 1}^n x_i p_i
+                            = \sum_{i = 1}^n x_i w_i
+                            = \sum_{i = 1}^n x_i a_i
+                            = \sum_{i = 1}^n \1_I(i) a_i
+                            = \sum_{i \in I} a_i
+                            = \dfrac 1 2 \sum_{i = 1}^n a_i
+                            = k
+                            = W
+                        \]
+
+                        Donc les $x_i$ sont une solution de l'instance de \textsc{Sac\_a\_dos} associée.
+
+                        \vspace{6pt}
+                        
+                        $+$ Réciproquement, si
+                        \[
+                            \exists (x_1, \ldots, x_n) \in \set{0, 1}^n\ |\
+                            \begin{cases}
+                                \displaystyle
+                                \sum_{i = 1}^n x_i w_i \le W
+                                \\
+                                \displaystyle
+                                \sum_{i = 1}^n x_i p_i \ge k
+                            \end{cases}
+                        \]
+
+                        Alors
+                        \[
+                            \dfrac 1 2 \sum_{i = 1}^n a_i
+                            = k
+                            \le \sum_{i = 1}^n x_i p_i
+                            = \sum_{i = 1}^n x_i a_i
+                            = \sum_{i = 1}^n x_i w_i
+                            \le W
+                            = \dfrac 1 2 \sum_{i = 1}^n a_i
+                        \]
+
+                        Donc
+                        \[
+                            \begin{array}{rcl}
+                                \displaystyle
+                                \sum_{i = 1}^n x_i a_i
+                                &=& \displaystyle
+                                \dfrac 1 2 \sum_{i = 1}^n a_i
+                                \vspace{3pt}
+                                \\
+                                &=& \displaystyle
+                                \dfrac 1 2 \lr{\sum_{\substack{i = 1 \\ x_i = 1}}^n a_i + \sum_{\substack{i = 1 \\ x_i = 0}}^n a_i}
+                                \vspace{3pt}
+                                \\
+                                &=& \displaystyle
+                                \dfrac 1 2 \lr{\sum_{\substack{i = 1 \\ x_i = 1}}^n x_i a_i + \sum_{\substack{i = 1 \\ x_i = 0}}^n a_i}
+                                \vspace{3pt}
+                                \\
+                                &=& \displaystyle
+                                \dfrac 1 2 \lr{\sum_{\substack{i = 1}}^n x_i a_i + \sum_{\substack{i = 1 \\ x_i = 0}}^n a_i}
+                            \end{array}
+                        \]
+
+                        Donc $\displaystyle \sum_{\substack{i = 1 \\ x_i = 1}}^n a_i = \sum_{i = 1}^n x_i a_i = \sum_{\substack{i = 0 \\ x_i = 0}}^n a_i$
+                    \end{indt}
+
+                    Donc $I = \set{i \in \nset 1 n\ |\ x_i = 1}$ est une solution à l'instance de 2-\textsc{Partition}
+                \end{proof}
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Remarque}}
+                Comme on a peu d'espoir de trouver efficacement une solution optimale à un problème d'optimisation dont le problème de décision associé est $\mathbf{NP}$-complet, on va plutôt chercher efficacement une solution \simplecit{pas trop mauvaise}.
+                On cherche donc à concevoir un algorithme de complexité polynomiale qui fournit des solutions pour lesquelles on peut estimer la \simplecit{distance} à l'optimum.
+
+                \vspace{12pt}
+                
+                $\bullet$ Exemple : l'algorithme glouton vu en \ref{1.1.2} (page \pageref{1.1.2}) pour le problème du sac à dos est très mauvais vis à vis du problème en variables entières : si $k \in \N^*$ et $W \in \N \setminus \set{0, 1}$, on considère deux objets tels que
+                \[
+                    \begin{cases}
+                        p_1 = 1
+                        \\
+                        w_1 = \dfrac{W - 1}{k}
+                    \end{cases}
+                    \quad
+                    \text{et}
+                    \quad
+                    \begin{cases}
+                        p_2 = k
+                        \\
+                        w_2 = W
+                    \end{cases}
+                \]
+
+                L'algorithme glouton sélectionne l'objet $1$ car $\dfrac{1}{\dfrac{W - 1}{k}}  = \dfrac{k}{W - 1} > \dfrac k W$, ce qui donne une solution de valeur 1 alors que la solution optimale consiste à prendre l'objet 2 pour une valeur $k$.
+
+                Ainsi $\forall k \in \N^*$, il existe une instance telle que la solution optimale est $k$ fois meilleure que celle calculée par l'algorithme glouton.
+
+                \vspace{12pt}
+                
+                $\bullet$ On peut faire mieux en modifiant légèrement l'algorithme : on garde la meilleure solution entre celle de l'algorithme glouton et celle qui consiste à ne prendre que l'objet de valeur maximale.
+
+                \vspace{6pt}
+                
+                Proposition :
+                \begin{emphBox}
+                    On note pour toute instance $e$, $V^*(e)$ la valeur d'une solution optimale, et $V(e)$ la valeur de la solution calculée par l'algorithme glouton modifié.
+
+                    Alors
+                    \[
+                        \forall e,\ V^*(e) \le 2V(e)
+                    \]
+                \end{emphBox}
+
+                \vspace{6pt}
+                
+                \begin{proof}
+                    On note $e = (w_1, \ldots, w_n, p_1, \ldots, p_n, W)$.
+
+                    Quitte à renuméroter, on peut supposer que les objets sont tirés par $\dfrac{p_i}{w_i}$ décroissant.
+
+                    On sait que toute solution entière donne une valeur inférieure à celle d'une solution optimale réelle.
+                    De plus, une telle solution est calculée \textit{via} l'algorithme glouton.
+
+                    Alors, en notant $j \in \nset 1 n$ l'indice du premier objet que l'on ne peut pas placer intégralement dans le sac à dos, on a
+                    \[
+                        \begin{array}{rcl}
+                            V^*(e)
+                            &\le& \displaystyle
+                            \sum_{i = 1}^{j - 1} p_i
+                            + \underbrace{\dfrac{\displaystyle W - \sum_{i = 1}^{j - 1} w_i}{w_j}}_{< 1} p_j
+                            \\
+                            &\le& \displaystyle
+                            \sum_{i = 1}^{j - 1} p_i + p_i
+                            \vspace{3pt}
+                            \\
+                            &\le& \displaystyle
+                            \sum_{i = 1}^{j - 1} p_i + \max_{i \in \nset 1 n} p_i
+                            \vspace{3pt}
+                            \\
+                            &\le& \displaystyle
+                            2 \max\!\lr{\sum_{i = 1}^{j - 1} a_i,\ \max_{i \in \nset 1 n} p_i}
+                        \end{array}
+                    \]
+                    (L'algorithme glouton prend tous les objets de 1 à $j - 1$ puis la fraction de l'objet $j$ qui permet de remplir le sac à dos)
+                \end{proof}
+
+                \vspace{12pt}
+                
+                Remarque : on a donc un algorithme de même complexité que l'algorithme glouton et tel que la solution calculée est toujours de valeur supérieure à la moitié de la valeur optimale.
+
+                \vspace{12pt}
+                
+                \boxed{\rm H.P} $\forall \varepsilon \in \R^*_+$, il existe un algorithme de complexité $\mathcal O\!\lr{\dfrac{1 + \varepsilon}{\varepsilon} n^3}$ déterminant une solution entière au problème du sac à dos et tel que $\forall e$ instance, la valeur $V(e)$ de la solution calculée vérifie $V^*(e) \le (1 + \varepsilon)V(e)$.
+
+                Idée : par programmation dynamique : $\forall i \in \nset 0 n,\ \forall p \in \nset{0}{\displaystyle \sum_{i = 1}^n p_i}$, on calcule le poids minimal $W(i, p)$ réalisable en sélectionnant des objets parmi ceux d'indices de 1 à $i$ de sorte que la valeur obtenue vaille $p$ (et le poids $\le W$).
+
+                On le fait avec des objets de valeur modifiée en fonction de $n$, $\varepsilon$, $p_{\max} = \max_{i \in \nset 1 n} p_i$
+
+                $\displaystyle \forall i \in \nset 1 n$, on note $\floor{\dfrac{p_i}{2^t}}$, où
+                \[
+                    t = \floor{\log\!\lr{\dfrac{\varepsilon}{1 + \varepsilon} \dfrac{p_{\max}}{n}}}
+                \]
             \end{indt}
         \end{indt}
     \end{indt}
