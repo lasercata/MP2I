@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2023.01.10
+% Last modification     :   2023.01.14
 %
 %------------------------------------------------------------------------
 
@@ -1469,7 +1469,7 @@
 
                 \vspace{12pt}
                 
-                $\bullet$ Exemple : On considère le problème $P_{\rm sort}$ : étant donné deux tableaux de même taille $t_1$ et $t_2$, $t_2$ est-il une version tirée de $t_1$ ?
+                $\bullet$ Exemple : On considère le problème $P_{\rm sort}$ : étant donné deux tableaux $t_1$ et $t_2$ de même taille, $t_2$ est-il une version tirée de $t_1$ ?
 
                 En testant l'égalité entre $t_2$ et toutes les permutations de $t_1$, on montre que $P_{\rm sort} \in \mathrm{DTIME}(n! \cdot n)$.
 
@@ -1531,7 +1531,7 @@
 
                 $-$ Le problème de l'accessibilité (\textit{cf} \ref{1.3.3}, page \pageref{1.3.3}) appartient à $\mathbf P$ : on le résout à l'aide d'un parcours du graphe, donc en temps linéaire en la taille du graphe.
 
-                $-$ Le meilleurs algorithme de tri par comparaison est de complexité $\mathcal O(n \log n) = \mathcal O(n^2)$, donc polynomiale, mais le problème \simplecit{trier un tableau donné} n'est pas un problème de décision.
+                $-$ Le meilleur algorithme de tri par comparaison est de complexité $\mathcal O(n \log n) = \mathcal O(n^2)$, donc polynomiale, mais le problème \simplecit{trier un tableau donné} n'est pas un problème de décision.
 
                 En revanche, le problème $P_{\rm sort}$ vu en \ref{2.1.3} (page \pageref{2.1.3}) appartient à $\mathbf P$.
 
@@ -1565,7 +1565,7 @@
 
                 \vspace{12pt}
                 
-                $\bullet$ Exemple : pour le problème de coloration de graphe vu en \ref{1.2.2}, on écrit le vérificateur suivant, d'entrées une instance $(G, k)$, où $G$ est un graphe, et $k$ un entier, et $c$ une coloration :
+                $\bullet$ Exemple : pour le problème de coloration de graphe vu en \ref{1.2.2} (page \pageref{1.2.2}), on écrit le vérificateur suivant, d'entrées une instance $(G, k)$, où $G$ est un graphe, et $k$ un entier, et $c$ une coloration :
 
                 \begin{indalgo}{Vérificateur du problème de coloration}
                     \KwInput{$(G, k), c$}
@@ -1646,7 +1646,7 @@
                             &\ssi&
                             \forall c,\ V(e, c)\ \text{renvoie \texttt{true}}
                             \\
-                            &\ssi& M(e) \text{renvoie \texttt{true}}
+                            &\ssi& M(e)\ \text{renvoie \texttt{true}}
                             \\
                             &\ssi& D(e)
                         \end{array}
@@ -1666,7 +1666,8 @@
                 On montre que \textsc{Clique} $\in \mathbf{NP}$ grâce au vérificateur suivant :
 
                 \begin{indalgo}{Vérificateur de \textsc{Clique}}
-                    \KwInput{$G = (S, A), k, S'$}
+                    \KwInput{$G = (S, A), k$}
+                    \KwInput{$S'$}
 
                     \BlankLine
 
@@ -1883,7 +1884,7 @@
             \begin{indt}{\subsubsection{Preuves de \textbf{NP}-complétude}}
                 \label{2.3.3}
 
-                $\bullet$ Remarques : comme pour la décidabilité, l'usage de réductions (polynomiales) est un outil important.
+                $\bullet$ Remarque : comme pour la décidabilité, l'usage de réductions (polynomiales) est un outil important.
 
                 \vspace{12pt}
                 
