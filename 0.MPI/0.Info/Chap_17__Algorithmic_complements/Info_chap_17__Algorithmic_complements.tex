@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2023.01.12
+% Last modification     :   2023.01.17
 %
 %------------------------------------------------------------------------
 
@@ -640,7 +640,7 @@
 
                 \vspace{6pt}
                 
-                Fait : s'il existe un algorithme de complexité polynomiale qui résout le problème d'optimisation, alors le problème de décision associé appartient à la classe $\mathrm{P}$.
+                Fait : s'il existe un algorithme de complexité polynomiale qui résout le problème d'optimisation, alors le problème de décision associé appartient à la classe $\mathbf{P}$.
                 En effet, il suffit pour une instance $a$ d'exécuter l'algorithme qui résout le problème d'optimisation sur $a$ (complexité polynomiale en la taille de $a$) puis de comparer le coût de la solution optimale obtenue et $k$ (complexité $\mathcal O(\log k)$).
                 Cela donne un algorithme polynomial qui résout le problème de décision.
 
@@ -822,6 +822,8 @@
             \vspace{12pt}
             
             \begin{indt}{\subsubsection{Remarque}}
+                \label{1.2.3}
+
                 Comme on a peu d'espoir de trouver efficacement une solution optimale à un problème d'optimisation dont le problème de décision associé est $\mathbf{NP}$-complet, on va plutôt chercher efficacement une solution \simplecit{pas trop mauvaise}.
                 On cherche donc à concevoir un algorithme de complexité polynomiale qui fournit des solutions pour lesquelles on peut estimer la \simplecit{distance} à l'optimum.
 
@@ -913,6 +915,231 @@
                 \[
                     t = \floor{\log\!\lr{\dfrac{\varepsilon}{1 + \varepsilon} \dfrac{p_{\max}}{n}}}
                 \]
+            \end{indt}
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Algorithmes d'approximation}}
+            \begin{indt}{\subsubsection{Définition (\textit{algorithme d'approximation})}}
+                On considère une problème d'optimisation caractérisé par une relation $\mathcal R \subseteq A \times B$ et une fonction de coût $c : B \longrightarrow \R^+$.
+
+                Soit $\alpha \in \R_+^*$, et $M$ un algorithme tel que $\forall a \in A$, $M$ appliqué à $a$ termine et revoie une solution associée à l'instance $a$, \textit{i.e} $a \mathcal R M(a)$.
+
+                On dit que $M$ est un \emph{algorithme d'approximation} de facteur $\alpha$, ou \emph{$\alpha$-approximation}, pour le problème d'optimisation si, en notant $\forall a \in A$, $c^*(a)$ le coût d'une solution optimale associée à $a$ :
+                \begin{indt}{}
+                    $-$ si on a un problème de minimisation, $\forall a \in A,\ c(M(a)) < \alpha c^*(a)$ (et $\alpha > 1$)
+                    
+                    $-$ si on a un problème de maximisation, $\forall a \in A,\ c(M(a)) \ge \alpha c^*(a)$ (et $\alpha < 1$).
+                \end{indt}
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Exemple}}
+                L'algorithme glouton pour le problème du sac à dos n'est pas un algorithme d'approximation car on a vu en \ref{1.2.3} (page \pageref{1.2.3}) que l'on peut construire des instances telles que le rapport entre la valeur de la solution calculée est valeur optimale est arbitrairement petit.
+
+                En revanche, on a vu que l'algorithme modifié constitue une $\dfrac 1 2$--approximation.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Remarques}}
+                $\bullet$ On parle parfois d'$\alpha(n)$--approximation, où le facteur $\alpha$ est variable et dépend de la taille de l'instance.
+
+                $\bullet$ On utilise souvent des algorithmes gloutons pour construire des algorithmes d'approximation.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Exemple}}
+                On considère le problème d'optimisation suivant, associé à \textsc{Vertex\_Cover} : étant donné un graphe $G = (S, A)$, déterminer une couverture par les sommets de $G$ de taille minimale.
+
+                On a peu d'espoir de résoudre en temps polynomial ce problème d'optimisation car \textsc{Vertex\_Cover} est \textbf{NP}--complet (\textit{cf} chapitre 16, 2.3.5) : si c'était possible, étant donné une instance $(G, k)$ de \textsc{Vertex\_Cover}, on pourrait déterminer une couverture optimale de $G$ et comparer sa taille à $k$ (si sa taille est inférieure à $k$, on peut toujours ajouter des sommets pour obtenir une couverture de taille $k$).
+
+                \vspace{12pt}
+                
+                $\bullet$ Algorithme d'approximation :
+
+                Idée : on pourrait sélectionner les extrémités d'un ensemble d'arêtes qui rencontrent toutes les autres arêtes du graphe.
+                Pour minimiser le nombre de sommets sélectionnés, on cherchera des arêtes sans extrémité commune, donc sur un couplage maximal.
+                On ne cherchera pas un couplage maximum car on veut minimiser le nombre de sommets, donc d'arêtes.
+
+                D'où l'algorithme glouton :
+                \begin{indalgo}{}
+                    \label{alg:2}
+
+                    $C \gets \varnothing$\;
+                    \While{$A \neq \varnothing$}{
+                        Extraire une arête $\set{s, t}$ de $A$\;
+                        $C \gets \set{s, t} \cup C$\;
+                        Supprimer les arêtes adjacentes à $s$ ou à $t$\;
+                    }
+
+                    \Return $C$\;
+                \end{indalgo}
+
+                \vspace{12pt}
+                
+                $\bullet$ Proposition :
+                \begin{emphBox}
+                    Cet algorithme est une 2--approximation pour le problème de la couverture par les sommets minimale.
+                \end{emphBox}
+
+                \vspace{6pt}
+                
+                \begin{proof}
+                    On démontre d'abord que l'ensemble $C$ calculé est une couverture par les sommets de $G$.
+
+                    Pour cela, on démontre l'invariant : \simplecit{toutes les arêtes supprimées sont couvertes par les sommets de $C$}.
+
+                    En fin d'exécution, toutes les arêtes ont été supprimées, donc sont couvertes.
+
+                    \vspace{12pt}
+                    
+                    On note $M$ l'ensemble des arêtes extraites sur la ligne 3 de l'algorithme \ref{alg:2}.
+
+                    Par construction, $\abs C = 2 \abs M$.
+
+                    De plus, $M$ est un couplage de $G$ : on démontre l'invariant : \simplecit{$M$ est un couplage, et toutes les arêtes de $A$ sont non adjacentes à celles de $M$}.
+
+                    $-$ Initialement, $M = \varnothing$, donc l'invariant est vrai.
+
+                    $-$ Invariance : on suppose l'invariant vrai et on note $\set{s, t}$ la prochaine arête extraite de $A$.
+
+                    Par l'invariant, $\set{s, t}$ est non adjacente aux arêtes de $M$ et $M$ est un couplage.
+
+                    Après suppression des arêtes incidentes à $s$ ou à $t$, il ne reste dans $A$ que des arêtes non adjacentes à $\set{s, t}$ et non adjacentes aux arêtes de $M$ d'après l'invariant.
+
+                    L'invariant reste donc vrai.
+
+                    \vspace{12pt}
+                    
+                    On note maintenant $C^*$ une couverture optimale.
+
+                    Comme les sommets de $C^*$ doivent couvrir les arêtes de $M$, et comme $M$ est un couplage, il y a nécessairement au moins un sommet dans $C^*$ pour chaque arête de $M$.
+
+                    Donc
+                    \[
+                        \abs{C^*} \ge \abs M = \dfrac{\abs C}{2}
+                    \]
+                    \textit{i.e}
+                    \[
+                        \abs C \le 2 \abs{C^*}
+                    \]
+                \end{proof}
+
+                \vspace{12pt}
+                
+                $\bullet$ Remarque :
+                si on suppose que $G$ est un arbre, alors il existe un algorithme glouton optimal pour ce problème.
+
+                Comme il faut couvrir l'unique arête incidente à une feuille, on peut sélectionner l'autre extrémité de cette arête en espérant couvrir ainsi plusieurs arêtes.
+                Supprimer les arêtes incidentes à ce sommet peut créer plusieurs arbres, donc il faudra tenir compte du fait que le graphe peut devenir une forêt.
+
+                D'où l'algorithme suivant :
+                \begin{indalgo}{}
+                    $F \gets$ file de priorité min dont les éléments sont les sommets, dont la priorité est leur degré\;
+                    $C \gets \varnothing$\;
+
+                    \While{$F \neq \varnothing$}{
+                        Extraire l'élément $s$ de priorité min de $F$\;
+                        \If{$s$ admet un voisin $t$}{
+                            $C \gets C \cup \set{A}$\;
+                            $A \gets A \setminus \set{\set{s, t}}$\;
+
+                            \For{chaque voisin $u$ de $t$}{
+                                $A \gets A \setminus \set{\set{t, u}}$\;
+                                Décrémenter la priorité de $u$ dans $F$\;
+                            }
+
+                            Mettre la priorité de $t$ dans $F$ à 0\;
+                        }
+
+                        \Return $C$\;
+                    }
+                \end{indalgo}
+
+                Complexité :
+                \[
+                    \mathcal O\!\lr{
+                        \underbrace{\abs S + \abs A}_{\text{création de}\ F}
+                        + \sum_{s \in S} \underbrace{\log \abs S}_{\substack{\text{extraction} \\ \text{du min}}}
+                        + \sum_{t \in S} \underbrace{(d(t) + 1)\log \abs S}_{\substack{\text{mises à jour} \\ \text{de priorité}}}
+                    }
+                    =
+                    \mathcal O\!\lr{(\abs S + \abs A)\log \abs S}
+                \]
+                
+                Ce qui est polynomial en $\abs G$.
+
+                \vspace{12pt}
+                
+                $\bullet$ Proposition :
+                \begin{emphBox}
+                    Chaque sommet extrait est de degré 0 ou 1 au moment de l'extraction.
+                \end{emphBox}
+
+                \vspace{6pt}
+                
+                \begin{proof}
+                    On a l'invariant \simplecit{les priorité des sommets sont leurs degrés}.
+
+                    Il suffit alors de démontrer l'invariant \simplecit{le sous-graphe $G_F$ induit par $F$ est une forêt} car une sommet de degré minimal dans une forêt est soi isolé, soit une feuille d'un arbre.
+
+                    $-$ Initialement, $G_F = G$ qui est un arbre, donc une forêt.
+
+                    $-$ Invariance : si $G_F$ est une forêt, et si on extrait $s$ de $F$,
+                    alors $d(s) \in \set{0, 1}$.
+
+                    Si $d(s) = 0$, on a juste retiré un sommet isolé, donc $G_F$ reste une forêt.
+
+                    Si $d(s) = 1$ et $t$ est l'unique voisin de $s$, on décompose l'arbre de $G_F$ contenant $s$ et $t$ en un sommet isolé $(A)$ et autant de sous-arbres que $t$ admet de voisins différents de $s$.
+
+                    Donc $G_F$ reste une forêt.
+                \end{proof}
+
+                \vspace{12pt}
+                
+                $\bullet$ Proposition
+                \begin{emphBox}
+                    L'algorithme glouton calcule une couverture par les sommets optimale de $G$.
+                \end{emphBox}
+
+                \vspace{6pt}
+                
+                \begin{proof}
+                    Tout d'abord, $C$ est bien une couverture car chaque arête est supprimée parce qu'elle est couverte par un élément ajouté à $C$.
+                    Toutes les arêtes sont bien supprimées car on retire teous les sommets de la file et pour chaque sommet extrait, il est de degré 0 ou 1 lors de son extraction, \textit{i.e} toutes els arêtes incidentes à ce sommet ont été supprimées sauf peut-être une qui sera supprimé au moment de l'exécution.
+
+                    \vspace{12pt}
+                    
+                    On démontre l'optimalité grâce à l'invariant \simplecit{il existe une couverture optimale $C^*$ telle que $C \subseteq C^*$}.
+
+                    $-$ Initialement, $C = \varnothing$, et il existe une couverture optimale donc l'invariant est vrai.
+
+                    $-$ Invariance : on suppose qu'il existe une couverture optimale $C^*\ |\ C \subseteq C^*$, et on note $s$ le sommet extrait.
+
+                    Si $d(s) = 0$, $C$ ne change pas et $C^*$ convient encore.
+
+                    \begin{indt}{Sinon, $d(s) = 1$, et on note $t$ l'unique voisin de $s$.}
+                        $+$ si $t \in C^*$, $C^*$ convient encore.
+
+                        $+$ sinon, $s \in C^*$ car $\set{s, t}$ doit être couverte.
+                    \end{indt}
+
+                    On montre alors que $\lr{C^* \setminus \set s} \cup \set t$ est une couverture optimale contenant $C \cup \set t$ :
+
+                    $s \notin C$, car sinon, au moment de son extraction, $d(s) = 0$, et on a supposé $d(s) = 1$.
+
+                    Donc $C \subseteq C^* \setminus \set s$, et $C \cup \set t \subseteq \lr{C^* \setminus s€t s} \cup \set t$.
+
+                    Le cardinal ne change pas, donc il reste à démontrer que $\lr{C^* \setminus \set s} \cup \set t$ est une couverture.
+
+                    C'est vrai car la seule arête incidente à $s$ qui n'est pas couverte par $C$, donc par $C^* \setminus \set s$ est l'arête $\set{s, t}$, qui est couverte par $\set t$. Les autres arêtes sont bien couvertes par $C^* \setminus \set s$.
+
+                    Finalement, en sortie d'algorithme, $C$ est une couverture incluse dnas une couverture optimale, donc c'est une couverture optimale.
+                \end{proof}
             \end{indt}
         \end{indt}
     \end{indt}
