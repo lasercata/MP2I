@@ -341,6 +341,7 @@
     \thetitle{Chapitre 17}{Complément d'algorithmique}
     
     \tableofcontents
+    \listofalgorithms
     \newpage
     
     \begin{indt}{\section{Optimisation}}
@@ -966,7 +967,7 @@
                 On ne cherchera pas un couplage maximum car on veut minimiser le nombre de sommets, donc d'arêtes.
 
                 D'où l'algorithme glouton :
-                \begin{indalgo}{}
+                \begin{indalgo}{Approximation pour \textsc{Vertex\_Cover}}
                     \label{alg:2}
 
                     $C \gets \varnothing$\;
@@ -1038,7 +1039,7 @@
                 Supprimer les arêtes incidentes à ce sommet peut créer plusieurs arbres, donc il faudra tenir compte du fait que le graphe peut devenir une forêt.
 
                 D'où l'algorithme suivant :
-                \begin{indalgo}{}
+                \begin{indalgo}{Algorithme optimal pour \textsc{Vertex\_Cover} sur les arbres}
                     $F \gets$ file de priorité min dont les éléments sont les sommets, dont la priorité est leur degré\;
                     $C \gets \varnothing$\;
 
@@ -1132,7 +1133,7 @@
 
                     $s \notin C$, car sinon, au moment de son extraction, $d(s) = 0$, et on a supposé $d(s) = 1$.
 
-                    Donc $C \subseteq C^* \setminus \set s$, et $C \cup \set t \subseteq \lr{C^* \setminus s€t s} \cup \set t$.
+                    Donc $C \subseteq C^* \setminus \set s$, et $C \cup \set t \subseteq \lr{C^* \setminus \set s} \cup \set t$.
 
                     Le cardinal ne change pas, donc il reste à démontrer que $\lr{C^* \setminus \set s} \cup \set t$ est une couverture.
 
@@ -1140,6 +1141,261 @@
 
                     Finalement, en sortie d'algorithme, $C$ est une couverture incluse dnas une couverture optimale, donc c'est une couverture optimale.
                 \end{proof}
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Exemple}}
+                On transforme le problème de décision \textsc{Sat} en le problème d'optimisation \textsc{Max\_Sat} : étant donné une formule $\varphi$ sous FNC, déterminer une valuation qui maximise le nombre de clauses de $\varphi$ satisfaites.
+
+                \vspace{12pt}
+                
+                $\bullet$ Remarque : le problème de décision associé à \textsc{Max\_Sat} est \textbf{NP}--complet (réduction de \textsc{Sat} avec le nombre de clauses de la formule comme seuil).
+
+                On peut de même considérer les problèmes \textsc{Max-$k$-Sat}, pour $k \ge 1$, où les formules considérées sont telles que toutes leurs clauses sont de taille $\le k$.
+
+                \vspace{12pt}
+                
+                $\bullet$ Proposition
+                \begin{emphBox}
+                    \textsc{Max-$k$-Sat} est \textbf{NP}-complet $\forall k \ge 2$.
+                \end{emphBox}
+
+                \vspace{6pt}
+                
+                \begin{proof}
+                    Il suffit le de démontrer pour $k = 2$ car la fonction identité est une réduction polynomiale de \textsc{Max-$k$-Sat} $\forall k \ge 2$, en remarquant que tous ces problèmes appartiennent à la classe \textbf{NP} (certificat = valuation, on compte le nombre de clauses satisfaites).
+
+                    On montre que $3$-\textsc{Sat} $\le_{\rm p}$ \textsc{Max-$2$-Sat}
+
+                    Soit $\varphi$ une formule sous forme normale conjonctive dont les clauses sont de taille au plus trois.
+                    On peut supposer que toutes les clauses de $\varphi$ sont de taille exactement trois, quitte à répéter une littéral dans les clauses trop petites.
+
+                    On écrit donc
+                    \[
+                        \varphi = \bigwedge_{i = 1}^k (a_i \vee b_i \vee c_i)
+                    \]
+
+                    avec $a_i, b_i, c_i$ des littéraux.
+
+                    On constuit alors l'instance suivante de \textsc{Max-2-Sat} :
+                    \[
+                        \begin{array}{rcl}
+                            \text{Formule}
+                            & :
+                            & \displaystyle
+                            \bigwedge_{i = 1}^k \psi_i
+                            \\
+                            \text{Seuil}
+                            & :
+                            & 7k
+                        \end{array}
+                    \]
+
+                    où :
+                    \[
+                        \psi_i =
+                        (a_i \wedge b_i \wedge c_i \wedge d_i \wedge (\neg a_i \vee \neg b_i) \wedge (\neg a_i \vee \neg c_i) \wedge (\neg b_i \vee \neg c_i) \wedge (a_i \vee \neg d_i) \wedge (b_i \vee \neg d_i) \wedge (c_i \vee \neg d_i))
+                    \]
+
+                    Si $v$ est une modèle de $\varphi$, alors $\forall i \in \nset 1 k$, il y a entre 1 et 3 littéraux de la clause $a_i \vee b_i \vee c_i$ qui sont satisfaits par $v$.
+                    Dans tous les cas, on peut choisir la valeur de $d_i$ de sorte que 7 des 10 clauses construites à partir de cette clause soient satisfaites.
+
+                    Au total, on aura bien au moins $7k$ clauses satisfaites.
+
+                    \vspace{6pt}
+                    
+                    Réciproquement, si une valuation $v$ satisfait au moins $7k$ clauses de la formule construite :
+                    $\forall i \in \nset 1 k$, si aucun des littéraux $a_i, b_i, c_i$ n'est satisfait par $v$, alors on ne peut satisfaire qu'au plus six clauses parmi des dix associés à ces littéraux.
+
+                    Si un, deux, ou trois littéraux parmi $a_i, b_i, c_i$ sont satisfait par $v$, alors comme avant par disjonction de cas, on montre qu'au plus sept clauses parmi les dix associés à ces littéraux peuvent être satisfaites.
+                    Donc pour chaque clause de $\varphi$ il y a au moins un littéral satisfait par $v$.
+                \end{proof}
+
+                \vspace{12pt}
+                
+                $\bullet$ Algorithme d'approximation pour \textsc{Max\_Sat} : on propose d'utiliser l'algorithme naïf suivant :
+
+                \begin{indalgo}{Approximation pour \textsc{Max\_Sat}}
+                    \label{alg:4}
+                    \For{chaque variable $x$ de $\varphi$}{
+                        Choisir la valeur de vérité de $x$ par un tirage aléatoire uniforme dans $\set{V, F}$\;
+                    }
+                    \Return la valuation obtenue\;
+                \end{indalgo}
+
+                On parle d'\emph{algorithme probabiliste} ou \emph{randomisé} car on effectue des tirages aléatoires.
+                Le résultat de cet algorithme dépend des tirages effectués, donc pour évaluer la qualité de cet algorithme en terme d'approximation, on compare la valeur d'une solution optimale avec l'espérance de la valeur du résultat de cet algorithme.
+
+                On note $S$ la variable aléatoire du nombre de clauses satisfaites par le résultat de l'algorithme, et $\forall c$ clause de $\varphi$, on note $S_c$ la variable aléatoire qui vaut 1 si $c$ est satisfaite par le résultat de l'algorithme, et 0 sinon.
+
+                On sait que $\displaystyle S = \sum_{c \in \varphi} S_c$, donc par linéarité,
+                \[
+                    E(S) = \sum_{c \in \varphi} E(S_c)
+                    = \sum_{c \in \varphi} \mathbb P(S_c = 1)
+                \]
+
+                \begin{indt}{Soit $c$ une clause de $\varphi$ :}
+                    $-$ Si $c$ contient une variable et sa négation, $\mathbb P(S_c = 1) = 1$
+
+                    $-$ Sinon, on note $k_c$ le nombre de littéraux indépendants de $c$, \textit{i.e} portant sur des variables différentes.
+                    $c$ n'est satisfaite si et seulement si tous les littéraux prennent la valeur $F$, ce qui arrive avec la probabilité $\dfrac{1}{2^{k_0}}$ car les tirages aléatoires sont indépendants.
+
+                    Donc
+                    \[
+                        \mathbb P(S_c = 1) = 1 - \dfrac{1}{2^{k_0}} \ge \dfrac 1 2
+                    \]
+
+                    Donc $E(S) \ge \dfrac k 2 \ge \dfrac{V^*(\varphi)}{2}$, où $V^*(\varphi)$ est le nombre maximal de clauses que l'on peut satisfaire dans $\varphi$ (majoré par le nombre de clauses de $\varphi$).
+
+                    Cet algorithme est donc une $\dfrac 1 2$--approximation.
+
+                    \vspace{12pt}
+                    
+                    Remarque : si toutes les clauses sont de taille $\ge 2$, on obtient une $\dfrac 3 4$--approximation.
+                \end{indt}
+            \end{indt}
+        \end{indt}
+    \end{indt}
+
+    \vspace{12pt}
+    
+    \vspace{12pt}
+    
+    \begin{indt}{\section{Algorithmes probabilistes}}
+        \begin{indt}{\subsection{Généralités}}
+            \begin{indt}{\subsubsection{Définition (\textit{algorithme probabiliste})}}
+                Un \emph{algorithme probabiliste} est un un algorithme au sens de chap.16, 2.1.2, qui donne les opérations élémentaires possibles, en ajoutant une opération de tirage aléatoire correspondant au tirage aléatoire uniforme d'un bit.
+
+                On dit que l'algorithme est \emph{déterministe} s'il n'utilise pas l'opération de tirage aléatoire.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Remarque}}
+                Deux exécutions d'un algorithme probabiliste peuvent donner des résultats différents sur le même paramètre (exemple : algorithme \ref{alg:4}, page \pageref{alg:4}) ou bien effectuer un nombre différent d'opérations élémentaires (exemple : \ref{2.1.3}, page \pageref{2.1.3}).
+
+                La complexité temporelle pour une entrée fixée est donc une variable aléatoire dont on étudie en général l'espérance.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Exemple : le tri rapide randomisé}}
+                \label{2.1.3}
+
+                Idée : pour éviter de tomber dans le pire cas du tri rapide, on tire aléatoirement uniformément le pivot parmi les éléments à trier.
+
+                Remarque : dans le pire cas, on tire par exemple systématiquement le plus petit élément, ce qui donne $\mathcal O(n^2)$ comparaisons, mais cela arrive avec une probabilité de $\dfrac 1 {n!}$.
+
+                On utilise l'algorithme suivant :
+
+                \begin{indalgo}{Tri rapide randomisé}
+                    \SetKwFunction{FastSort}{Tri\_rapide}
+
+                    \Fn{\FastSort{$l$}}{
+                        \If{$\abs l \le 1$}{
+                            \Return $l$\;
+                        }
+                        \Else{
+                            $p \gets$ élément aléatoire uniforme de $l$\;
+                            $l_<, l_> \gets$ partition de $l$ suivant $p$\;
+
+                            \Return \FastSort{$l_<$} @ $[p]$ @ \FastSort{$l_>$}\;
+                        }
+                    }
+                \end{indalgo}
+
+                On note $l = [l_1, \ldots, l_n]$, et $C$ la variable aléatoire du nombre de comparaisons effectuées par \textsf{Tri\_rapide}.
+
+                On remarque que lorsque deux éléments sont comparés, c'est que l'un des deux est le pivot courant, donc ils ne seront plus comparés par la suite.
+
+                Ainsi,
+                \[
+                    C = \sum_{i = 1}^n \sum_{j = i + 1}^n C_{i, j}
+                \]
+                
+                où $C_{i, j}$ est la variable aléatoire indicatrice qui vaut 1 si $l_i$ et $l_j$ sont comparés, et 0 sinon.
+
+                Donc
+                \[
+                    E(C) =
+                    \sum{i = 1}^n \sum_{j = i + 1}^n E(C_{i, j})
+                    = \sum_{i = 1}^n \sum_{j = i + 1}^n p_{i, j}
+                \]
+
+                en notant $p_{i, j}$ la probabilité de l'événement \simplecit{$l_i$ et $l_j$ sont comparés}.
+
+                On souhaite donc déterminer les $p_{i, j}$.
+
+                On peut représenter une exécution de cet algorithme par un arbre binaire : la racine est le pivot tiré et les sous-arbres gauche et droit sont les arbres représentant les exécutions des appels récursifs sur $l_<$ et $l_>$.
+
+                \vspace{12pt}
+                
+                Exemple : $[1, 12, 3, 7, 5]$
+
+                Une exécution possible :
+
+                $-$ on tire 7, $l_< = [1, 3, 5]$, $l_> = [12]$
+
+                \begin{indt}{$-$ On trie $l_<$ :}
+                    on tire $5$. $l_< = [1, 3]$, $l_> = []$.
+
+                    \begin{indt}{On trie $l_<$ :}
+                        on tire 3. $l_< = [1]$, $l_> = []$
+                    \end{indt}
+                \end{indt}
+
+                L'arbre associé :
+                \begin{center}
+                    \begin{tikzpicture}
+                        \node (7) at (0, 0) [circle, draw] {$7$}
+                            child {node [circle, draw] {$5$}
+                                child {node [circle, draw, xshift=-20pt] {$3$}
+                                    child {node [circle, draw, xshift=-20pt] {$1$}}
+                                }
+                            }
+                            child {node [circle, draw] {$12$}}
+                        ;
+                    \end{tikzpicture}
+                \end{center}
+
+                Remarque : la racine est comparée avec tous les éléments des deux sous-arbres et les éléments du sous-arbre gauche ne sont jamais comparés avec ceux du sous-arbre droit.
+
+                \begin{indt}{Ainsi, si $1 \le i < j \le n$, il y a deux cas :}
+                    $-$ $\exists k \in \nset 1 n\ |\ l_i < l_k < l_j$ et $l_k$ est choisi come pivot courant juste avant $l_i$ et $l_j$ : $l_i$ et $l_j$ se retrouvent alors dans des sous-arbres distincts et ne sont pas comparés.
+
+                    $-$ $\forall k \in \nset 1 n\ |\ l_i < l_k < l_j$, $l_k$ est choisi comme pivot après $l_i$ ou $l_j$, donc soit $l_i$, soit $l_j$ est choisi comme pivot en premier parmi tous ces éléments donc soit $l_i$, soit $l_j$ est racine du sous-arbre associé et $l_i$ et $l_j$ sont comparés.
+                \end{indt}
+
+                En renumérotant les $l_i$ par ordre croissant, nommés $l_i'$, on sait que $l_i'$ et $l_j'$ sont comparés (avec $i < j$) si et seulement si $l_i'$ ou $l_j'$ est le premier élément choisi comme pivot parmi les $l_k',\ k \in \nset i j$.
+
+                comme les tirages aléatoires sont uniformes, la probabilité que $l_k'$ soit tiré comme pivot en premier est la même quelle que soit la valeur de $k$.
+
+                Donc la probabilité $p_{i, j}'$ que $l_i'$ et $l_j'$  soient comparés vaut $\dfrac{2}{j - i + 1}$
+
+                Donc
+                \[
+                    \begin{array}{rcl}
+                        E(C)
+                        &=& \displaystyle
+                        \sum_{i = 1}^n \sum_{j = i + 1}^n p_{i, j}
+                        = \sum_{i = 1}^n \sum_{j = i + 1}^n p_{i, j}'
+                        = \sum_{i = 1}^n \sum_{j = i + 1}^n \dfrac{2}{j - i + 1}
+                        \\
+                        &\le& \displaystyle
+                        2 \sum_{i = 1}^n \underbrace{\sum_{k = 1}^n \dfrac 1 k}_{H_n}
+                        \\
+                        &\le& 2n H_n
+                    \end{array}
+                \]
+
+                Or $H_n = \ln n + \gamma + o(1)$.
+
+                Donc $E(C) = \mathcal O(n\log n)$.
+
+                \vspace{12pt}
+                
+                Remarque : on peut démontrer qu'avec une forte probabilité la valeur de $C$ n'est pas très éloignée de son espérance, donc cet algorithme est très souvent optimal en terme d'ordre de grandeur du nombre de comparaisons.
             \end{indt}
         \end{indt}
     \end{indt}
