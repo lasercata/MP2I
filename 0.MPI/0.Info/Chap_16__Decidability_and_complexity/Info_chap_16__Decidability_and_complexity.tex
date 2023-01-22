@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2023.01.14
+% Last modification     :   2023.01.22
 %
 %------------------------------------------------------------------------
 
@@ -914,7 +914,7 @@
                 
                 $\bullet$ On transforme un problème d'optimisation en problème de décision en introduisant un plafond sur les coûts $c_{\rm max}$ et en considérant le prédicat
                 \[
-                    \begin{array}{ccccc}
+                    \begin{array}{ccccl}
                         P_{c_{\rm max}}
                         & : & A & \longrightarrow & \set{0, 1}
                         \\
@@ -1944,7 +1944,7 @@
                 $\bullet$ Définition :
                 Soit $G = (S, A)$ un GNO.
 
-                Une clique dans $G$ est un ensemble $S' \subseteq S\ |\ \forall s \neq s' \in S',\ \set{s, s'} \in A$.
+                Une \emph{clique} dans $G$ est un ensemble $S' \subseteq S\ |\ \forall s \neq s' \in S',\ \set{s, s'} \in A$.
 
                 On dit que $\abs{S'}$ est la taille de la clique.
 
@@ -2031,7 +2031,7 @@
                 
                 \begin{proof}
                     $-$ \textsc{Vertex\_Cover} $\in \mathbf{NP}$ : on considère l'ensemble $S'$ comme certificat.
-                    On peut vérifier $\abs{S'}$ en temps $\mathcal O(\abs S)$ et on peut tester pour chaque arête l'appartenance de l'une de ses extrémité à $S'$, ce qui donne un vérificateur de complexité $\mathcal O(\abs S + \abs A)$, donc polynomiale en la taille de l'instance $(G, k)$.
+                    On peut vérifier $\abs{S'} = k$ en temps $\mathcal O(\abs S)$ et on peut tester pour chaque arête l'appartenance de l'une de ses extrémité à $S'$, ce qui donne un vérificateur de complexité $\mathcal O(\abs S + \abs A)$, donc polynomiale en la taille de l'instance $(G, k)$.
 
                     \vspace{6pt}
                     
@@ -2044,7 +2044,7 @@
                     $
                         \cj A =
                         \set{
-                            \set{s, s'}\ |\
+                            \set{s, s'} \in S^2\
                             \begin{array}{|l}
                                 s \neq s'
                                 \\
@@ -2059,7 +2059,7 @@
                     \begin{indt}{$(\cj G, \cj k)$ est l'instance de \textsc{Vertex\_Cover} recherchée :}
                         $+$ On peut la construire en temps $\mathcal O\!\lr{\abs S ^2}$ ($\abs S - k$ est calculé en temps $\mathcal O(\log \abs S + \log k) = \mathcal O\!\lr{\abs S ^2}$)
                         
-                        $+$ Si $G$ admet une clique $S'$ de taille $k$, $\abs{S \setminus S'} = \set S - k$, et $\forall \set{s, s'} \in A$, on sait que $s \in S \setminus S'$ ou $s' \in S \setminus S'$ car sinon $s, s' \in S'$ et comme $S'$ est une clique, on aurait $\set{s, s'} \in A$.
+                        $+$ Si $G$ admet une clique $S'$ de taille $k$, $\abs{S \setminus S'} = \abs S - k$, et $\forall \set{s, s'} \in \cj A$, on sait que $s \in S \setminus S'$ ou $s' \in S \setminus S'$ car sinon $s, s' \in S'$ et comme $S'$ est une clique, on aurait $\set{s, s'} \in A$.
                         Donc $S \setminus S'$ est une couverture de $\cj G$ de taille $\abs S - k$.
                         
                         $+$ Si $\cj G$ admet une couverture $S'$ de taille $\abs S - k$, on vérifie de même que $S \setminus S'$ est une clique de $G$ de taille $k$.
