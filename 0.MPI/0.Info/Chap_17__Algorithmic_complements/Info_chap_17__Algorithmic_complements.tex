@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2023.01.17
+% Last modification     :   2023.01.24
 %
 %------------------------------------------------------------------------
 
@@ -1396,6 +1396,261 @@
                 \vspace{12pt}
                 
                 Remarque : on peut démontrer qu'avec une forte probabilité la valeur de $C$ n'est pas très éloignée de son espérance, donc cet algorithme est très souvent optimal en terme d'ordre de grandeur du nombre de comparaisons.
+            \end{indt}
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Las Vegas et Monte Carlo}}
+            \begin{indt}{\subsubsection{Définition (\textit{algorithmes de type Las Vegas et Monte Carlo})}}
+                \begin{indt}{On distingue deux familles d'algorithmes probabilistes :}
+                    $-$ Les algorithmes de type \emph{Las Vegas}, qui renvoient toujours un résultat correct malgré les tirages aléatoires mais leur temps d'exécution peut dépendre du tirage aléatoire ;
+
+                    $-$ Les algorithmes de type \emph{Monte Carlo}, dont la complexité ne dépend pas des tirages aléatoires, mais dont le résultat peut être incorrect selon le tirage.
+                \end{indt}
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Exemple d'algorithmes de type Las Vegas}}
+                $\bullet$ Le tri rapide randomisé vu en \ref{2.1.3} (page \pageref{2.1.3}) : le résultat est toujours trié, mais le nombre de comparaisons dépend des tirages du pivot.
+                Cela peut aller de $\mathcal O(n\log n)$ dans le meilleur cas à $\mathcal O(n^2)$ dans le pire cas.
+                Cependant, comme l'espérance du nombre de comparaison est en $\mathcal O(n\log n)$, on est plus souvent proche du meilleur cas que du pire cas.
+
+                \vspace{12pt}
+                
+                $\bullet$ Pour le problème des $N$ reines : ce problème consiste à placer $N$ dames sur un échiquier $N \times N$ de telle sorte qu'aucune dame ne soit en prise.
+
+                Il est possible de résoudre ce problème par un algorithme de recherche exhaustive avec un retour sur place (en plaçant les dames rangée par rangée) mais en pratique cela ne fonctionne que pour $N$ assez petit en raison du grand nombre de retours sur trace.
+
+                Un algorithme probabiliste qui fonctionne mieux en pratique consiste à tirer aléatoirement les positions des dames rangée après rangée et à repartir de zéro en cas d'impossibilité à trouver une position valide sur une rangée (on appelle position valide sur la rangée $k$ une case de la rangée $k$ qui n'est pas en prise vis-à-vis des dames placées sur les $k$ premières rangées).
+
+                \begin{indalgo}{Solution probabiliste au problème des $N$ reines}
+                    \label{alg:6}
+
+                    $k \gets 0$\;
+
+                    \While{$k \neq N$}{
+                        \If{il existe une position valide sur la rangée $k$}{
+                            Placer une dame sur une position valide aléatoire uniforme sur la rangée $k$\;
+                            $k \gets k + 1$\;
+                        }
+                        \Else{
+                            Retirer les dames\;
+                            $k \gets 0$\;
+                        }
+                    }
+                \end{indalgo}
+
+                Pour tirer aléatoirement uniformément une position valide en une ragée donnée, on utilise un algorithme \emph{en ligne}, \textit{i.e} un algorithme qui reçoit et traite des données sans connaître \textit{a priori} la quantité de données.
+                Cela permet de d'éviter de construire une structure contenant les positions valides.
+                Cet algorithme conserve une position candidate et pour position valide rencontrée remplace la position candidate par celle-ci avec une certaine probabilité.
+
+                Il permet également de vérifier à la volée s'il existe une position valide.
+
+                \begin{indalgo}{Tirage aléatoire uniforme de la position}
+                    \label{alg:7}
+
+                    \texttt{nbPersValides} $\gets 0$\;
+
+                    \For{chaque position $i$}{
+                        \If{$i$ est valide}{
+                            \texttt{nbPersValides} $\gets$ \texttt{nbPersValides} $+ 1$\;
+                            $r \gets$ entier aléatoire uniforme entre $0$ et \texttt{nbPersValides} $- 1$\;
+
+                            \If{$r = 0$}{
+                                \texttt{pos} $\gets i$\;
+                            }
+                        }
+                    }
+
+                    \If{\texttt{nbPersValides} $= 0$}{
+                        Pas de position valide\;
+                    }
+                    \Else{
+                        \texttt{pos} est la position sélectionnée\;
+                    }
+                \end{indalgo}
+
+                \vspace{6pt}
+                
+                Proposition :
+                \begin{emphBox}
+                    L'algorithme \ref{alg:7} effectue un tirage aléatoire uniforme d'une position valide s'il en existe une.
+                \end{emphBox}
+
+                \vspace{6pt}
+                
+                \begin{proof}
+                    On démontre l'invariant :
+                    \[
+                        \forall j \le i\ \text{valide},\
+                        \mathbb P(\mathtt{pos} = j) = \dfrac{1}{\mathtt{nbPersValides}}
+                    \]
+
+                    $-$ Tant qu'aucun $i$ valide n'a été rencontré, il n'y a rien à démontrer.
+
+                    $-$ Pour l'indice $i$ minimal tel que $i$ est valide, $r$ est tiré aléatoirement dans l'ensemble $\set 0$, donc $r = 0$ et $\mathbb P(\mathtt{pos} = i) = \dfrac{1}{\mathtt{nbPersValides}} = 1$
+
+                    \begin{indt}{$-$ Si l'invariant est vrai au rang $i$ :}
+                        $+$ Si $i + 1$ n'est pas valide, l'invariant ne change pas et reste vrai.
+
+                        $+$ Si $i + 1$ est valide,
+                        \[
+                            \mathbb P(\mathtt{pos} = i + 1)
+                            = \mathbb P(r = 0)
+                            = \dfrac 1 {\mathtt{nbPersValides} + 1}
+                        \]
+
+                        $\forall j \le i$ valide :
+                        \[
+                            \begin{array}{rcl}
+                                \mathbb P(\mathtt{pos} = j)
+                                &=& \mathbb P(\mathtt{pos} = j\ \text{à la fin du tour}\ i) \mathbb{P}(r \neq 0)
+                                \vspace{3pt}
+                                \\
+                                &=& \dfrac 1 {\mathtt{nbPersValides}} \cdot \dfrac{\mathtt{nbPersValides}}{\mathtt{nbPersValides} + 1}
+                                \vspace{3pt}
+                                \\
+                                &=& \dfrac{1}{\mathtt{nbPersValides} + 1}
+                            \end{array}
+                        \]
+                    \end{indt}
+                \end{proof}
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Exemple d'algorithme de type Monte Carlo}}
+                Le test de primalité de \textsc{Fermat} repose sur le petit théorème de \textsc{Fermat} :
+                \begin{emphBox}
+                    Un entier $n \in \N^* \setminus \set 1$ est premier si et seulement si
+                    \[
+                        \forall a \in \nset 2 {n - 1},\ a^{n - 1} \equiv 1\ [n]
+                    \]
+                \end{emphBox}
+
+                D'où l'algorithme suivant :
+                \begin{indalgo}{Test de primalité de \textsc{Fermat}}
+                    \If{$n = 2$}{
+                        \Return \texttt{true}\;
+                    }
+
+                    \Else{
+                        $a \gets$ entier aléatoire uniforme entre $2$ et $n - 1$\;
+
+                        \Return $a^{n - 1} \equiv 1\ [n]$\;
+                    }
+                \end{indalgo}
+
+                \vspace{6pt}
+                
+                Proposition :
+                \begin{emphBox}
+                    Si $n$ est premier, l'algorithme donne le bon résultat avec la probabilité 1.
+
+                    Si $n$ n'est pas premier, et si ce n'est pas un nombre de \textsc{Carmichael} (un nombre de \textsc{Carmichael} est un entier $m$ tel que $\forall a \in \nset{2}{m - 1},\ a \wedge m = 1 \Rightarrow a^{m - 1} \equiv 1\ [m]$), alors la probabilité de succès est supérieure à $\dfrac 1 2$.
+                \end{emphBox}
+
+                \vspace{6pt}
+                
+                \begin{proof}
+                    Si $n$ est premier, trivial.
+
+                    Sinon, on note
+                    \[
+                        S = \set{a \in \nset 1 {n - 1}\ |\ a^{n - 1} \equiv 1\ [n]}
+                    \]
+
+                    La probabilité d'échec vaut $\dfrac{\abs S - 1}{n - 2}$.
+
+                    On remarque que tout élément de $S$ est inversible et que $S$ forme un groupe multiplicatif donc $S$ forme un sous-groupe de l'ensemble des inversibles de $\Z/n\Z$.
+
+                    Par le théorème de \textsc{Lagrange}, $\abs S$ divise l'ordre de ce groupe, \textit{i.e} $\abs{S} \mid \varphi(n)$, où $\varphi$ est l'indicatrice d'\textsc{Euler}.
+
+                    Si $n$ n'est pas de \textsc{Carmichael}, $S$ est un sous-groupe de cet ensemble, donc $\abs S < \varphi(n)$, donc
+                    \[
+                        \abs S \le \dfrac{\varphi(n)} 2 \le \dfrac{n - 1} 2
+                    \]
+
+                    Donc
+                    \[
+                        \dfrac{\abs S - 1}{n - 2}
+                        \le \dfrac{1}{n - 2} \cdot \dfrac{n - 3}{2}
+                        \le \dfrac 1 2
+                    \]
+
+                    Remarque : si $n$ est de \textsc{Carmichael}, alors la probabilité d'échec est
+                    \[
+                        \dfrac{\varphi(n) - 1}{n - 2}
+                    \]
+                \end{proof}
+
+                Remarque : on peut facilement augmenter la probabilité de succès en exécutant $k$ fois cet algorithme et en renvoyant la conjonction des $k$ résultats.
+
+                Cet algorithme échoue sur un entier composé $n$ (qui n'est pas de \textsc{Carmichael}) si et seulement si les $k$ exécutions (indépendantes) échouent donc avec probabilité $\le \dfrac{1}{2^k}$.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Faux positif / faux négatifs}}
+                \begin{indt}{$\bullet$ Définition : pour un algorithme de type Monte Carlo qui tente de résoudre un problème de décision, on appelle :}
+                    $-$ \emph{faux positif} un résultat valant vrai alors que faux est attendu ;
+
+                    $-$ \emph{faux négatif} un résultat valant faux alors que vrai est attendu.
+                \end{indt}
+
+                \vspace{12pt}
+                
+                $\bullet$ Remarque : il existe des algorithmes de type Monte Carlo dont les erreurs sont uniquement des faux positifs (comme le test de primalité de \textsc{Fermat}), uniquement des faux négatifs ou des deux types.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Transformation d'un algorithme de type Monte Carlo en algorithme de type Las Vegas}}
+                Si l'on dispose d'un algorithme de type Monte Carlo $M$ et d'un vérificateur $V$ d'entrées une entrée pour $M$ et le résultat associé et qui renvoie vrai si et seulement si ce résultat est correct et faux sinon, alors on peut construire l'algorithme de type Las Vegas $L$ suivant :
+                \begin{indalgo}{$L$, algorithme Las Vegas associé à l'algorithme Monte Carlo $M$}
+                    \KwInput{$x$}
+
+                    $y \gets M(x)$\;
+
+                    \While{$\neg V(x, y)$}{
+                        $y \gets M(x)$\;
+                    }
+
+                    \Return $y$\;
+                \end{indalgo}
+
+                \vspace{6pt}
+                
+                Proposition :
+                \begin{emphBox}
+                    Si pour toute entrée $x$ de taille $n$, $M$ est de complexité $\mathcal O(m(n))$, et $V$ de complexité $\mathcal O(v(n))$, et si de plus la probabilité d'échec de $M$ est $p < 1$, alors la complexité espérée de $L$ est
+                    \[
+                        \mathcal O\!\lr{\dfrac{m(n) + v(n)}{1 - p}}
+                    \]
+                \end{emphBox}
+
+                \vspace{6pt}
+                
+                \begin{proof}
+                    On note $X$ la variable aléatoire du nombre d'exécutions de $M$.
+
+                    $\forall k \ge 1,\ \mathbb P(X = k) = p^{k - 1}(1 - p)$ ($k - 1$ échecs suivis d'un succès).
+
+                    Donc
+                    \[
+                        E(X) = \sum_{k = 1}^{+\infty} k p^{k - 1} (1 - p)
+                        = \dfrac{1 - p}{(1 - p)^2}
+                        = \dfrac{1}{1 - p}
+                    \]
+
+                    Comme à chaque exécution de $M$ on exécute aussi $V$ pour vérifier le résultat, la complexité espérée est
+                    \[
+                        E(X) \cdot \mathcal O\!\lr{m(n) + v(n)}
+                        = \mathcal O\!\lr{\dfrac{m(n) + v(n)}{1 - p}}
+                    \]
+                \end{proof}
             \end{indt}
         \end{indt}
     \end{indt}
