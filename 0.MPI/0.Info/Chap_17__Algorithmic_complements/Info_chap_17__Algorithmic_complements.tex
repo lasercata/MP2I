@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2023.01.24
+% Last modification     :   2023.01.25
 %
 %------------------------------------------------------------------------
 
@@ -701,7 +701,7 @@
                 \begin{emphBox}
                     On considère le problème de décision suivant :
 
-                    \textsc{Sac\_a\_dos} : étant donné $n$ poids $w_1, \ldots, w_n \in \N$, $n$ valeurs $x_1, \ldots, x_n \in \set{0, 1}$ telles que
+                    \textsc{Sac\_a\_dos} : étant donné $n$ poids $w_1, \ldots, w_n \in \N$, $n$ valeurs $p_1, \ldots, p_n \in$, et $W \in \N$, existe-t-il $n$ entiers $x_1, \ldots, x_n \in \set{0, 1}$ telles que
                     \[
                         \begin{cases}
                             \displaystyle
@@ -726,7 +726,7 @@
 
                     \vspace{6pt}
                     
-                    $-$ \textsc{Sac\_a\_dos} est \textbf{NP}-difficile : on procède par réduction de $2$-\textsc{Partition} (\textit{cf} TD$_{46}$) : étant donné $S = \set{a_1, \ldots, a_n} \subseteq \N$, existe-t-il $I \subseteq \nset 1 n$ tel que
+                    $-$ \textsc{Sac\_a\_dos} est \textbf{NP}--difficile : on procède par réduction de $2$-\textsc{Partition} (\textit{cf} TD$_{46}$) : étant donné $S = \set{a_1, \ldots, a_n} \subseteq \N$, existe-t-il $I \subseteq \nset 1 n$ tel que
                     \[
                         \sum_{i \in I} a_i = \sum_{i \in \nset 1 n \setminus I} a_i
                         \qquad \text{?}
@@ -910,7 +910,7 @@
 
                 Idée : par programmation dynamique : $\forall i \in \nset 0 n,\ \forall p \in \nset{0}{\displaystyle \sum_{i = 1}^n p_i}$, on calcule le poids minimal $W(i, p)$ réalisable en sélectionnant des objets parmi ceux d'indices de 1 à $i$ de sorte que la valeur obtenue vaille $p$ (et le poids $\le W$).
 
-                On le fait avec des objets de valeur modifiée en fonction de $n$, $\varepsilon$, $p_{\max} = \max_{i \in \nset 1 n} p_i$
+                On le fait avec des objets de valeur modifiée en fonction de $n$, $\varepsilon$, $\displaystyle p_{\max} = \max_{i \in \nset 1 n} p_i$.
 
                 $\displaystyle \forall i \in \nset 1 n$, on note $\floor{\dfrac{p_i}{2^t}}$, où
                 \[
