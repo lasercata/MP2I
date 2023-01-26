@@ -1,0 +1,643 @@
+\documentclass[a4paper, 12pt, twoside]{article}
+
+
+%------------------------------------------------------------------------
+%
+% Author                :   Lasercata
+% Last modification     :   2023.01.26
+%
+%------------------------------------------------------------------------
+
+
+%------ini
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+%\usepackage[english]{babel}
+
+
+%------geometry
+\usepackage[textheight=700pt, textwidth=500pt]{geometry}
+
+
+%------color
+\usepackage{xcolor}
+\definecolor{ff4500}{HTML}{ff4500}
+\definecolor{00f}{HTML}{0000ff}
+\definecolor{0ff}{HTML}{00ffff}
+\definecolor{656565}{HTML}{656565}
+
+%\renewcommand{\emph}{\textcolor{ff4500}}
+%\renewcommand{\em}{\color{ff4500}}
+
+\newcommand{\Emph}{\textcolor{ff4500}}
+
+\newcommand{\strong}[1]{\textcolor{ff4500}{\bf #1}}
+\newcommand{\st}{\color{ff4500}\bf}
+
+
+%------Code highlighting
+%---listings
+\usepackage{listings}
+
+\definecolor{cbg}{HTML}{272822}
+\definecolor{cfg}{HTML}{ececec}
+\definecolor{ccomment}{HTML}{686c58}
+\definecolor{ckw}{HTML}{f92672}
+\definecolor{cstring}{HTML}{e6db72}
+\definecolor{cstringlight}{HTML}{98980f}
+\definecolor{lightwhite}{HTML}{fafafa}
+
+\lstdefinestyle{DarkCodeStyle}{
+    backgroundcolor=\color{cbg},
+    commentstyle=\itshape\color{ccomment},
+    keywordstyle=\color{ckw},
+    numberstyle=\tiny\color{cbg},
+    stringstyle=\color{cstring},
+    basicstyle=\ttfamily\footnotesize\color{cfg},
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=4,
+    xleftmargin=\leftskip
+}
+
+\lstdefinestyle{LightCodeStyle}{
+    backgroundcolor=\color{lightwhite},
+    commentstyle=\itshape\color{ccomment},
+    keywordstyle=\color{ckw},
+    numberstyle=\tiny\color{cbg},
+    stringstyle=\color{cstringlight},
+    basicstyle=\ttfamily\footnotesize\color{cbg},
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=10pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=4,
+    frame=L,
+    xleftmargin=\leftskip
+}
+
+%\lstset{style=DarkCodeStyle}
+\lstset{style=LightCodeStyle}
+%Usage : \begin{lstlisting}[language=Caml, xleftmargin=xpt] ... \end{lstlisting}
+
+
+%---Algorithm
+\usepackage[linesnumbered,ruled,vlined]{algorithm2e}
+\SetKwInput{KwInput}{Input}
+\SetKwInput{KwOutput}{Output}
+
+\SetKwProg{Fn}{Function}{:}{}
+\SetKw{KwPrint}{Print}
+
+\newcommand\commfont[1]{\textit{\texttt{\textcolor{656565}{#1}}}}
+\SetCommentSty{commfont}
+\SetProgSty{texttt}
+\SetArgSty{textnormal}
+\SetFuncArgSty{textnormal}
+%\SetProgArgSty{texttt}
+
+\newenvironment{indalgo}[2][H]{
+    \begin{algoBox}
+        \begin{algorithm}[#1]
+            \caption{#2}
+}
+{
+        \end{algorithm}
+    \end{algoBox}
+}
+
+
+%---tcolorbox
+\usepackage[many]{tcolorbox}
+\DeclareTColorBox{emphBox}{O{black}O{lightwhite}}{
+    breakable,
+    outer arc=0pt,
+    arc=0pt,
+    top=0pt,
+    toprule=-.5pt,
+    right=0pt,
+    rightrule=-.5pt,
+    bottom=0pt,
+    bottomrule=-.5pt,
+    colframe=#1,
+    colback=#2,
+    enlarge left by=10pt,
+    width=\linewidth-\leftskip-10pt,
+}
+
+\DeclareTColorBox{algoBox}{O{black}O{lightwhite}}{
+    breakable,
+    arc=0pt,
+    top=0pt,
+    toprule=-.5pt,
+    right=0pt,
+    rightrule=-.5pt,
+    bottom=0pt,
+    bottomrule=-.5pt,
+    left=0pt,
+    leftrule=-.5pt,
+    colframe=#1,
+    colback=#2,
+    width=\linewidth-\leftskip-10pt,
+}
+
+
+%-------make the table of content clickable
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=black
+}
+
+
+%------pictures
+\usepackage{graphicx}
+%\usepackage{wrapfig}
+
+\usepackage{tikz}
+%\usetikzlibrary{babel}             %Uncomment this to use circuitikz
+%\usetikzlibrary{shapes.geometric}  % To draw triangles in trees
+%\usepackage{circuitikz}            %Electrical circuits drawing
+
+
+%------tabular
+%\usepackage{color}
+%\usepackage{colortbl}
+%\usepackage{multirow}
+
+
+%------Physics
+%---Packages
+%\usepackage[version=4]{mhchem} %$\ce{NO4^2-}$
+
+%---Commands
+\newcommand{\link}[2]{\mathrm{#1} \! - \! \mathrm{#2}}
+\newcommand{\pt}[1]{\cdot 10^{#1}} % Power of ten
+\newcommand{\dt}[2][t]{\dfrac{\mathrm d #2}{\mathrm d #1}} % Derivative
+
+
+%------math
+%---Packages
+%\usepackage{textcomp}
+%\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools} % For abs
+\usepackage{stmaryrd} %for \llbracket and \rrbracket
+\usepackage{mathrsfs} %for \mathscr{x} (different from \mathcal{x})
+
+%---Commands
+%-Sets
+\newcommand{\N}{\mathbb{N}} %set N
+\newcommand{\Z}{\mathbb{Z}} %set Z
+\newcommand{\Q}{\mathbb{Q}} %set Q
+\newcommand{\R}{\mathbb{R}} %set R
+\newcommand{\C}{\mathbb{C}} %set C
+\newcommand{\U}{\mathbb{U}} %set U
+\newcommand{\seg}[2]{\left[ #1\ ;\ #2 \right]}
+\newcommand{\nset}[2]{\left\llbracket #1\ ;\ #2 \right\rrbracket}
+
+%-Exponantial / complexs
+\newcommand{\e}{\mathrm{e}}
+\newcommand{\cj}[1]{\overline{#1}} %overline for the conjugate.
+
+%-Vectors
+\newcommand{\vect}{\overrightarrow}
+\newcommand{\veco}[3]{\displaystyle \vect{#1}\binom{#2}{#3}} %vector + coord
+
+%-Limits
+\newcommand{\lm}[2][{}]{\lim\limits_{\substack{#2 \\ #1}}} %$\lm{x \to a} f$ or $\lm[x < a]{x \to a} f$
+\newcommand{\Lm}[3][{}]{\lm[#1]{#2} \left( #3 \right)} %$\Lm{x \to a}{f}$ or $\Lm[x < a]{x \to a}{f}$
+\newcommand{\tendsto}[1]{\xrightarrow[#1]{}}
+
+%-Integral
+\newcommand{\dint}[4][x]{\displaystyle \int_{#2}^{#3} #4 \mathrm{d} #1} %$\dint{a}{b}{f(x)}$ or $\dint[t]{a}{b}{f(t)}$
+
+%-left right
+\newcommand{\lr}[1]{\left( #1 \right)}
+\newcommand{\lrb}[1]{\left[ #1 \right]}
+\newcommand{\lrbb}[1]{\left\llbracket #1 \right\rrbracket}
+\newcommand{\set}[1]{\left\{ #1 \right\}}
+\newcommand{\abs}[1]{\left\lvert #1 \right\rvert}
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
+\newcommand{\lrangle}[1]{\left\langle #1 \right\rangle}
+
+%-Others
+\newcommand{\para}{\ /\!/\ } %//
+\newcommand{\ssi}{\ \Leftrightarrow \ }
+\newcommand{\eqsys}[2]{\begin{cases} #1 \\ #2 \end{cases}}
+
+\newcommand{\med}[2]{\mathrm{med} \left[ #1\ ;\ #2 \right]}  %$\med{A}{B} -> med[A ; B]$
+\newcommand{\Circ}[2]{\mathscr{C}_{#1, #2}}
+
+\renewcommand{\le}{\leqslant}
+\renewcommand{\ge}{\geqslant}
+
+\newcommand{\oboxed}[1]{\textcolor{ff4500}{\boxed{\textcolor{black}{#1}}}} %orange boxed
+
+\newcommand{\rboxed}[1]{\begin{array}{|c} \hline #1 \\ \hline \end{array}} %boxed with right opened
+\newcommand{\lboxed}[1]{\begin{array}{c|} \hline #1 \\ \hline \end{array}} %boxed with left opened
+
+\newcommand{\orboxed}[1]{\textcolor{ff4500}{\rboxed{\textcolor{black}{#1}}}} %orange right boxed
+\newcommand{\olboxed}[1]{\textcolor{ff4500}{\lboxed{\textcolor{black}{#1}}}} %orange left boxed
+
+
+%------commands
+%---to quote
+\newcommand{\simplecit}[1]{\guillemotleft$\;$#1$\;$\guillemotright}
+\newcommand{\cit}[1]{\simplecit{\textcolor{656565}{#1}}}
+\newcommand{\quo}[1]{\cit{\it #1}}
+
+%---to indent
+\newcommand{\ind}[1][20pt]{\advance\leftskip + #1}
+\newcommand{\deind}[1][20pt]{\advance\leftskip - #1}
+
+%---to indent a text
+\newcommand{\indented}[2][20pt]{\par \ind[#1] #2 \par \deind[#1]}
+\newenvironment{indt}[2][20pt]{#2 \par \ind[#1]}{\par \deind} %Titled indented env
+
+%---title
+\newcommand{\thetitle}[2]{\begin{center}\textbf{{\LARGE \underline{\Emph{#1} :}} {\Large #2}}\end{center}}
+
+%---Maths environments
+%-Proofs
+\newenvironment{proof}[1][{}]{\begin{indt}{$\square$ #1}}{$\blacksquare$ \end{indt}}
+
+%-Maths parts (proposition, definition, ...)
+\newenvironment{mathpart}[1]{\begin{indt}{\boxed{\text{\textbf{#1}}}}}{\end{indt}}
+\newenvironment{mathbox}[1]{\boxed{\text{\textbf{#1}}}\begin{emphBox}}{\end{emphBox}}
+\newenvironment{mathul}[1]{\begin{indt}{\underline{\textbf{#1}}}}{\end{indt}}
+
+\newenvironment{theo}{\begin{mathpart}{Théorème}}{\end{mathpart}}
+\newenvironment{Theo}{\begin{mathbox}{Théorème}}{\end{mathbox}}
+
+\newenvironment{prop}{\begin{mathpart}{Proposition}}{\end{mathpart}}
+\newenvironment{Prop}{\begin{mathbox}{Proposition}}{\end{mathbox}}
+\newenvironment{props}{\begin{mathpart}{Propriétés}}{\end{mathpart}}
+
+\newenvironment{defi}{\begin{mathpart}{Définition}}{\end{mathpart}}
+\newenvironment{meth}{\begin{mathpart}{Méthode}}{\end{mathpart}}
+
+\newenvironment{Rq}{\begin{mathul}{Remarque :}}{\end{mathul}}
+\newenvironment{Rqs}{\begin{mathul}{Remarques :}}{\end{mathul}}
+
+\newenvironment{Ex}{\begin{mathul}{Exemple :}}{\end{mathul}}
+\newenvironment{Exs}{\begin{mathul}{Exemples :}}{\end{mathul}}
+
+
+%------Sections
+% To change section numbering :
+% \renewcommand\thesection{\Roman{section}}
+% \renewcommand\thesubsection{\arabic{subsection})}
+% \renewcommand\thesubsubsection{\textit \alph{subsubsection})}
+
+% To start numbering from 0
+% \setcounter{section}{-1}
+
+
+%------page style
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+
+\setlength{\headheight}{18pt}
+\setlength{\footskip}{50pt}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE, RO]{\textit{\textcolor{black}{\today}}}
+\fancyhead[RE, LO]{\large{\textsl{\Emph{\texttt{\jobname}}}}}
+
+\fancyfoot[RO, LE]{\textit{\texttt{\textcolor{black}{Page \thepage /}\pageref{LastPage}}}}
+\fancyfoot[LO, RE]{\includegraphics[scale=0.12]{/home/lasercata/Pictures/1.images_profil/logo/mieux/lasercata_logo_fly_fond_blanc.png}}
+
+
+%------init lengths
+\setlength{\parindent}{0pt} %To avoid using \noindent everywhere.
+\setlength{\parskip}{3pt}
+
+
+%---------------------------------Begin Document
+\begin{document}
+    
+    \thetitle{Chapitre 18}{Intelligence artificielle et théorie des jeux}
+    
+    \tableofcontents
+    \newpage
+    
+    \begin{indt}{\section{Introduction}}
+        L'expression \emph{intelligence artificielle} est une manière floue de désigner des algorithmes chargés comme tous les autres de résoudre des problèmes.
+        Certains d'entre eux doivent jouer à des jeux, d'autres doivent répartir des données en plusieurs catégories (on parle de \emph{classification}) ou déterminer des valeurs numériques associées à des paramètres d'entrée (on parle de \emph{problème de régression}).
+        Quelques traits communs à ces algorithmes sont l'usage d'heuristiques afin d'essayer d'obtenir des réponses les meilleures possibles en temps raisonnable et l'exploitation d'une grande quantité de données afin d'en construire une représentation (on parle de l'\emph{apprentissage d'un modèle de données}) qui sera exploité pour construire la réponse de l'algorithme.
+        Dans ce chapitre, on se limite à l'étude des problèmes de classification et de la théorie des jeux.
+    \end{indt}
+
+    \vspace{12pt}
+    
+    \begin{indt}{\section{Apprentissage supervisé}}
+        \begin{indt}{\subsection{Algorithme des $k$ plus proches voisins}}
+            \begin{indt}{\subsubsection{Introduction}}
+                \label{2.1.1}
+
+                Pour résoudre un problème de classification, la méthode de l'apprentissage supervisé consiste à exploiter des données dont on connait déjà la classe afin de construire un algorithme de classification prenant les caractéristiques d'une donnée en entrée et renvoyant la classe à laquelle cette donnée appartient probablement.
+
+                Les données manipulées sont en général représentées par des points de $\R^d$ ou $d$ est souvent grand.
+                Par exemple, si on veut reconnaître des caractères manuscrits, l'algorithme peut prendre en entrée une image de $28 \times 28$ pixels en 256 niveaux de gris contenant un scan du caractère manuscrit à reconnaître, donc la donnée est représentée par un point de $\nset{0}{255}^d$, où $d = 28^2 = 784$.
+
+                Si on veut répartir dans $C$ classes des données de $\R^d$, le problème consiste à construire un algorithme réalisant une fonction $\R^d \longrightarrow \nset 0 {C - 1}$ en exploitant une heuristique s'appuyant sur un ensemble de couples $(x, y) \in \R^d \times \nset 0 {C - 1}$, où $y$ est la classe de $x$, appelées données d'entrainement.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Algorithme des $k$ plus proches voisins}}
+                Idée : il est possible que des données proches appartiennent à la même classe, donc on pourrait pour un point donné, renvoyer la classe du point déjà étiqueté le plus proche.
+
+                Problème : la donnée d'entrainement la plus proche peut appartenir à une autre classe que celle du point, par example si les données d'entrainement sont mal réparties, ou bruitées, ou si le point considéré est proche de la frontière entre deux classes.
+
+                \begin{center}
+                    \begin{tikzpicture}[scale=2]
+                        \draw (0, 0) rectangle (2, -1);
+                        \draw[dashed] (1, .2) -- (1, -1.2);
+
+                        \node (C0) at (.5, .2) {$C_0$};
+                        \node (C1) at (1.5, .2) {$C_1$};
+
+                        \node at (.3, -.3) [color=ff4500] {$\times$};
+                        \node at (.6, -.8) [color=ff4500] {$\times$};
+
+                        \node at (.8, -.5) [color=blue] {$\times$};
+
+                        \node at (1.2, -.6) [color=ff4500] {$\times$};
+                        \node at (1.6, -.3) [color=ff4500] {$\times$};
+                        \node at (1.6, -.8) [color=ff4500] {$\times$};
+
+                        \matrix [draw, below left, rounded corners=5pt] at (5, -.1) {
+                            \node [color=ff4500, label=right:entraînement] {$\times$}; \\
+                            \node [color=blue, label=right:point à classer] {$\times$}; \\
+                        };
+                    \end{tikzpicture}
+                \end{center}
+
+                \vspace{6pt}
+                
+                Pour éviter cet écueil, on considère plutôt la classe majoritaire parmi les classes des $k$ données d'entrainement les plus proches du point d'entrée, pour un $k$ fixé.
+
+                On parle alors de l'algorithme des $k$--plus proches voisins ($k$NN pour $k$--\textit{nearest neighbors}).
+
+                \begin{indt}{Variables d'ajustement :}
+                    $-$ En cas d'égalité, il faut choisir une classe, par exemple au hasard parmi les classes majoritaires.
+
+                    $-$ Le nombre $k$ de voisins : si $k$ est trop faible, l'algorithme sera trop sensible au bruit sur les données et si $k$ est trop grand, l'algorithme renverra surtout la classe majoritaire parmi les données d'entraînement, donc effectue une mauvaise généralisation.
+
+                    $-$ La notion de distance : on utilise souvent la distance de \textsc{Minkowski}
+                    \[
+                        d(x, x') = \lr{\sum_{i = 1}^d \abs{x_i - x_i'}^p}^{\tfrac 1 p}
+                    \]
+
+                    qui donne la distance de \textsc{Manhattan} pour $p = 1$, et la distance euclidienne pour $p = 2$.
+                    Le programme se limite à la distance euclidienne.
+                \end{indt}
+
+                Pour déterminer les $k$ plus proches voisins d'un point donné, on peut exploiter une file de priorité :
+
+                \begin{indalgo}{Algorithme des $k$ plus proches voisins}
+                    \KwInput{données d'entraînement $\lr{x_i, y_i}_{i \in \nset 1 N}$}
+                    \KwInput{point à classer $x$}
+
+                    \BlankLine
+
+                    $F \gets$ file de priorité max vide\;
+
+                    \For{$i$ de 1 à $k$}{
+                        Insérer $i$ dans $F$ avec la priorité $d(x, x_i)$\;
+                    }
+
+                    \For{$i$ de $k + 1$ à $N$}{
+                        \If{$d(x, x_i) < d(x, x_{\max F})$}{
+                            Extraire le max de $F$\;
+                            Insérer $i$ dans $F$ avec la priorité $d(x, x_i)$\;
+                        }
+                    }
+
+                    $C \gets \set{C_i\ |\ i \in F}$\;
+
+                    \Return un élément le plus fréquent de $C$\;
+                \end{indalgo}
+
+                Complexité : $\mathcal O(N\log k)$ en temps, et $\mathcal O(k)$ en espace.
+
+                \vspace{12pt}
+                
+                Remarque : si on a beaucoup de point à classer, cet algorithme est peu efficace car il nécessite de parcourir l'intégralité des données pour chaque point à classer. On pourrait plutôt effectuer un prétraitement des données pour rendre plus efficace le calcul des $k$ plus proches voisins d'un point donné.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Arbres $k$--dimensionnels}}
+                Attention : on ne parle pas du $k$ de $k$NN, mais plutôt de la dimension de l'espace des données ($d$ en \ref{2.1.1}, page \pageref{2.1.1}), mais c'est la lettre $k$ qui est utilisée dans la littérature.
+
+                \vspace{12pt}
+                
+                $\bullet$ Définition : la structure d'arbre $k$--dimensionnel, ou arbre $k$-d, est une généralisation des la notion d'arbre binaire de recherche : un arbre binaire étiqueté par des éléments de $\R^k$ est un arbre $k$-d si et seulement si pour tout n\oe ud d'étiquette $x = (x_0, \ldots, x_{k - 1})$ de profondeur $i$,
+                \[
+                    \begin{array}{ll}
+                        \forall x' = (x_0', \ldots, x_{k - 1}')\ \text{étiquette du sous-arbre gauche}, & x_j' \le x_j
+                        \\
+                        \forall x' = (x_0', \ldots, x_{k - 1}')\ \text{étiquette du sous-arbre droit}, & x_j' > x_j
+                    \end{array}
+                \]
+
+                où $j = i \mod k$.
+
+                \vspace{12pt}
+                
+                $\bullet$ Exemple en dimension 2 :
+
+                \begin{center}
+                    \begin{tikzpicture}[scale=1]
+                        \draw[->] (0, 0) -- (9, 0);
+                        \draw[->] (0, 0) -- (0, 9);
+
+                        \node (x) at (9.3, -.5) {$x$};
+                        \node (x) at (-.5, 9.3) {$y$};
+
+                        \node (1) at (1, 2) [label=right:{$1$}] {$\times$};
+                        \node (2) at (1, 5) [label=right:{$2$}] {$\times$};
+                        \node (3) at (3, 3) [label=below:{$3$}] {$\times$};
+                        \node (4) at (4, 7) [label=above left:{$4$}] {$\times$};
+                        \node (5) at (5, 5) [label=left:{$5$}] {$\times$};
+                        \node (6) at (6, 3) [label=above:{$6$}] {$\times$};
+                        \node (7) at (7, 1.5) [label=left:{$7$}] {$\times$};
+                        \node (8) at (8, 6.5) [label=left:{$8$}] {$\times$};
+
+                        \draw[dashed] (0, 3) -- (8.5, 3);
+                        \draw[dashed] (1, 0) -- (1, 8.5);
+                        \draw[dashed] (5, 0) -- (5, 8.5);
+                        \draw[dashed] (1, 7) -- (5, 7);
+                        \draw[dashed] (7, 0) -- (7, 3);
+                        \draw[dashed] (8, 3) -- (8, 8.5);
+                %    \end{tikzpicture}
+                %\end{center}
+
+                %\begin{center}
+                %    \begin{tikzpicture}
+                        \node (5) at (12, 7) [circle, draw] {$5$}
+                            child [xshift=-20pt] {node [circle, draw] {$3$}
+                                child {node [circle, draw] {$1$}}
+                                child {node [circle, draw] {$2$}
+                                    child [xshift=20pt] {node [circle, draw] {$4$}}
+                                }
+                            }
+                            child [xshift=20pt] {node [circle, draw] {$6$}
+                                child {node [circle, draw] {$7$}}
+                                child {node [circle, draw] {$8$}}
+                            }
+                        ;
+                    \end{tikzpicture}
+                \end{center}
+
+                \vspace{12pt}
+                
+                $\bullet$ Remarque : dans cet exemple, on a fait en sorte de construire un arbre $k$-d équilibré en choisissant l'élément médian pour la coordonnée associée à la profondeur du n\oe ud comme étiquette.
+
+                On écrit l'algorithme \texttt{créer\_arbre} suivant :
+
+                \begin{indalgo}{\texttt{créer\_arbre}}
+                    \SetKwFunction{creerarbre}{créer\_arbre}
+
+                    \Fn{\creerarbre{$k$, $i$, $l$}}{
+                        \KwInput{dimension $k$}
+                        \KwInput{profondeur $i$}
+                        \KwInput{liste de données $l$}
+
+                        \BlankLine
+
+                        \If{$l =$ \texttt{[]}}{
+                            \Return l'arbre vide\;
+                        }
+                        \Else{
+                            Extraire l'élément $x$ de $l$ médian pour la coordonnée $i \mod k$\;
+
+                            $l_<,\ l_> \gets$ partition de $l$ suivant le pivot $x$\;
+
+                            \Return \texttt{Noeud}($x$, \creerarbre{$k$, $i + 1$, $l_<$}, \creerarbre{$k$, $(i + 1)$, $l_>$})\;
+                        }
+                    }
+                \end{indalgo}
+
+                Complexité : à l'aide de l'algorithme de calcul de la médiane en temps linéaire (\textit{cf} chapitre 7, 2.2), la complexité est celle du tri rapide dans le meilleur cas, \textit{i.e} $\mathcal O(N\log N)$.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Recherche des $k$ plus proches voisins dans un arbre $k$-d}}
+                Idée : pour trouver les $k$ plus proches voisins d'un point $x \in \R^d$ dans un arbre $k$-d $T$ de dimension $d$, on procède initialement comme pour la recherche de $x$ dans un ABR (en comparant la bonne coordonnée à chaque profondeur) puis on remonte dans l'arbre en sélectionnant les $k$ voisins, parfois en redescendant des un sous-arbre que l'on avait ignoré.
+
+                Exemple : on suppose être au niveau d'un n\oe ud d'étiquette $x'$ de profondeur $i$ et tel que $x_i > x_i'$.
+
+                On cherche donc récursivement les $k$ voisins dans le sous-arbre droit.
+
+                S'il y a moins de $k$ n\oe uds dans ce sous-arbre, il faudra considérer $x'$ comme voisin et peut-être aussi les n\oe uds du sous-arbre gauche.
+
+                Même si l'appel récursif sélectionne $k$ voisins, on peut devoir considérer $x'$ ou les n\oe uds du sous-arbre gauche si $\abs{x_i - x_i'}$ est inférieure à la distance maximale entre $x$ et les voisins sélectionnés.
+
+                Par exemple, si $k = 3, d = 2$, et $i$ correspond aux abscisses,
+
+                \begin{center}
+                    \begin{tikzpicture}[scale=.95]
+                        \draw[->] (0, 0) -- (6.3, 0);
+                        \draw[->] (0, 0) -- (0, 6.3);
+
+                        \draw[dashed] (2, 0) -- (2, 6);
+
+                        \node (xp) at (2, 6) [label=left:{$x'$}] {$\times$};
+
+                        \node (x) at (3.6, 3.4) [label=right:{$x$}] {$\times$};
+                        \draw (x) circle (2.5);
+
+                        \node (vp) at (1.6, 3.2) [label=above:{$v'$}] {$\times$};
+                        \node (v1) at (4.2, 4.7) [label=left:{$v_1$}] {$\times$};
+                        \node (v2) at (3.1, 2) [label=right:{$v_2$}] {$\times$};
+                        \node (v3) at (5.1, 1.4) [label=below right:{$v_3$}] {$+$};
+
+                        \draw[<->] (x) to node [above right] {$d_{\max}$} (v3);
+                        \draw[<->] (2.1, 3.4) to node [above] {\footnotesize{$\abs{x_i - x_i'}$}} (x);
+                %    \end{tikzpicture}
+                %\end{center}
+
+                %\begin{center}
+                %    \begin{tikzpicture}
+                        \node (0) at (9, 5) [circle, draw] {$x'$}
+                            child {node [circle, draw] {$v'$}}
+                            child {node [circle, draw] {$v_2$}
+                                child {node [circle, draw] {$v_3$}}
+                                child {node [circle, draw] {$v_1$}}
+                            }
+                        ;
+                    \end{tikzpicture}
+                \end{center}
+
+                D'où l'algorithme :
+                \begin{indalgo}{\texttt{recherche\_voisins}}
+                    \SetKwFunction{recherchevoisins}{recherche\_voisins}
+                    \SetKwFunction{visite}{visite}
+
+                    \Fn{\recherchevoisins{$x$, $T$, $k$}}{
+                        $F \gets$ file de priorité max vide\;
+                        \visite{$F, x, T, 0, k$}\;
+
+                        \Return les éléments de $F$\;
+                    }
+
+                    \BlankLine
+
+                    \Fn{\visite{$F, x, T, i, k$}}{
+                        \If{$T$ = \texttt{Noeud}($x', k, r$)}{
+                            %$t_1, t_2 \gets$ si $x_i \le x_i'$, alors $(l, r)$, sinon $(r, l)$\;
+                            \If{$x_i \le x_i'$}{
+                                $t_1, t_2 \gets l, r$\;
+                            }
+                            \Else{
+                                $t_1, t_2 \gets r, l$\;
+                            }
+
+                            \BlankLine
+
+                            \visite{$F, x, t_1, i + 1 \mod d, k$}\;
+
+                            \BlankLine
+
+                            \If{$\abs F < k$ ou priorité $\max F \ge \abs{x_i - x_j}$}{
+                                \If{$d(x, x') <$ priorité $\max F$}{
+                                    Extraire $\max F$\;
+                                    Insérer $x'$ dans $F$ avec la priorité $d(x, x')$\;
+                                }
+
+                                \visite{$F, x, t_2, i + 1 \mod d, k$}\;
+                            }
+                        }
+                    }
+                \end{indalgo}
+
+                Dans le pire cas, on visite les $N$ n\oe uds de l'arbre (donc on n'a rien gagné par rapport au premier algorithme) mais le plus souvent on ne visite que de l'ordre de $\log N$ n\oe uds.
+            \end{indt}
+        \end{indt}
+    \end{indt}
+    
+\end{document}
+%--------------------------------------------End
