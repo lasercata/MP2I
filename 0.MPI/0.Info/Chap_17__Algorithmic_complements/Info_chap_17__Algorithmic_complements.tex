@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2023.01.25
+% Last modification     :   2023.01.31
 %
 %------------------------------------------------------------------------
 
@@ -1451,12 +1451,12 @@
                 \begin{indalgo}{Tirage aléatoire uniforme de la position}
                     \label{alg:7}
 
-                    \texttt{nbPersValides} $\gets 0$\;
+                    \texttt{nbPosValides} $\gets 0$\;
 
                     \For{chaque position $i$}{
                         \If{$i$ est valide}{
-                            \texttt{nbPersValides} $\gets$ \texttt{nbPersValides} $+ 1$\;
-                            $r \gets$ entier aléatoire uniforme entre $0$ et \texttt{nbPersValides} $- 1$\;
+                            \texttt{nbPosValides} $\gets$ \texttt{nbPosValides} $+ 1$\;
+                            $r \gets$ entier aléatoire uniforme entre $0$ et \texttt{nbPosValides} $- 1$\;
 
                             \If{$r = 0$}{
                                 \texttt{pos} $\gets i$\;
@@ -1464,7 +1464,7 @@
                         }
                     }
 
-                    \If{\texttt{nbPersValides} $= 0$}{
+                    \If{\texttt{nbPosValides} $= 0$}{
                         Pas de position valide\;
                     }
                     \Else{
@@ -1485,12 +1485,12 @@
                     On démontre l'invariant :
                     \[
                         \forall j \le i\ \text{valide},\
-                        \mathbb P(\mathtt{pos} = j) = \dfrac{1}{\mathtt{nbPersValides}}
+                        \mathbb P(\mathtt{pos} = j) = \dfrac{1}{\mathtt{nbPosValides}}
                     \]
 
                     $-$ Tant qu'aucun $i$ valide n'a été rencontré, il n'y a rien à démontrer.
 
-                    $-$ Pour l'indice $i$ minimal tel que $i$ est valide, $r$ est tiré aléatoirement dans l'ensemble $\set 0$, donc $r = 0$ et $\mathbb P(\mathtt{pos} = i) = \dfrac{1}{\mathtt{nbPersValides}} = 1$
+                    $-$ Pour l'indice $i$ minimal tel que $i$ est valide, $r$ est tiré aléatoirement dans l'ensemble $\set 0$, donc $r = 0$ et $\mathbb P(\mathtt{pos} = i) = \dfrac{1}{\mathtt{nbPosValides}} = 1$
 
                     \begin{indt}{$-$ Si l'invariant est vrai au rang $i$ :}
                         $+$ Si $i + 1$ n'est pas valide, l'invariant ne change pas et reste vrai.
@@ -1499,7 +1499,7 @@
                         \[
                             \mathbb P(\mathtt{pos} = i + 1)
                             = \mathbb P(r = 0)
-                            = \dfrac 1 {\mathtt{nbPersValides} + 1}
+                            = \dfrac 1 {\mathtt{nbPosValides} + 1}
                         \]
 
                         $\forall j \le i$ valide :
@@ -1509,10 +1509,10 @@
                                 &=& \mathbb P(\mathtt{pos} = j\ \text{à la fin du tour}\ i) \mathbb{P}(r \neq 0)
                                 \vspace{3pt}
                                 \\
-                                &=& \dfrac 1 {\mathtt{nbPersValides}} \cdot \dfrac{\mathtt{nbPersValides}}{\mathtt{nbPersValides} + 1}
+                                &=& \dfrac 1 {\mathtt{nbPosValides}} \cdot \dfrac{\mathtt{nbPosValides}}{\mathtt{nbPosValides} + 1}
                                 \vspace{3pt}
                                 \\
-                                &=& \dfrac{1}{\mathtt{nbPersValides} + 1}
+                                &=& \dfrac{1}{\mathtt{nbPosValides} + 1}
                             \end{array}
                         \]
                     \end{indt}
