@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2023.01.31
+% Last modification     :   2023.02.09
 %
 %------------------------------------------------------------------------
 
@@ -174,6 +174,7 @@
 %\usetikzlibrary{babel}             %Uncomment this to use circuitikz
 %\usetikzlibrary{shapes.geometric}  % To draw triangles in trees
 %\usepackage{circuitikz}            %Electrical circuits drawing
+\usetikzlibrary{patterns}
 
 
 %------tabular
@@ -878,7 +879,7 @@
 
                 \begin{indalgo}{ID3, cas binaire}
                     \KwInput{L'ensemble $S$ des données}
-                    \KwInput{L'ensemble $A$ des attributs que l'on s'autorise à utiliser dasn les n\oe uds}
+                    \KwInput{L'ensemble $A$ des attributs que l'on s'autorise à utiliser dans les n\oe uds}
 
                     \BlankLine
 
@@ -959,6 +960,249 @@
                         };
                     \end{tikzpicture}
                 \end{center}
+            \end{indt}
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Analyse des résultats}}
+            \begin{indt}{\subsubsection{Introduction}}
+                Les algorithmes d'apprentissage dépendent de paramètres (par exemple le nombre $k$ de voisins dans $k$NN ou une heuristique d'apprentissage d'arbres de décision telle qu'ID3) qu'il faut ajuster selon le cas d'application afin d'obtenir le meilleur classificateur possible.
+
+                Choisir les meilleurs paramètres pour un algorithme d'apprentissage passe par l'essai de plusieurs valeurs de ces paramètres et par une évaluation du classificateur obtenu.
+
+                On a donc besoin d'un moyen de mesurer els performances d'un classificateur.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Jeu d'entraînement, jeu de test}}
+                Dans le cadre de l'apprentissage supervisé, on dispose de données étiquetées par le résultat attendu, donc il est possible d'évaluer les performances d'un classificateur en comparant le résultat qu'il renvoie et le résultat attendu sur chacune des données étiquettées.
+
+                Cependant, il faut éviter d'utiliser les mêmes données pour l'apprentissage et pour les tests car l'algorithme est censé renvoyer de bons résultats sur les données d'entraînement. On n'aurait donc pas une bonne mesure de la capacité de l'algorithme à généraliser le modèle qu'il apprend.
+                Il est alors d'usage de répartir les données en deux jeux : un jeu d'entraînement qui contient les données qui serviront à l'apprentissage, et un jeu de test qui contient les données qui serviront aux mesures de performance.
+
+                Construire ces jeux de données est un enjeux majeur car de mauvais choix peuvent donner des résultats grossièrement faux. Par exemple, si on applique l'algorithme ID3 à un jeu d'entraînement dont toutes les données appartiennent à la même classe, l'arbre de décision obtenu est une feuille réduite à cette classe donc le classificateur est une fonction constante qui se trompera sur toutes les données d'autres classes.
+                Disposer d'une grande quantité de données d'entraînement est aussi important.
+
+                Les données sont en général réparties entre les deux jeux avec de l'ordre de 80\% de données d'entraînement et 20\% de données de test. Une manière de respecter la répartition des classes dans le jeu d'entraînement consiste à tirer les données d'entraînement avec un tirage aléatoire uniforme.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Sur-apprentissage / sous-apprentissage}}
+                L'objectif de l'apprentissage est de deviner des règles implicites qui régissent la distribution des classes, à partir d'un jeu de données, et de généraliser ces règles pour construire un modèle permettant de déterminer la classe de données pour lesquelles on ne dispose pas d'information.
+                Le sur-apprentissage consiste en une mauvaise généralisation liée à une trop grande précision sur le jeu d'entraînement.
+
+                Par exemple, pour un algorithme de régression, si les données sont bruitées, il y a sur-apprentissage si la fonction produite par l'algorithme "colle" trop aux données d'entraînement et reproduit le bruit des données au lieu d'apprendre uniquement la tendance générale.
+
+                Par exemple, il est toujours possible d'obtenir une erreur nulle sur les données d'entraînement par interpolation, mais cela ne garantit pas la qualité de la régression en dehors de ces données.
+
+                %............................................................
+                %\newline
+                %\quo{Courbe quadratique avec des point approximant la courbe dont certains sont aberrants, et une courbe qui passe exactement par les point d'entraînement, mais qui ne représente pas bien la courbe.}
+                %\newline
+                %............................................................
+
+                \begin{center}
+                    \begin{tikzpicture}[domain=0:5]
+                        \draw[->] (0, 0) to (6, 0);
+                        \draw[->] (0, 0) to (0, 6);
+                        
+                        \draw [color=ff4500] plot (\x, {-.8 * (\x - 1) * (\x - 4) + 3.2});
+
+                        %\node (1) at (0, 0) {$\times$};
+                        %\node (2) at (.5, 1.8) {$\times$};
+                        %\node (3) at (1, 3.2) {$\times$};
+                        %\node (4) at (1.5, 4.2) {$\times$};
+                        %\node (5) at (2.5, 5) {$\times$};
+                        %\node (6) at (3.5, 4.2) {$\times$};
+                        %\node (7) at (4, 3.2) {$\times$};
+                        %\node (8) at (4.5, 1.8) {$\times$};
+                        %\node (9) at (5, 0) {$\times$};
+
+                        \node (1) at (0, 0) {$\times$};
+                        \node (2) at (.4, 2.1) {$\times$};
+                        \node (3) at (1, 2.8) {$\times$};
+                        \node (4) at (1.5, 4.2) {$\times$};
+                        \node (5) at (2.5, 5.5) {$\times$};
+                        \node (6) at (3.4, 4.0) {$\times$};
+                        \node (7) at (4.2, 3.3) {$\times$};
+                        \node (8) at (4.4, 1.8) {$\times$};
+                        \node (9) at (5, 0) {$\times$};
+
+                        %\draw [color=blue] plot [smooth] coordinates {(1) (2) (.6, 1.8) (3) (1.20, 4.1) (4) (2, 4.3) (5) (2.9, 5.5) (6) (7) (4.25, 2.2) (8) (9)};
+                        \draw [color=blue] plot [smooth] coordinates {(1) (2) (3) (4) (5) (6) (7) (8) (9)};
+                    \end{tikzpicture}
+                \end{center}
+
+                Il y a sous-apprentissage lorsque l'algorithme ne tient pas assez compte des données d'entraînement et n'apprend donc pas assez de règles pour obtenir un bon résultat.
+
+                Par exemple : régression linéaire sur les même données.
+
+                %............................................................
+                %\newline
+                %\quo{Même courbe quadratique, mais approximation aberrante avec une droite.}
+                %\newline
+                %............................................................
+
+                \begin{center}
+                    \begin{tikzpicture}[domain=0:5]
+                        \draw[->] (0, 0) to (6, 0);
+                        \draw[->] (0, 0) to (0, 6);
+                        
+                        \draw [color=ff4500] plot (\x, {-.8 * (\x - 1) * (\x - 4) + 3.2});
+                        \node (1) at (0, 0) {$\times$};
+
+                        \node (2) at (.4, 2.1) {$\times$};
+                        \node (3) at (1, 2.8) {$\times$};
+                        \node (4) at (1.5, 4.2) {$\times$};
+                        \node (5) at (2.5, 5.5) {$\times$};
+                        \node (6) at (3.4, 4.0) {$\times$};
+                        \node (7) at (4.2, 3.3) {$\times$};
+                        \node (8) at (4.4, 1.8) {$\times$};
+                        \node (9) at (5, 0) {$\times$};
+
+                        \draw[color=blue] (.3, 2.5) to (5, 4);
+                    \end{tikzpicture}
+                \end{center}
+
+                Pour des algorithmes d'apprentissage qui ajustent leurs paramètres en cours d'apprentissage, il est alors nécessaire d'avoir un troisième jeu de données, appelé jeu de validation, qui sert à détecter le sur-apprentissage afin d'interrompre l'algorithme.
+                Une répartition fréquente des données entre jeu d'entraînement, jeu de validation, et jeu de test est de l'ordre de 60\% / 20\% / 20\%.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Matrice de confusion}}
+                $\bullet$ Remarque : les résultats obtenus par exécution du classificateur résultant de l'apprentissage sur les données du jeu de test permettent de calculer le taux d'erreur, \textit{i.e} le rapport entre le nombre de tests pour lesquels le résultat est faux et le nombre total de tests.
+
+                Cependant, ce taux ne donne qu'une information partielle sur les performances de classification car il n'indique rien sur la nature des erreurs.
+                Dans le cadre des problèmes de classification, la notion de \emph{matrice de confusion} permet d'effectuer une analyse plus poussée.
+
+                \vspace{12pt}
+                
+                $\bullet$ Définition (\textit{matrice de confusion}) : on considère un problème de classification à $C$ classes $C_0, \ldots, C_{C - 1}$.
+
+                La \emph{matrice de confusion} d'un classificateur pour un jeu de test donné est la matrice de taille $C \times C$ telle que $\forall i, j \in \nset 0 {C - 1}$, le coefficient $(i, j)$ de la matrice est le nombre de données de test appartenant à la classe $C_i$ pour lesquelles le classificateur a renvoyé la classe $C_j$.
+
+                \vspace{12pt}
+                
+                $\bullet$ La matrice suivante pour un problème à trois classes :
+                \[
+                    \begin{pmatrix}
+                        6 & 0 & 2
+                        \\
+                        0 & 5 & 0
+                        \\
+                        1 & 1 & 5
+                    \end{pmatrix}
+                \]
+
+                Les réponses correctes sont situées la diagonale donc le taux d'erreur est la somme des valeurs qui ne sont pas sur la diagonale divisée par la somme de toutes les valeurs.
+                Ici : $\dfrac{4}{20} = \dfrac 1 5$, soit $20\%$.
+
+                \begin{indt}{La matrice indique également :}
+                    $-$ que le classificateur ne se trompe jamais sur les données de la classe $C_1$ ;
+
+                    $-$ que lorsque le classificateur se trompe sur une donnée de la classe $C_0$, c'est qu'il y a confusion uniquement avec la classe $C_2$ et qu'il y a $\dfrac 2 8 = \dfrac 1 4$ soit $25\%$ des données sur lesquelles il y a confusion ;
+
+                    $-$ le taux d'erreur pour les données de chaque classe ;
+
+                    $-$ que lorsque le classificateur répond $C_0$, il donne une bonne réponse dans $\dfrac 6 7$, soit environ $85.7\%$ des cas ;
+
+                    $-$ etc.
+                \end{indt}
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Mesures de précision dans le cas d'un classificateur binaire (H.P)}}
+                $\bullet$ Dans le cas d'un problème de classification binaire, le classificateur n'a que deux réponses possibles, que l'on peut assimiler à "vrai" et "faux".
+                C'est donc un algorithme qui essaie de résoudre un problème de décision.
+
+                \begin{indt}{La matrice de confusion pour un tel algorithme est de taille $2 \times 2$, et si on assimile la classe $C_0$ à "vrai" et la classe $C_1$ à "faux", on dit que le coefficient}
+                    $-$ $(0, 0)$ représente les vrai positifs ;
+
+                    $-$ $(0, 1)$ représente les faux négatifs ;
+
+                    $-$ $(1, 0)$ représente les faux positifs ;
+
+                    $-$ $(1, 1)$ représente les vrai négatifs.
+                \end{indt}
+
+                Dans ce cas, il est d'usage de définir certaines quantités, appelées \emph{mesures de précision}, qui permettent d'évaluer la qualité du classificateur.
+
+                \vspace{12pt}
+                
+                \begin{indt}{$\bullet$ Définition : étant donné une matrice de confusion $2 \times 2$, on définit :}
+                    $-$ la \emph{sensibilité} : c'est le taux de vrais positifs, \textit{i.e} le rapport entre le nombre de vrais positifs et le nombre de données positives (vrais positifs et faux négatifs)
+
+                    Cela représente la capacité du classificateur à reconnaître des données de la classe $C_0$.
+
+                    \vspace{6pt}
+                    
+                    $-$ La \emph{spécificité} : c'est le taux de vrais négatifs, donc cela représente la capacité du classificateur à reconnaître les données de la classe $C_1$.
+
+                    \vspace{6pt}
+                    
+                    $-$ La \emph{précision} : c'est le rapport entre le nombre de vrais positifs et le nombre de réponses positives de classificateur.
+                    Cela représente la fiabilité du classificateur lorsqu'il répond "vrai".
+                \end{indt}
+
+                \[
+                    \begin{pmatrix}
+                        a & b
+                        \\
+                        c & d
+                    \end{pmatrix}
+                \]
+
+                Sensibilité : $\dfrac{a}{a + b}$
+
+                Spécificité : $\dfrac{d}{c + d}$
+
+                Précision : $\dfrac{a}{a + c}$
+
+                \vspace{12pt}
+                
+                $\bullet$ Remarque : au-delà de ces mesures, on peut également tracer la courbe ROC (\textit{Receiver Operator Characteristic}) qui représente en abscisse le pourcentage de faux positifs et en ordonnées le pourcentage de vrais positifs. Un point correspond à une exécution d'un classificateur sur un je de test. On fait en général varier les paramètres d'un algorithme d'apprentissage et on place des point pour chacun des classificateurs obtenus, ce qui permet d'obtenir une courbe, appelée courbe ROC, représentant les performances de l'algorithme d'apprentissage.
+
+                \vspace{12pt}
+                
+                Exemple :
+
+                \begin{center}
+                    \begin{tikzpicture}
+                        \draw[->] (0, 0) to (5, 0);
+                        \draw[->] (0, 0) to (0, 5);
+
+                        \draw (0, 0) to (4.5, 4.5);
+
+                        \node at (3, 2) [color=red] {$\times$};
+
+                        \node (1) at (.25, 1.5) {$\times$};
+                        \node (2) at (.6, 2.8) {$\times$};
+                        \node (3) at (1.2, 3.9) {$\times$};
+                        \node (4) at (2.3, 4.3) {$\times$};
+                        \node (5) at (3.5, 4.45) {$\times$};
+
+                        \draw[color=ff4500] plot [smooth, tension=.6] coordinates {(0, 0) (1) (2) (3) (4) (5) (4.5, 4.5)};
+
+                        \fill [pattern = dots] % needs \usetikzlibrary{patterns}
+                            (0, 0)
+                            -- plot [smooth, tension=.6] coordinates {(0, 0) (1) (2) (3) (4) (5) (4.5, 4.5)}
+                            -- (4.5, 4.5);
+                    \end{tikzpicture}
+                \end{center}
+
+                La diagonale représente les cas où on renvoie autant de bonnes réponses que de mauvaises.
+                Cela représente donc un algorithme qui ferait un tirage aléatoire pour répondre.
+
+                Un point situé sous cette courbe représente un algorithme qui ferait moins bien que le hasard.
+
+                On mesure en général la qualité d'un algorithme d'apprentissage par la valeur de l'aire située entre sa courbe ROC et la  diagonale.
+
+                L'objectif est de trouver un algorithme pour lequel cette aire est maximale puis d'ajuster ses paramètres pour obtenir un classificateur dont le point est proche de celui du coin supérieur gauche.
             \end{indt}
         \end{indt}
     \end{indt}
