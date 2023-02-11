@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2023.02.09
+% Last modification     :   2023.02.11
 %
 %------------------------------------------------------------------------
 
@@ -416,7 +416,7 @@
 
                 Pour déterminer les $k$ plus proches voisins d'un point donné, on peut exploiter une file de priorité :
 
-                \begin{indalgo}{Algorithme des $k$ plus proches voisins}
+                \begin{indalgo}{$k$ plus proches voisins}
                     \KwInput{données d'entraînement $\lr{x_i, y_i}_{i \in \nset 1 N}$}
                     \KwInput{point à classer $x$}
 
@@ -444,7 +444,7 @@
 
                 \vspace{12pt}
                 
-                Remarque : si on a beaucoup de point à classer, cet algorithme est peu efficace car il nécessite de parcourir l'intégralité des données pour chaque point à classer. On pourrait plutôt effectuer un prétraitement des données pour rendre plus efficace le calcul des $k$ plus proches voisins d'un point donné.
+                Remarque : si on a beaucoup de points à classer, cet algorithme est peu efficace car il nécessite de parcourir l'intégralité des données pour chaque point à classer. On pourrait plutôt effectuer un prétraitement des données pour rendre plus efficace le calcul des $k$ plus proches voisins d'un point donné.
             \end{indt}
 
             \vspace{12pt}
@@ -454,7 +454,7 @@
 
                 \vspace{12pt}
                 
-                $\bullet$ Définition : la structure d'arbre $k$--dimensionnel, ou arbre $k$-d, est une généralisation des la notion d'arbre binaire de recherche : un arbre binaire étiqueté par des éléments de $\R^k$ est un arbre $k$-d si et seulement si pour tout n\oe ud d'étiquette $x = (x_0, \ldots, x_{k - 1})$ de profondeur $i$,
+                $\bullet$ Définition : la structure d'arbre $k$--dimensionnel, ou arbre $k$-d, est une généralisation de la notion d'arbre binaire de recherche : un arbre binaire étiqueté par des éléments de $\R^k$ est un arbre $k$-d si et seulement si pour tout n\oe ud d'étiquette $x = (x_0, \ldots, x_{k - 1})$ de profondeur $i$,
                 \[
                     \begin{array}{ll}
                         \forall x' = (x_0', \ldots, x_{k - 1}')\ \text{étiquette du sous-arbre gauche}, & x_j' \le x_j
@@ -547,7 +547,7 @@
             \vspace{12pt}
             
             \begin{indt}{\subsubsection{Recherche des $k$ plus proches voisins dans un arbre $k$-d}}
-                Idée : pour trouver les $k$ plus proches voisins d'un point $x \in \R^d$ dans un arbre $k$-d $T$ de dimension $d$, on procède initialement comme pour la recherche de $x$ dans un ABR (en comparant la bonne coordonnée à chaque profondeur) puis on remonte dans l'arbre en sélectionnant les $k$ voisins, parfois en redescendant des un sous-arbre que l'on avait ignoré.
+                Idée : pour trouver les $k$ plus proches voisins d'un point $x \in \R^d$ dans un arbre $k$-d $T$ de dimension $d$, on procède initialement comme pour la recherche de $x$ dans un ABR (en comparant la bonne coordonnée à chaque profondeur) puis on remonte dans l'arbre en sélectionnant les $k$ voisins, parfois en redescendant dans un sous-arbre que l'on avait ignoré.
 
                 Exemple : on suppose être au niveau d'un n\oe ud d'étiquette $x'$ de profondeur $i$ et tel que $x_i > x_i'$.
 
@@ -607,8 +607,8 @@
 
                     \BlankLine
 
-                    \Fn{\visite{$F, x, T, i, k$}}{
-                        \If{$T$ = \texttt{Noeud}($x', k, r$)}{
+                    \Fn{\visite{$F,\ x,\ T,\ i,\ k$}}{
+                        \If{$T$ = \texttt{Noeud}($x', l, r$)}{
                             %$t_1, t_2 \gets$ si $x_i \le x_i'$, alors $(l, r)$, sinon $(r, l)$\;
                             \If{$x_i \le x_i'$}{
                                 $t_1, t_2 \gets l, r$\;
@@ -619,7 +619,7 @@
 
                             \BlankLine
 
-                            \visite{$F, x, t_1, i + 1 \mod d, k$}\;
+                            \visite{$F,\ x,\ t_1,\ i + 1 \mod d,\ k$}\;
 
                             \BlankLine
 
@@ -629,7 +629,7 @@
                                     Insérer $x'$ dans $F$ avec la priorité $d(x, x')$\;
                                 }
 
-                                \visite{$F, x, t_2, i + 1 \mod d, k$}\;
+                                \visite{$F,\ x,\ t_2,\ i + 1 \mod d,\ k$}\;
                             }
                         }
                     }
@@ -644,7 +644,7 @@
         \begin{indt}{\subsection{Arbres de décision}}
             \begin{indt}{\subsubsection{Introduction}}
                 Un arbre de décision est un outil permettant d'implémenter un algorithme de classification dont le fonctionnement est le suivant :
-                étant donné un point à classer, on descend récursivement dans l'arbre en effectuant à chaque n\oe ud un test dur une coordonnée dont le résultat détermine la branche à parcourir.
+                étant donné un point à classer, on descend récursivement dans l'arbre en effectuant à chaque n\oe ud un test sur une coordonnée dont le résultat détermine la branche à parcourir.
                 La feuille atteinte donne la classe du point.
             \end{indt}
 
@@ -660,7 +660,7 @@
             \vspace{12pt}
             
             \begin{indt}{\subsubsection{Exemple}}
-                On veut savoir comment passer la soirée, sachant qu'il y a trois activités possibles : aller en soirée, étudier, ou se tourner les pouces.
+                Un étudiant veut savoir comment passer la soirée, sachant qu'il y a trois activités possibles : aller en soirée, étudier, ou se tourner les pouces.
                 \begin{indt}{On représente les étudiants par des triplets dont les coordonnées sont :}
                     $-$ un booléen indiquant s'il y a une soirée organisée par son cercle d'amis ;
 
@@ -719,13 +719,13 @@
                 $\bullet$ Remarque : L'entropie de \textsc{Shannon} est l'espérance du nombre de bits d'informations que l'on obtient en tirant aléatoirement uniformément un point de $S$.
 
                 En effet, $\dfrac{\abs{C_i}} N$ est la probabilité d'obtenir un élément de la classe $C_i$, et $-\log_2 \dfrac{\abs{C_i}}N = \log_2 N - \log_2 \abs{C_i}$ est la différence entre le nombre de bits nécessaires pour représenter l'intégralité des données et le nombre de bits nécessaires pour distinguer entre elles les données de la classe $C_i$.
-                C'est donc le nombre de bits qui restent afin de donner de l'information sur l'appartenance à la classe $C_i$.
+                C'est donc le nombre de bits qui reste afin de donner de l'information sur l'appartenance à la classe $C_i$.
 
                 \begin{indt}{En particulier,}
                     $-$ Si $C = 1$, alors $H(S) = 0$ : la représentation des données sert uniquement à les distinguer entre elles et n'apporte aucune information sur la classe.
                     
-                    $-$ L'entropie est maximale lorsque les données sont uniformément réparties $\lr{\abs{C_i} = \dfrac N C}$.
-                    $H(S) = -\log_2 C$, et on obtient autant de bits que nécessaire pour distinguer les $C$ classes.
+                    $-$ L'entropie est maximale lorsque les données sont uniformément réparties $\left(\vphantom{\dfrac N C} \right.$\textit{i.e} quand $\left. \forall i \in \nset 0 {C - 1},\ \abs{C_i} = \dfrac N C \right)$.
+                    Dans ce cas, $H(S) = \log_2 C$, et on obtient autant de bits que nécessaire pour distinguer les $C$ classes.
                 \end{indt}
 
                 \vspace{12pt}
@@ -810,7 +810,7 @@
                 
                 $\bullet$ Corollaire :
                 \begin{emphBox}
-                    Si $S$ est un ensemble de $N$ données en dimension $d$ réparties dans les clauses $C_0, \ldots, C_{C - 1}$, et si $i \in \nset 1 d$ est un attribut pouvant prendre une valeur, alors $G(S, i) \ge 0$.
+                    Si $S$ est un ensemble de $N$ données en dimension $d$ réparties dans les classes $C_0, \ldots, C_{C - 1}$, et si $i \in \nset 1 d$ est un attribut pouvant prendre une valeur, alors $G(S, i) \ge 0$.
                 \end{emphBox}
 
                 \vspace{6pt}
@@ -829,7 +829,7 @@
                             }
                             \\
                             &=& \displaystyle
-                            \sum_{k = 0}^{C - 1} \sum_{j = 1}^m \dfrac{\abs{C_k \cap S_j}}{N}\log_2 \dfrac{\abs{C_k}}{N}
+                            -\sum_{k = 0}^{C - 1} \sum_{j = 1}^m \dfrac{\abs{C_k \cap S_j}}{N}\log_2 \dfrac{\abs{C_k}}{N}
                             - \lr{
                                 -\sum_{j = 1}^m \sum_{k = 0}^{C - 1} \dfrac{\abs{C_k \cap S_j}}{N} \log_2 \dfrac{\abs{C_k \cap S_j}}{\abs{S_j}}
                             }
@@ -840,7 +840,7 @@
                     \[
                         \log_2 \dfrac{\abs{C_k \cap S_j}}{\abs{S_j}}
                         = \log_2 \dfrac{\abs{C_k \cap S_j}}{N}
-                        = - \log_2 \dfrac{\abs{S_j}}{N}
+                        - \log_2 \dfrac{\abs{S_j}}{N}
                     \]
 
                     Donc
@@ -849,9 +849,7 @@
                             G(S, i)
                             &=&\displaystyle
                             - \sum_{k = 0}^{C - 1} \sum_{j = 1}^m \dfrac{\abs{C_i \cap S_j}}{N} \lr{\log_2 \dfrac{\abs{C_k}}{N} + \log_2 \dfrac{\abs{S_j}}{N}}
-                            - \lr{
-                                -\sum_{j = 1}^m \sum_{k = 0}^{C - 1} \dfrac{\abs{C_k \cap S_j}}{N} \log_2 \dfrac{\abs{C_k \cap S_j}}{N}
-                            }
+                            + \sum_{j = 1}^m \sum_{k = 0}^{C - 1} \dfrac{\abs{C_k \cap S_j}}{N} \log_2 \dfrac{\abs{C_k \cap S_j}}{N}
                         \end{array}
                     \]
 
@@ -909,15 +907,15 @@
                 \begin{center}
                     \begin{tikzpicture}
                         \node (0) at (0, 0) [circle, draw] {$L$}
-                            child [xshift=-20pt] {node [circle, draw] {$O$}}
+                            child [xshift=-20pt] {node [circle, draw] {$0$}}
                             child [xshift=20pt] {node [circle, draw] {$C$}
                                 child [xshift=-20pt] {node [circle, draw] {$E$}
                                     child [xshift=-20pt] {node [circle, draw] {$F$}
                                         child {node [circle, draw] {$1$}}
-                                        child {node [circle, draw] {$O$}}
+                                        child {node [circle, draw] {$0$}}
                                     }
                                     child [xshift=20pt] {node [circle, draw] {$F$}
-                                        child {node [circle, draw] {$O$}}
+                                        child {node [circle, draw] {$0$}}
                                         child {node [circle, draw] {$1$}}
                                     }
                                 }
@@ -1038,7 +1036,7 @@
 
                 Il y a sous-apprentissage lorsque l'algorithme ne tient pas assez compte des données d'entraînement et n'apprend donc pas assez de règles pour obtenir un bon résultat.
 
-                Par exemple : régression linéaire sur les même données.
+                Par exemple : régression linéaire sur les mêmes données.
 
                 %............................................................
                 %\newline
@@ -1165,7 +1163,7 @@
 
                 \vspace{12pt}
                 
-                $\bullet$ Remarque : au-delà de ces mesures, on peut également tracer la courbe ROC (\textit{Receiver Operator Characteristic}) qui représente en abscisse le pourcentage de faux positifs et en ordonnées le pourcentage de vrais positifs. Un point correspond à une exécution d'un classificateur sur un je de test. On fait en général varier les paramètres d'un algorithme d'apprentissage et on place des point pour chacun des classificateurs obtenus, ce qui permet d'obtenir une courbe, appelée courbe ROC, représentant les performances de l'algorithme d'apprentissage.
+                $\bullet$ Remarque : au-delà de ces mesures, on peut également tracer la courbe ROC (\textit{Receiver Operator Characteristic}) qui représente en abscisse le pourcentage de faux positifs et en ordonnées le pourcentage de vrais positifs. Un point correspond à une exécution d'un classificateur sur un je de test. On fait en général varier les paramètres d'un algorithme d'apprentissage et on place des points pour chacun des classificateurs obtenus, ce qui permet d'obtenir une courbe, appelée courbe ROC, représentant les performances de l'algorithme d'apprentissage.
 
                 \vspace{12pt}
                 
