@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2023.02.11
+% Last modification     :   2023.02.21
 %
 %------------------------------------------------------------------------
 
@@ -23,6 +23,7 @@
 %------color
 \usepackage{xcolor}
 \definecolor{ff4500}{HTML}{ff4500}
+\definecolor{00b9ff}{HTML}{00b9ff}
 \definecolor{00f}{HTML}{0000ff}
 \definecolor{0ff}{HTML}{00ffff}
 \definecolor{656565}{HTML}{656565}
@@ -339,6 +340,7 @@
     \thetitle{Chapitre 18}{Intelligence artificielle et théorie des jeux}
     
     \tableofcontents
+    \listofalgorithms
     \newpage
     
     \begin{indt}{\section{Introduction}}
@@ -1201,6 +1203,307 @@
                 On mesure en général la qualité d'un algorithme d'apprentissage par la valeur de l'aire située entre sa courbe ROC et la  diagonale.
 
                 L'objectif est de trouver un algorithme pour lequel cette aire est maximale puis d'ajuster ses paramètres pour obtenir un classificateur dont le point est proche de celui du coin supérieur gauche.
+            \end{indt}
+        \end{indt}
+    \end{indt}
+
+    \vspace{12pt}
+    
+    \begin{indt}{\section{Apprentissage non supervisé}}
+        \begin{indt}{\subsection{Classification hiérarchique ascendante}}
+            \begin{indt}{\subsubsection{Introduction}}
+                Dans le cadre de l'apprentissage non supervisé, les données dont on dispose ne sont plus étiquetées par l'information que l'algorithme d'apprentissage doit savoir retrouver.
+                L'algorithme doit plutôt inférer de nouvelles connaissances sur les données en découvrant une structure sous-jacente aux données.
+
+                Dans ce cadre, le problème de classification est plutôt appelé problème de \emph{regroupement} (\textit{clustering}) car il ne s'agit plus de redécouvrir des classes existantes, mais d'en former en regroupant les données d'entraînement, de sorte à maximiser la similarité des données au sein des classes et la dissimilarité entre données de classe différentes.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Classification hiérarchique ascendante}}
+                L'algorithme de classification ascendante (CHA), ou regroupement hiérarchique ascendant, consiste à partir de données isolées dans des classes singletons et à fusionner progressivement des classes jusqu'à la réalisation d'une condition d'arrêt.
+
+                Pour choisir les classes à fusionner, on se donne une mesure de la dissimilarité entre les classes, que l'on appellera abusivement \emph{distance}, et on fusionne les deux classes les plus proches.
+
+                \begin{indt}{Pour définir une distance sur les classes, on prend une distance $d$ sur les données, et on peut par exemple choisir parmi les distances suivantes :}
+                    $-$ La distance minimale :
+                    \[
+                        d(C_1, C_2) = \min_{(x, y) \in C_1 \times C_2} d(x, y)
+                    \]
+
+                    qui correspond à la notion naturelle de distance en mathématiques ;
+                    
+                    \vspace{6pt}
+                    
+                    $-$ La distance maximale :
+                    \[
+                        d(C_1, C_2) = \max_{(x, y) \in C_1 \times C_2} d(x, y)
+                    \]
+
+                    qui permet de créer des classes de faible "diamètre" ;
+
+                    \vspace{6pt}
+                    
+                    $-$ La distance des centres de gravité :
+                    \[
+                        d(C_1, C_2) = d(b_1, b_2)
+                    \]
+
+                    où $b_1$ et $b_2$ sont les (iso)barycentres de $C_1$, $C_2$ ;
+
+                    \vspace{6pt}
+                    
+                    $-$ La distance de \textsc{Ward} :
+                    \[
+                        d(C_1, C_2) = \sqrt{\dfrac{\abs{C_1} \abs{C_2}}{\abs{C_1} + \abs{C_2}}} d(b_1, b_2)
+                    \]
+                \end{indt}
+
+                Les distances de \textsc{Ward} et des centres de gravité donnent des algorithmes qui sont moins sensibles au bruit sur les données.
+
+                Une contrainte importante est la monotonie de la distance : la fusion de deux classes ne doit par réduire la distance aux autres classes, \textit{i.e}
+                \[
+                    \min\!\lr{d(C_1, C_2), d(C_1, C_3)} \le d(C_1, C_2 \cup C_3)
+                \]
+
+                Une fois la distance choisie, l'algorithme s'exprime ainsi :
+
+                \begin{indalgo}{Classification hiérarchique ascendante}
+                    \For{chaque donnée $x$}{
+                        Créer une classe réduite à $\set x$\;
+                    }
+
+                    \While{condition d'arrêt n'est pas satisfaite}{
+                        $C_1, C_2 \gets$ classes qui minimisent $d(C_1, C_2)$\;
+                        Fusionner $C_1$ et $C_2$\;
+                    }
+
+                    \Return l'ensemble des classes\;
+                \end{indalgo}
+
+                Il y a plusieurs choix possibles de condition d'arrêt :
+                un nombre prédéterminé de classes à atteindre, un majorant sur la distance entre deux classes que l'on s'autorise à fusionner, un majorant sur la distance entre les données d'une même classe, ...
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Avantages et inconvénients}}
+                Un inconvénient de cet algorithme est sa complexité : lorsque le jeu de données est grand (ce qui est en général le cas), le temps de calcul explose, ce qui en fait un algorithme peu pratique.
+
+                Un autre inconvénient réside dans l'absence de remise en question. Lorsque des données sont réunies dans une même classes, on ne peut plus les séparer.
+
+                Le principal avantage de cet algorithme est sa souplesse tirée de la grande variété de distances et de conditions d'arrêt que l'on peut choisir. De plus, on n'a pas besoin de connaître \textit{a priori} le nombre de classes.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Pourquoi \emph{hiérarchique} ?}}
+                L'algorithme CHA est qualifié de \emph{hiérarchique} car on peut en tirer une structure arborescente (en fait une forêt). Pour cela, on dessine un dendrogramme, \textit{i.e} un graphe représentant l'organisation hiérarchique des fusions.
+
+                Exemple :
+
+                \begin{center}
+                    \begin{tikzpicture}
+                        \foreach \i in {1, ..., 7}{
+                            \node (\i) at (\i, 0) {$\times$};
+                        }
+
+                        \draw[rounded corners=5pt] (3) to (3, 1) to (4, 1) to (4);
+                        \draw[rounded corners=5pt] (6) to (6, 2) to (7, 2) to (7);
+                        \draw[rounded corners=5pt] (2) to (2, 3) to (3.5, 3) to (3.5, 1);
+                        \draw[rounded corners=5pt] (5) to (5, 4) to (6.5, 4) to (6.5, 2);
+                        \draw[rounded corners=5pt] (2.75, 3) to (2.75, 5) to (5.75, 5) to (5.75, 4);
+                        \draw[rounded corners=5pt] (1) to (1, 6) to (4.25, 6) to (4.25, 5);
+                    \end{tikzpicture}
+                \end{center}
+
+                Remarque :
+                On distingue la classification hiérarchique ascendante de la classification hiérarchique descendante qui consiste à partir d'une seule classe réunissant toutes les données et à chaque itération à partionner l'une des classes en deux sous-classes.
+                La structure arborescente obtenue ressemble alors aux arbres de décision car les n\oe uds internes permettent de séparer des données et les feuilles contiennent les classes construites.
+            \end{indt}
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Algorithme des $k$-moyennes}}
+            \begin{indt}{\subsubsection{Introduction}}
+                L'objectif de l'algorithme des $k$-moyennes consiste à répartir les données dans un nombre prédéterminé $k$ des classes (à ne pas confondre avec le $k$ de $k$NN ou des arbres $k$-d).
+                L'algorithme fonctionne en plusieurs itérations et les données peuvent changer de classe au cours des itérations.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Algorithme des $k$-moyennes}}
+                On se donne une distance $d$ sur l'espace des données.
+
+                Code :
+                \begin{indalgo}{$k$-moyennes}
+                    $\mu_0, \ldots, \mu_{k - 1} \gets k$ données arbitraires\;
+
+                    \BlankLine
+
+                    \While{pas de convergence (\textit{i.e} tant que les $\mu_i,\ C_i$ changent)}{
+                        \For{chaque donnée $x$}{
+                            Associer $x$ à la classe $C_i$ telle que $d(x, \mu_i)$ est minimale\;
+                        }
+
+                        \For{chaque $i \in \nset 0 {k - 1}$}{
+                            $\mu_i \gets$ (iso)barycentre de $C_i$\;
+                        }
+                    }
+
+                    \Return les $C_i$\;
+                \end{indalgo}
+
+                Le principe de cet algorithme est de partir d'un regroupement arbitraire (souvent aléatoire) et de l'ajuster jusqu'à l'obtention d'un résultat "satisfaisant", en considérant que l'on classe les données par rapport à la distance de ces données aux centres des classes.
+                La définition de ce qu'est un résultat satisfaisant vient du problème d'optimisation que l'on cherche à résoudre : étant donné un ensemble fini $D \subseteq \R^p$ et un entier $k \in \N^*$, déterminer une partition $(C_0, \ldots, C_{k - 1})$ de $D$, qui minimise
+                \[
+                    \sum_{i = 0}^{k - 1} \sum_{x \in C_i} d(x, \mu_i)^2
+                \]
+
+                où
+                \[
+                    \mu_i = \dfrac 1 {\abs{C_i}} \sum_{x \in C_i} x
+                \]
+
+                est l'isobarycentre de $C_i$.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Analyse de l'algorithme}}
+                On suppose ici que $d$ est la distance euclidienne.
+
+                \vspace{12pt}
+                
+                $\bullet$ Proposition [admise] :
+                \begin{emphBox}
+                    La fonction objectif
+                    \[
+                        \sum_{i = 0}^{k - 1} \sum_{x \in C_i} d(x, \mu_i)^2
+                    \]
+
+                    décroit au cours des itérations et l'algorithme termine.
+                \end{emphBox}
+
+                \vspace{12pt}
+                
+                $\bullet$ Corollaire :
+                \begin{emphBox}
+                    L'algorithme des $k$-moyennes détermine un minimum local pour la fonction de coût.
+                \end{emphBox}
+
+                \vspace{12pt}
+                
+                $\bullet$ Remarque : ce minimum n'est pas nécessairement global.
+                
+                Par exemple : on prend $p = 1$, $D = \set{1, 2, 3, 4}$, et $k = 2$.
+
+                On suppose qu'en cas d'égalité $d(x, \mu_0) = d(x, \mu_1)$, le point $x$ est affecté à la classe $C_i$ telle que $\mu_i < \mu_{1 - i}$.
+
+                Si les points initiaux sont $\mu_0 = 1$ et $\mu_1 = 4$,
+
+                \begin{center}
+                    \begin{tikzpicture}
+                        \foreach \i in {1, ..., 4}{
+                            \node (\i) at (\i, 0) {$\times$};
+                        }
+
+                        \draw[rounded corners=5pt, color=ff4500] (.75, .25) rectangle (2.25, -.25);
+                        \draw[rounded corners=5pt, color=blue] (2.75, .25) rectangle (4.25, -.25);
+                    \end{tikzpicture}
+                \end{center}
+
+                $\mu_0 = 1.5,\ \mu_1 = 3.5$.
+
+                Les $\mu_i$ ne changent pas, l'algorithme se termine.
+
+                Le regroupement est de coût $4 \cdot \lr{\dfrac 1 2}^2 = 1$
+
+                Si les points initiaux sont plutôt $\mu_0 = 2$ et $\mu_1 = 4$, on obtient :
+                \begin{center}
+                    \begin{tikzpicture}
+                        \foreach \i in {1, ..., 4}{
+                            \node (\i) at (\i, 0) {$\times$};
+                        }
+
+                        \draw[rounded corners=5pt, color=ff4500] (.75, .25) rectangle (3.25, -.25);
+                        \draw[rounded corners=5pt, color=blue] (3.75, .25) rectangle (4.25, -.25);
+                    \end{tikzpicture}
+                \end{center}
+
+                Les $\mu_i$ ne changent pas, et l'algorithme se termine.
+
+                Le regroupement est de coût $1^2 + 0^2 + 1^2 + 0^2 = 2$.
+
+                Ce problème peut également survenir lorsque les données ont une répartition "naturelle" entre les classes.
+
+                Par exemple, pour $p = 2$ et $k = 3$, avec les données suivantes :
+
+                \begin{center}
+                    \begin{tikzpicture}
+                        \node (1) at (0, 0) [circle, fill] {};
+                        \node (2) at (1.1, -.1) [circle, fill] {};
+                        \draw[color=ff4500] (1.1, -.1) circle (.4);
+                        \node (3) at (-1, -1) [circle, draw] {};
+                        \node (4) at (0.3, -1) [circle, draw] {};
+                        \draw[color=ff4500] (0.3, -1) circle (.4);
+                        \node (5) at (0, -2) [circle, draw] {};
+                        \node (6) at (1.3, -1.2) [circle, draw] {};
+
+                        \node (7) at (4, 0) [circle, draw] {};
+                        \node (8) at (5, 0) [circle, draw] {};
+                        \node (9) at (6, -.8) [circle, draw] {};
+                        \draw[color=ff4500] (6, -.8) circle (.4);
+                        \node (10) at (3.8, -1) [circle, draw] {};
+                        \node (11) at (4, -2) [circle, draw] {};
+                        \node (12) at (5, -.8) [circle, draw] {};
+                        \node (13) at (5.2, -1.7) [circle, draw] {};
+
+                        \node (13) at (9, 0) [circle, draw] {};
+                        \node (14) at (9, -1) [circle, draw] {};
+                        \node (15) at (10, -1) [circle, draw] {};
+                        \node (16) at (10, 0) [circle, fill] {};
+                        \node (17) at (9.5, 1) [circle, draw] {};
+                    \end{tikzpicture}
+                \end{center}
+
+                Les points initiaux colorées en noir donnent bien la répartition que l'on attend.
+
+                Les points cerclés en orange donnent le regroupement suivant :
+
+                \begin{center}
+                    \begin{tikzpicture}
+                        \node (1) at (0, 0) [circle, draw] {};
+                        \node (2) at (1.1, -.1) [circle, draw] {};
+                        \node (3) at (-1, -1) [circle, draw] {};
+                        \node (4) at (0.3, -1) [circle, draw] {};
+                        \node (5) at (0, -2) [circle, draw] {};
+                        \node (6) at (1.3, -1.2) [circle, draw] {};
+
+                        \draw[color=ff4500, rounded corners=5pt] (-1.3, .3) rectangle (.3+.3, -2.3);
+                        \draw[color=blue, rounded corners=5pt] (1.1-.3, .3) rectangle (1.3+.3, -1.2-.3);
+
+                        \node (7) at (4, 0) [circle, draw] {};
+                        \node (8) at (5, 0) [circle, draw] {};
+                        \node (9) at (6, -.8) [circle, draw] {};
+                        \node (10) at (3.8, -1) [circle, draw] {};
+                        \node (11) at (4, -2) [circle, draw] {};
+                        \node (12) at (5, -.8) [circle, draw] {};
+                        \node (13) at (5.2, -1.7) [circle, draw] {};
+
+                        \node (13) at (9, 0) [circle, draw] {};
+                        \node (14) at (9, -1) [circle, draw] {};
+                        \node (15) at (10, -1) [circle, draw] {};
+                        \node (16) at (10, 0) [circle, draw] {};
+                        \node (17) at (9.5, 1) [circle, draw] {};
+
+                        \draw[color=00b9ff, rounded corners=5pt] (3.8-.3, 1.3) rectangle (10.3, -2.3);
+                    \end{tikzpicture}
+                \end{center}
+
+                En pratique, on exécute plusieurs fois l'algorithme avec une sélection aléatoire des points initiaux et on conserve le "meilleur" résultat.
+                Cela nécessite en général de construire un jeu de test étiqueté ou de définir une mesure de la qualité d'un regroupement, ce qui est la difficulté majeure de l'apprentissage non supervisé.
             \end{indt}
         \end{indt}
     \end{indt}
