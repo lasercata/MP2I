@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2023.02.21
+% Last modification     :   2023.02.28
 %
 %------------------------------------------------------------------------
 
@@ -1504,6 +1504,422 @@
 
                 En pratique, on exécute plusieurs fois l'algorithme avec une sélection aléatoire des points initiaux et on conserve le "meilleur" résultat.
                 Cela nécessite en général de construire un jeu de test étiqueté ou de définir une mesure de la qualité d'un regroupement, ce qui est la difficulté majeure de l'apprentissage non supervisé.
+
+                \vspace{12pt}
+                
+                \begin{indt}{Avantages :}
+                    $-$ L'algorithme des $k$-moyennes est bien plus rapide que l'algorithme CHA et, de plus, il n'est pas nécessaire d'attendre la convergence pour obtenir un résultat acceptable ;
+
+                    \begin{indt}{$-$ Cet algorithme présente également une certaine souplesse :}
+                        $+$ Grand choix de distances possibles ;
+
+                        $+$ On peut initialiser l'algorithme de manières différentes (par exemple : tirage aléatoire de la classe initiale de chaque donnée ou tirage aléatoire des $k$ centres parmi les points de l'ensemble convexe des données sans que ces points soient nécessairement des données) ;
+
+                        $+$ Possibilité de calculer les "centres" autrement que par un calcul de barycentre.
+                    \end{indt}
+                \end{indt}
+
+                \vspace{12pt}
+                
+                \begin{indt}{Inconvénients :}
+                    $-$ Le minimum local atteint n'est pas forcément le regroupement recherché ;
+
+                    $-$ Il faut connaître \textit{a priori} le nombre de classes recherché ;
+
+                    $-$ On fait l'hypothèse que les données sont réparties dans des classes relativement convexe (\textit{cf} diagramme de \textsc{Voronoï})
+                \end{indt}
+            \end{indt}
+        \end{indt}
+    \end{indt}
+
+    \vspace{12pt}
+    
+    \begin{indt}{\section{Jeux à deux joueurs}}
+        \begin{indt}{\subsection{Modélisation}}
+            \begin{indt}{\subsubsection{Introduction}}
+                L'objectif de cette partie est d'introduire les concepts de base de la théorie des jeux, en se focalisant sur les jeux à deux joueurs, appelés $J_1$ et $J_2$, sans hasard (donc pas de jeux de dés par exemple), à information complète, \textit{i.e} les joueurs ont la connaissance parfaite de l'état du jeu à tout moment (donc la plupart des jeux de cartes seront pas considérés).
+                On se limite également à des jeux d'accessibilité, \textit{i.e} pour lesquels la condition de victoire est d'atteindre un certain état du jeu.
+                Les notions abordées doivent permettre l'écriture d'un programme capable de jouer au jeu étudié.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Exemple : le jeu de Chomp}}
+                \label{4.1.2}
+
+                $\bullet$ Définition : dans le jeu de Chomp, $J_1$ et $J_2$ se disputent une tablette de chocolat rectangulaire, dont le carré dans le coin supérieur gauche est empoisonné.
+                Tour à tour, les joueurs choisissent un carré, et mangent les carrés situé en dessous et à droite de celui-ci.
+                Le joueur contraint à manger le carré empoisonné a perdu.
+
+                \vspace{12pt}
+                
+                $\bullet$ Exemple : partie sur une tablette $3 \times 4$
+
+                \begin{center}
+                    \begin{tikzpicture}[scale=.5]
+                        \draw[fill, ff4500] (0, 0) rectangle (1, -1);
+                        \draw[step=1cm] (0, 0) grid (4, -3);
+                        \node at (2.5, -2.5) {$\times$};
+                        \node at (2, 1) {$J_1$};
+
+                        \draw[->] (4.5, -1.5) to (5.5, -1.5);
+
+                        % Tablette 2
+                        \draw[fill, ff4500] (6, 0) rectangle (7, -1);
+                        \draw (6, 0) grid (10, -2);
+                        \draw (6, -2) rectangle (8, -3);
+                        \draw (7, -2) -- (7, -3);
+
+                        \node at (9.5, -1.5) {$\times$};
+                        \node at (8, 1) {$J_2$};
+
+                        \draw[->] (10.5, -1.5) to (11.5, -1.5);
+
+                        % Tablette 3
+                        \draw[fill, ff4500] (12, 0) rectangle (13, -1);
+                        \draw (12, 0) grid (15, -2);
+                        \draw (15, 0) rectangle (16, -1);
+                        \draw (12, -2) rectangle (14, -3);
+                        \draw (13, -2) -- (13, -3);
+
+                        \node at (15.5, -.5) {$\times$};
+                        \node at (14, 1) {$J_1$};
+
+                        \draw[->] (16.5, -1.5) to (17.5, -1.5);
+
+                        % Tablette 4
+                        \draw[fill, ff4500] (18, 0) rectangle (19, -1);
+                        \draw (18, 0) grid (21, -2);
+                        \draw (18, -2) grid (20, -3);
+
+                        \node at (19.5, -1.5) {$\times$};
+                        \node at (19.5, 1) {$J_2$};
+
+                        \draw[->] (19.5, -3.5) to (19.5, -4.5);
+
+                        % Tablette 5
+                        \draw[fill, ff4500] (18, -5) rectangle (19, -6);
+                        \draw (18, -5) grid (21, -6);
+                        \draw (18, -5) grid (19, -8);
+
+                        \node at (18.5, -6.5) {$\times$};
+                        \node at (19.5, -9) {$J_1$};
+
+                        \draw[->] (17.5, -6.5) to (16.5, -6.5);
+
+                        % Tablette 6
+                        \draw[fill, ff4500] (13, -6) rectangle (14, -7);
+                        \draw (13, -6) grid (16, -7);
+
+                        \node at (14.5, -6.5) {$\times$};
+                        \node at (14.5, -9) {$J_2$};
+
+                        \draw[->] (12.5, -6.5) to (11.5, -6.5);
+
+                        % Tablette 7
+                        \draw[fill, ff4500] (10, -6) rectangle (11, -7);
+                        \draw (10, -6) rectangle (11, -7);
+                        \node at (10.5, -6.5) {$\times$};
+                        \node at (10.5, -9) {$J_1$};
+                    \end{tikzpicture}
+                \end{center}
+
+                Ici, c'est $J_1$ qui gagne.
+
+                \vspace{12pt}
+                
+                $\bullet$ Modélisation : on peut représenter le jeu de Chomp par un graphe orienté dont les états sont les différents états possibles de la tablette et dont les arcs correspondent aux changements d'état de la tablette associés à des coups légaux. On peut visualiser une partie comme le fait, pour $J_1$ et $J_2$, de déplacer tour à tour un jeton d'état en état du graphe en suivant les arcs.
+                Le joueur qui parvient à placer le jeton sur l'état où il ne reste plus qu'un carré a gagné.
+
+                \vspace{12pt}
+                
+                $\bullet$ Exemple : graphe du jeu de Chomp sur une tablette $2 \times 3$
+
+                \begin{center}
+                    \begin{tikzpicture}[scale=1.3]
+                        \node (A) at (0, 0) [label=above:$A$] {
+                            \tikz[scale=.5]{
+                                \draw[fill, ff4500] (0, 0) rectangle (1, -1);
+                                \draw (0, 0) grid (3, -2);
+                            }
+                        };
+                        \node (B) at (-3, -2) [label=above:$B$] {
+                            \tikz[scale=.5]{
+                                \draw[fill, ff4500] (0, 0) rectangle (1, -1);
+                                \draw (0, 0) grid (3, -1);
+                                \draw (0, -1) rectangle (1, -2);
+                            }
+                        };
+                        \node (C) at (0, -2.4) [label=below:$C$] {
+                            \tikz[scale=.5]{
+                                \draw[fill, ff4500] (0, 0) rectangle (1, -1);
+                                \draw (0, 0) grid (3, -1);
+                                \draw (0, -1) grid (2, -2);
+                            }
+                        };
+                        \node (D) at (3, -2) [label=above:$D$] {
+                            \tikz[scale=.5]{
+                                \draw[fill, ff4500] (0, 0) rectangle (1, -1);
+                                \draw (0, 0) grid (2, -2);
+                            }
+                        };
+                        \node (E) at (-1.5, -4) [label=above:$E$] {
+                            \tikz[scale=.5]{
+                                \draw[fill, ff4500] (0, 0) rectangle (1, -1);
+                                \draw (0, 0) grid (3, -1);
+                            }
+                        };
+                        \node (F) at (1.5, -4) [label=above:$F$] {
+                            \tikz[scale=.5]{
+                                \draw[fill, ff4500] (0, 0) rectangle (1, -1);
+                                \draw (0, 0) grid (1, -2);
+                            }
+                        };
+                        \node (G) at (-3, -6) [label=left:$G$] {
+                            \tikz[scale=.5]{
+                                \draw[fill, ff4500] (0, 0) rectangle (1, -1);
+                                \draw (0, 0) grid (1, -2);
+                                \draw (0, 0) grid (2, -1);
+                            }
+                        };
+                        \node (H) at (3, -6) [label=right:$H$] {
+                            \tikz[scale=.5]{
+                                \draw[fill, ff4500] (0, 0) rectangle (1, -1);
+                                \draw (0, 0) grid (2, -1);
+                            }
+                        };
+                        \node (I) at (0, -7) [label=below:$I$] {
+                            \tikz[scale=.5]{
+                                \draw[fill, ff4500] (0, 0) rectangle (1, -1);
+                                \draw (0, 0) grid (1, -1);
+                            }
+                        };
+
+                        \draw[->] (A) to (B);
+                        \draw[->] (A) to (C);
+                        \draw[->] (A) to (D);
+                        \draw[->] (A) to (E);
+                        \draw[->] (A) to (F);
+
+                        \draw[->] (B) to (E);
+                        \draw[->] (B) to (F);
+                        \draw[->] (B) to (G);
+
+                        \draw[->] (C) to (B);
+                        \draw[->] (C) to (D);
+                        \draw[->] (C) to (E);
+                        \draw[->] (C) to (F);
+
+                        \draw[->] (D) to (F);
+                        \draw[->] (D) to (H);
+                        \draw[->] (D) to (G);
+
+                        \draw[->] (E) to (H);
+                        \draw[->] (E) to (I);
+
+                        \draw[->] (F) to (I);
+
+                        \draw[->] (G) to (F);
+                        \draw[->] (G) to (H);
+
+                        \draw[->] (H) to (I);
+                    \end{tikzpicture}
+                \end{center}
+
+                \begin{indt}{$\bullet$ Remarques :}
+                    $-$ Une partie est représentée par un chemin dans le graphe de l'état initial vers l'unique état terminal.
+                    \'Etant donné un tel chemin, le gagnant est déterminé par le joueur initial et la parité de la longueur du chemin.
+
+                    $-$ On préfère souvent distinguer les états dans lesquels c'est au tour de $J_1$ de jouer de ceux dans lesquels c'est au tour de $J_2$.
+                    On duplique donc les sommets et on crée un graphe biparti.
+
+                    Sur le graphe précédant, voici un extrait du graphe obtenu :
+
+                    \begin{center}
+                        \begin{tikzpicture}[scale=1.2]
+                            \foreach \i/\j in {A/1, B/2, C/3, D/4, E/5, F/6, G/7, H/8, I/9}{
+                                \node (\i1) at ({\j}, 0) {${\i}_1$};
+                                \node (\i2) at ({\j}, -2) {${\i}_2$};
+                            }
+
+                            \foreach \i in {B, ..., F}{
+                                \draw[->] (A1) to (\i2);
+                                \draw[->] (A2) to (\i1);
+                            }
+
+                            \foreach \i in {E, F, H}{
+                                \draw[->] (\i1) to (I2);
+                                \draw[->] (\i2) to (I1);
+                            }
+                        \end{tikzpicture}
+                    \end{center}
+
+                    Si on suppose que c'est toujours $J_1$ qui commence, alors on peut simplifier ce graphe.
+
+                    Par exemple : $A_2$ est inutile donc $C_1$ aussi car il devient de degré entrant nul.
+                \end{indt}
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Vocabulaire}}
+                $\bullet$ Un jeu à deux joueurs est donné par un graphe orienté biparti $G = (S, A)$, aussi appelé \emph{arène}.
+                En notant $S_1, S_2$ une partition convenable de $S$, on dit qur les éléments de $S_1$ (resp. $S_2$) sont les états \emph{contrôlés} par $J_1$ (resp. $J_2$).
+
+                Les arcs de $G$ sont appelés des \emph{coups} : un arc $(s, t)$ décrit un coup possible depuis $s$ pour le joueur qui contrôle cet état.
+
+                \vspace{12pt}
+                
+                $\bullet$ Une partie étant constituée d'une suite de coups alternant les deux joueurs, on définit une partie depuis l'état $s$ comme un chemin de sommet initial $s$, maximal.
+                Un tel chemin est alors nécessairement soit infini, soit fini et tel que son dernier sommet est de degré sortant nul. Les sommets de degré sortant nul sont appelés \emph{états terminaux}.
+
+                On suppose dans la suite que le graphe $G$ est acyclique, donc qu'il n'existe pas de partie infinie.
+
+                \vspace{12pt}
+                
+                $\bullet$ Parmi les états terminaux, on distingue les états gagnants pour $J_1$, les états gagnants pour $J_2$, et les états nuls.
+
+                Attention, un état gagnant pour $J_1$ n'est pas forcément contrôlé par $J_1$ (\textit{cf} Chomp). Cela dépend du jeu.
+
+                On appelle \emph{partie gagnante} pour $J_1$ (resp. $J_2$) toute partie se terminant dans un état gagnant pour $J_1$ (resp. $J_2$) et \emph{partie nulle} toute partie se terminant dans un état nul.
+
+                \vspace{12pt}
+                
+                $\bullet$ Exemple : dans le jeu de Chomp, la partie suivante :
+
+                \begin{center}
+                    \begin{tikzpicture}[scale=.5]
+                        % Tablette 1
+                        \draw[fill, ff4500] (0, 0) rectangle (1, -1);
+                        \draw (0, 0) grid (3, -2);
+
+                        \node at (2.5, -1.5) {$\times$};
+                        \node at (1.5, -3) {$J_1$};
+
+                        \draw[->] (3.5, -1) to (4.5, -1);
+
+                        % Tablette 2
+                        \draw[fill, ff4500] (5, 0) rectangle (6, -1);
+                        \draw (5, 0) grid (7, -2);
+                        \draw (7, 0) rectangle (8, -1);
+
+                        \node at (7.5, -.5) {$\times$};
+                        \node at (6.5, -3) {$J_2$};
+
+                        \draw[->] (8.5, -1) to (9.5, -1);
+
+                        % Tablette 3
+                        \draw[fill, ff4500] (10, 0) rectangle (11, -1);
+                        \draw (10, 0) grid (12, -2);
+
+                        \node at (11.5, -1.5) {$\times$};
+                        \node at (11, -3) {$J_1$};
+
+                        \draw[->] (12.5, -1) to (13.5, -1);
+
+                        % Tablette 4
+                        \draw[fill, ff4500] (14, 0) rectangle (15, -1);
+                        \draw (14, 0) grid (16, -1);
+                        \draw (14, 0) grid (15, -2);
+
+                        \node at (15.5, -.5) {$\times$};
+                        \node at (15, -3) {$J_2$};
+
+                        \draw[->] (16.5, -1) to (17.5, -1);
+
+                        % Tablette 5
+                        \draw[fill, ff4500] (18, 0) rectangle (19, -1);
+                        \draw (18, 0) grid (19, -2);
+
+                        \node at (18.5, -1.5) {$\times$};
+                        \node at (19, -3) {$J_1$};
+
+                        \draw[->] (19.5, -1) to (20.5, -1);
+
+                        % Tablette 6
+                        \draw[fill, ff4500] (21, -.5) rectangle (22, -1.5);
+                        \draw (21, -.5) rectangle (22, -1.5);
+
+                        \node at (21.5, -1) {$\times$};
+                        \node at (21.5, -3) {$J_2$};
+                    \end{tikzpicture}
+                \end{center}
+
+                est décrite par le chemin $A_1, C_2, D_1, G_2, F_1, I_2$ dans le graphe de \ref{4.1.2} (page \pageref{4.1.2}).
+                C'est une partie gagnante pour $J_1$. Les états terminaux du graphe sont $I_1$ et $I_2$ respectivement gagnants pour $J_2$ et $J_1$.
+                Il n'y a donc pas d'état nul ni de partie nulle.
+
+                \vspace{12pt}
+                
+                $\bullet$ Exemple : le \emph{tic-tac-toe}
+
+                $J_1$ et $J_2$ doivent à tour de rôle placer leur symbole personnel (traditionnellement un rond ou une croix) dans une grille $3 \times 3$, de sorte à aligner sur une ligne, une colonne, ou une diagonale trois occurrences de leur symbole.
+
+                Les états du jeux sont les différents états de la grille, ce qui donne un graphe ayant plus de $5 000$ sommets, et plus de $16 000$ arcs.
+
+                Dans les états terminaux, la grille n'est pas nécessairement remplie.
+
+                Par exemple,
+                \[
+                    \begin{array}{c|c|c}
+                        \times & & \bullet
+                        \\
+                        \hline
+                               & \times & \bullet
+                        \\
+                        \hline
+                        \times & \bullet & \times
+                    \end{array}
+                \]
+
+                est un état terminal, gagnant pour le joueur dont le symbole est $\times$.
+
+                On peut d'ailleurs affirmer que dans toute partie d'état initial la grille vide, et qui mène à cet état, c'est ce joueur qui a commencé.
+
+                D'autres états terminaux peuvent correspondre à une grille remplie, comme
+                \[
+                    \begin{array}{c|c|c}
+                        \bullet & \times & \times
+                        \\
+                        \hline
+                        \times & \times & \bullet
+                        \\
+                        \hline
+                        \bullet & \bullet & \bullet
+                    \end{array}
+                \]
+                pour lequel on peut affirmer que pour toute partie menant à cet état, le joueur dont le symbole est $\bullet$ a commencé et a joué le dernier coup nécessairement sur la dernière rangée.
+
+                Dans ce jeu, il existe des états nuls, par exemple
+                \[
+                    \begin{array}{c|c|c}
+                        \times & \times & \bullet
+                        \\
+                        \hline
+                        \bullet & \times & \times
+                        \\
+                        \hline
+                        \times & \bullet & \bullet
+                    \end{array}
+                \]
+
+                Dans le cas où l'état précédant dans une partie est le suivant :
+                \[
+                    \begin{array}{c|c|c}
+                        \times & \times & \bullet
+                        \\
+                        \hline
+                        \bullet & \times & \times
+                        \\
+                        \hline
+                        & \bullet & \bullet
+                    \end{array}
+                \]
+                on pourrait déjà affirmer que la partie sera nulle car c'est le joueur dont le symbole est $\times$ qui le contrôle, alors que si cet état était contrôlé par l'autre joueur, alors ce dernier gagnerait nécessairement, d'où l'importance de travailler sur le graphe biparti, qui donne la connaissance du joueur au trait.
+
+                \vspace{12pt}
+                
+                $\bullet$ Remarque : déterminer à l'avance quels sont les états qui mènent à des parties gagnantes pour l'un des joueurs ou nulles est au c\oe ur de la prise de décision des joueurs. Il est donc nécessaire de trouver des algorithmes efficaces permettant d'évaluer la la situation de jeu afin d'établir une stratégie.
             \end{indt}
         \end{indt}
     \end{indt}
