@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2023.02.28
+% Last modification     :   2023.03.02
 %
 %------------------------------------------------------------------------
 
@@ -1920,6 +1920,297 @@
                 \vspace{12pt}
                 
                 $\bullet$ Remarque : déterminer à l'avance quels sont les états qui mènent à des parties gagnantes pour l'un des joueurs ou nulles est au c\oe ur de la prise de décision des joueurs. Il est donc nécessaire de trouver des algorithmes efficaces permettant d'évaluer la la situation de jeu afin d'établir une stratégie.
+            \end{indt}
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Stratégies}}
+            \begin{indt}{\subsubsection{Stratégies sans mémoire}}
+                $\bullet$ Définition : Soit $G = (S, A)$ un jeu à deux joueurs pour lequel on note $S_1$ l'ensemble des états contrôlés par $J_1$, et $S_2$ celui des états contrôlés par $J_2$.
+
+                Pour $i \in \set{1, 2}$, une stratégie sans mémoire pour $J_i$ est une fonction $f : S_i \longrightarrow S$ telle que $\forall e \in S_i$ non terminal, $(e, f(e)) \in A$.
+
+                Une partie est jouée selon la stratégie $f$ si, en notant $s_0, \ldots, s_n$ cette partie, $\forall j \in \nset 0 {n - 1}\ |\ s_j \in S_i$, alors $s_{j + 1} = f(s_j)$.
+                
+                \vspace{12pt}
+                
+                $\bullet$ Remarque : la stratégie est dite \emph{sans mémoire} car elle ne dépend que de l'état courant du jeu et pas de ce qui s'est passé avant.
+
+                Un objectif est de réussir à construire une stratégie qui garantisse si possible la victoire du joueur qui l'applique, tout en espérant qu'il existe une implémentation efficace pour une telle stratégie.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Stratégies et positions gagnantes}}
+                $\bullet$ Définition (\emph{stratégie gagnante}) : Soit $G = (S, A)$ un jeu à deux joueurs pour lequel on note $S_1$ (resp. $S_2$) l'ensemble des états contrôlés par $J_1$ (resp. $J_2$).
+
+                Une stratégie $f$ est dite \emph{gagnante} depuis l'état $s_0 \in S$ pour le joueur $i$ si et seulement si toute partie jouée selon cette stratégie à partir de l'état $s_0$ est gagnante pour le joueur $i$.
+
+                \vspace{12pt}
+                
+                $\bullet$ Exemple : pour le jeu de Chomp sur une tablette $2 \times 3$ (modélisée par le graphe en \ref{4.1.2}, page \pageref{4.1.2}), la stratégie suivante est gagnante pour $J_1$ depuis $A1$ :
+                \[
+                    \begin{array}{rcl}
+                        f
+                        & : & A_1 \longmapsto B_1
+                        \\
+                        && B_1 \longmapsto G_2
+                        \\
+                        && C_1 \longmapsto B_2
+                        \\
+                        && D_1 \longmapsto G_2
+                        \\
+                        && E_1 \longmapsto I_2
+                        \\
+                        && F_1 \longmapsto I_2
+                        \\
+                        && G_1 \longmapsto H_2
+                        \\
+                        && H_1 \longmapsto H_2
+                        \\
+                        && I_1 \longmapsto A_1
+                    \end{array}
+                \]
+
+                $J_2$ admet une stratégie gagnante depuis $B_2$ :
+                \[
+                    \begin{array}{rcl}
+                        g
+                        & : & A_2 \longmapsto C_1
+                        \\
+                        && B_2 \longmapsto G_1
+                        \\
+                        && C_2 \longmapsto B_1
+                        \\
+                        && D_2 \longmapsto G_1
+                        \\
+                        && E_2 \longmapsto I_1
+                        \\
+                        && F_2 \longmapsto I_1
+                        \\
+                        && G_2 \longmapsto H_1
+                        \\
+                        && H_2 \longmapsto I_1
+                        \\
+                        && I_2 \longmapsto A_1
+                    \end{array}
+                \]
+
+                \vspace{12pt}
+                
+                $\bullet$ Remarque : si $J_1$ et $J_2$ jouent tous les deux leur stratégie, c'est tout de même $J_1$ qui va gagner car celle de $J_2$ n'est gagnante que depuis des états vers lesquels $J_1$ ne va pas jouer.
+
+                \vspace{12pt}
+                
+                $\bullet$ Définition (\emph{position gagnante}) : Soit $G = (S, A)$ un jeu à deux joueurs, et $e \in S$ un état du jeu.
+
+                L'état $e$ est une \emph{position gagnante} pour le joueur $i$ si et seulement si il existe une stratégie gagnante depuis cet état pour ce joueur.
+
+                \vspace{12pt}
+                
+                $\bullet$ Exemple : dans le jeu de Chomp sur une tablette $2 \times 3$, les positions gagnantes pour le joueur $i$ sont $A_i, B_i, D_i, E_i, F_i, H_i, C_{3 - i}, G_{3 - i}, I_{3 - i}$.
+
+                \vspace{12pt}
+                
+                $\bullet$ Proposition :
+                \begin{emphBox}
+                    Dans le jeu de Chomp sur une tablette $p \times q$ avec $(p, q) \neq (1, 1)$, la position initiale est gagnante pour le premier joueur (on suppose que $J_1$ commence).
+                \end{emphBox}
+
+                \vspace{6pt}
+                
+                \begin{proof}
+                    On montre d'abord que toute position est gagnante soit pour $J_1$ soit pour $J_2$, par récurrence forte sur le nombre de carrés de chocolat.
+
+                    $-$ S'il ne reste qu'un carré : l'état est terminal et gagnant pour le joueur qui ne le contrôle pas.
+
+                    $-$ On suppose la propriété vraie pour tous les états à moins de $n$ carrés de chocolat.
+
+                    On considère un état $s$ à $n + 1$ carrés. On note $J_i$ le joueur qui contrôle cet état.
+
+                    Par hypothèse de récurrence, pour tout coup $(s, t)$ possible, comme $t$ a moins de $n$ carrées, $t$ est une position gagnante soit pour $J_1$, soit pour $J_2$.
+
+                    \begin{indt}{Deux options :}
+                        $+$ Il existe un coup $(s, t)$ tel que $t$ est une position gagnante pour $J_i$, alors $s$ est une position gagnante pour $J_i$ (il suffit de jouer ce coup puis d'applique une stratégie gagnante depuis $t$) ;
+
+                        $+$ Pour tous les coups $(s, t)$, $t$ est une position gagnante pour $J_{3 - i}$ : alors $s$ est une position gagnante pour $J_{3 - i}$ car quelque soit le coup joué, $J_{3 - i}$ peut appliquer une stratégie gagnante depuis l'état atteint.
+                    \end{indt}
+
+                    \vspace{6pt}
+                    
+                    Remarque : ce raisonnement s'applique à tout jeu sans cycle ni état terminal nul en appliquant une induction bien fondée selon l'ordre topologique inverse sur le graphe.
+
+                    \vspace{6pt}
+                    
+                    $-$ On suppose que la position initiale est gagnante pour $J_2$.
+                    Il existe donc une stratégie gagnante pour $J_2$ depuis la position initiale.
+                    En particulier si $J_1$ ne mange que le carré en bas à droite, il existe un coup pour $J_2$ qui mène à une position contrôlée par $J_1$ encore gagnante pour $J_2$.
+
+                    \begin{center}
+                        \begin{tikzpicture}[scale=.5]
+                            \draw (0, 0) rectangle (9, -6);
+                            \draw (8, -5) rectangle (9, -6);
+
+                            \draw (5, -3) rectangle (6, -4);
+                            \draw[dashed] (5, -3) -- (5, -6);
+                            \draw[dashed] (5, -3) -- (9, -3);
+
+                            \node (J1) at (10, -6.5) {$J_1$};
+                            \draw[->] (J1) to (8.5, -5.5);
+
+                            \node (J2) at (6, -7.5) {$J_2$};
+                            \draw[->] (J2) to (5.5, -3.5);
+                        \end{tikzpicture}
+                    \end{center}
+
+                    Or le carré en bas à droite est inclus dans les carrés situées en dessous et à droite du carré correspondant au coup de $J_2$.
+
+                    Ainsi, si $J_1$ mange plutôt ce carré pour son premier coup, il atteint une position qui était gagnante pour $J_2$, mais en inversant le joueur qui contrôle cet état. Il peut donc à partir de cet état appliquer la stratégie gagnante de $J_2$ et gagner la partie : absurde
+
+                    La position initiale est donc gagnante pour $J_1$
+                \end{proof}
+
+                \vspace{12pt}
+                
+                $\bullet$ Remarque : la technique utilisée dans cette démonstration est appelée \emph{vol de stratégie} : $J_1$ vole la stratégie de $J_2$ en l'appliquant en premier. Ce n'est pas un démonstration constructive donc cela ne permet pas de déterminer une stratégie gagnante.
+
+                En revanche, on peut déduire de la première partie de la démonstration un algorithme permettant de calculer une stratégie gagnante.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Attracteur}}
+                $\bullet$ Remarque : on se place du point de vue de $J_1$ pour simplifier, mais tout se transpose à $J_2$.
+
+                $\bullet$ Définition (\emph{attracteur}) : Soit $G = (S, A)$ un jeu à deux joueurs pour lequel l'ensemble des états contrôlés par $J_1$ (resp. $J_2$) est noté $S_1$ (resp. $S_2$).
+
+                On note $W_1$ l'ensemble est états terminaux gagnants pour $J_1$.
+
+                On définit
+                \[
+                    \begin{cases}
+                        A_0 = W_1
+                        \\
+                        \forall n \in \N,\
+                        \begin{array}{rcl}
+                            A_{n + 1} = A_n
+                            &\cup&
+                            \set{s \in S_1\ |\ \exists t \in A_n\ |\ (s, t) \in A}
+                            \\
+                            &\cup& \set{s \in S_2\ |\ \forall t,\ (s, t) \in A \Rightarrow t \in A_n}
+                        \end{array}
+                        \vspace{-12pt}
+                    \end{cases}
+                \]
+
+                L'\emph{attracteur} de $W_1$ est l'ensemble
+                \[
+                    \bigcup_{n \in \N} A_n
+                \]
+
+                \vspace{12pt}
+                
+                $\bullet$ Théorème :
+                \begin{emphBox}
+                    Avec les même notations, l'attracteur de $W_1$ est l'ensemble des points gagnants pour $J_1$.
+                \end{emphBox}
+
+                \vspace{6pt}
+                
+                \begin{proof}
+                    $\forall s \in S$, on note
+                    \[
+                        n_s =
+                        \begin{cases}
+                            \min\set{n \in \N\ |\ s \in A_n}
+                            & \displaystyle \text{si}\ s \in \bigcup_{n \in \N} A_n
+                            \\
+                            +\infty
+                            & \text{sinon}
+                        \end{cases}
+                    \]
+
+                    On montre par récurrence forte que $\forall n \in \N,\ \forall s \in S\ |\ n_s = n$, $s$ est une position gagnante pour $J_1$.
+
+                    $-$ $n = 0$ : si $s \in A_0 = W_1$, $s$ est par définition de $W_1$ gagnante pour $J_1$.
+
+                    $-$ Si la propriété est vraie jusqu'au rang $n$, soit $s \in S\ |\ n_s = n + 1$.
+
+                    Par définition,
+                    \[
+                        s \in A_{n + 1} \setminus A_n
+                        \subseteq \set{s \in S_1\ |\ \exists t \in A_n\ |\ (s, t) \in A_n}
+                        \cup \set{s \in S_2\ |\ \forall t \in S,\ (s, t) \in A \Rightarrow t \in A_n}
+                    \]
+
+                    $+$ Si $s \in S_1,\ \exists t \in A_n\ |\ (s, t) \in A$.
+
+                    Comme $t \in A_n,\ n_t \le n$, donc par H.R, $t$ est une position gagnante pour $J_1$.
+                    Donc $s$ est une position gagnante pour $J_1$ ($J_1$ joue $(s, t)$ puis applique une stratégie gagnante depuis $t$).
+
+                    $+$ Si $s \in S_2,\ \forall t \in S,\ (s, t) \in A \Rightarrow t \in A_n$.
+
+                    De même, $\forall t \in S,\ (s, t) \in A \Rightarrow t$ est une position gagnante pour $J_1$.
+
+                    Donc $s$ est une position gagnante pour $J_1$ car quel que soit le coup joué par $J_2$, $J_1$ pourra appliquer une stratégie gagnante depuis l'état atteint.
+
+                    \vspace{6pt}
+                    
+                    $-$ Réciproquement, si
+                    \[
+                        s \notin \bigcup_{n \in \N} A_n
+                    \]
+                    alors $n_s = +\infty$.
+
+                    On montre que $s$ est soit gagnante pour $J_2$, soit nulle.
+
+                    On procède par induction bien fondée selon l'ordre topologique inverse (existe car $G$ est acyclique).
+
+                    \begin{indt}{$+$ Si $s$ est terminal : comme}
+                        \[
+                            s \notin \bigcup_{n \in \N} A_n
+                        \]
+                        alors $s \notin W_1 = A_0$, donc $s$ est un élément terminal nul ou gagnant pour $J_2$.
+                    \end{indt}
+
+                    \begin{indt}{$+$ Si $s$ est tel que}
+                        \[
+                            \forall s' \notin \bigcup_{n \in \N},\ s' < s
+                        \]
+                        selon l'ordre topologique inverse, $s'$ est une position gagnante pour $J_2$ ou nulle.
+
+                        \begin{indt}{$*$ Si $s$ est contrôlé par $J_2$ :}
+                            comme $n_s = +\infty,\ \forall t \in S\ |\ (s, t) \in A,\ n_t = +\infty$ (sinon $n_s \le n_t + 1$).
+
+                            Alors par hypothèse d'induction, $\forall t \in S\ |\ (s, t) \in A$ (\textit{i.e} $t < s$), $t$ est gagnant pour $J_2$ ou nul, donc quel que soit le coup joué par $J_1$, il est possible pour $J_2$ d'obtenir au moins la nulle, donc $s$ est soit gagnant pour $J_2$, soit nul.
+                        \end{indt}
+
+                        \begin{indt}{$*$ Si $s$ est contrôlé par $J_2$ :}
+                            comme $n_s = +\infty,\ \exists t \in S\ |\ (s, t) \in A$, et $n_t = +\infty$ (sinon $\exists N \in \N\ |\ n\forall t \in S\ |\ (s, t) \in A, n_t \le N$, d'où $n_s \le N + 1$).
+
+                            Comme $t < s$, par hypothèse d'induction, $t$ est gagnant pour $J_2$ ou nul.
+
+                            Donc $J_2$ obtient au moins la nulle en jouant $(s, t)$.
+
+                            Donc $s$ est gagnant pour $J_2$ ou nul.
+                        \end{indt}
+                    \end{indt}
+                \end{proof}
+
+                \vspace{12pt}
+                
+                \begin{indt}{$\bullet$ Remarque : cette démonstration permet de construire une stratégie gagnante pour $J_1$ (depuis les états de l'attracteur $W_1$) :}
+                    $-$ Si $n_s = +\infty$, le coup importe peu car si $J_2$ joue parfaitement, $J_1$ obtiendra au mieux la nulle.
+
+                    $-$ Si $n_s < +\ingty$, jouer un coup $(s, t) \in A\ |\ n_t < +\infty$.
+                \end{indt}
+
+                Il "suffit" pour cela de calculer (efficacement) l'attracteur de $W_1$. Cela ne fonctionne que si le graphe du jeu n'est pas trop grand.
+
+                %\vspace{12pt}
+                
+                %\boxed{\rm Exo} : algorithme en temps linéaire qui 
             \end{indt}
         \end{indt}
     \end{indt}
