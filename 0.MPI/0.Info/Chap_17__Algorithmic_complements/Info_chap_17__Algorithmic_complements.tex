@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2023.01.31
+% Last modification     :   2023.03.05
 %
 %------------------------------------------------------------------------
 
@@ -886,7 +886,7 @@
                             + \underbrace{\dfrac{\displaystyle W - \sum_{i = 1}^{j - 1} w_i}{w_j}}_{< 1} p_j
                             \\
                             &\le& \displaystyle
-                            \sum_{i = 1}^{j - 1} p_i + p_i
+                            \sum_{i = 1}^{j - 1} p_i + p_j
                             \vspace{3pt}
                             \\
                             &\le& \displaystyle
@@ -929,7 +929,7 @@
 
                 On dit que $M$ est un \emph{algorithme d'approximation} de facteur $\alpha$, ou \emph{$\alpha$-approximation}, pour le problème d'optimisation si, en notant $\forall a \in A$, $c^*(a)$ le coût d'une solution optimale associée à $a$ :
                 \begin{indt}{}
-                    $-$ si on a un problème de minimisation, $\forall a \in A,\ c(M(a)) < \alpha c^*(a)$ (et $\alpha > 1$)
+                    $-$ si on a un problème de minimisation, $\forall a \in A,\ c(M(a)) \le \alpha c^*(a)$ (et $\alpha > 1$)
                     
                     $-$ si on a un problème de maximisation, $\forall a \in A,\ c(M(a)) \ge \alpha c^*(a)$ (et $\alpha < 1$).
                 \end{indt}
@@ -1084,7 +1084,7 @@
                 \vspace{6pt}
                 
                 \begin{proof}
-                    On a l'invariant \simplecit{les priorité des sommets sont leurs degrés}.
+                    On a l'invariant \simplecit{les priorités des sommets sont leurs degrés}.
 
                     Il suffit alors de démontrer l'invariant \simplecit{le sous-graphe $G_F$ induit par $F$ est une forêt} car une sommet de degré minimal dans une forêt est soi isolé, soit une feuille d'un arbre.
 
@@ -1111,7 +1111,7 @@
                 
                 \begin{proof}
                     Tout d'abord, $C$ est bien une couverture car chaque arête est supprimée parce qu'elle est couverte par un élément ajouté à $C$.
-                    Toutes les arêtes sont bien supprimées car on retire teous les sommets de la file et pour chaque sommet extrait, il est de degré 0 ou 1 lors de son extraction, \textit{i.e} toutes els arêtes incidentes à ce sommet ont été supprimées sauf peut-être une qui sera supprimé au moment de l'exécution.
+                    Toutes les arêtes sont bien supprimées car on retire teous les sommets de la file et pour chaque sommet extrait, il est de degré 0 ou 1 lors de son extraction, \textit{i.e} toutes les arêtes incidentes à ce sommet ont été supprimées sauf peut-être une qui sera supprimé au moment de l'exécution.
 
                     \vspace{12pt}
                     
@@ -1239,11 +1239,11 @@
                     $-$ Si $c$ contient une variable et sa négation, $\mathbb P(S_c = 1) = 1$
 
                     $-$ Sinon, on note $k_c$ le nombre de littéraux indépendants de $c$, \textit{i.e} portant sur des variables différentes.
-                    $c$ n'est satisfaite si et seulement si tous les littéraux prennent la valeur $F$, ce qui arrive avec la probabilité $\dfrac{1}{2^{k_0}}$ car les tirages aléatoires sont indépendants.
+                    $c$ est satisfaite si et seulement si tous les littéraux prennent la valeur $F$, ce qui arrive avec la probabilité $\dfrac{1}{2^{k_c}}$ car les tirages aléatoires sont indépendants.
 
                     Donc
                     \[
-                        \mathbb P(S_c = 1) = 1 - \dfrac{1}{2^{k_0}} \ge \dfrac 1 2
+                        \mathbb P(S_c = 1) = 1 - \dfrac{1}{2^{k_c}} \ge \dfrac 1 2
                     \]
 
                     Donc $E(S) \ge \dfrac k 2 \ge \dfrac{V^*(\varphi)}{2}$, où $V^*(\varphi)$ est le nombre maximal de clauses que l'on peut satisfaire dans $\varphi$ (majoré par le nombre de clauses de $\varphi$).
@@ -1305,7 +1305,7 @@
                     }
                 \end{indalgo}
 
-                On note $l = [l_1, \ldots, l_n]$, et $C$ la variable aléatoire du nombre de comparaisons effectuées par \textsf{Tri\_rapide}.
+                On note $l = [l_1, \ldots, l_n]$, et $C$ la variable aléatoire du nombre de comparaisons effectuées par \texttt{Tri\_rapide}.
 
                 On remarque que lorsque deux éléments sont comparés, c'est que l'un des deux est le pivot courant, donc ils ne seront plus comparés par la suite.
 
@@ -1319,7 +1319,7 @@
                 Donc
                 \[
                     E(C) =
-                    \sum{i = 1}^n \sum_{j = i + 1}^n E(C_{i, j})
+                    \sum_{i = 1}^n \sum_{j = i + 1}^n E(C_{i, j})
                     = \sum_{i = 1}^n \sum_{j = i + 1}^n p_{i, j}
                 \]
 
@@ -1362,7 +1362,7 @@
                 Remarque : la racine est comparée avec tous les éléments des deux sous-arbres et les éléments du sous-arbre gauche ne sont jamais comparés avec ceux du sous-arbre droit.
 
                 \begin{indt}{Ainsi, si $1 \le i < j \le n$, il y a deux cas :}
-                    $-$ $\exists k \in \nset 1 n\ |\ l_i < l_k < l_j$ et $l_k$ est choisi come pivot courant juste avant $l_i$ et $l_j$ : $l_i$ et $l_j$ se retrouvent alors dans des sous-arbres distincts et ne sont pas comparés.
+                    $-$ $\exists k \in \nset 1 n\ |\ l_i < l_k < l_j$ et $l_k$ est choisi comme pivot courant juste avant $l_i$ et $l_j$ : $l_i$ et $l_j$ se retrouvent alors dans des sous-arbres distincts et ne sont pas comparés.
 
                     $-$ $\forall k \in \nset 1 n\ |\ l_i < l_k < l_j$, $l_k$ est choisi comme pivot après $l_i$ ou $l_j$, donc soit $l_i$, soit $l_j$ est choisi comme pivot en premier parmi tous ces éléments donc soit $l_i$, soit $l_j$ est racine du sous-arbre associé et $l_i$ et $l_j$ sont comparés.
                 \end{indt}
@@ -1421,7 +1421,7 @@
                 
                 $\bullet$ Pour le problème des $N$ reines : ce problème consiste à placer $N$ dames sur un échiquier $N \times N$ de telle sorte qu'aucune dame ne soit en prise.
 
-                Il est possible de résoudre ce problème par un algorithme de recherche exhaustive avec un retour sur place (en plaçant les dames rangée par rangée) mais en pratique cela ne fonctionne que pour $N$ assez petit en raison du grand nombre de retours sur trace.
+                Il est possible de résoudre ce problème par un algorithme de recherche exhaustive avec un retour sur trace (en plaçant les dames rangée par rangée) mais en pratique cela ne fonctionne que pour $N$ assez petit en raison du grand nombre de retours sur trace.
 
                 Un algorithme probabiliste qui fonctionne mieux en pratique consiste à tirer aléatoirement les positions des dames rangée après rangée et à repartir de zéro en cas d'impossibilité à trouver une position valide sur une rangée (on appelle position valide sur la rangée $k$ une case de la rangée $k$ qui n'est pas en prise vis-à-vis des dames placées sur les $k$ premières rangées).
 
