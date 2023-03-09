@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2023.03.02
+% Last modification     :   2023.03.09
 %
 %------------------------------------------------------------------------
 
@@ -2203,7 +2203,7 @@
                 \begin{indt}{$\bullet$ Remarque : cette démonstration permet de construire une stratégie gagnante pour $J_1$ (depuis les états de l'attracteur $W_1$) :}
                     $-$ Si $n_s = +\infty$, le coup importe peu car si $J_2$ joue parfaitement, $J_1$ obtiendra au mieux la nulle.
 
-                    $-$ Si $n_s < +\ingty$, jouer un coup $(s, t) \in A\ |\ n_t < +\infty$.
+                    $-$ Si $n_s < +\infty$, jouer un coup $(s, t) \in A\ |\ n_t < +\infty$.
                 \end{indt}
 
                 Il "suffit" pour cela de calculer (efficacement) l'attracteur de $W_1$. Cela ne fonctionne que si le graphe du jeu n'est pas trop grand.
@@ -2211,6 +2211,214 @@
                 %\vspace{12pt}
                 
                 %\boxed{\rm Exo} : algorithme en temps linéaire qui 
+
+                \vspace{12pt}
+                
+                $\bullet$ Calcul de l'attracteur :
+                On procède par un parcours du graphe (transposé) du jeu en considérant les états selon l'ordre topologique inverse.
+
+                On part des états terminaux et on leur associe leur statut : gagnant pour $J_1$, gagnant pour $J_2$, ou nul.
+
+                Puis on "remonte" dans le graphe : pour chaque état dont le statut de tous les successeurs est connu (garanti par le choix de l'ordre topologique inverse), on détermine le statut de cet état en fonction du joueur qui contrôle l'état et des status des successeurs (comme dans la démonstration).
+
+                \vspace{6pt}
+                
+                Complexité :
+
+                $-$ Calcul du graphe transposé : $\mathcal O(\abs S + \abs A)$.
+
+                $-$ Tri topologique du graphe transposé : $\mathcal O(\abs S + \abs A)$.
+
+                $-$ Parcours des sommets selon ce tri, en observant leurs successeurs dans le graphe du jeu : $\mathcal O(\abs S + \abs A)$.
+
+                Donc au total, $\mathcal O(\abs S + \abs A)$.
+
+                \vspace{12pt}
+                
+                \boxed{\rm Exo} Modification de l'algorithme pour calculer une stratégie à la volée + code.
+            \end{indt}
+        \end{indt}
+
+        \vspace{12pt}
+        
+        \begin{indt}{\subsection{Algorithme min-max}}
+            \begin{indt}{\subsubsection{Principe}}
+                Dans la perspective d'écrire un programme capable de jouer, on se place du point de vue où l'on dispose d'un état donné pour lequel on essaie de déterminer un couple. Contrairement au calcul des attracteurs dans lequel on remonte depuis les états terminaux, on essaie ici d'explorer le graphe à partir de l'état donné pour déterminer son statut, en supposant que l'adversaire joue parfaitement.
+
+                \begin{indt}{Ainsi, on construit un arbre tel que :}
+                    $-$ la racine de l'arbre est l'état donné ;
+
+                    $-$ pour chaque n\oe ud interne, les fils de ce n\oe ud sont les états que l'on peut atteindre en un coup.
+                \end{indt}
+
+                En particulier, les n\oe uds de profondeur paire sont contrôles par le joueur et ceux de profondeur impaire par l'adversaire.
+
+                \begin{indt}{L'algorithme min-max est alors l'algorithme récursif qui consiste à calculer une évaluation numérique pour chaque n\oe ud (un pour les positions gagnantes, $-1$ pour les positions perdantes, et 0 pour les positions nulles) de la manière suivante :}
+                    $-$ Si le n\oe ud est une feuille, \textit{i.e} un état terminal, on lui attribue l'évaluation associée à son statut.
+
+                    \begin{indt}{$-$ Si le n\oe ud est interne, il y a deux possibilités :}
+                        $+$ Si le n\oe ud est de profondeur paire : comme le joueur contrôle cet état et cherche à maximiser ses chances de gain, l'évaluation de n\oe ud est le maximum des évaluations de ses fils (et on peut retenir un coup associé) ;
+
+                        $+$ Le n\oe ud est de profondeur impaire : comme l'adversaire contrôle cet état et comme on suppose qu'il joue parfaitement, sachant qu'il cherche à minimiser les chances de gain du joueur, l'évaluation du n\oe ud est le minimum des évaluations des ses fils.
+                    \end{indt}
+                \end{indt}
+
+                \vspace{12pt}
+                
+                \begin{indt}{Remarques :}
+                    \begin{indt}{$-$ C'est une réécriture du calcul des attracteurs :}
+                        Pour chaque état contrôlé par le joueur, son évaluation vaut 1 si et seulement si il existe un coup vers un état d'évaluation 1.
+
+                        Pour chaque état contrôlé par l'adversaire, son évaluation vaut 1 si et seulement si tous les coups mènent vers des états d'évaluation 1.
+                    \end{indt}
+
+                    Un programme qui jouerait selon cet algorithme serait donc beaucoup moins efficace qu'un programme qui précalculerait les attracteurs pour jouer ensuite selon le résultat de ce précalcul. En revanche, cet algorithme est assez simple pour que l'on puisse le modifier de sorte à pouvoir l'appliquer dans des cas où le graphe est trop grand pour réaliser un calcul des attracteurs.
+
+                    \vspace{6pt}
+                    
+                    $-$ On parle d'algorithme \emph{min-max} car l'évaluation d'un état se fait \textit{via} un parcours de l'arbre en alternant des calculs de min et de max.
+
+                    \vspace{6pt}
+                    
+                    $-$ Il y a souvent plusieurs séries de coups qui mènent d'un même état de départ à un même état d'arrivée, donc certains sous-arbres sont identiques : on peut éviter de recalculer les évaluations en effectuant une mémoïsation (ce qui revient à partager les sous-arbres). Cela consiste à effectuer l'exploration du graphe du jeu directement.
+                \end{indt}
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Heuristiques}}
+                En pratique, le graphe du jeu est souvent trop grand pour être représenté en mémoire (par exemple : pour les dames, il y a de l'ordre de $10^{32}$ états, pour les échecs il y a de l'ordre de $10^{52}$ états, pour le go, il y a de l'ordre de $> 10^{100}$ états).
+                Même la mémoïsation ne permet pas d'appliquer cet algorithme, mais il est possible d'en conserver le principe en fixant une profondeur maximale pour l'exploration.
+
+                Le principe le l'évaluation reste le même mais il faut donner une valeur aux n\oe uds de la profondeur $p$ fixée qui ne sont pas terminaux. On utilise pour cela une fonction $h$, appelée \emph{heuristique}, des états vers $\R \cup \set{\pm \infty}$.
+
+                \begin{indt}{Sa spécification est la suivante :}
+                    $-$ Les états terminaux gagnants prennent la valeur $+\infty$ ;
+
+                    $-$ Les états terminaux perdants prennent la valeur $-\infty$ ;
+
+                    $-$ Les autres états prennent une valeur dans $\R$.
+                \end{indt}
+
+                Il est d'usage d'attribuer la valeur $0$ aux états terminaux nuls, mais ce n'est pas un obligation.
+                La seule contrainte est que plus la valeur attribuée à un état est grande, plus cet état est jugé favorable au joueur.
+
+                Pour jouer à un jeu, il est donc possible d'écrire un algorithme qui implémente l'algorithme min-max, limité à la profondeur $p$ et qui évalue chaque état terminal et chaque état de profondeur $p$ par l'heuristique $h$.
+
+                \vspace{12pt}
+                
+                $\bullet$ Exemple :
+
+                $-$ Exécution sur l'arbre suivant, pour lequel les évaluations de l'heuristique sont placées aux feuilles :
+
+                \begin{center}
+                    \begin{tikzpicture}
+                        \node (0) at (0, 0) [circle, draw] {1}
+                            child {node [circle, draw, xshift=-40pt] {$-1$}}
+                            child {node [circle, draw, xshift=-30pt] {1}
+                                child {node [circle, draw, xshift=-10pt] {3}
+                                    child {node [circle, draw] {$-4$}}
+                                    child {node [circle, draw] {$3$}}
+                                }
+                                child {node [circle, draw, xshift=10pt] {1}
+                                    child {node [circle, draw] {1}}
+                                }
+                            }
+                            child {node [circle, draw, xshift=30pt] {$-5$}
+                                child {node [circle, draw] {$2$}}
+                                child {node [circle, draw] {$-5$}}
+                                child {node [circle, draw] {$1$}}
+                            }
+                            child {node [circle, draw, xshift=40pt] {$0$}}
+                        ;
+                    \end{tikzpicture}
+                \end{center}
+
+                \begin{tabular}{cc}
+                    Profondeur
+                    \\
+                    \hline
+                    0 & max
+                    \\
+                    1 & min
+                    \\
+                    2 & max
+                    \\
+                    $3 = p$ & $h$
+                \end{tabular}
+
+                Coup choisi par l'algorithme : de la racine vers 1.
+
+                \vspace{12pt}
+                
+                $-$ Heuristique pour le jeu du puissance 4 :
+
+                Principe : les joueurs placent des jetons colorés sur une grille $6 \times 7$ de la manière suivante : à tour de rôle les joueurs choisissent une colonne sur laquelle il reste une case vide et placent un jeton de leur couleur sur la case vide située le plus en bas sur cette colonne.
+                Un joueur gagne dès qu'il parvient à aligner quatre jetons de sa couleur, horizontalement, verticalement, ou en diagonale.
+
+                Idée d'heuristique : on attribue à chaque case la valeur suivante : le nombre d'alignements qu'il est possible de réaliser à l'aide d'un jeton placé sur cette case, de manière indépendante du remplissage actuel de la grille :
+                \[
+                    \begin{matrix}
+                        3 & 4 & 5 & 7 & 5 & 4 & 3
+                        \\
+                        4 & 6 & 8 & 10 & 8 & 6 & 4
+                        \\
+                        5 & 8 & 11 & 13 & 11 & 8 & 5
+                        \\
+                        5 & 8 & 11 & 13 & 11 & 8 & 5
+                        \\
+                        4 & 6 & 8 & 10 & 8 & 6 & 4
+                        \\
+                        3 & 4 & 5 & 7 & 5 & 4 & 3
+                    \end{matrix}
+                \]
+
+                Pour les états non terminaux, l'heuristique attribue l'évaluation suivante : la différence entre la somme des valeurs des cases occupées par des jetons du joueur qui applique l'heuristique et la somme des valeurs des cases occupées par des jetons de l'autre joueur (\textit{i.e} l'adversaire).
+
+                Par exemple, pour l'état suivant :
+                \begin{center}
+                    \begin{tabular}{|c|c|c|c|c|c|c|}
+                        &
+                        & \textcolor{blue}{$\circ$}
+                        &&&&
+                        \\
+                        &
+                        & \textcolor{ff4500}{$\bullet$}
+                        & \textcolor{blue}{$\circ$}
+                        & \textcolor{ff4500}{$\bullet$}
+                        &&
+                        \\
+                        & \textcolor{blue}{$\circ$}
+                        & \textcolor{ff4500}{$\bullet$}
+                        & \textcolor{ff4500}{$\bullet$}
+                        & \textcolor{blue}{$\circ$}
+                        &&
+                        \\
+                        \textcolor{ff4500}{$\bullet$}
+                        & \textcolor{blue}{$\circ$}
+                        & \textcolor{blue}{$\circ$}
+                        & \textcolor{blue}{$\circ$}
+                        & \textcolor{ff4500}{$\bullet$}
+                        & \textcolor{ff4500}{$\bullet$}
+                        & $\phantom{\bullet}$
+                        \\
+                        \hline
+                    \end{tabular}
+                \end{center}
+
+                l'heuristique évalue pour le joueur bleu (\textcolor{blue}{$\circ$}) :
+                \[
+                    4 + 5 + 7 + 6 + 8 + 13 + 11
+                    - 3 - 5 - 4 - 8 - 10 - 11 - 11
+                    = +2
+                \]
+
+                donc une position légèrement favorable pour le joueur bleu.
+
+                \vspace{12pt}
+                
+                $\bullet$ Remarque : comme le branchement n'est pas constant, travailler avec la même profondeur pour toutes les branches n'est pas forcément pertinent : certaines branches vont nécessiter beaucoup plus de temps de calcul que les autres.
+                Une possibilité pour équilibrer la charge consiste à appliquer un parcours en profondeur itéré : on augmente progressivement la profondeur en donnant la priorité aux branches qui contiennent plus de n\oe uds et en s'arrêtant lorsque le temps attribué au programme pour le calcul du coup est écoulé.
             \end{indt}
         \end{indt}
     \end{indt}
