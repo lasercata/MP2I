@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2023.03.09
+% Last modification     :   2023.03.12
 %
 %------------------------------------------------------------------------
 
@@ -1624,7 +1624,7 @@
                     \end{tikzpicture}
                 \end{center}
 
-                Ici, c'est $J_1$ qui gagne.
+                Ici, c'est $J_2$ qui gagne.
 
                 \vspace{12pt}
                 
@@ -1764,7 +1764,7 @@
             
             \begin{indt}{\subsubsection{Vocabulaire}}
                 $\bullet$ Un jeu à deux joueurs est donné par un graphe orienté biparti $G = (S, A)$, aussi appelé \emph{arène}.
-                En notant $S_1, S_2$ une partition convenable de $S$, on dit qur les éléments de $S_1$ (resp. $S_2$) sont les états \emph{contrôlés} par $J_1$ (resp. $J_2$).
+                En notant $S_1, S_2$ une partition convenable de $S$, on dit que les éléments de $S_1$ (resp. $S_2$) sont les états \emph{contrôlés} par $J_1$ (resp. $J_2$).
 
                 Les arcs de $G$ sont appelés des \emph{coups} : un arc $(s, t)$ décrit un coup possible depuis $s$ pour le joueur qui contrôle cet état.
 
@@ -2032,7 +2032,7 @@
                     Par hypothèse de récurrence, pour tout coup $(s, t)$ possible, comme $t$ a moins de $n$ carrées, $t$ est une position gagnante soit pour $J_1$, soit pour $J_2$.
 
                     \begin{indt}{Deux options :}
-                        $+$ Il existe un coup $(s, t)$ tel que $t$ est une position gagnante pour $J_i$, alors $s$ est une position gagnante pour $J_i$ (il suffit de jouer ce coup puis d'applique une stratégie gagnante depuis $t$) ;
+                        $+$ Il existe un coup $(s, t)$ tel que $t$ est une position gagnante pour $J_i$, alors $s$ est une position gagnante pour $J_i$ (il suffit de jouer ce coup puis d'appliquer une stratégie gagnante depuis $t$) ;
 
                         $+$ Pour tous les coups $(s, t)$, $t$ est une position gagnante pour $J_{3 - i}$ : alors $s$ est une position gagnante pour $J_{3 - i}$ car quelque soit le coup joué, $J_{3 - i}$ peut appliquer une stratégie gagnante depuis l'état atteint.
                     \end{indt}
@@ -2092,17 +2092,20 @@
                     \begin{cases}
                         A_0 = W_1
                         \\
-                        \forall n \in \N,\
+                        \!\!
                         \begin{array}{rcl}
+                            \forall n \in \N,\
                             A_{n + 1} = A_n
                             &\cup&
                             \set{s \in S_1\ |\ \exists t \in A_n\ |\ (s, t) \in A}
                             \\
-                            &\cup& \set{s \in S_2\ |\ \forall t,\ (s, t) \in A \Rightarrow t \in A_n}
+                            &\cup& \set{s \in S_2\ |\ \forall t \in S,\ (s, t) \in A \Rightarrow t \in A_n}
                         \end{array}
-                        \vspace{-12pt}
+                        \vspace{-18pt}
                     \end{cases}
                 \]
+
+                \vspace{12pt}
 
                 L'\emph{attracteur} de $W_1$ est l'ensemble
                 \[
@@ -2253,7 +2256,7 @@
 
                 En particulier, les n\oe uds de profondeur paire sont contrôles par le joueur et ceux de profondeur impaire par l'adversaire.
 
-                \begin{indt}{L'algorithme min-max est alors l'algorithme récursif qui consiste à calculer une évaluation numérique pour chaque n\oe ud (un pour les positions gagnantes, $-1$ pour les positions perdantes, et 0 pour les positions nulles) de la manière suivante :}
+                \begin{indt}{L'algorithme min-max est alors l'algorithme récursif qui consiste à calculer une évaluation numérique pour chaque n\oe ud ($1$ pour les positions gagnantes, $-1$ pour les positions perdantes, et $0$ pour les positions nulles) de la manière suivante :}
                     $-$ Si le n\oe ud est une feuille, \textit{i.e} un état terminal, on lui attribue l'évaluation associée à son statut.
 
                     \begin{indt}{$-$ Si le n\oe ud est interne, il y a deux possibilités :}
