@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2023.03.12
+% Last modification     :   2023.03.14
 %
 %------------------------------------------------------------------------
 
@@ -2422,6 +2422,266 @@
                 
                 $\bullet$ Remarque : comme le branchement n'est pas constant, travailler avec la même profondeur pour toutes les branches n'est pas forcément pertinent : certaines branches vont nécessiter beaucoup plus de temps de calcul que les autres.
                 Une possibilité pour équilibrer la charge consiste à appliquer un parcours en profondeur itéré : on augmente progressivement la profondeur en donnant la priorité aux branches qui contiennent plus de n\oe uds et en s'arrêtant lorsque le temps attribué au programme pour le calcul du coup est écoulé.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{\'Elagage $\alpha$--$\beta$}}
+                Principe : de manière similaire à un algorithme par séparation et évaluation, il est parfois possible de ne pas explorer certaines branches de l'arbre en exploitant la connaissance de bornes sur l'évaluation d'un n\oe ud.
+
+                Par exemple :
+
+                \begin{center}
+                    \begin{tikzpicture}
+                        \node (0) at (0, 0) [circle, draw] {4}
+                            child {node [circle, draw, xshift=-80pt] {3}
+                                child {node [circle, draw] {3}
+                                    child {node {} edge from parent [dashed]}
+                                }
+                                child {node [circle, draw] {4}
+                                    child {node {} edge from parent [dashed]}
+                                }
+                                child {node [circle, draw] {5}
+                                    child {node {} edge from parent [dashed]}
+                                }
+                            }
+                            child {node [circle, draw] {1}
+                                child {node [circle, draw] {2}
+                                    child {node {} edge from parent [dashed]}
+                                }
+                                child {node [circle, draw] {3}
+                                    child {node {} edge from parent [dashed]}
+                                }
+                                child {node [circle, draw] {1}
+                                    child {node {} edge from parent [dashed]}
+                                }
+                            }
+                            child {node [circle, draw, xshift=80pt] {4}
+                                child {node [circle, draw] {5}
+                                    child {node {} edge from parent [dashed]}
+                                }
+                                child {node [circle, draw] {4}
+                                    child {node {} edge from parent [dashed]}
+                                }
+                                child {node [circle, draw] {8}
+                                    child {node [circle, draw] {6}
+                                        child {node {} edge from parent [dashed]}
+                                    }
+                                    child {node [circle, draw] {8}
+                                        child {node {} edge from parent [dashed]}
+                                    }
+                                }
+                            }
+                        ;
+                    \end{tikzpicture}
+                \end{center}
+
+                On suppose que l'exploration se fait de gauche à droite.
+                Lorsque le n\oe ud 2 est évalué, comme son père est un n\oe ud min, on sait que l'évaluation de ce dernier sera inférieure ou égale à 2.
+
+                Or la racine est un n\oe ud max dont l'un des fils a déjà une évaluation connu égale à 3. On sait donc que la branche menant au père du n\oe ud 2 ne permettra pas de réaliser le maximum. On peut donc interrompre l'évaluation de cette branche (donc ne pas évaluer les n\oe uds 3 et 1).
+
+                De même, lorsque l'évaluation du n\oe ud 6 est connue, il devient inutile d'évaluer son frère car leur père aura une évaluation supérieure ou égale à 6, donc supérieure au minimum courant nécessaire à l'évaluation du n\oe ud 4.
+
+                \vspace{12pt}
+                
+                $\bullet$ Coupure $\alpha$, coupure $\beta$ :
+
+                On ajoute deux paramètres à l'algorithme min--max, nommés $\alpha$ et $\beta$, qui représentent respectivement les bornes inférieures et supérieures de l'intervalle des évaluations "utiles" d'un n\oe ud.
+                Si une évaluation est assurée de sortir de cet intervalle, il est inutile de poursuivre son calcul car elle ne sera pas prise en compte pour les calculs de min et de max.
+
+                $-$ Si le n\oe ud courant est un n\oe ud min, alors son père est un n\oe ud max.
+                Dans ce cas, si l'un des fils du n\oe ud courant prend une évaluation inférieure à $\alpha$, alors c'est aussi le cas de l'évaluation du n\oe ud courant, et il est inutile de continuer.
+
+                \begin{center}
+                    \begin{tikzpicture}
+                        \node (0) at (0, 0) [circle, draw] {$p$}
+                            child {node [circle, draw, xshift=-40pt] {$x_1$}}
+                            child {node [circle, draw] {$x_n$}}
+                            child {node [circle, draw] {$n$}
+                                child {node [circle, draw] {$f$}}
+                                child {node {$\ldots \vphantom{a}$}}
+                            }
+                        ;
+
+                        \node at (-1.3, -1.45) {$\ldots$};
+                    \end{tikzpicture}
+                \end{center}
+
+                On considère $\alpha = \max(\mathrm{eval}(x_i))$.
+
+                Si $\mathrm{eval}(f) \le \alpha$, alors $\mathrm{eval}(n) \le \alpha$, donc $n$ ne sera pas choisi pour le calcul de $\mathrm{eval}(p)$.
+                On coupe donc les autres branches issues de $n$.
+
+                On parle ici de \emph{coupure $\alpha$}.
+
+                \vspace{6pt}
+                
+                $-$ Si le n\oe ud courant est un n\oe ud max, alors son père est un n\oe ud min.
+                Dans ce cas, si l'un des fils du n\oe ud courant prend une valeur supérieure à $\beta$, alors c'est aussi le cas du n\oe ud courant, et on peut élaguer.
+
+                Avec le même dessin, on considère maintenant $\beta = \min(\mathrm{eval}(x_i))$.
+
+                Si $\mathrm{eval}(f) \ge \beta$, alors $\mathrm{eval}(n) \ge \beta$, et $n$ ne servira pas au calcul de $\mathrm{eval}(p)$.
+
+                Les autres branches issues de $n$ sont élaguées et on parle de \emph{coupure $\beta$}.
+
+                \vspace{12pt}
+                
+                $\bullet$ Algorithme :
+
+                Initialement, on prend $\alpha = -\infty$, et $\beta = +\infty$ car on ne dispose d'aucune information sur les évaluations.
+
+                \begin{indalgo}{Min--max avec élagage $\alpha$--$\beta$}
+                    \KwInput{N\oe ud $n$ (un état du jeu)}
+                    \KwInput{Profondeur maximale $p$}
+                    \KwInput{heuristique $h$}
+                    \KwInput{bornes $\alpha$ et $\beta$}
+
+                    \BlankLine
+
+                    \If{$n$ est terminal}{
+                        \Return $h(n)$
+                        \tcp*{Valeur exacte associée à un état terminal}
+                    }
+
+                    \If{$p = 0$}{
+                        \Return $h(n)$
+                        \tcp*{Estimation associée à un état non terminal \textit{via} l'heuristique}
+                    }
+
+                    \If{$n$ est un n\oe ud min}{
+                        \tcp{Le test nécessite la connaissance de la profondeur courante par exemple.}
+                        $M \gets +\infty$
+                        \tcp*{Majorant de $\mathrm{eval}(n)$}
+
+                        \For{chaque fils $f$ de $n$}{
+                            \tcp{pour chaque coup depuis $n$}
+
+                            $v \gets \text{\texttt{min-max}}(f, p - 1, h, \alpha, \beta)$\;
+
+                            \If{$v < M$}{
+                                $M \gets v$\;
+                            }
+
+                            \If{$M \le \alpha$}{
+                                \Return $M$
+                                \tcp*{coupure $\alpha$}
+                            }
+
+                            $\beta \gets \min(\beta, M)$
+                            \tcp*{permet des coupure $\beta$ pour les fils non encore traités de $n$, si leur évaluation dépasse le min connu}
+                        }
+
+                        \Return $M$\;
+                    }
+
+                    \Else{
+                        \tcp{$n$ est un n\oe ud max}
+
+                        $m \gets -\infty$
+                        \tcp*{minorant pour $\mathrm{eval}(n)$}
+
+                        \For{chaque fils $f$ de $n$}{
+                            $v \gets \text{\texttt{min-max}}(f, p - 1, h, \alpha, \beta)$\;
+
+                            \If{$v > m$}{
+                                $ù \gets v$\;
+                            }
+                            \If{$m \ge \beta$}{
+                                \Return $m$
+                                \tcp*{coupure $\beta$}
+                            }
+
+                            $\alpha \gets \min{\alpha, m}$\;
+                        }
+
+                        \Return $m$\;
+                    }
+                \end{indalgo}
+
+                $\bullet$ Exemple :
+                \begin{center}
+                    \begin{tikzpicture}[scale=.8]
+                        \node (0) at (0, 0) [circle, draw] {10}
+                            child {node [circle, draw, xshift=-120pt] {10}
+                                child {node [circle, draw, xshift=-50pt] {10}
+                                    child {node [circle, draw, xshift=-15pt] {10}
+                                        child {node [circle, draw] {10}}
+                                        child {node [circle, draw] {11}}
+                                    }
+                                    child {node [circle, draw, xshift=15pt] {9}
+                                        child {node [circle, draw] {9}}
+                                        child {node [circle, draw, ff4500] {\textcolor{black}{12}} edge from parent [ff4500] node [above right] {$\alpha$}}
+                                    }
+                                }
+                                child {node [circle, draw, xshift=50pt] {14}
+                                    child {node [circle, draw, xshift=-15] {14}
+                                        child {node [circle, draw] {14}}
+                                        child {node [circle, draw] {15}}
+                                    }
+                                    child {node [circle, draw, xshift=15, ff4500] {}
+                                        child {node [circle, draw] {13}}
+                                        child {node [circle, draw] {14}}
+                                        edge from parent [ff4500] node [above right] {$\beta$}
+                                    }
+                                }
+                            }
+                            child {node [circle, draw, xshift=120pt] {5}
+                                child {node [circle, draw, xshift=-50pt] {5}
+                                    child {node [circle, draw, xshift=-15pt] {5}
+                                        child {node [circle, draw] {5}}
+                                        child {node [circle, draw, ff4500] {\textcolor{black} 2} edge from parent [ff4500] node [above right] {$\alpha$}}
+                                    }
+                                    child {node [circle, draw, xshift=15pt] {4}
+                                        child {node [circle, draw] {4}}
+                                        child {node [circle, draw, ff4500] {\textcolor{black}{1}} edge from parent [ff4500] node [above right] {$\alpha$}}
+                                    }
+                                }
+                                child {node [circle, draw, xshift=50pt, ff4500] {}
+                                    child {node [circle, draw, xshift=-15pt] {}
+                                        child {node [circle, draw] {3}}
+                                        child {node [circle, draw] {22}}
+                                    }
+                                    child {node [circle, draw, xshift=15pt] {}
+                                        child {node [circle, draw] {20}}
+                                        child {node [circle, draw] {21}}
+                                    }
+                                    edge from parent [ff4500] node [above right] {$\alpha$}
+                                }
+                            }
+                        ;
+                    \end{tikzpicture}
+                \end{center}
+            \end{indt}
+        \end{indt}
+    \end{indt}
+
+    \vspace{12pt}
+    
+    \begin{indt}{\section{Recherche informée}}
+        \begin{indt}{\subsection{Contexte}}
+            \begin{indt}{\subsubsection{Graphe d'états}}
+                De nombreux problèmes peuvent être modélisés à l'aide de graphes : les n\oe uds sont appelés \emph{états} et correspondent aux états du système que l'on modélise, et les arcs, appelé \emph{transitions}, représentant les actions qu'il est possible d'effectuer pour change d'état.
+                On cherche en général à trouver une suite d'actions permettant de passer d'un état initial à un état cible, \textit{i.e} un chemin entre ces états dans le graphe.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Exemple}}
+                $-$ Pour les jeux à un joueur, par exemple le Rubik's cube, les états sont les configurations du jeux, et les arcs les coups légaux.
+
+                $-$ Pour la recherche d'itinéraire sur un plan, on peut par exemple considérer que les états sont les intersections, et les arcs les portions de rues reliant deux intersections consécutives (ou alors se placer à une échelle plus fine).
+
+                $-$ Pour la planification de trajectoire en robotique, les états peuvent inclure la position dans l'espace du robot, mais aussi sa vitesse, son accélération (\textit{via} une discrétisation) et les arcs peuvent représenter les opérations de contrôle effectuées sur le robot.
+
+                $-$ Etc.
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Pondération}}
+                Dans les problèmes modélisés par un graphe d'états, on cherche souvent à trouver une solution optimale (par exemple : nombre minimal de coups pour résoudre le Rubik's cube, itinéraire le plus court, ...). Cela passe par une pondération des arcs du graphe d'état, qui représentent le coût associé à chaque action Le problème posé est donc celui de la recherche de plus court chemin dans un graphe pondéré.
             \end{indt}
         \end{indt}
     \end{indt}
