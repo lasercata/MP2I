@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2023.03.14
+% Last modification     :   2023.03.16
 %
 %------------------------------------------------------------------------
 
@@ -2682,6 +2682,273 @@
             
             \begin{indt}{\subsubsection{Pondération}}
                 Dans les problèmes modélisés par un graphe d'états, on cherche souvent à trouver une solution optimale (par exemple : nombre minimal de coups pour résoudre le Rubik's cube, itinéraire le plus court, ...). Cela passe par une pondération des arcs du graphe d'état, qui représentent le coût associé à chaque action Le problème posé est donc celui de la recherche de plus court chemin dans un graphe pondéré.
+
+                Problème : les algorithmes de calcul de plus court chemin vus en chapitre 10 5. ne peuvent pas s'appliquer à des graphes trop grands pour être représentés en mémoire ce qui est souvent le cas dans les problèmes d'intelligence artificielle.
+                Même si l'algorithme de \textsc{Floyd--Warshall} ne peut être réalisé dans ce cas, il reste possible d'explorer l'algorithme de \textsc{Dijkstra} en changeant les structures de données utilisées : il peut être impossible de conserver une estimation de la distance au sommet de départ pour chacun des n\oe uds dans un tableau, mais l'usage d'un dictionnaire permet de conserver cette estimation pour les n\oe uds rencontrés en cours d'exploration.
+                On espère alors trouver le sommet cible avant de saturer la mémoire.
+                Cependant, l'algorithme de \textsc{Dijkstra} manque d'efficacité en pratique car on ne sait pas "dans quelle direction" chercher le sommet cible. Il est parfois possible d'exploiter une information supplémentaire pour guider la recherche et limiter le nombre de sommets parcourus.
+                C'est ce que l'on appelle la \emph{recherche informée}.
+            \end{indt}
+        \end{indt}
+
+        \begin{indt}{\subsection{Algorithme $A^*$}}
+            \begin{indt}{\subsubsection{Heuristiques}}
+                L'information dont on dispose pour guider la recherche est représentée par une fonction, appelée \emph{heuristique}, estimant le coût nécessaire à la résolution du problème depuis chaque état.
+
+                \vspace{12pt}
+                
+                $\bullet$ Définition : Soit $G = (S, A, w)$ un GO pondéré par des poids positifs, et $t \in S_n$ un sommet cible.
+
+                Une \emph{heuristique} pour la recherche de $t$ est une fonction
+                \[
+                    h : S \longrightarrow \R_+
+                \]
+
+                telle que
+                \[
+                    h(t) = 0
+                \]
+
+                L'heuristique $h$ est dite \emph{admissible} si et seulement si
+                \[
+                    \forall s \in S,\
+                    h(s) \le d(s, t)
+                \]
+
+                où $\displaystyle d(s, t) = \min_{p\ \text{chemin de $s$ à $t$}}(w(p))$, \textit{i.e} si et seulement si $h$ ne surestime jamais le coût de la résolution.
+
+                L'heuristique $h$ est dite \emph{monotone} si et seulement si
+                \[
+                    \forall (u, v) \in A,\
+                    h(u) \le w(u, v) + h(v)
+                \]
+
+                \vspace{12pt}
+                
+                $\bullet$ Proposition :
+                \begin{emphBox}
+                    Soit $G = (S, A, w)$ un GOP tel que $w : A \longrightarrow \R_+$, $t \in S$, $h : S \longrightarrow \R_+$ une heuristique.
+
+                    Si $h$ est monotone, alors $h$ est admissible.
+                \end{emphBox}
+
+                \vspace{6pt}
+                
+                \begin{proof}
+                    Soit $s \in S$, et $s_0 \cdots s_n$ un chemin de $s$ à $t$ de poids
+                    \[
+                        \sum_{i = 0}^{n - 1} w(s_i, s_{i + 1})
+                    \]
+
+                    Par récurrence, on montre que
+                    \[
+                        \forall i \in \nset 0 n,\
+                        h(s_i) \le \sum_{j = i}^{n - 1} w(s_j, s_{j + 1})
+                    \]
+
+                    $-$ Initialisation :
+                    \[
+                        h(s_n) = h(t) = 0 = \sum_{j = n}^{n - 1} w(s_j, s_{j + 1})
+                    \]
+                    
+                    $-$ Hérédité :
+                    \[
+                        \begin{array}{rcll}
+                            h(s_{i - 1})
+                            &\le& \displaystyle
+                            w(s_{i - 1}, s_i) + h(s_i)
+                            & \text{car $h$ monotone}
+                            \\
+                            &\le& \displaystyle
+                            w(s_{i - 1}, s_i) + \sum_{j = i}^{n - 1} w(s_j, s_{j + 1})
+                            & \text{par H.R}
+                            \\
+                            &=& \displaystyle
+                            \sum_{j = i - 1}^{n - 1} w(s_j, s_{j + 1})
+                        \end{array}
+                    \]
+
+                    Conclusion :
+                    \[
+                        h(s) = h(s_0)
+                        \le
+                        \sum_{j = 0}^{n - 1} w(s_j, s_{j + 1})
+                        = d(s, t)
+                    \]
+                \end{proof}
+
+                \vspace{12pt}
+                
+                $\bullet$ Exemple : la fonction nulle est toujours monotone donc admissible.
+
+                Dans le cas de la recherche d'itinéraire, la distance à vol d'oiseau (distance euclidienne) est également monotone (d'après l'inégalité triangulaire).
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Algorithme $A^*$}}
+                $\bullet$ Principe : l'algorithme $A^*$ est une adaptation de l'algorithme de \textsc{Dijkstra} pour tenir compte d'une heuristique : la priorité d'un sommet rencontré dans la file de priorité n'est plus l'estimation de sa distance au sommet de départ, mais la somme de cette estimation et de la valeur de l'heuristique pour ce sommet, \textit{i.e} une estimation du coût pour passer du sommet initial au sommet cible \textit{via} ce sommet.
+
+                Attention : en raison de l'usage de l'heuristique, lorsqu'un sommet est extrait de la file de priorité, on ne connaît pas forcément sa distance au sommet initial, mais seulement un majorant de cette distance.
+                Il peut donc être nécessaire de réinsérer ce sommet dans la file afin d'affiner les estimations.
+
+                \vspace{12pt}
+                
+                $\bullet$ Exemple :
+                \begin{center}
+                    \begin{tikzpicture}[scale=1.5]
+                        \node (s) at (0, 0) [circle, draw] {$s$};
+                        \node (a) at (1, 1) [circle, draw] {$a$};
+                        \node (b) at (2, 0) [circle, draw] {$b$};
+                        \node (t) at (4, 0) [circle, draw] {$t$};
+
+                        \draw[->] (s) to node [below] {3} (b);
+                        \draw[->] (s) to node [above left] {1} (a);
+                        \draw[->] (a) to node [above right] {1} (b);
+                        \draw[->] (b) to node [below] {5} (t);
+                    \end{tikzpicture}
+                \end{center}
+
+                avec $h(a) = 6$, et $h(b) = 3$.
+
+                Depuis $s$, $a$ et $b$ sont insérés avec les priorités $w(s, a) + h(a) = 7$ et $w(s, b) + h(b) = 6$.
+                Le sommet $b$ est alors extrait, et on insère $t$ dans la file avec la priorité $w(s, b) + w(b, t) + h(t) = 8$.
+
+                Même si $t$ est rencontré, on poursuit l'algorithme car on n'a pas forcément trouvé le plus court chemin de $s$ à $t$.
+
+                Le sommet $a$ est alors extrait et on remarque que $w(s, a) + w(a, b) + h(b) = 5 < 6$, ancienne priorité de $b$.
+                On réinsère donc $b$ dans la file avec la priorité 5, correspondant au chemin $s \rightarrow a \rightarrow b$.
+
+                L'extraction de $b$ mène à la mise à jour de la priorité de $t$, qui devient $w(s, a) + w(a, b) + w(b, t) + h(t) = 7$ correspondant bien au poids du plus court chemin de $s$ à $t$.
+
+                \vspace{12pt}
+                
+                $\bullet$ Algorithme :
+
+                \begin{indalgo}{$A^*$}
+                    \KwInput{$G = (S, A, w)$ avec $w : A \longrightarrow \R_+$}
+                    \KwInput{heuristique $h$}
+                    \KwInput{source $s \in S$}
+                    \KwInput{cible $t \in S$}
+
+                    \BlankLine
+
+                    \texttt{d[$s$]} $\gets 0$\;
+                    \texttt{p[$s$]} $\gets s$
+                    \tcp*{prédécesseur}
+
+                    $F \gets$ file de priorité min vide\;
+
+                    \BlankLine
+
+                    Insérer $s$ dans $F$ avec priorité $h(s)$\;
+
+                    $u \gets s$\;
+
+                    \BlankLine
+
+                    \While{$u \neq t$ et $F \neq \varnothing$}{
+                        $u \gets$ extraction du min de $F$\;
+
+                        \For{tout voisin $v$ de $u$}{
+                            \If{\texttt{d[$v$]} n'est pas défini ou \texttt{d[$u$]} $+ w(u, v) <$ \texttt{d[$v$]}}{
+                                \texttt{d[$v$]} $\gets$ \texttt{d[$u$]} $+ w(u, v)$\;
+                                \texttt{p[$v$]} $\gets u$\;
+
+                                \If{$v \in F$}{
+                                    Mettre à jour la priorité de $v$ avec \texttt{d[$v$]} $+ h(v)$\;
+                                }
+                                \Else{
+                                    Insérer $v$ dans $F$ avec la priorité \texttt{d[$v$]} $+ h(v)$
+                                }
+                            }
+                        }
+                    }
+
+                    \If{$u = t$}{
+                        \Return le chemin de $s$ à $t$ calculé grâce à \texttt{p}\;
+                    }
+                    \Else{
+                        \'Echec\;
+                    }
+                \end{indalgo}
+
+                Remarque: si l'heuristique est la fonction nulle, on retrouve l'algorithme de \textsc{Dijkstra}.
+
+                \vspace{12pt}
+                
+                $\bullet$ Proposition :
+                \begin{emphBox}
+                    Si $h$ est admissible, alors l'algorithme $A^*$ renvoie un plus court chemin de $s$ à $t$ s'il existe.
+                \end{emphBox}
+
+                \vspace{6pt}
+                
+                \begin{proof}
+                    S'il existe un chemin $s_0 \cdots s_n$ de $s$ à $t$, alors l'algorithme $A^*$ ne peut pas échouer.
+
+                    Sinon, on considère
+                    \[
+                        i = \max\!\set{j \in \nset 0 n\ |\ s_j\ \text{a été extrait de la file par l'algorithme}}
+                \]
+
+                    $-$ $i$ existe bien car $s_0 = s$ est bien inséré, donc extrait.
+
+                    $-$ $i \neq n$ car sinon $s_n = t$ est extrait donc $u$ prend la valeur $t$ et la boucle est interrompue et un chemin est renvoyé.
+
+                    $-$ Lorsque $s_i$ est extrait, comme $(s_i, s_{i + 1}) \in A$, on considère $s_{i + 1}$. Dans ce cas, soit $s_{i + 1}$ est déjà passé dans la file de priorité (et y est peut-être encore), soit on insère $s_{i + 1}$ dans la file. Dans tous les cas, $s_{i + 1}$ sera extrait car la file est vide en fin d'algorithme puisque l'algorithme échoue.
+
+                    Contradiction avec la maximalité de $i$.
+
+                    \vspace{6pt}
+                    
+                    On considère maintenant le cas où l'algorithme renvoie un chemin de $s$ à $t$ dont on note $d$ le poids.
+
+                    Remarque : au moment de son extraction, $t$ est de priorité \texttt{d[$t$]} $+ h(t) =$ \texttt{d[$t$]} $= d$.
+
+                    On suppose qu'il existe un chemin $s_0 \cdots s_n$ de $s$ à $t$ de poids minimal $d' < d$.
+
+                    On montre par récurrence que $\forall i \in \nset 0 n$, $s_i$ prendra la priorité
+                    \[
+                        d(s, s_i) + h(s_i) \le d'
+                    \]
+                    avant que $t$ ne soit extrait.
+
+                    $-$ $i = 0$ : $s = s_0$ est inséré avec priorité $h(s) = d(s, s) + h(s) \le d' = d(s, t)$ car $h$ est admissible.
+
+                    $-$ Hérédité : si $s_k$ prend la priorité $d(s, s_i) + h(s_i) \le d'$ avant l'extraction de $t$, alors la priorité de $s_i$ est inférieure ou égale à $d' < d$, priorité avec laquelle $t$ est extrait, donc $s_i$ est extrait avant $t$.
+
+                    Au moment de l'extraction de $s_i$, comme $(s_i, s_{i + 1}) \in A$, on considère la priorité de $s_{i + 1}$.
+
+                    Soit $s_{i + 1}$ a déjà la priorité
+                    \[
+                        d(s, s_{i + 1}) + h(s_{i + 1})
+                        \le d(s, s_{i + 1}) + d(s_{i + 1}, t)
+                        = d'
+                    \]
+                    soit cette priorité est plus grande.
+
+                    Dans ce cas, \texttt{d[$s_i$]} $ + w(s_i, s_{i + 1}) = d(s, s_{i + 1}) <$ \texttt{d[$s_{i + 1}$]} donc on met à jour la priorité de $s_{i + 1}$ avec la bonne valeur.
+
+                    Ainsi, $s_n = t$ prend une priorité $\le d' < d$ avant son extraction : absurde.
+
+                    \vspace{6pt}
+                    
+                    \boxed{\rm Exo} Montrer que l'algorithme termine bien s'il existe un chemin de $s$ à $t$.
+                \end{proof}
+            \end{indt}
+
+            \vspace{12pt}
+            
+            \begin{indt}{\subsubsection{Complexité}}
+                L'algorithme $A^*$ peut avoir une complexité exponentielle en le nombre d'arcs d'un plus court chemin de $s$ à $t$ en raison des réinsertions de sommets.
+
+                Cependant, dans le cas où l'heuristique est monotone, on peut montrer comme pour l'algorithme de \textsc{Dijkstra} que lorsqu'un sommet est extrait, on connaît sa distance au sommet source (\boxed{\rm Exo}, preuve d'invariant).
+
+                Ainsi, chaque sommet peut provoquer l'insertion / la mise à jour de la priorité de tous ses voisins au moment de sa première extraction, donnant une file de taille $\mathcal O(\abs A)$, puis chaque extraction ne donnera lieu qu'à l'examen des voisins en $\mathcal O(\abs S)$ sans insertion supplémentaire. Comme chaque opération sur la file est de complexité $\mathcal O(\log \abs A) = \mathcal O(\log\abs S)$, on obtient une complexité
+                \[
+                    \mathcal O(\abs S \abs A \log \abs S)
+                \]
             \end{indt}
         \end{indt}
     \end{indt}
