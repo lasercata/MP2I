@@ -625,7 +625,11 @@
 
                             \BlankLine
 
-                            \If{$\abs F < n$ ou priorité $\max F \ge \abs{x_i - x_j}$}{
+                            \If{$\abs F < n$}{
+                                Insérer $x'$ dans $F$ avec la priorité $d(x, x')$\;
+                                \visite{$F,\ x,\ t_2,\ i + 1 \mod d,\ n$}\;
+                            }
+                            \ElseIf{priorité $\max F \ge \abs{x_i - x_j}$}{
                                 \If{$d(x, x') <$ priorité $\max F$}{
                                     Extraire $\max F$\;
                                     Insérer $x'$ dans $F$ avec la priorité $d(x, x')$\;
