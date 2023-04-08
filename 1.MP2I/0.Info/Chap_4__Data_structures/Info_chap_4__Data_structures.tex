@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2022.02.07
+% Last modification     :   2023.04.08
 %
 %------------------------------------------------------------------------
 
@@ -268,14 +268,14 @@
                 \begin{indt}{Nous avons déjà évoqué deux types d’outils pour la programmation modulaire :}
                     $-$ Les fonctions : ce sont des sous-programmes que l’on peut réutiliser pour exécuter le même algorithme sur des données différentes. Il est donc important de décomposer ses programmes en fonctions élémentaires ;
                     
-                    $-$ Les bibliothèques, ou modules : ce sont des ensembles de définitions de constantes et de fonctions, regroupées pour leur appartenance à un même thème afin de fournir les fonctionalités nécessaires à la programmation dans le cadre de ce thème.
-                    Rappel : l’usage d’une bibliothèque en C nécessite l’inclusion de son/ses fichier(s) d’entête par une directive \texttt{\#include <fichier.h>} ou \texttt{\#include "fichier.h"}, la première option étant réservée à la bibliothèque standard. En OCaml, on peut utiliser directement un objet en préfixant son nom par celui du module qui le contient (ex : \texttt{Module.fonction}, comme \texttt{List.hd}), ou bien on peut inclure le contenu d’un module avec une expression de la forme \texttt{open Module}, et utiliser les éléments déclarés directement via leur nom. L’usage de bibliothèques est important car il permet de séparer l’implémentation de ses fonctionalités de leur usage. En particulier, un utilisateur n’a pas besoin de connaître les détails d’implémentations d’un module, et deux implémentations fournissant les mêmes fonctionalités sont interchangeables.
+                    $-$ Les bibliothèques, ou modules : ce sont des ensembles de définitions de constantes et de fonctions, regroupées pour leur appartenance à un même thème afin de fournir les fonctionnalités nécessaires à la programmation dans le cadre de ce thème.
+                    Rappel : l’usage d’une bibliothèque en C nécessite l’inclusion de son/ses fichier(s) d’entête par une directive \texttt{\#include <fichier.h>} ou \texttt{\#include "fichier.h"}, la première option étant réservée à la bibliothèque standard. En OCaml, on peut utiliser directement un objet en préfixant son nom par celui du module qui le contient (ex : \texttt{Module.fonction}, comme \texttt{List.hd}), ou bien on peut inclure le contenu d’un module avec une expression de la forme \texttt{open Module}, et utiliser les éléments déclarés directement via leur nom. L’usage de bibliothèques est important car il permet de séparer l’implémentation de ses fonctionnalités de leur usage. En particulier, un utilisateur n’a pas besoin de connaître les détails d’implémentations d’un module, et deux implémentations fournissant les mêmes fonctionnalités sont interchangeables.
                 \end{indt}
                 
             \end{indt}
             
             \begin{indt}{\subsubsection{Interfaces}}
-                L’interchangeabilité des implémentations de mêmes fonctionalités est rendue possible grâce aux fichiers d’interface (d’extension .h en C et .mli en OCaml) qui contiennent une description des noms déclarés dans un module. Le mécanisme de la compilation séparée permet alors d’écrire un programme sans avoir accès à une implémentation d’un module et, au moment de la production d’un exécutable, de choisir n’importe quelle implémentation qui fournit les objets requis.
+                L’interchangeabilité des implémentations de mêmes fonctionnalités est rendue possible grâce aux fichiers d’interface (d’extension .h en C et .mli en OCaml) qui contiennent une description des noms déclarés dans un module. Le mécanisme de la compilation séparée permet alors d’écrire un programme sans avoir accès à une implémentation d’un module et, au moment de la production d’un exécutable, de choisir n’importe quelle implémentation qui fournit les objets requis.
                 
                 Le principe des interfaces et de l’interchangeabilité des implémentations n’est pas limité aux modules, mais s’applique également au stockage et à la manipulation de données.
             \end{indt}
@@ -289,9 +289,9 @@
             \end{indt}
             
             \begin{indt}{\subsubsection{Exemple}}
-                Une structure d’ensemble dont les éléments sont pris dans un ensemble E est la donnée d’un type représentant des collections d’éléments de E et d’opérations sur ce type permettant la construction d’ensembles élémentaires (ensemble vide, singletons, E), l’union, l’intersection, la différence de deux ensembles et les tests d’inclusion et d’égalité.
+                Une structure d’ensemble dont les éléments sont pris dans un ensemble $E$ est la donnée d’un type représentant des collections d’éléments de $E$ et d’opérations sur ce type permettant la construction d’ensembles élémentaires (ensemble vide, singletons, $E$), l’union, l’intersection, la différence de deux ensembles et les tests d’inclusion et d’égalité.
                 
-                Ce que nous avons fait dans le TP02 consistait à fournir une implémentation concrète de cette structure.
+                Ce que nous avons fait dans le TP$_{02}$ consistait à fournir une implémentation concrète de cette structure.
             \end{indt}
             
             \begin{indt}{\subsubsection{Vocabulaire}}
@@ -567,7 +567,7 @@ int tete(liste l) {
 }
 
 int queue(liste l) {
-    l->suivant;
+    return l->suivant;
 }\end{lstlisting}
                 
                 Attention, une liste doit être allouée dynamiquement.
