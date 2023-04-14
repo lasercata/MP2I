@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2022.04.04
+% Last modification     :   2023.04.14
 %
 %------------------------------------------------------------------------
 
@@ -1244,18 +1244,19 @@ let binom_ascending (n : int) (p : int) : int =
             \vspace{12pt}
             
             \begin{indt}{\subsubsection{Preuve d'optimalité}}
-                \begin{indt}{\textbf{Lemme 1 :}}
+                \textbf{Lemme 1 :}
+                \begin{pseudocode}
                     Soit $T$ un ensemble de tâches et $t \in T$ de pénalité maximale.
                     
                     Alors $\exists T^+ \subseteq T$ dont on peut planifier les éléments dans les délais, tel que $P(T^+)$ est maximal et tel que $t \in T^+$
-                \end{indt}
+                \end{pseudocode}
                 
                 \vspace{12pt}
                 
                 \begin{indt}{$\square$ Démonstration :}
                     On considère $T^+$ optimal.
                     
-                    Si $t \not \in T^+$, s'il reste une date $d \le f(t)$ non occupée par des tâches de $T^+$, alors $T^+ \cup \set A$ contredit l'optimalité de $T^+$.
+                    Si $t \not \in T^+$, s'il reste une date $d \le f(t)$ non occupée par des tâches de $T^+$, alors $T^+ \cup \set t$ contredit l'optimalité de $T^+$.
                     
                     Donc $\exists t' \in T^+$ planifiée à une date $d \le f(t)$.
                     
@@ -1267,7 +1268,8 @@ let binom_ascending (n : int) (p : int) : int =
                 
                 \vspace{12pt}
                 
-                \begin{indt}{\textbf{Lemme 2 :}}
+                \textbf{Lemme 2 :}
+                \begin{pseudocode}
                     On considère $T^+ \subseteq T$ optimal contenant une tâche et de pénalité maximale associée à la date $j$.
                     
                     On construit le sous-problème sans $t$ ni la date $j$ ainsi :
@@ -1284,7 +1286,7 @@ let binom_ascending (n : int) (p : int) : int =
                         \]
                     
                     Alors $T^+ \setminus \set t$ est optimal pour $T'$
-                \end{indt}
+                \end{pseudocode}
                 
                 \vspace{12pt}
                 
@@ -1308,10 +1310,11 @@ let binom_ascending (n : int) (p : int) : int =
                 \end{indt}
                 
                 \vspace{12pt}
-                
-                \begin{indt}{\textbf{Théorème}}
+
+                \textbf{Théorème}
+                \begin{pseudocode}
                     L'algorithme glouton donne une solution optimale.
-                \end{indt}
+                \end{pseudocode}
                 
                 \vspace{12pt}
                 
