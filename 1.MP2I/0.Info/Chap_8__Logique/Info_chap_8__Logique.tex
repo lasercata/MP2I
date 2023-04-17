@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2022.04.11
+% Last modification     :   2023.04.17
 %
 %------------------------------------------------------------------------
 
@@ -558,7 +558,7 @@
                             \forall \circ \in \set{\vee, \wedge, \rightarrow},\ FV(\varphi_1 \circ \varphi_2) = FV(\varphi_1) \cup FV(\varphi_2)
                             \vspace{6pt}
                             \\
-                            \forall Q \in \set{\exists, \forall},\ FV(Q x \varphi) = FV(\varphi) \setminus \set x
+                            \forall Q \in \set{\exists, \forall},\ FV(Q x\ \varphi) = FV(\varphi) \setminus \set x
                         \end{array}
                     $
                 
@@ -586,7 +586,7 @@
                 
                 $FV((\forall x\ x + y = 1) \wedge (\forall y\ x + y = 1)) = \set{x, y}$
                 
-                Une variable est dite \textit{liée} si elle n'est pas libre. Un même nom de variable peut avoir des occurrences libres et des occurrences liées. Dans une formule de la forme $Q\ x\ \varphi$ où $Q \in \set{\forall, \exists}$, on dit que $\varphi$ est la portée de la liaison pour $x$. Une variable est donc libre si elle admet une occurence hors de la portée de toutes les liaisons pour cette variable et une variable est liée si toutes ses occurrences sont dans la portée d'une liaison pour cette variable.
+                Une variable est dite \textit{liée} si elle n'est pas libre. Un même nom de variable peut avoir des occurrences libres et des occurrences liées. Dans une formule de la forme $Q x\ \varphi$ où $Q \in \set{\forall, \exists}$, on dit que $\varphi$ est la portée de la liaison pour $x$. Une variable est donc libre si elle admet une occurrence hors de la portée de toutes les liaisons pour cette variable et une variable est liée si toutes ses occurrences sont dans la portée d'une liaison pour cette variable.
                 
                 Une formule dont toutes les variables sont liées est dite \textit{close}.
             \end{indt}
@@ -633,10 +633,10 @@
                             \forall \circ \in \set{\vee, \wedge, \rightarrow},\ (\varphi_1 \circ \varphi_2) [x := t] = \varphi_1[x := t] \circ \varphi_2 [x := t]
                             \vspace{6pt}
                             \\
-                            \forall Q \in \set{\forall, \exists},\ (Q\ x\ \varphi)[x := t] = Q\ x\ \varphi
+                            \forall Q \in \set{\forall, \exists},\ (Q x\ \varphi)[x := t] = Q x\ \varphi
                             \vspace{6pt}
                             \\
-                            \forall Q \in \set{\exists, \forall},\ (Q\ y\ \varphi)[x := t] = Q\ y\ (\varphi [x := t])\ \text{si $y \neq x$ et $y \not \in \mathrm{Vars}(t)$}
+                            \forall Q \in \set{\exists, \forall},\ (Q y\ \varphi)[x := t] = Q y\ (\varphi [x := t])\ \text{si $y \neq x$ et $y \not \in \mathrm{Vars}(t)$}
                         \end{array}
                     \]
                 
@@ -692,7 +692,7 @@
             \vspace{12pt}
             
             \begin{indt}{\subsubsection{Définition (\textit{valuation})}}
-                Une \textit{valuation} est une fonction de l'ensemble $\mathcal V$ des variables dans l'ensemble des valeurs choisi pour définir la sémantique. On parle aussi d'environnement, ou, dans le cas de la logique propositionnelle, de \textit{distribution} de vérité. L'ensemble des valeurs de vérité est noté $\set{V, F}$ où $V$ est la valeur vraie et $F$ la valeur fausse.
+                Une \textit{valuation} est une fonction de l'ensemble $\mathcal V$ des variables dans l'ensemble des valeurs choisies pour définir la sémantique. On parle aussi d'environnement, ou, dans le cas de la logique propositionnelle, de \textit{distribution} de vérité. L'ensemble des valeurs de vérité est noté $\set{V, F}$ où $V$ est la valeur vraie et $F$ la valeur fausse.
             \end{indt}
             
             \vspace{12pt}
@@ -716,11 +716,11 @@
                 Soit $\varphi$ une formule.
                 
                 \begin{indt}{On dit que $\varphi$ est}
-                    $-$ une \textit{tautologie} $\ssi$ toute valuation est un modèle de $\varphi$. On note alors $\vDash^\varphi$ ;
+                    $-$ une \textit{tautologie} $\ssi$ toute valuation est un modèle de $\varphi$. On note alors $\vDash \varphi$ ;
                     
                     $-$ une \textit{antilogie} $\ssi$ elle n'admet aucun modèle ;
                     
-                    $-$ \textit{satisfiable} $\ssi$ elle admet un modèle.
+                    $-$ \textit{satisfiable} $\ssi$ elle admet au moins un modèle.
                 \end{indt}
             \end{indt}
             
@@ -734,7 +734,7 @@
                 
                 La tautologie $\varphi \vee \neg \varphi$ est appelée loi du tiers exclu.
                 
-                \boxed{\rm Exo} Montrer que les formules suivantes sont des tautologie :
+                \boxed{\rm Exo} Montrer que les formules suivantes sont des tautologies :
                 
                 $p \rightarrow (q \rightarrow p), (p \rightarrow q) \vee (q \rightarrow r), (p \rightarrow (q \rightarrow r)) \rightarrow ((p \rightarrow q) \rightarrow (p \rightarrow r))$
                 
@@ -1050,7 +1050,7 @@
                 
                 $-$ Une \textit{classe conjonctive} (resp. \textit{disjonctive}) est une conjonction (resp. disjonction) de littéraux ;
                 
-                $-$ Une formule sous \textit{forme normale} disjonctive (resp. conjonctive) est une disjonction (resp. conjonction) de classes conjonctives (resp. disjonctive).
+                $-$ Une formule sous \textit{forme normale disjonctive} (resp. \textit{conjonctive}) est une disjonction (resp. conjonction) de classes conjonctives (resp. disjonctives).
             \end{indt}
             
             \vspace{12pt}
