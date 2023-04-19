@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2023.04.17
+% Last modification     :   2023.04.18
 %
 %------------------------------------------------------------------------
 
@@ -1482,7 +1482,7 @@ let rec quine (f : fnc) : bool =
                 
                 Pour une implémentation récursive, on peut manipuler l'ensemble des valeurs à traiter en retirant une à chaque appel récursif (coûteux en espace), ou, si l'on dispose d'une manière d'énumérer les valeurs en choisissant la valeur qui suit une valeur donnée, on peut partir d'une valeur initiale et faire un appel récursif sur la suivante jusqu'à exhaustion des valeurs (ex : listes chaînées, ou parcourt des indices d'un tableau par une fonction récursive).
                 
-                Si on dispose d'une telle manière d'énumérer les valeurs, on peut facilement traduire l'algorithme récursif en boucle \texttt{while} (tant que l'on n'a pas trouver de solution et que l'on n'a pas parcouru toutes les valeurs, passer à la valeur suivante) ou une boucle \texttt{for} (pour $i$ de 1 au nombre de valeurs, tester la valeur n°$i$).
+                Si on dispose d'une telle manière d'énumérer les valeurs, on peut facilement traduire l'algorithme récursif en boucle \texttt{while} (tant que l'on n'a pas trouvé de solution et que l'on n'a pas parcouru toutes les valeurs, passer à la valeur suivante) ou une boucle \texttt{for} (pour $i$ de 1 au nombre de valeurs, tester la valeur n°$i$).
                 
                 \vspace{12pt}
                 
