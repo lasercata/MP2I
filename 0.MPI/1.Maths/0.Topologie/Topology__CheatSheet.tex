@@ -4,7 +4,7 @@
 %------------------------------------------------------------------------
 %
 % Author                :   Lasercata
-% Last modification     :   2023.11.04
+% Last modification     :   2023.04.19
 %
 %------------------------------------------------------------------------
 
@@ -407,7 +407,7 @@
 
                 Alors $\mathcal A$ est dite \emph{convexe} si, et seulement si
                 \[
-                    \forall (A, B) \in \mathcal A,\ [A, B] \in \mathcal A
+                    \forall (A, B) \in \mathcal A^2,\ [A, B] \subset \mathcal A
                 \]
             \end{indt}
         \end{indt}
@@ -445,7 +445,7 @@
             \begin{indt}{\subsubsection{Sur $\mathcal C^0\!\lr{[a, b], \K}$}}
                 Soient $a, b \in \R$.
 
-                On peut munir le $\K$-espace vectoriel $\mathcal C^0\:\lr{[a, b], \K}$ de normes définies par, $\forall f \in \mathcal C^0\:\lr{[a, b], \K}$ :
+                On peut munir le $\K$-espace vectoriel $\mathcal C^0\:\lr{[a, b], \K}$ de normes définies par, \newline $\forall f \in \mathcal C^0\:\lr{[a, b], \K}$ :
                 \[
                     \begin{array}{lcl}
                         \norm{x}_1
@@ -469,13 +469,15 @@
         \vspace{12pt}
         
         \begin{indt}{\subsection{Fonctions lipschitziennes}}
-            Soient $\lrb{E, \norm \cdot _E}, \lrb{F, \norm \cdot _F}$ des $\K$-espaces vectoriels normés, $A \in \mathcal P(E) \setminus \varnothing$, et $f \in F^A$.
+            Soient $\lrb{E, \norm \cdot _E}, \lrb{F, \norm \cdot _F}$ des $\K$-espaces vectoriels normés, $A \in \mathcal P(E) \setminus \set \varnothing$, et $f \in F^A$.
 
-            Alors $f$ est dite $k$-lipschitzienne si et seulement si
+            Alors $f$ est dite \emph{lipschitzienne} si et seulement si
             \[
                 \exists k \in \R_+\ |\ \forall x, y \in A,\
                 \norm{f(y) - f(x)}_F \le k\norm{y - x}_E
             \]
+
+            Dans ce cas, on dit que $f$ est $k$-lipschitzienne.
         \end{indt}
 
         \vspace{12pt}
@@ -564,7 +566,7 @@
 
                 $\bullet$ $
                     \forall a, b \in E\ |\ a \neq b,\
-                    \exists V, W \in v(a)\ |\ V \cap W = \varnothing
+                    \exists (V, W) \in v(a) \times v(b)\ |\ V \cap W = \varnothing
                 $
 
                 $\bullet$ Deux normes équivalentes définissent la même notion de voisinage.
@@ -667,18 +669,21 @@
                 
                 $\bullet$ Soient $(a, r) \in E \times \R^*_+$. On a :
                 \[
-                    \mathscr B_o(a, r) = \set{x \in E\ |\ \norm{x - a} < r}\ \text{ouvert}
-                \]
-                \[
-                    \mathscr B_f(a, r) = \set{x \in E\ |\ \norm{x - a} \le r}\ \text{fermé}
-                \]
-                \[
-                    \mathscr S(a, r) = \mathscr B_f(a, r) \setminus \mathscr B_o(a, r)\ \text{fermé}
+                    \begin{array}{rcll}
+                        \mathscr B_o(a, r) &=& \set{x \in E\ |\ \norm{x - a} < r}
+                        & \text{ouvert}
+                        \\
+                        \mathscr B_f(a, r) &=& \set{x \in E\ |\ \norm{x - a} \le r}
+                        &\text{fermé}
+                        \\
+                        \mathscr S(a, r) &=& \mathscr B_f(a, r) \setminus \mathscr B_o(a, r)
+                        &\text{fermé}
+                    \end{array}
                 \]
 
                 \vspace{12pt}
                 
-                Soient $\displaystyle \lr{[E_k, N_k]}_{k \in \nset 1 n}$ des espaces vectoriels normés.
+                $\bullet$ Soient $\displaystyle \lr{[E_k, N_k]}_{k \in \nset 1 n}$ des espaces vectoriels normés.
                 On note $E = \displaystyle \prod_{k = 1}^n E_k$.
                 On munit $E$ de la norme produit $N$.
 
@@ -767,7 +772,7 @@
             \vspace{12pt}
             
             \begin{indt}{\subsubsection{Caractérisation séquentielle de l'adhérence}}
-                Soit $A \in \mathcal P(E) \setminus \varnothing$, et $a \in E$.
+                Soit $A \in \mathcal P(E) \setminus \set \varnothing$, et $a \in E$.
 
                 Alors :
                 \[
@@ -780,13 +785,13 @@
             \vspace{12pt}
             
             \begin{indt}{\subsubsection{Corollaire}}
-                Soit $A \in \mathcal P(E) \setminus \varnothing$.
+                Soit $A \in \mathcal P(E) \setminus \set \varnothing$.
 
                 On a :
 
                 \vspace{6pt}
                 
-                $\bullet$ $\forall x \in E, x \in \cj A \ssi d(x, A) = 0$
+                $\bullet$ $\forall x \in E,\ x \in \cj A \ssi d(x, A) = 0$
 
                 $\bullet$
                 $
@@ -925,7 +930,7 @@
         
         \begin{indt}{\subsection{Topologie relative à une partie}}
             \begin{indt}{\subsubsection{Définition (\textit{voisinage relatif})}}
-                Soit $A \in \mathcal P(E) \setminus \varnothing$, $a \in A$, et $W \in \mathcal P(A)$.
+                Soit $A \in \mathcal P(E) \setminus \set \varnothing$, $a \in A$, et $W \in \mathcal P(A)$.
 
                 Alors $W$ est un \emph{voisinage relatif à $A$} de $a$ si
                 \[
@@ -1001,7 +1006,7 @@
 
         \begin{indt}{\subsection{Limites}}
             \begin{indt}{\subsubsection{Définition (\textit{Limite en un point})}}
-                Soit $A \in \mathcal P(E) \setminus \varnothing$, $f \in F^A$, et $a \in \cj A$.
+                Soit $A \in \mathcal P(E) \setminus \set \varnothing$, $f \in F^A$, et $a \in \cj A$.
 
                 On dit que $f$ \emph{admet une limite $b \in F$ en $a$} si et seulement si :
                 \[
@@ -1015,7 +1020,7 @@
                         \\
                         \ssi&
                         \forall \varepsilon \in \R^*_+,\
-                        \exists \delta_\varepsilon\ |\
+                        \exists \delta_\varepsilon \in \R^*_+\ |\
                         f\!\lr{\mathscr B_f(a, \delta_\varepsilon) \cap A} \subset \mathscr B_f(b, \varepsilon)
                         \vspace{6pt}
                         \\
@@ -1036,7 +1041,7 @@
             \vspace{12pt}
             
             \begin{indt}{\subsubsection{Caractérisation séquentielle de la limite}}
-                Soient $A \in \mathcal P(E) \setminus \varnothing$, $f \in F^A$, et $a \in \cj A$.
+                Soient $A \in \mathcal P(E) \setminus \set \varnothing$, $f \in F^A$, et $a \in \cj A$.
 
                 Alors $f$ admet une limite en $a$ si et seulement si
                 \[
@@ -1044,7 +1049,7 @@
                     \exists \ell \in F\ |\ f(x_n) \tendsto{n \to +\infty} \ell
                 \]
 
-                Et dans ce cas, la limite de $f$ est $\ell$.
+                Et dans ce cas, la limite de $f$ en $a$ est $\ell$.
 
                 \vspace{12pt}
                 
@@ -1054,7 +1059,7 @@
             \vspace{12pt}
             
             \begin{indt}{\subsubsection{Propriété (limite d'une application définie sur un produit cartésien)}}
-                Soient $n \in \N^*$, $(G_k)_{k \in \nset 1 n}$ des espaces vectoriels normés, $\displaystyle G = \prod_{k = 1}^n G_k$ que l'on munit de la norme produit, et $A \in \mathcal P(E) \setminus \varnothing$.
+                Soient $n \in \N^*$, $(G_k)_{k \in \nset 1 n}$ des espaces vectoriels normés, $\displaystyle G = \prod_{k = 1}^n G_k$ que l'on munit de la norme produit, et $A \in \mathcal P(E) \setminus \set \varnothing$.
 
                 Soient $\forall k \in \nset 1 n,\ f_k \in {G_k}^A$, et :
                 \[
@@ -1072,12 +1077,9 @@
                     \forall k \in \nset 1 n,\ \exists \ell_k \in G_k\ |\ f_k(x) \tendsto{x \to a} \ell_k
                 \]
 
-                Et dans ce cas, pour $\ell = (\ell_1, \ldots, \ell_n) \in G$ et $a \in \cj A$, on a :
+                Et dans ce cas, on a
                 \[
-                    \lim_a f = \ell
-                    \ssi
-                    \forall k \in \nset 1 n,\
-                    \lim_a f_k = \ell_k
+                    \ell = (\ell_1, \ldots, \ell_n)
                 \]
             \end{indt}
         \end{indt}
@@ -1086,7 +1088,7 @@
         
         \begin{indt}{\subsection{Continuité d'une application}}
             \begin{indt}{\subsubsection{Définition (\textit{continuité})}}
-                Soit $A \in \mathcal P(E) \setminus \varnothing$, et $f \in F^A$.
+                Soit $A \in \mathcal P(E) \setminus \set \varnothing$, et $f \in F^A$.
 
                 \vspace{6pt}
                 
@@ -1094,10 +1096,12 @@
                 \[
                     \exists \ell \in F\ |\ f(x) \tendsto{x \to a} \ell
                 \]
-                et dans ce cas, $\ell = f(a)$, \textit{i.e} si et seulement si
+                et dans ce cas, $\ell = f(a)$.
+
+                Donc $f$ est continue en $a$ si et seulement si
                 \[
                     \forall \varepsilon \in \R^*_+,\
-                    \exists \delta_\varepsilon\ |\
+                    \exists \delta_\varepsilon \in \R^*_+\ |\
                     \forall x \in A,\
                     \norm{x - a}_E \le \delta_\varepsilon \Rightarrow \norm{f(x) - f(a)}_F \le \varepsilon
                 \]
@@ -1106,16 +1110,16 @@
                 
                 $\bullet$ La fonction $f$ est \emph{continue} (sur $A$) si et seulement si elle est continue en tout point de $A$.
 
-                Dans ce cas, on note
+                On note $\mathcal C^0(A, F)$ l'ensemble des fonctions continues de $A$ dans $F$ :
                 \[
-                    f \in \mathcal C^0(A, F)
+                    \mathcal C^0(A, F) = \set{f \in F^A\ |\ \forall a \in A,\ f(x) \tendsto{x \to a} f(a)}
                 \]
             \end{indt}
 
             \vspace{12pt}
             
             \begin{indt}{\subsubsection{Propriétés}}
-                $\bullet$ Soient $n \in \N^*$, $(G_k)_{k \in \nset 1 n}$ des espaces vectoriels normés, $\displaystyle G = \prod_{k = 1}^n G_k$ que l'on munit de la norme produit, et $A \in \mathcal P(E) \setminus \varnothing$.
+                $\bullet$ Soient $n \in \N^*$, $(G_k)_{k \in \nset 1 n}$ des espaces vectoriels normés, $\displaystyle G = \prod_{k = 1}^n G_k$ que l'on munit de la norme produit, et $A \in \mathcal P(E) \setminus \set \varnothing$.
 
                 Soient $\forall k \in \nset 1 n,\ f_k \in {G_k}^A$, et :
                 \[
@@ -1134,13 +1138,13 @@
 
                 \vspace{12pt}
                 
-                $\bullet$ Soit $A \in \mathcal P(E) \setminus \varnothing$, $a \in A$, et $f \in F^A$.
+                $\bullet$ Soit $A \in \mathcal P(E) \setminus \set \varnothing$, $a \in A$, et $f \in F^A$.
 
                 Alors si $f$ est continue en $a$, alors elle est bornée au voisinage de $a$.
 
                 \vspace{12pt}
                 
-                $\bullet$ Soit $A \in \mathcal P(E) \setminus \varnothing$. Alors $\mathcal C^0(A, F)$ est un $\K$-sous espace vectoriel de $F^A$.
+                $\bullet$ Soit $A \in \mathcal P(E) \setminus \set \varnothing$. Alors $\mathcal C^0(A, F)$ est un $\K$-sous espace vectoriel de $F^A$.
             \end{indt}
 
             \vspace{12pt}
@@ -1150,7 +1154,7 @@
 
                 Alors $f$ est continue en $a$ si et seulement si
                 \[
-                    \forall \lr{x_n}_{n \in \N}\ |\ x_n \tendsto{n \to +\infty} a,\
+                    \forall \lr{x_n}_{n \in \N}\ |\ x_n \tendsto{n \to +\infty} a,\quad
                     f(x_n) \tendsto{n \to +\infty} f(a)
                 \]
             \end{indt}
@@ -1164,7 +1168,7 @@
                 
                 $\bullet$ On suppose $E$ de dimension finie $n \in \N$, et on note $\mathcal B = \lr{e_k}_{k \in \nset 1 n}$ une de ses $\K$-bases.
 
-                On pose $I \in \mathcal P(\N^n) \setminus \varnothing$ finie, et $\lr{\lambda_i}_{i \in I} \subset \K$.
+                On pose $I \in \mathcal P(\N^n) \setminus \set \varnothing$ finie, et $\lr{\lambda_i}_{i \in I} \subset \K$.
 
                 \vspace{6pt}
                 
@@ -1184,7 +1188,7 @@
             \vspace{12pt}
             
             \begin{indt}{\subsubsection{Lien avec les ouverts}}
-                Soit $A \in \mathcal P(E) \setminus \varnothing$, et $f \in F^A$.
+                Soit $A \in \mathcal P(E) \setminus \set \varnothing$, et $f \in F^A$.
 
                 Alors on a :
                 \[
@@ -1204,7 +1208,7 @@
             \vspace{12pt}
             
             \begin{indt}{\subsubsection{Propriété}}
-                Soit $A \in \mathcal P(E) \setminus \varnothing$, $B \in \mathcal P(A)\ |\ \cj B = A$, et $f, g \in \mathcal C^0(A, F)$
+                Soit $A \in \mathcal P(E) \setminus \set \varnothing$, $B \in \mathcal P(A)\ |\ \cj B = A$, et $f, g \in \mathcal C^0(A, F)$
 
                 Alors
                 \[
@@ -1254,7 +1258,7 @@
                     \mathcal L_c(E, F) = \mathcal C^0(E, F) \cap \mathcal L(E, F)
                 \]
 
-                C'est un $\K$-sous espace vectoriel de $\mathcal L_\K(E, F)$
+                C'est un $\K$-sous espace vectoriel de $\mathcal L_\K(E, F)$.
             \end{indt}
 
             \vspace{12pt}
@@ -1479,11 +1483,11 @@
 
                 \vspace{6pt}
                 
-                $\bullet$ Si $f$ est uniformément continue sur $A$, alors elle est continue sur $A$.
+                $\bullet$ Si $f$ est lipschitzienne, alors elle est uniformément continue.
 
                 \vspace{6pt}
                 
-                $\bullet$ Si $f$ est lipschitzienne, alors elle est uniformément continue.
+                $\bullet$ Si $f$ est uniformément continue sur $A$, alors elle est continue sur $A$.
             \end{indt}
 
             \vspace{12pt}
@@ -1518,7 +1522,7 @@
             \begin{indt}{\subsubsection{Propriété}}
                 \label{5.1.2}
 
-                Soit $A \in \mathcal P(E) \setminus \varnothing$, et $\mathcal R$ la relation sur $A^2$ définie par
+                Soit $A \in \mathcal P(E) \setminus \set \varnothing$, et $\mathcal R$ la relation sur $A^2$ définie par
                 \[
                     \forall (a, b) \in A^2,\
                     a \mathcal R b
